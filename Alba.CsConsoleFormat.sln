@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{B82057
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.ConsoleTest", "Alba.CsConsoleFormat.ConsoleTest\Alba.CsConsoleFormat.ConsoleTest.csproj", "{D5446AC0-E4AD-44B2-AC2D-B1ED24667586}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5446AC0-E4AD-44B2-AC2D-B1ED24667586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5446AC0-E4AD-44B2-AC2D-B1ED24667586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5446AC0-E4AD-44B2-AC2D-B1ED24667586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5446AC0-E4AD-44B2-AC2D-B1ED24667586}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
