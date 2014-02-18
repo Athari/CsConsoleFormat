@@ -1,5 +1,5 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class Para : Element
+    public abstract class Element
     {}
 }

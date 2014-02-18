@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat
 {
     public class ConsoleFormatter
     {
-        public void Write (ConBody body)
+        /*public void Write (ConBody body)
         {
             WriteNode((dynamic)body);
         }
@@ -100,6 +100,6 @@ namespace Alba.CsConsoleFormat
                 foreach (IDisposable disposable in _disposables)
                     disposable.Dispose();
             }
-        }
+        }*/
     }
 }

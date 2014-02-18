@@ -4,18 +4,19 @@ using System.Xaml;
 
 namespace Alba.CsConsoleFormat.ConsoleTest
 {
-    internal class ProgramXaml
+    internal class Program
     {
         public static void Main ()
         {
-            new ProgramXaml().Run();
+            new Program().Run();
             Console.WriteLine("Done!");
             Console.ReadKey();
         }
 
         private void Run ()
         {
-            Console.WriteLine(ReadDocument());
+            Document doc = ReadDocument();
+            Console.WriteLine(doc);
         }
 
         private Document ReadDocument ()

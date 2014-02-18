@@ -1,4 +1,9 @@
-﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Para x:Name="abc"/>
-    <x:Reference Name="abc"/>
+﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        BgColor="Black">
+    <Para x:Name="a" Color="Red"> red </Para>
+    <x:Reference Name="a"/>
+    <Para BgColor="DarkBlue">
+        <Span Text="q" Color="Yellow"/>
+        w
+    </Para>
 </Document>

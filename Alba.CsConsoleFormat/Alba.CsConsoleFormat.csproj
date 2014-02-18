@@ -44,36 +44,14 @@
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
     <Compile Include="Framework\Text\StringExts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tags\Attributes\ColorAttrs.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ColorAttrs.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Tags\Attributes\ConAlignAttr.cs" />
-    <Compile Include="Tags\Attributes\ConBackgroundAttr.cs" />
-    <Compile Include="Tags\Attributes\ConForegroundAttr.cs" />
-    <Compile Include="Tags\Attributes\ConVerticalAlignAttr.cs" />
-    <Compile Include="Tags\AttrNames.cs" />
-    <Compile Include="Tags\Elements\ConBody.cs" />
-    <Compile Include="Tags\Elements\ConLine.cs" />
-    <Compile Include="Tags\Elements\ConOrderedList.cs" />
-    <Compile Include="Tags\Elements\ConPara.cs" />
-    <Compile Include="Tags\Elements\ConSpan.cs" />
-    <Compile Include="Tags\Elements\ConTable.cs" />
-    <Compile Include="Tags\Elements\ConUnorderedList.cs" />
-    <Compile Include="Tags\Enums\HorizontalAlignment.cs" />
-    <Compile Include="Tags\Enums\VerticalAlignment.cs" />
-    <Compile Include="Tags\TagNames.cs" />
-    <Compile Include="Tags\Xaml\Document.cs" />
-    <Compile Include="Tags\Xaml\Element.cs" />
-    <Compile Include="Tags\Xaml\Base.cs" />
-    <Compile Include="Tags\Xaml\Para.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tags\Attributes\ColorAttrs.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ColorAttrs.g.cs</LastGenOutput>
-    </None>
+    <Compile Include="Elements\Enums\HorizontalAlignment.cs" />
+    <Compile Include="Elements\Enums\VerticalAlignment.cs" />
+    <Compile Include="Elements\ElementCollection.cs" />
+    <Compile Include="Elements\Document.cs" />
+    <Compile Include="Elements\Container.cs" />
+    <Compile Include="Elements\Element.cs" />
+    <Compile Include="Elements\Para.cs" />
+    <Compile Include="Elements\Span.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
