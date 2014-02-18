@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Markup;
+using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -20,6 +21,11 @@ namespace Alba.CsConsoleFormat
                 return;
             foreach (Element element in _children.Where(el => el.DataContext == null).ToList())
                 element.DataContext = DataContext;
+        }
+
+        public override string ToString ()
+        {
+            return base.ToString() + " Children={0}".Fmt(_children != null ? _children.Count : 0);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Collections;
+using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -41,6 +42,11 @@ namespace Alba.CsConsoleFormat
                 }
             }
             Parent.Children.InsertElements(Parent.Children.IndexOf(this) + 1, generatedChildren);
+        }
+
+        public override string ToString ()
+        {
+            return base.ToString() + " ItemTpl={0}".Fmt(_itemTemplate != null ? _itemTemplate.Count : 0);
         }
     }
 }

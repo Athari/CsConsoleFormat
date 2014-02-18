@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Alba.CsConsoleFormat.Framework.Text;
 using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
@@ -55,6 +56,11 @@ namespace Alba.CsConsoleFormat
         public Element Clone ()
         {
             return (Element)MemberwiseClone();
+        }
+
+        public override string ToString ()
+        {
+            return "{0}: DC={1}".Fmt(GetType().Name, DataContext);
         }
     }
 }

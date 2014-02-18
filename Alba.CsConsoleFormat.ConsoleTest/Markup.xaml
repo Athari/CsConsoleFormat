@@ -3,7 +3,7 @@
     <Span Text="{Get Title}"/>
     <Span Text="{Get SubTitle}"/>
     <Span Text="{Get Guid}"/>
-    <Span Text="{Get Date}"/>
+    <Span Text="{Get Date, Format=D}"/>
     <Para>
         <Repeater Items="{Get Items}">
             <Span Text="{Get Id}"/>

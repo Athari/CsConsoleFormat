@@ -66,6 +66,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
+
+        public override string ToString ()
+        {
+            return "Data";
+        }
     }
 
     internal class DataItem
@@ -73,5 +78,10 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+
+        public override string ToString ()
+        {
+            return "DataItem";
+        }
     }
 }

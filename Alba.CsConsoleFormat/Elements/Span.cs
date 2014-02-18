@@ -1,4 +1,5 @@
 ﻿using System;
+using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -15,5 +16,10 @@ namespace Alba.CsConsoleFormat
 
         public Span () : this(null)
         {}
+
+        public override string ToString ()
+        {
+            return base.ToString() + " Text=\"{0}\"".Fmt(Text);
+        }
     }
 }

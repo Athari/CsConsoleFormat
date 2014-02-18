@@ -13,6 +13,7 @@ namespace Alba.CsConsoleFormat.Markup
         public string Path { get; set; }
         public string Element { get; set; }
         public object Source { get; set; }
+        public string Format { get; set; }
         public Func<object, object> Converter { get; set; }
 
         public GetExtension (string path)
@@ -55,12 +56,18 @@ namespace Alba.CsConsoleFormat.Markup
             var expression = new GetExpression {
                 Source = Source,
                 Path = Path,
+                Format = Format != null && Format.IndexOf('{') < 0 ? "{0:" + Format + "}" : Format,
                 Converter = Converter,
                 TargetType = prop.PropertyType,
             };
             obj.Bind(prop, expression);
 
             return expression.GetValue(null);
+        }
+
+        public override string ToString ()
+        {
+            return "{{Get Path={0}}}".Fmt(Path);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Alba.CsConsoleFormat.Markup
     {
         public object Source { get; set; }
         public string Path { get; set; }
+        public string Format { get; set; }
         public Func<object, object> Converter { get; set; }
         public Type TargetType { get; set; }
 
@@ -38,6 +39,8 @@ namespace Alba.CsConsoleFormat.Markup
         {
             if (Converter != null)
                 value = Converter(value);
+            if (Format != null)
+                value = string.Format(Format, value);
             if (value == null) // TODO ???
                 return null;
             Type valueType = value.GetType();
