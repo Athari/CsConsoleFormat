@@ -20,8 +20,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
                 Items = new List<DataItem> {
-                    new DataItem { Id = "1", Name = "Name 1", Value = "Value 1" },
-                    new DataItem { Id = "2", Name = "Name 2", Value = "Value 2" },
+                    new DataItem { Id = 1, Name = "Name 1", Value = "Value 1" },
+                    new DataItem { Id = 2, Name = "Name 2", Value = "Value 2" },
                 }
             });
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
@@ -66,7 +66,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
     internal class DataItem
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
     }
