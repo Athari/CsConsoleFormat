@@ -6,6 +6,11 @@ namespace Alba.CsConsoleFormat.Framework.Text
 {
     internal static class StringExts
     {
+        public static bool IsNullOrEmpty (this string @this)
+        {
+            return string.IsNullOrEmpty(@this);
+        }
+
         public static string RemovePrefix (this string @this, string prefix)
         {
             if (!@this.StartsWith(prefix))

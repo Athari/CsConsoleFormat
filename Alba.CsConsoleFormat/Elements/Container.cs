@@ -1,4 +1,5 @@
-﻿using System.Windows.Markup;
+﻿using System.Linq;
+using System.Windows.Markup;
 
 namespace Alba.CsConsoleFormat
 {
@@ -9,7 +10,16 @@ namespace Alba.CsConsoleFormat
 
         public ElementCollection Children
         {
-            get { return _children ?? (_children = new ElementCollection()); }
+            get { return _children ?? (_children = new ElementCollection(this)); }
+        }
+
+        protected override void UpdateDataContext ()
+        {
+            base.UpdateDataContext();
+            if (_children == null)
+                return;
+            foreach (Element element in _children.Where(el => el.DataContext == null))
+                element.DataContext = DataContext;
         }
     }
 }

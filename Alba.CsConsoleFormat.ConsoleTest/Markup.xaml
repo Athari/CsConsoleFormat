@@ -1,9 +1,16 @@
 ﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         BgColor="Black">
+    <Para>
+        <Span Text="{Get Title}"/>
+    </Para>
+    <Para>
+        <Span Text="{Get SubTitle}"/>
+    </Para>
+    <!--<Para Align="{Get A, Element=a}"/>
     <Para x:Name="a" Color="Red"> red </Para>
     <x:Reference Name="a"/>
     <Para BgColor="DarkBlue">
         <Span Text="q" Color="Yellow"/>
         w
-    </Para>
+    </Para>-->
 </Document>

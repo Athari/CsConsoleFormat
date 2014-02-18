@@ -42,7 +42,10 @@
   <ItemGroup>
     <Compile Include="Formatting\ConsoleFormatter.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
+    <Compile Include="Framework\Sys\ServiceProviderExts.cs" />
     <Compile Include="Framework\Text\StringExts.cs" />
+    <Compile Include="Markup\GetExtension.cs" />
+    <Compile Include="Markup\GetExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\Enums\HorizontalAlignment.cs" />
     <Compile Include="Elements\Enums\VerticalAlignment.cs" />

@@ -19,3 +19,4 @@ using System.Windows.Markup;
 
 [assembly: XmlnsPrefix("urn:alba:cs-console-format", "a")]
 [assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat")]
+[assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat.Markup")]
