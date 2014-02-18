@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\Generator.cs" />
+    <Compile Include="Elements\Repeater.cs" />
     <Compile Include="Formatting\ConsoleFormatter.cs" />
+    <Compile Include="Framework\Collections\ListExts.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
     <Compile Include="Framework\Sys\ServiceProviderExts.cs" />
     <Compile Include="Framework\Text\StringExts.cs" />

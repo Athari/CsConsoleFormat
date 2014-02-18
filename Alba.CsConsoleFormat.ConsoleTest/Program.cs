@@ -19,9 +19,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             var doc = ReadXaml<Document>(new Data {
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
+                Items = new List<DataItem> {
+                    new DataItem { Id = "1", Name = "Name 1", Value = "Value 1" },
+                    new DataItem { Id = "2", Name = "Name 2", Value = "Value 2" },
+                }
             });
-            Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
-            Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
+            //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
+            //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             Console.WriteLine(doc);
         }
 
@@ -30,7 +34,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
                 //return (Document)XamlServices.Load(resStream);
                 int pad = 0;
-                var objects = new Stack<object>();
                 var context = new XamlSchemaContext(new[] {
                     //GetType().Assembly,
                     typeof(Document).Assembly,
@@ -42,18 +45,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 };
                 var writerSettings = new XamlObjectWriterSettings {
                     RootObjectInstance = new T { DataContext = dataContext },
-                    AfterBeginInitHandler = (sender, args) => {
-                        objects.Push(args.Instance);
-                        /*var element = args.Instance as Element;
-                        if (element != null) {
-                            
-                        }*/
-                        Console.WriteLine(new string(' ', pad++ * 2) + "<{0}>", args.Instance);
-                    },
-                    AfterEndInitHandler = (sender, args) => {
-                        objects.Pop();
-                        Console.WriteLine(new string(' ', --pad * 2) + "</{0}>", args.Instance);
-                    },
+                    AfterBeginInitHandler = (sender, args) => Console.WriteLine(new string(' ', pad++ * 2) + "<{0}>", args.Instance),
+                    AfterEndInitHandler = (sender, args) => Console.WriteLine(new string(' ', --pad * 2) + "</{0}>", args.Instance),
                 };
                 using (var xamlReader = new XamlXmlReader(resStream, context, readerSettings))
                 using (var xamlWriter = new XamlObjectWriter(xamlReader.SchemaContext, writerSettings)) {
@@ -68,5 +61,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public string Title { get; set; }
         public string SubTitle { get; set; }
+        public List<DataItem> Items { get; set; }
+    }
+
+    internal class DataItem
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

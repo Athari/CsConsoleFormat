@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
 
@@ -8,11 +9,13 @@ namespace Alba.CsConsoleFormat
     [ContentWrapper (typeof(Span))]
     public class ElementCollection : Collection<Element>, IList
     {
-        private readonly Element _parent;
+        private readonly Container _parent;
+        private readonly Generator _generator;
 
-        public ElementCollection (Element parent)
+        public ElementCollection (Container parent, Generator generator)
         {
             _parent = parent;
+            _generator = generator;
         }
 
         int IList.Add (object value)
@@ -26,11 +29,22 @@ namespace Alba.CsConsoleFormat
             throw new ArgumentException("Only Element and string can be added.", "value");
         }
 
-        private int AddElement (Element el)
+        public int AddElement (Element el)
         {
             Add(el);
             el.Parent = _parent;
+            el.Generator = _generator;
             return Count - 1;
+        }
+
+        internal void InsertElements (int index, IEnumerable<Element> els)
+        {
+            int i = index;
+            foreach (Element el in els) {
+                Insert(i++, el);
+                el.Parent = _parent;
+                el.Generator = _generator;
+            }
         }
     }
 }

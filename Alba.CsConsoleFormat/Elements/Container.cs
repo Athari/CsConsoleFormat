@@ -10,7 +10,7 @@ namespace Alba.CsConsoleFormat
 
         public ElementCollection Children
         {
-            get { return _children ?? (_children = new ElementCollection(this)); }
+            get { return _children ?? (_children = new ElementCollection(this, null)); }
         }
 
         protected override void UpdateDataContext ()
@@ -18,7 +18,7 @@ namespace Alba.CsConsoleFormat
             base.UpdateDataContext();
             if (_children == null)
                 return;
-            foreach (Element element in _children.Where(el => el.DataContext == null))
+            foreach (Element element in _children.Where(el => el.DataContext == null).ToList())
                 element.DataContext = DataContext;
         }
     }

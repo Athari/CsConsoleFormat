@@ -6,11 +6,13 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class Element
     {
-        private Element _parent;
+        private Container _parent;
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpression> _getters;
 
-        public Element Parent
+        internal Generator Generator { get; set; }
+
+        public Container Parent
         {
             get { return _parent; }
             internal set
@@ -37,16 +39,22 @@ namespace Alba.CsConsoleFormat
 
         protected virtual void UpdateDataContext ()
         {
-            foreach (KeyValuePair<PropertyInfo, GetExpression> getter in Getters) {
-                if (getter.Value.Source == null)
-                    getter.Value.Source = _dataContext;
-                getter.Key.SetValue(this, getter.Value.GetValue());
-            }
+            if (_getters == null)
+                return;
+            foreach (KeyValuePair<PropertyInfo, GetExpression> getter in _getters)
+                getter.Key.SetValue(this, getter.Value.GetValue(_dataContext));
         }
 
-        public IDictionary<PropertyInfo, GetExpression> Getters
+        public void Bind (PropertyInfo prop, GetExpression getter)
         {
-            get { return _getters ?? (_getters = new SortedList<PropertyInfo, GetExpression>()); }
+            if (_getters == null)
+                _getters = new SortedList<PropertyInfo, GetExpression>();
+            _getters[prop] = getter;
+        }
+
+        public Element Clone ()
+        {
+            return (Element)MemberwiseClone();
         }
     }
 }

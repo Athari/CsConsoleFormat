@@ -10,14 +10,15 @@ namespace Alba.CsConsoleFormat.Markup
         public object Source { get; set; }
         public string Path { get; set; }
 
-        public object GetValue ()
+        public object GetValue (object dataContext)
         {
-            if (Source == null)
+            object source = Source ?? dataContext;
+            if (source == null)
                 return null;
             if (Path.IsNullOrEmpty())
-                return Source;
+                return source;
 
-            object value = Source;
+            object value = source;
             foreach (string propName in Path.Split('.')) {
                 if (value == null)
                     return null;

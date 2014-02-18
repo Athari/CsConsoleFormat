@@ -24,7 +24,6 @@ namespace Alba.CsConsoleFormat.Markup
 
         public override object ProvideValue (IServiceProvider provider)
         {
-            var lineInfo = provider.GetService<IXamlLineInfo>();
             //var xamlSchemaContextProvider = provider.GetService<IXamlSchemaContextProvider>();
             //var xamlTypeResolver = provider.GetService<IXamlTypeResolver>();
             //var xamlNamespaceResolver = provider.GetService<IXamlNamespaceResolver>();
@@ -33,6 +32,8 @@ namespace Alba.CsConsoleFormat.Markup
             //var uriContext = provider.GetService<IUriContext>();
             //var rootObjectProvider = provider.GetService<IRootObjectProvider>();
             //var ambientProvider = provider.GetService<IAmbientProvider>();
+
+            var lineInfo = provider.GetService<IXamlLineInfo>();
 
             if (Element != null) {
                 var nameResolver = provider.GetService<IXamlNameResolver>();
@@ -51,12 +52,12 @@ namespace Alba.CsConsoleFormat.Markup
             var prop = (PropertyInfo)targetProvider.TargetProperty;
 
             var expression = new GetExpression {
-                Source = Source ?? obj.DataContext,
+                Source = Source,
                 Path = Path,
             };
-            obj.Getters[prop] = expression;
+            obj.Bind(prop, expression);
 
-            return expression.GetValue();
+            return expression.GetValue(null);
         }
     }
 }
