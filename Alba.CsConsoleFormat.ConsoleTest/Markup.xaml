@@ -1,11 +1,9 @@
 ﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         BgColor="Black">
-    <!--<Para>
-        <Span Text="{Get Title}"/>
-    </Para>
-    <Para>
-        <Span Text="{Get SubTitle}"/>
-    </Para>-->
+    <Span Text="{Get Title}"/>
+    <Span Text="{Get SubTitle}"/>
+    <Span Text="{Get Guid}"/>
+    <Span Text="{Get Date}"/>
     <Para>
         <Repeater Items="{Get Items}">
             <Span Text="{Get Id}"/>

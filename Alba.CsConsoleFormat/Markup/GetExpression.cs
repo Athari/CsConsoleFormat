@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using Alba.CsConsoleFormat.Framework.Text;
 
@@ -42,7 +43,15 @@ namespace Alba.CsConsoleFormat.Markup
             Type valueType = value.GetType();
             if (TargetType == valueType || TargetType.IsAssignableFrom(valueType))
                 return value;
-            return Convert.ChangeType(value, TargetType);
+            if (typeof(IConvertible).IsAssignableFrom(TargetType) && typeof(IConvertible).IsAssignableFrom(valueType))
+                return Convert.ChangeType(value, TargetType);
+            TypeConverter valueConverter = TypeDescriptor.GetConverter(valueType);
+            if (valueConverter.CanConvertTo(TargetType))
+                return valueConverter.ConvertTo(value, TargetType);
+            TypeConverter targetConverter = TypeDescriptor.GetConverter(TargetType);
+            if (targetConverter.CanConvertFrom(valueType))
+                return targetConverter.ConvertFrom(value);
+            throw new InvalidOperationException("Cannot convert from '{0}' to '{1}'.".Fmt(valueType, TargetType));
         }
     }
 }

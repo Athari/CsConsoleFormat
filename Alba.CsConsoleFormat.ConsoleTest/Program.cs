@@ -19,6 +19,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             var doc = ReadXaml<Document>(new Data {
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
+                Guid = Guid.NewGuid(),
+                Date = DateTime.Now,
                 Items = new List<DataItem> {
                     new DataItem { Id = 1, Name = "Name 1", Value = "Value 1" },
                     new DataItem { Id = 2, Name = "Name 2", Value = "Value 2" },
@@ -61,6 +63,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public string Title { get; set; }
         public string SubTitle { get; set; }
+        public Guid Guid { get; set; }
+        public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
     }
 
