@@ -7,20 +7,18 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         private static void Main ()
         {
             var body = new ConBody(
-                new ConBackgroundAttr(ConsoleColor.DarkBlue),
-                new ConForegroundAttr(ConsoleColor.Yellow),
+                ConBackgroundAttr.DarkBlue, ConForegroundAttr.Yellow,
                 " abc ",
-                new ConP(
-                    new ConBackgroundAttr(ConsoleColor.DarkMagenta),
+                new ConPara(
+                    ConBackgroundAttr.DarkMagenta,
                     " ",
-                    new ConP(new ConForegroundAttr(ConsoleColor.Red), "d"),
-                    new ConP(new ConForegroundAttr(ConsoleColor.Green), "e"),
-                    new ConP(new ConForegroundAttr(ConsoleColor.Blue), "f"),
+                    new ConPara(ConForegroundAttr.Red, "d"),
+                    new ConPara(ConForegroundAttr.Green, "e"),
+                    new ConPara(ConForegroundAttr.Blue, "f"),
                     " "
                     ),
-                new ConP(
-                    new ConBackgroundAttr(ConsoleColor.DarkGray),
-                    new ConForegroundAttr(ConsoleColor.White),
+                new ConPara(
+                    ConBackgroundAttr.DarkGray, ConForegroundAttr.White,
                     " ghi "
                     ),
                 " zxc \n"
