@@ -2,9 +2,9 @@
 
 namespace Alba.CsConsoleFormat.ConsoleTest
 {
-    internal class Program
+    internal class ProgramXml
     {
-        private static void Main ()
+        public static void Main ()
         {
             var body = new ConBody(
                 ConBackgroundAttr.DarkBlue, ConForegroundAttr.Yellow,

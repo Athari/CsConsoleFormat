@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,10 @@
     <Compile Include="Tags\Enums\HorizontalAlignment.cs" />
     <Compile Include="Tags\Enums\VerticalAlignment.cs" />
     <Compile Include="Tags\TagNames.cs" />
+    <Compile Include="Tags\Xaml\Document.cs" />
+    <Compile Include="Tags\Xaml\Element.cs" />
+    <Compile Include="Tags\Xaml\Base.cs" />
+    <Compile Include="Tags\Xaml\Para.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tags\Attributes\ColorAttrs.tt">
@@ -73,6 +78,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

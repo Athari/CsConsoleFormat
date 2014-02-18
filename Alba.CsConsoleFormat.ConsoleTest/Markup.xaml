@@ -1,0 +1,4 @@
+﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Para x:Name="abc"/>
+    <x:Reference Name="abc"/>
+</Document>
