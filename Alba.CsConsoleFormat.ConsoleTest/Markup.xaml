@@ -1,9 +1,11 @@
 ﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        BgColor="Black">
-    <Span Text="{Get Title}"/>
-    <Span Text="{Get SubTitle}"/>
-    <Span Text="{Get Guid}"/>
-    <Span Text="{Get Date, Format=D}"/>
+        BgColor="Black" Color="Inherit"  Width="80">
+    <Para TextAlign="Center">
+        <Span Text="{Get Title}" Color="White"/>
+        <Span Text="{Get SubTitle}" Color="Gray"/>
+        <Span Text="{Get Guid}" Color="Red"/>
+        <Span Text="{Get Date, Format=D}" Color="Green"/>
+    </Para>
     <Para>
         <Repeater Items="{Get Items}">
             <Span Text="{Get Id}"/>

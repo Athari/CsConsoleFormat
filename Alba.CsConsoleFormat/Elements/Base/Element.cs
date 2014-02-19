@@ -7,13 +7,13 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class Element
     {
-        private Container _parent;
+        private ContainerElement _parent;
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpression> _getters;
 
-        internal Generator Generator { get; set; }
+        internal GeneratorElement Generator { get; set; }
 
-        public Container Parent
+        public ContainerElement Parent
         {
             get { return _parent; }
             internal set
@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat
                 if (_parent == value)
                     return;
                 _parent = value;
-                if (DataContext == null)
+                if (Generator == null)
                     DataContext = _parent.DataContext;
             }
         }

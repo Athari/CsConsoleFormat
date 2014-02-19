@@ -1,13 +1,10 @@
-﻿using System;
-using Alba.CsConsoleFormat.Framework.Text;
+﻿using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
-    public class Span : Element
+    public class Span : InlineElement
     {
         public string Text { get; set; }
-        public ConsoleColor? Color { get; set; }
-        public ConsoleColor? BgColor { get; set; }
 
         public Span (string text)
         {

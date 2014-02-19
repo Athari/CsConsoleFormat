@@ -5,7 +5,7 @@ using Alba.CsConsoleFormat.Framework.Text;
 namespace Alba.CsConsoleFormat
 {
     [ContentProperty ("Children")]
-    public abstract class Container : Element
+    public abstract class ContainerElement : BlockElement
     {
         private ElementCollection _children;
 
@@ -19,8 +19,9 @@ namespace Alba.CsConsoleFormat
             base.UpdateDataContext();
             if (_children == null)
                 return;
-            foreach (Element element in _children.Where(el => el.DataContext == null).ToList())
-                element.DataContext = DataContext;
+            // Children can be changed by running generators, so ToList is necessary.
+            foreach (Element child in _children.Where(el => el.DataContext == null || el.Generator == null).ToList())
+                child.DataContext = DataContext;
         }
 
         public override string ToString ()

@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace Alba.CsConsoleFormat
+﻿namespace Alba.CsConsoleFormat
 {
-    public class Para : Container
+    public class Para : ContainerElement
     {
-        public ConsoleColor? Color { get; set; }
-        public ConsoleColor? BgColor { get; set; }
-        public HorizontalAlignment Align { get; set; }
-        public VerticalAlignment VAlign { get; set; }
+        public HorizontalAlignment TextAlign { get; set; }
+
+        public VerticalAlignment TextVAlign { get; set; }
     }
 }

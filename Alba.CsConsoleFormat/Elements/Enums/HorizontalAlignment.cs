@@ -5,6 +5,6 @@
         Left,
         Center,
         Right,
-        Justify,
+        Stretch,
     }
 }

@@ -9,10 +9,10 @@ namespace Alba.CsConsoleFormat
     [ContentWrapper (typeof(Span))]
     public class ElementCollection : Collection<Element>, IList
     {
-        private readonly Container _parent;
-        private readonly Generator _generator;
+        private readonly ContainerElement _parent;
+        private readonly GeneratorElement _generator;
 
-        public ElementCollection (Container parent, Generator generator)
+        public ElementCollection (ContainerElement parent, GeneratorElement generator)
         {
             _parent = parent;
             _generator = generator;

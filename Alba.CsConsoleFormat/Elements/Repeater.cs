@@ -3,10 +3,11 @@ using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Text;
 
+// TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
 {
     [ContentProperty ("ItemTemplate")]
-    public class Repeater : Generator
+    public class Repeater : GeneratorElement
     {
         private IEnumerable<object> _items;
         private ElementCollection _itemTemplate;
