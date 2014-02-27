@@ -46,6 +46,7 @@
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\InlineElement.cs" />
     <Compile Include="Elements\Base\GeneratorElement.cs" />
+    <Compile Include="Formatting\ConsoleRenderBuffer.cs" />
     <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
     <Compile Include="Formatting\ConsoleFormatter.cs" />

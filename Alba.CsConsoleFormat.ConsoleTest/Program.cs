@@ -29,6 +29,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             Console.WriteLine(doc);
+
+            var buffer = new ConsoleRenderBuffer();
+            for (int i = 0; i < 16; i++)
+                buffer.DrawRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);
+            buffer.RenderToConsole();
         }
 
         private T ReadXaml<T> (object dataContext) where T : Element, new()
