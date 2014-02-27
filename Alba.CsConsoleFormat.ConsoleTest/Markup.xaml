@@ -1,5 +1,6 @@
-﻿<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        BgColor="Black" Color="Inherit"  Width="80">
+﻿<Document x:Name="doc" xml:lang="en-us"
+        xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        BgColor="Black" Color="Inherit" Width="80">
     <Para TextAlign="Center">
         <Span Text="{Get Title}" Color="White"/>
         <Span Text="{Get SubTitle}" Color="Gray"/>

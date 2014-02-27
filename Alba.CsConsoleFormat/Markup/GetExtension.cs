@@ -62,7 +62,7 @@ namespace Alba.CsConsoleFormat.Markup
             };
             obj.Bind(prop, expression);
 
-            return expression.GetValue(null);
+            return expression.GetValue(obj.DataContext);
         }
 
         public override string ToString ()

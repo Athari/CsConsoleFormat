@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Text;
 using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
 {
-    public abstract class Element
+    [RuntimeNameProperty ("Name"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
+    public abstract class Element : ISupportInitialize
     {
         private ContainerElement _parent;
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpression> _getters;
 
         internal GeneratorElement Generator { get; set; }
+
+        public string Name { get; set; }
+        public string Language { get; set; }
 
         public ContainerElement Parent
         {
@@ -58,9 +64,25 @@ namespace Alba.CsConsoleFormat
             return (Element)MemberwiseClone();
         }
 
+        void ISupportInitialize.BeginInit ()
+        {
+            BeginInit();
+        }
+
+        void ISupportInitialize.EndInit ()
+        {
+            EndInit();
+        }
+
+        protected virtual void BeginInit ()
+        {}
+
+        protected virtual void EndInit ()
+        {}
+
         public override string ToString ()
         {
-            return "{0}: DC={1}".Fmt(GetType().Name, DataContext);
+            return "{0}:{1} DC={2}".Fmt(GetType().Name, Name != null ? " Name={0}".Fmt(Name) : "", DataContext);
         }
     }
 }

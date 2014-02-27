@@ -11,6 +11,7 @@ namespace Alba.CsConsoleFormat
     {
         private IEnumerable<object> _items;
         private ElementCollection _itemTemplate;
+        private bool _itemsGenerated;
 
         public IEnumerable<object> Items
         {
@@ -29,9 +30,16 @@ namespace Alba.CsConsoleFormat
             get { return _itemTemplate ?? (_itemTemplate = new ElementCollection(null, this)); }
         }
 
+        protected override void EndInit ()
+        {
+            base.EndInit();
+            UpdateGeneratedItems();
+        }
+
         private void UpdateGeneratedItems ()
         {
-            Parent.Children.RemoveAll(el => el.Generator == this);
+            if (_itemsGenerated)
+                Parent.Children.RemoveAll(el => el.Generator == this);
             if (_items == null || _itemTemplate == null)
                 return;
             var generatedChildren = new List<Element>();
@@ -43,6 +51,7 @@ namespace Alba.CsConsoleFormat
                 }
             }
             Parent.Children.InsertElements(Parent.Children.IndexOf(this) + 1, generatedChildren);
+            _itemsGenerated = true;
         }
 
         public override string ToString ()
