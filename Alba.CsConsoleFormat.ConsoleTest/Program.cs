@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             Console.WriteLine(doc);
 
-            var buffer = new ConsoleRenderBuffer();
+            var buffer = new ConsoleRenderBuffer { LineCharRenderer = LineCharRenderer.Box };
             var rainbow = new[] {
                 ConsoleColor.Black,
                 ConsoleColor.DarkRed, ConsoleColor.DarkYellow, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan, ConsoleColor.DarkBlue, ConsoleColor.DarkMagenta, ConsoleColor.DarkRed,
@@ -43,6 +43,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 buffer.FillRectangle(rainbow[i], i, i, 80 - i * 2, (rainbow.Length - i) * 2);
             buffer.DrawHorizontalLine(ConsoleColor.White, 1, 0, 79);
             buffer.DrawHorizontalLine(ConsoleColor.White, 1, 1, 79, LineWidth.Wide);
+            buffer.DrawHorizontalLine(ConsoleColor.White, 3, 3, 10);
             buffer.DrawVerticalLine(ConsoleColor.White, 1, 1, 10);
             buffer.DrawVerticalLine(ConsoleColor.White, 2, 2, 6);
             buffer.DrawVerticalLine(ConsoleColor.White, 5, 0, 6, LineWidth.Wide);

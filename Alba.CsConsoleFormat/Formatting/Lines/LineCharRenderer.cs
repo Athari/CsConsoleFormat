@@ -15,7 +15,18 @@ namespace Alba.CsConsoleFormat
             return new CharLineCharRenderer(chr);
         }
 
-        private class BoxLineCharRenderer : ILineCharRenderer
+        private abstract class LineCharRendererBase : ILineCharRenderer
+        {
+            public abstract char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom);
+
+            protected Exception GetCharException (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            {
+                return new NotSupportedException("Line joint not supported: {0} ({1} {2} {3} {4})."
+                    .Fmt(chr, chrLeft, chrTop, chrRight, chrBottom));
+            }
+        }
+
+        private class BoxLineCharRenderer : LineCharRendererBase
         {
             private static readonly char[] MapSimple = { '─', '═', '│', '║', '┼', '╪', '╫', '╬' };
             private static readonly char[] MapLeftTopRightBottom = { '┼', '╪', '╫', '╬' };
@@ -28,7 +39,7 @@ namespace Alba.CsConsoleFormat
             private static readonly char[] MapBottomLeft = { '┐', '╕', '╖', '╗' };
             private static readonly char[] MapBottomRight = { '┌', '╒', '╓', '╔' };
 
-            public char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
                 if (chr.IsEmpty())
                     return '\0';
@@ -66,8 +77,7 @@ namespace Alba.CsConsoleFormat
                     return GetChar(chr, MapBottomLeft);
                 if ((connectLeft && connectRight) || (connectTop && connectBottom))
                     return GetSimpleChar(chr, MapSimple);
-                throw new NotSupportedException("Line joint not supported: {0} ({1} {2} {3} {4})."
-                    .Fmt(chr, chrLeft, chrTop, chrRight, chrBottom));
+                throw GetCharException(chr, chrLeft, chrTop, chrRight, chrBottom);
             }
 
             private static char GetSimpleChar (LineChar chr, char[] map)
@@ -110,15 +120,23 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class SimpleLineCharRenderer : ILineCharRenderer
+        private class SimpleLineCharRenderer : LineCharRendererBase
         {
-            public char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
-                throw new NotImplementedException();
+                if (chr.IsEmpty())
+                    return '\0';
+                if (chr.IsHorizontal() && chr.IsVertical())
+                    return '+';
+                if (chr.IsHorizontal())
+                    return chr.IsHorizontalWide() ? '=' : '-';
+                if (chr.IsVertical())
+                    return '|';
+                throw GetCharException(chr, chrLeft, chrTop, chrRight, chrBottom);
             }
         }
 
-        private class CharLineCharRenderer : ILineCharRenderer
+        private class CharLineCharRenderer : LineCharRendererBase
         {
             private readonly char _chr;
 
@@ -127,7 +145,7 @@ namespace Alba.CsConsoleFormat
                 _chr = chr;
             }
 
-            public char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
                 return _chr;
             }

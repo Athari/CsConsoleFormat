@@ -5,6 +5,7 @@ namespace Alba.CsConsoleFormat
 {
     public class ConsoleRenderBuffer
     {
+        private ILineCharRenderer _lineCharRenderer;
         private readonly List<ConsoleColor[]> _foreColors = new List<ConsoleColor[]>();
         private readonly List<ConsoleColor[]> _backColors = new List<ConsoleColor[]>();
         private readonly List<LineChar[]> _lineChars = new List<LineChar[]>();
@@ -15,8 +16,20 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleRenderBuffer (int? width = null)
         {
+            _lineCharRenderer = CsConsoleFormat.LineCharRenderer.Box;
             Width = width ?? Console.BufferWidth;
             Height = 0;
+        }
+
+        public ILineCharRenderer LineCharRenderer
+        {
+            get { return _lineCharRenderer; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                _lineCharRenderer = value;
+            }
         }
 
         public void DrawHorizontalLine (ConsoleColor color, int x1, int y, int x2, LineWidth width = LineWidth.Single)
@@ -76,8 +89,6 @@ namespace Alba.CsConsoleFormat
 
         public void RenderToConsole ()
         {
-            ILineCharRenderer lineRenderer = LineCharRenderer.Box;
-
             ConsoleColor currentForeColor = Console.ForegroundColor, oldForeColor = currentForeColor;
             ConsoleColor currentBackColor = Console.BackgroundColor, oldBackColor = currentBackColor;
             try {
@@ -97,7 +108,7 @@ namespace Alba.CsConsoleFormat
                         LineChar? lineChr = lineCharsLine != null ? lineCharsLine[ix] : (LineChar?)null;
                         char chr = charsLine != null ? charsLine[ix] : '\0';
                         if (lineChr.HasValue && !lineChr.Value.IsEmpty() && chr == '\0')
-                            chr = lineRenderer.GetChar(lineChr.Value,
+                            chr = LineCharRenderer.GetChar(lineChr.Value,
                                 GetLineCharAt(ix - 1, iy), GetLineCharAt(ix, iy - 1), GetLineCharAt(ix + 1, iy), GetLineCharAt(ix, iy + 1));
                         Console.Write(chr);
                     }
