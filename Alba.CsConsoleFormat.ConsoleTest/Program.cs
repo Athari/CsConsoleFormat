@@ -31,8 +31,27 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             Console.WriteLine(doc);
 
             var buffer = new ConsoleRenderBuffer();
-            for (int i = 0; i < 16; i++)
-                buffer.DrawRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);
+            var rainbow = new[] {
+                ConsoleColor.Black,
+                ConsoleColor.DarkRed, ConsoleColor.DarkYellow, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan, ConsoleColor.DarkBlue, ConsoleColor.DarkMagenta, ConsoleColor.DarkRed,
+                ConsoleColor.Black,
+                ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Blue, ConsoleColor.Magenta, ConsoleColor.Red,
+            };
+            /*for (int i = 0; i < 16; i++)
+                buffer.FillRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);*/
+            for (int i = 0; i < rainbow.Length; i++)
+                buffer.FillRectangle(rainbow[i], i, i, 80 - i * 2, (rainbow.Length - i) * 2);
+            buffer.DrawHorizontalLine(ConsoleColor.White, 1, 0, 79);
+            buffer.DrawHorizontalLine(ConsoleColor.White, 1, 1, 79, LineWidth.Wide);
+            buffer.DrawVerticalLine(ConsoleColor.White, 1, 1, 10);
+            buffer.DrawVerticalLine(ConsoleColor.White, 2, 2, 6);
+            buffer.DrawVerticalLine(ConsoleColor.White, 5, 0, 6, LineWidth.Wide);
+            buffer.DrawVerticalLine(ConsoleColor.White, 5, 0, 6);
+            buffer.DrawVerticalLine(ConsoleColor.White, 6, 0, 6);
+            buffer.DrawVerticalLine(ConsoleColor.White, 3, 0, 12, LineWidth.Wide);
+            buffer.DrawRectangle(ConsoleColor.White, 0, 0, 80, rainbow.Length * 2, LineWidth.Wide);
+            buffer.FillVerticalLine(ConsoleColor.Yellow, 40, 0, rainbow.Length * 2);
+            buffer.DrawString(ConsoleColor.Black, 15, 15, "Hello world!");
             buffer.RenderToConsole();
         }
 

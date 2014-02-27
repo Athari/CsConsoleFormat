@@ -46,7 +46,12 @@
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\InlineElement.cs" />
     <Compile Include="Elements\Base\GeneratorElement.cs" />
+    <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />
+    <Compile Include="Formatting\Lines\LineChar.cs" />
     <Compile Include="Formatting\ConsoleRenderBuffer.cs" />
+    <Compile Include="Formatting\Lines\LineCharExts.cs" />
+    <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
+    <Compile Include="Formatting\Lines\LineWidth.cs" />
     <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
     <Compile Include="Formatting\ConsoleFormatter.cs" />
