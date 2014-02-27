@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reflection;
 using System.Windows.Markup;
 using System.Xaml;
@@ -8,6 +9,7 @@ using Alba.CsConsoleFormat.Framework.Text;
 namespace Alba.CsConsoleFormat.Markup
 {
     [MarkupExtensionReturnType (typeof(object))]
+    [XmlLangProperty ("Language")]
     public class GetExtension : MarkupExtension
     {
         public string Path { get; set; }
@@ -15,6 +17,8 @@ namespace Alba.CsConsoleFormat.Markup
         public object Source { get; set; }
         public string Format { get; set; }
         public Func<object, object> Converter { get; set; }
+        public CultureInfo Culture { get; set; }
+        public XmlLanguage Language { get; set; }
 
         public GetExtension (string path)
         {
@@ -58,11 +62,13 @@ namespace Alba.CsConsoleFormat.Markup
                 Path = Path,
                 Format = Format != null && Format.IndexOf('{') < 0 ? "{0:" + Format + "}" : Format,
                 Converter = Converter,
+                Culture = Culture ?? (Language != null ? Language.Culture : null),
+                TargetObject = obj,
                 TargetType = prop.PropertyType,
             };
             obj.Bind(prop, expression);
 
-            return expression.GetValue(obj.DataContext);
+            return expression.GetValue();
         }
 
         public override string ToString ()

@@ -41,12 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\InlineElement.cs" />
     <Compile Include="Elements\Base\GeneratorElement.cs" />
+    <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
     <Compile Include="Formatting\ConsoleFormatter.cs" />
+    <Compile Include="Framework\Collections\EnumerableExts.cs" />
     <Compile Include="Framework\Collections\ListExts.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
     <Compile Include="Framework\Sys\ServiceProviderExts.cs" />

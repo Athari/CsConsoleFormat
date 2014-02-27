@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
+using System.Threading;
 using Alba.CsConsoleFormat.Framework.Text;
 
 // TODO Support more complex getter expressions
@@ -9,15 +11,29 @@ namespace Alba.CsConsoleFormat.Markup
 {
     public class GetExpression
     {
+        private CultureInfo _effectiveCulture;
+
         public object Source { get; set; }
         public string Path { get; set; }
         public string Format { get; set; }
         public Func<object, object> Converter { get; set; }
+        public CultureInfo Culture { get; set; }
+        public Element TargetObject { get; set; }
         public Type TargetType { get; set; }
 
-        public object GetValue (object dataContext)
+        private object EffectiveSource
         {
-            object source = Source ?? dataContext;
+            get { return Source ?? TargetObject.DataContext; }
+        }
+
+        private CultureInfo EffectiveCulture
+        {
+            get { return _effectiveCulture ?? (_effectiveCulture = Culture ?? TargetObject.EffectiveCulture ?? Thread.CurrentThread.CurrentCulture); }
+        }
+
+        public object GetValue ()
+        {
+            object source = EffectiveSource;
             if (source == null)
                 return null;
             if (Path.IsNullOrEmpty())
@@ -40,21 +56,60 @@ namespace Alba.CsConsoleFormat.Markup
             if (Converter != null)
                 value = Converter(value);
             if (Format != null)
-                value = string.Format(Format, value);
+                value = string.Format(EffectiveCulture, Format, value);
+
             if (value == null) // TODO ???
                 return null;
+            // Check whether value can be assigned to the property
             Type valueType = value.GetType();
             if (TargetType == valueType || TargetType.IsAssignableFrom(valueType))
                 return value;
+            // Try converting using Convert class
             if (typeof(IConvertible).IsAssignableFrom(TargetType) && typeof(IConvertible).IsAssignableFrom(valueType))
                 return Convert.ChangeType(value, TargetType);
+            // Try converting with value's TypeConverter
             TypeConverter valueConverter = TypeDescriptor.GetConverter(valueType);
             if (valueConverter.CanConvertTo(TargetType))
-                return valueConverter.ConvertTo(value, TargetType);
+                return valueConverter.ConvertTo(ValueConverterContext.Instance, EffectiveCulture, value, TargetType);
+            // Try converting with target's TypeConverter
             TypeConverter targetConverter = TypeDescriptor.GetConverter(TargetType);
             if (targetConverter.CanConvertFrom(valueType))
-                return targetConverter.ConvertFrom(value);
+                return targetConverter.ConvertFrom(ValueConverterContext.Instance, EffectiveCulture, value);
+
             throw new InvalidOperationException("Cannot convert from '{0}' to '{1}'.".Fmt(valueType, TargetType));
+        }
+
+        private class ValueConverterContext : ITypeDescriptorContext
+        {
+            public static readonly ValueConverterContext Instance = new ValueConverterContext();
+
+            IContainer ITypeDescriptorContext.Container
+            {
+                get { return null; }
+            }
+
+            object ITypeDescriptorContext.Instance
+            {
+                get { return null; }
+            }
+
+            PropertyDescriptor ITypeDescriptorContext.PropertyDescriptor
+            {
+                get { return null; }
+            }
+
+            bool ITypeDescriptorContext.OnComponentChanging ()
+            {
+                return false;
+            }
+
+            void ITypeDescriptorContext.OnComponentChanged ()
+            {}
+
+            object IServiceProvider.GetService (Type serviceType)
+            {
+                return null;
+            }
         }
     }
 }

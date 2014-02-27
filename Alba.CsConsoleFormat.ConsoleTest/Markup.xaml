@@ -6,6 +6,9 @@
         <Span Text="{Get SubTitle}" Color="Gray"/>
         <Span Text="{Get Guid}" Color="Red"/>
         <Span Text="{Get Date, Format=D}" Color="Green"/>
+        <!--<Span Text="{Get Date, Format=D}" Color="Green" xml:lang="fr"/>
+        <Span Text="{Get Date, Format=D, xml:lang=ru}" Color="Green"/>
+        <Span Text="{Get Date, Format=D, Language=it}" Color="Green"/>-->
     </Para>
     <Para>
         <Repeater Items="{Get Items}">

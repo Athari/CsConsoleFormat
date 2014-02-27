@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
+using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Text;
 using Alba.CsConsoleFormat.Markup;
 
@@ -17,7 +20,7 @@ namespace Alba.CsConsoleFormat
         internal GeneratorElement Generator { get; set; }
 
         public string Name { get; set; }
-        public string Language { get; set; }
+        public XmlLanguage Language { get; set; }
 
         public ContainerElement Parent
         {
@@ -29,6 +32,15 @@ namespace Alba.CsConsoleFormat
                 _parent = value;
                 if (Generator == null)
                     DataContext = _parent.DataContext;
+            }
+        }
+
+        internal CultureInfo EffectiveCulture
+        {
+            get
+            {
+                Element elWithLng = this.TraverseList(e => e.Parent).FirstOrDefault(e => e.Language != null);
+                return elWithLng != null ? elWithLng.Language.Culture : null;
             }
         }
 
@@ -49,7 +61,7 @@ namespace Alba.CsConsoleFormat
             if (_getters == null)
                 return;
             foreach (KeyValuePair<PropertyInfo, GetExpression> getter in _getters)
-                getter.Key.SetValue(this, getter.Value.GetValue(_dataContext));
+                getter.Key.SetValue(this, getter.Value.GetValue());
         }
 
         public void Bind (PropertyInfo prop, GetExpression getter)
