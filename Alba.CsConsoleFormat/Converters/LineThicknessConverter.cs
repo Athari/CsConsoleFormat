@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Globalization;
 using Alba.CsConsoleFormat.Framework.Text;
-using Alba.CsConsoleFormat.Markup;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat

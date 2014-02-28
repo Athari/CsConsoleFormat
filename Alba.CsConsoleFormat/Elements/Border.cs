@@ -1,6 +1,4 @@
-﻿using Alba.CsConsoleFormat.Markup;
-
-namespace Alba.CsConsoleFormat
+﻿namespace Alba.CsConsoleFormat
 {
     public class Border : ContainerElement
     {

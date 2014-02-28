@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Alba.CsConsoleFormat.Markup
+namespace Alba.CsConsoleFormat
 {
     [TypeConverter (typeof(LineThicknessConverter))]
     public struct LineThickness : IEquatable<LineThickness>
