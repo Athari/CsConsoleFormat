@@ -51,6 +51,8 @@
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Core\Enums\Orientation.cs" />
     <Compile Include="Elements\Line.cs" />
+    <Compile Include="Formatting\ColorMaps.cs" />
+    <Compile Include="Formatting\Chars.cs" />
     <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />
     <Compile Include="Formatting\Lines\LineChar.cs" />
     <Compile Include="Formatting\ConsoleRenderBuffer.cs" />

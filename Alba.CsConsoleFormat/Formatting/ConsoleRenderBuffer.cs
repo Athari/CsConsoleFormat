@@ -68,23 +68,70 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void FillHorizontalLine (ConsoleColor color, int x1, int y, int x2)
+        public void FillForegroundHorizontalLine (ConsoleColor color, char fill, int x1, int y, int x2)
+        {
+            ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
+            char[] charLine = GetLine(_chars, y);
+            for (int ix = x1; ix < x2; ix++) {
+                foreColorsLine[ix] = color;
+                charLine[ix] = fill;
+            }
+        }
+
+        public void FillForegroundVerticalLine (ConsoleColor color, char fill, int x, int y1, int y2)
+        {
+            for (int iy = y1; iy < y2; iy++) {
+                GetLine(_foreColors, iy)[x] = color;
+                GetLine(_chars, iy)[x] = fill;
+            }
+        }
+
+        public void FillForegroundRectangle (ConsoleColor color, char fill, int x, int y, int w, int h)
+        {
+            for (int iy = y; iy < y + h; iy++)
+                FillForegroundHorizontalLine(color, fill, x, iy, x + w);
+        }
+
+        public void FillBackgroundHorizontalLine (ConsoleColor color, int x1, int y, int x2)
         {
             ConsoleColor[] backColorsLine = GetLine(_backColors, y);
             for (int ix = x1; ix < x2; ix++)
                 backColorsLine[ix] = color;
         }
 
-        public void FillVerticalLine (ConsoleColor color, int x, int y1, int y2)
+        public void FillBackgroundVerticalLine (ConsoleColor color, int x, int y1, int y2)
         {
             for (int iy = y1; iy < y2; iy++)
                 GetLine(_backColors, iy)[x] = color;
         }
 
-        public void FillRectangle (ConsoleColor color, int x, int y, int w, int h)
+        public void FillBackgroundRectangle (ConsoleColor color, int x, int y, int w, int h)
         {
             for (int iy = y; iy < y + h; iy++)
-                FillHorizontalLine(color, x, iy, x + w);
+                FillBackgroundHorizontalLine(color, x, iy, x + w);
+        }
+
+        public void ApplyForegroundColorMap (int x, int y, int w, int h, ConsoleColor[] colorMap)
+        {
+            ApplyColorMap(_foreColors, x, y, w, h, colorMap);
+        }
+
+        public void ApplyBackgroundColorMap (int x, int y, int w, int h, ConsoleColor[] colorMap)
+        {
+            ApplyColorMap(_backColors, x, y, w, h, colorMap);
+        }
+
+        private void ApplyColorMap (List<ConsoleColor[]> colors, int x, int y, int w, int h, ConsoleColor[] colorMap)
+        {
+            if (colorMap == null)
+                throw new ArgumentNullException("colorMap");
+            if (colorMap.Length != ColorMaps.ConsoleColorCount)
+                throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.");
+            for (int iy = y; iy < y + h; iy++) {
+                ConsoleColor[] colorsLine = GetLine(colors, iy);
+                for (int ix = x; ix < x + w; ix++)
+                    colorsLine[ix] = colorMap[(int)colorsLine[ix]];
+            }
         }
 
         public void RenderToConsole ()
