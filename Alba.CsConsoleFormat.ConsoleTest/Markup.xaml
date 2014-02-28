@@ -1,15 +1,18 @@
 ﻿<Document x:Name="doc" xml:lang="en-us"
         xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         BgColor="Black" Color="Inherit" Width="80">
-    <Para TextAlign="Center">
-        <Span Text="{Get Title}" Color="White"/>
-        <Span Text="{Get SubTitle}" Color="Gray"/>
-        <Span Text="{Get Guid}" Color="Red"/>
-        <Span Text="{Get Date, Format=D}" Color="Green"/>
-        <!--<Span Text="{Get Date, Format=D}" Color="Green" xml:lang="fr"/>
-        <Span Text="{Get Date, Format=D, xml:lang=ru}" Color="Green"/>
-        <Span Text="{Get Date, Format=D, Language=it}" Color="Green"/>-->
-    </Para>
+    <Border Stroke="1 2, Single Wide">
+        <Para TextAlign="Center">
+            <Span Text="{Get Title}" Color="White"/><Br/>
+            <Span Text="{Get SubTitle}" Color="Gray"/><Br/>
+            <Line Orientation="Horizontal"  Stroke="Wide"/>
+            <Span Text="{Get Guid}" Color="Red"/><Br/>
+            <Span Text="{Get Date, Format=D}" Color="Green"/>
+            <!--<Span Text="{Get Date, Format=D}" Color="Green" xml:lang="fr"/>
+            <Span Text="{Get Date, Format=D, xml:lang=ru}" Color="Green"/>
+            <Span Text="{Get Date, Format=D, Language=it}" Color="Green"/>-->
+        </Para>
+    </Border>
     <Para>
         <Repeater Items="{Get Items}">
             <Span Text="{Get Id}"/>

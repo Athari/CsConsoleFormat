@@ -2,7 +2,7 @@
 {
     public enum LineWidth
     {
-        Single,
-        Wide,
+        Single = 1,
+        Wide = 2,
     }
 }
