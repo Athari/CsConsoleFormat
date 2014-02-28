@@ -40,23 +40,23 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             /*for (int i = 0; i < 16; i++)
                 buffer.FillRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);*/
             for (int i = 0; i < rainbow.Length; i++)
-                buffer.FillBackgroundRectangle(rainbow[i], i, i, 80 - i * 2, (rainbow.Length - i) * 2);
-            buffer.DrawHorizontalLine(ConsoleColor.White, 1, 0, 79);
-            buffer.DrawHorizontalLine(ConsoleColor.White, 1, 1, 79, LineWidth.Wide);
-            buffer.DrawHorizontalLine(ConsoleColor.White, 3, 3, 10);
-            buffer.DrawVerticalLine(ConsoleColor.White, 1, 1, 10);
-            buffer.DrawVerticalLine(ConsoleColor.White, 2, 2, 6);
-            buffer.DrawVerticalLine(ConsoleColor.White, 5, 0, 6, LineWidth.Wide);
-            buffer.DrawVerticalLine(ConsoleColor.White, 5, 0, 6);
-            buffer.DrawVerticalLine(ConsoleColor.White, 6, 0, 6);
-            buffer.DrawVerticalLine(ConsoleColor.White, 3, 0, 12, LineWidth.Wide);
-            buffer.DrawRectangle(ConsoleColor.White, 0, 0, 80, rainbow.Length * 2, LineWidth.Wide);
-            buffer.FillBackgroundVerticalLine(ConsoleColor.Yellow, 40, 0, buffer.Height);
-            buffer.FillForegroundVerticalLine(ConsoleColor.White, Chars.FullBlock, 41, 0, buffer.Height);
-            buffer.FillForegroundVerticalLine(ConsoleColor.White, Chars.DarkShade, 42, 0, buffer.Height);
-            buffer.FillForegroundVerticalLine(ConsoleColor.White, Chars.MediumShade, 43, 0, buffer.Height);
-            buffer.FillForegroundVerticalLine(ConsoleColor.White, Chars.LightShade, 44, 0, buffer.Height);
-            buffer.DrawString(ConsoleColor.Black, 15, 15, "Hello world!");
+                buffer.FillBackgroundRectangle(i, i, 80 - i * 2, (rainbow.Length - i) * 2, rainbow[i]);
+            buffer.DrawHorizontalLine(1, 0, 79, ConsoleColor.White);
+            buffer.DrawHorizontalLine(1, 1, 79, ConsoleColor.White, LineWidth.Wide);
+            buffer.DrawHorizontalLine(3, 3, 10, ConsoleColor.White);
+            buffer.DrawVerticalLine(1, 1, 10, ConsoleColor.White);
+            buffer.DrawVerticalLine(2, 2, 6, ConsoleColor.White);
+            buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White, LineWidth.Wide);
+            buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White);
+            buffer.DrawVerticalLine(6, 0, 6, ConsoleColor.White);
+            buffer.DrawVerticalLine(3, 0, 12, ConsoleColor.White, LineWidth.Wide);
+            buffer.DrawRectangle(0, 0, buffer.Width, buffer.Height, ConsoleColor.White, LineWidth.Wide);
+            buffer.FillBackgroundVerticalLine(40, 0, buffer.Height, ConsoleColor.Yellow);
+            buffer.FillForegroundVerticalLine(41, 0, buffer.Height, ConsoleColor.White, Chars.FullBlock);
+            buffer.FillForegroundVerticalLine(42, 0, buffer.Height, ConsoleColor.White, Chars.DarkShade);
+            buffer.FillForegroundVerticalLine(43, 0, buffer.Height, ConsoleColor.White, Chars.MediumShade);
+            buffer.FillForegroundVerticalLine(44, 0, buffer.Height, ConsoleColor.White, Chars.LightShade);
+            buffer.DrawString(15, 15, ConsoleColor.Black, "Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             buffer.RenderToConsole();

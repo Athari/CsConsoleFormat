@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void DrawHorizontalLine (ConsoleColor color, int x1, int y, int x2, LineWidth width = LineWidth.Single)
+        public void DrawHorizontalLine (int x1, int y, int x2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
             ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
             LineChar[] lineCharsLine = GetLine(_lineChars, y);
@@ -42,7 +42,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void DrawVerticalLine (ConsoleColor color, int x, int y1, int y2, LineWidth width = LineWidth.Single)
+        public void DrawVerticalLine (int x, int y1, int y2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
             for (int iy = y1; iy < y2; iy++) {
                 GetLine(_foreColors, iy)[x] = color;
@@ -50,15 +50,15 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void DrawRectangle (ConsoleColor color, int x, int y, int w, int h, LineWidth width = LineWidth.Single)
+        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
-            DrawHorizontalLine(color, x, y, x + w, width);
-            DrawHorizontalLine(color, x, y + h - 1, x + w, width);
-            DrawVerticalLine(color, x, y, y + h, width);
-            DrawVerticalLine(color, x + w - 1, y, y + h, width);
+            DrawHorizontalLine(x, y, x + w, color, width);
+            DrawHorizontalLine(x, y + h - 1, x + w, color, width);
+            DrawVerticalLine(x, y, y + h, color, width);
+            DrawVerticalLine(x + w - 1, y, y + h, color, width);
         }
 
-        public void DrawString (ConsoleColor color, int x, int y, string str)
+        public void DrawString (int x, int y, ConsoleColor color, string str)
         {
             ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
             char[] charLine = GetLine(_chars, y);
@@ -68,7 +68,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void FillForegroundHorizontalLine (ConsoleColor color, char fill, int x1, int y, int x2)
+        public void FillForegroundHorizontalLine (int x1, int y, int x2, ConsoleColor color, char fill)
         {
             ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
             char[] charLine = GetLine(_chars, y);
@@ -78,7 +78,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void FillForegroundVerticalLine (ConsoleColor color, char fill, int x, int y1, int y2)
+        public void FillForegroundVerticalLine (int x, int y1, int y2, ConsoleColor color, char fill)
         {
             for (int iy = y1; iy < y2; iy++) {
                 GetLine(_foreColors, iy)[x] = color;
@@ -86,42 +86,42 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void FillForegroundRectangle (ConsoleColor color, char fill, int x, int y, int w, int h)
+        public void FillForegroundRectangle (int x, int y, int w, int h, ConsoleColor color, char fill)
         {
             for (int iy = y; iy < y + h; iy++)
-                FillForegroundHorizontalLine(color, fill, x, iy, x + w);
+                FillForegroundHorizontalLine(x, iy, x + w, color, fill);
         }
 
-        public void FillBackgroundHorizontalLine (ConsoleColor color, int x1, int y, int x2)
+        public void FillBackgroundHorizontalLine (int x1, int y, int x2, ConsoleColor color)
         {
             ConsoleColor[] backColorsLine = GetLine(_backColors, y);
             for (int ix = x1; ix < x2; ix++)
                 backColorsLine[ix] = color;
         }
 
-        public void FillBackgroundVerticalLine (ConsoleColor color, int x, int y1, int y2)
+        public void FillBackgroundVerticalLine (int x, int y1, int y2, ConsoleColor color)
         {
             for (int iy = y1; iy < y2; iy++)
                 GetLine(_backColors, iy)[x] = color;
         }
 
-        public void FillBackgroundRectangle (ConsoleColor color, int x, int y, int w, int h)
+        public void FillBackgroundRectangle (int x, int y, int w, int h, ConsoleColor color)
         {
             for (int iy = y; iy < y + h; iy++)
-                FillBackgroundHorizontalLine(color, x, iy, x + w);
+                FillBackgroundHorizontalLine(x, iy, x + w, color);
         }
 
         public void ApplyForegroundColorMap (int x, int y, int w, int h, ConsoleColor[] colorMap)
         {
-            ApplyColorMap(_foreColors, x, y, w, h, colorMap);
+            ApplyColorMap(x, y, w, h, _foreColors, colorMap);
         }
 
         public void ApplyBackgroundColorMap (int x, int y, int w, int h, ConsoleColor[] colorMap)
         {
-            ApplyColorMap(_backColors, x, y, w, h, colorMap);
+            ApplyColorMap(x, y, w, h, _backColors, colorMap);
         }
 
-        private void ApplyColorMap (List<ConsoleColor[]> colors, int x, int y, int w, int h, ConsoleColor[] colorMap)
+        private void ApplyColorMap (int x, int y, int w, int h, List<ConsoleColor[]> colors, ConsoleColor[] colorMap)
         {
             if (colorMap == null)
                 throw new ArgumentNullException("colorMap");
