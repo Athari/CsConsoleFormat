@@ -5,7 +5,7 @@ using System.Globalization;
 namespace Alba.CsConsoleFormat
 {
     /// <summary>Converts between <see cref="string"/> and <see cref="ConsoleColor"/>: "Black"/<see cref="ConsoleColor.Black"/>, "inherit"/<c>null</c>.</summary>
-    public class ColorConverter : TypeConverter
+    public class ConsoleColorConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
         {

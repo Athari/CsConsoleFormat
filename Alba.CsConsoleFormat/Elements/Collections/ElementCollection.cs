@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
 
@@ -11,12 +10,10 @@ namespace Alba.CsConsoleFormat
     public class ElementCollection : Collection<Element>, IList
     {
         private readonly ContainerElement _parent;
-        private readonly GeneratorElement _generator;
 
-        public ElementCollection (ContainerElement parent, GeneratorElement generator)
+        public ElementCollection (ContainerElement parent)
         {
             _parent = parent;
-            _generator = generator;
         }
 
         int IList.Add (object value)
@@ -38,7 +35,8 @@ namespace Alba.CsConsoleFormat
         protected override void InsertItem (int index, Element el)
         {
             el.Parent = _parent;
-            el.Generator = _generator;
+            if (el.DataContext == null && _parent != null)
+                el.DataContext = _parent.DataContext;
             base.InsertItem(index, el);
         }
 
@@ -51,16 +49,6 @@ namespace Alba.CsConsoleFormat
         {
             InsertItem(Count, el);
             return Count - 1;
-        }
-
-        internal void InsertElements (int index, IEnumerable<Element> els)
-        {
-            int i = index;
-            foreach (Element el in els) {
-                Insert(i++, el);
-                el.Parent = _parent;
-                el.Generator = _generator;
-            }
         }
     }
 }

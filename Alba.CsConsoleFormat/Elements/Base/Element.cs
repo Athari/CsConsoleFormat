@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -13,27 +14,21 @@ namespace Alba.CsConsoleFormat
     [RuntimeNameProperty ("Name"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
     public abstract class Element : ISupportInitialize
     {
-        private ContainerElement _parent;
-        private object _dataContext;
         private IDictionary<PropertyInfo, GetExpression> _getters;
 
-        internal GeneratorElement Generator { get; set; }
+        public object DataContext { get; set; }
 
         public string Name { get; set; }
+
         public XmlLanguage Language { get; set; }
 
-        public ContainerElement Parent
-        {
-            get { return _parent; }
-            internal set
-            {
-                if (_parent == value)
-                    return;
-                _parent = value;
-                if (Generator == null)
-                    DataContext = _parent.DataContext;
-            }
-        }
+        public ContainerElement Parent { get; internal set; }
+
+        [TypeConverter (typeof(ConsoleColorConverter))]
+        public ConsoleColor? Color { get; set; }
+
+        [TypeConverter (typeof(ConsoleColorConverter))]
+        public ConsoleColor? BgColor { get; set; }
 
         internal CultureInfo EffectiveCulture
         {
@@ -44,19 +39,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public object DataContext
-        {
-            get { return _dataContext; }
-            set
-            {
-                if (_dataContext == value)
-                    return;
-                _dataContext = value;
-                UpdateDataContext();
-            }
-        }
-
-        protected virtual void UpdateDataContext ()
+        private void UpdateDataContext ()
         {
             if (_getters == null)
                 return;

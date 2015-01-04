@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\ColorConverter.cs" />
+    <Compile Include="Converters\ConsoleColorConverter.cs" />
     <Compile Include="Converters\LineThicknessConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Markup;
+﻿using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
@@ -11,17 +10,7 @@ namespace Alba.CsConsoleFormat
 
         public ElementCollection Children
         {
-            get { return _children ?? (_children = new ElementCollection(this, null)); }
-        }
-
-        protected override void UpdateDataContext ()
-        {
-            base.UpdateDataContext();
-            if (_children == null)
-                return;
-            // Children can be changed by running generators, so ToList is necessary.
-            foreach (Element child in _children.Where(el => el.DataContext == null || el.Generator == null).ToList())
-                child.DataContext = DataContext;
+            get { return _children ?? (_children = new ElementCollection(this)); }
         }
 
         public override string ToString ()

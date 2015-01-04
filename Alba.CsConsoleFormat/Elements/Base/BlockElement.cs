@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Alba.CsConsoleFormat
 {
@@ -22,12 +21,6 @@ namespace Alba.CsConsoleFormat
 
         [TypeConverter (typeof(LengthConverter))]
         public int? MaxHeight { get; set; }
-
-        [TypeConverter (typeof(ColorConverter))]
-        public ConsoleColor? Color { get; set; }
-
-        [TypeConverter (typeof(ColorConverter))]
-        public ConsoleColor? BgColor { get; set; }
 
         public HorizontalAlignment Align { get; set; }
 
