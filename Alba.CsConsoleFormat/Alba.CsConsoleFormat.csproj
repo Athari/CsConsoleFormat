@@ -60,6 +60,7 @@
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
     <Compile Include="Core\Enums\LineWidth.cs" />
     <Compile Include="Core\LineThickness.cs" />
+    <Compile Include="Markup\ResExtension.cs" />
     <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />

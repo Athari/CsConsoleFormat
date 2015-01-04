@@ -1,12 +1,17 @@
 ﻿<Document x:Name="doc" xml:lang="en-us"
-        xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns="urn:alba:cs-console-format"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         BgColor="Black" Color="Inherit" Width="80">
+    <Document.Resources>
+        <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
+    </Document.Resources>
     <Border Stroke="1 2, Single Wide">
         <Para TextAlign="Center">
             <Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}" Color="Gray"/><Br/>
-            <Line Orientation="Horizontal"  Stroke="Wide"/>
-            <Span Text="{Get Guid}" Color="Red"/><Br/>
+            <Line Orientation="Horizontal" Stroke="Wide"/>
+            <Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
             <!--<Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->

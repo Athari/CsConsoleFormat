@@ -38,8 +38,6 @@ namespace Alba.CsConsoleFormat.Markup
             //var rootObjectProvider = provider.GetService<IRootObjectProvider>();
             //var ambientProvider = provider.GetService<IAmbientProvider>();
 
-            var lineInfo = provider.GetService<IXamlLineInfo>();
-
             if (Element != null) {
                 var nameResolver = provider.GetService<IXamlNameResolver>();
                 object element = nameResolver.Resolve(Element);
@@ -47,9 +45,11 @@ namespace Alba.CsConsoleFormat.Markup
                     Source = element;
                 else if (nameResolver.IsFixupTokenAvailable)
                     return nameResolver.GetFixupToken(new[] { Element });
-                else
+                else {
+                    var lineInfo = provider.GetService<IXamlLineInfo>();
                     throw new InvalidOperationException("Element '{0}' not found ({1}:{2})."
                         .Fmt(Element, lineInfo.LineNumber, lineInfo.LinePosition));
+                }
             }
 
             var targetProvider = provider.GetService<IProvideValueTarget>();

@@ -74,10 +74,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
                 //return (Document)XamlServices.Load(resStream);
-                int pad = 0;
+                int pad = 1;
                 var context = new XamlSchemaContext(new[] {
-                    //GetType().Assembly,
                     typeof(Document).Assembly,
+                    typeof(Console).Assembly,
+                    typeof(Program).Assembly,
                 }, new XamlSchemaContextSettings {
                     SupportMarkupExtensionsWithDuplicateArity = true,
                 });
