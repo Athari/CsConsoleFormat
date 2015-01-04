@@ -70,43 +70,43 @@ namespace Alba.CsConsoleFormat.Markup
             // Try converting with value's TypeConverter
             TypeConverter valueConverter = TypeDescriptor.GetConverter(valueType);
             if (valueConverter.CanConvertTo(TargetType))
-                return valueConverter.ConvertTo(ValueConverterContext.Instance, EffectiveCulture, value, TargetType);
+                return valueConverter.ConvertTo(ValueConverterContext.Context, EffectiveCulture, value, TargetType);
             // Try converting with target's TypeConverter
             TypeConverter targetConverter = TypeDescriptor.GetConverter(TargetType);
             if (targetConverter.CanConvertFrom(valueType))
-                return targetConverter.ConvertFrom(ValueConverterContext.Instance, EffectiveCulture, value);
+                return targetConverter.ConvertFrom(ValueConverterContext.Context, EffectiveCulture, value);
 
             throw new InvalidOperationException("Cannot convert from '{0}' to '{1}'.".Fmt(valueType, TargetType));
         }
 
         private class ValueConverterContext : ITypeDescriptorContext
         {
-            public static readonly ValueConverterContext Instance = new ValueConverterContext();
+            public static readonly ValueConverterContext Context = new ValueConverterContext();
 
-            IContainer ITypeDescriptorContext.Container
+            public IContainer Container
             {
                 get { return null; }
             }
 
-            object ITypeDescriptorContext.Instance
+            public object Instance
             {
                 get { return null; }
             }
 
-            PropertyDescriptor ITypeDescriptorContext.PropertyDescriptor
+            public PropertyDescriptor PropertyDescriptor
             {
                 get { return null; }
             }
 
-            bool ITypeDescriptorContext.OnComponentChanging ()
+            public bool OnComponentChanging ()
             {
                 return false;
             }
 
-            void ITypeDescriptorContext.OnComponentChanged ()
+            public void OnComponentChanged ()
             {}
 
-            object IServiceProvider.GetService (Type serviceType)
+            public object GetService (Type serviceType)
             {
                 return null;
             }

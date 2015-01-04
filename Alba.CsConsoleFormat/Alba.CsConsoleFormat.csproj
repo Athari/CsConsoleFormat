@@ -62,7 +62,6 @@
     <Compile Include="Core\LineThickness.cs" />
     <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
-    <Compile Include="Formatting\ConsoleFormatter.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
     <Compile Include="Framework\Collections\ListExts.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />

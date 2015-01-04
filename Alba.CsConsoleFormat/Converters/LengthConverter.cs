@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Alba.CsConsoleFormat
 {
-    /// <summary>Converts string/int ("2"/2), auto/null ("auto"/null).</summary>
+    /// <summary>Converts between <see cref="string"/> and <see cref="int"/>: "2" to 2, "auto" to <c>null</c>).</summary>
     public class LengthConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

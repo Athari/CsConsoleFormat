@@ -60,6 +60,14 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             buffer.RenderToConsole();
+
+            /*Console.WriteLine(Console.OutputEncoding);
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("■▬▲►▼◄");
+            Console.WriteLine("▀▄█▌▐");
+            Console.WriteLine("♠♣♥♦");
+            Console.WriteLine("☺☻☼♀♂♫");
+            Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
         }
 
         private T ReadXaml<T> (object dataContext) where T : Element, new()

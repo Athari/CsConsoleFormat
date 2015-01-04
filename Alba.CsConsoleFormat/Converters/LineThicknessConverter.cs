@@ -6,6 +6,11 @@ using Alba.CsConsoleFormat.Framework.Text;
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
+    /// <summary>
+    /// Converts between a sequence of <see cref="string">Strings</see> and <see cref="LineThickness"/>:
+    /// "1"/<c>{ 1, 1, 1, 1 }</c>, "1 2"/<c>{ 1, 2, 1, 2 }</c>, "1 2 3 4"/<c>{ 1, 2, 3, 4 }</c> (left, top, right, bottom).
+    /// Separator can be " " or ",".
+    /// </summary>
     public class LineThicknessConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
