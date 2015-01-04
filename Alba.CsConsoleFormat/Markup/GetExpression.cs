@@ -62,7 +62,7 @@ namespace Alba.CsConsoleFormat.Markup
                 return null;
             // Check whether value can be assigned to the property
             Type valueType = value.GetType();
-            if (TargetType == valueType || TargetType.IsAssignableFrom(valueType))
+            if (TargetType.IsAssignableFrom(valueType))
                 return value;
             // Try converting using Convert class
             if (typeof(IConvertible).IsAssignableFrom(TargetType) && typeof(IConvertible).IsAssignableFrom(valueType))

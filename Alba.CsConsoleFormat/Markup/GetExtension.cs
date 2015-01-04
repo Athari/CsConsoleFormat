@@ -9,16 +9,15 @@ using Alba.CsConsoleFormat.Framework.Text;
 namespace Alba.CsConsoleFormat.Markup
 {
     [MarkupExtensionReturnType (typeof(object))]
-    [XmlLangProperty ("Language")]
     public class GetExtension : MarkupExtension
     {
+        [ConstructorArgument("path")]
         public string Path { get; set; }
         public string Element { get; set; }
         public object Source { get; set; }
         public string Format { get; set; }
         public Func<object, object> Converter { get; set; }
         public CultureInfo Culture { get; set; }
-        public XmlLanguage Language { get; set; }
 
         public GetExtension (string path)
         {
@@ -62,7 +61,7 @@ namespace Alba.CsConsoleFormat.Markup
                 Path = Path,
                 Format = Format != null && Format.IndexOf('{') < 0 ? "{0:" + Format + "}" : Format,
                 Converter = Converter,
-                Culture = Culture ?? (Language != null ? Language.Culture : null),
+                Culture = Culture,
                 TargetObject = obj,
                 TargetType = prop.PropertyType,
             };
