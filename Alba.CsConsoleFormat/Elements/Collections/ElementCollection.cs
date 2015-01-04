@@ -9,9 +9,9 @@ namespace Alba.CsConsoleFormat
     //[WhitespaceSignificantCollection]
     public class ElementCollection : Collection<Element>, IList
     {
-        private readonly ContainerElement _parent;
+        private readonly Element _parent;
 
-        public ElementCollection (ContainerElement parent)
+        public ElementCollection (Element parent)
         {
             _parent = parent;
         }

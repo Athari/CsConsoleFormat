@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class Border : ContainerElement
+    public class Border : BlockElement
     {
         public LineThickness Stroke { get; set; }
 

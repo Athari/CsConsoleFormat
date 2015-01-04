@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class Para : ContainerElement
+    public class Para : BlockElement
     {
         public HorizontalAlignment TextAlign { get; set; }
 

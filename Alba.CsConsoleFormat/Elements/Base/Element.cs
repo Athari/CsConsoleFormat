@@ -11,9 +11,10 @@ using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
 {
-    [RuntimeNameProperty ("Name"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
+    [RuntimeNameProperty ("Name"), ContentProperty ("Children"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
     public abstract class Element : ISupportInitialize
     {
+        private ElementCollection _children;
         private IDictionary<PropertyInfo, GetExpression> _getters;
 
         public object DataContext { get; set; }
@@ -22,13 +23,28 @@ namespace Alba.CsConsoleFormat
 
         public XmlLanguage Language { get; set; }
 
-        public ContainerElement Parent { get; internal set; }
+        public Element Parent { get; internal set; }
 
         [TypeConverter (typeof(ConsoleColorConverter))]
         public ConsoleColor? Color { get; set; }
 
         [TypeConverter (typeof(ConsoleColorConverter))]
         public ConsoleColor? BgColor { get; set; }
+
+        public ElementCollection Children
+        {
+            get
+            {
+                if (!CanHaveChildren)
+                    throw new NotSupportedException("Element '{0}' cannot contain children.".Fmt(GetType().Name));
+                return _children ?? (_children = new ElementCollection(this));
+            }
+        }
+
+        protected virtual bool CanHaveChildren
+        {
+            get { return true; }
+        }
 
         internal CultureInfo EffectiveCulture
         {
@@ -77,7 +93,11 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString ()
         {
-            return "{0}:{1} DC={2}".Fmt(GetType().Name, Name != null ? " Name={0}".Fmt(Name) : "", DataContext);
+            return "{0}:{1}{2}{3}".Fmt(
+                GetType().Name,
+                Name != null ? " Name={0}".Fmt(Name) : "",
+                " DC={0}".Fmt(DataContext ?? "null"),
+                _children != null && _children.Count > 0 ? " Children={0}".Fmt(_children.Count) : "");
         }
     }
 }

@@ -7,9 +7,9 @@
             <Span Text="{Get SubTitle}" Color="Gray"/><Br/>
             <Line Orientation="Horizontal"  Stroke="Wide"/>
             <Span Text="{Get Guid}" Color="Red"/><Br/>
-            <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
-            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="fr"/><Br/>
-            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>
+            <!--<Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
+            <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>
+            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->
         </Para>
     </Border>
     <Para>

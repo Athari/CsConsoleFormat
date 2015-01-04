@@ -74,7 +74,6 @@
     <Compile Include="Core\Enums\VerticalAlignment.cs" />
     <Compile Include="Elements\Collections\ElementCollection.cs" />
     <Compile Include="Elements\Document.cs" />
-    <Compile Include="Elements\Base\ContainerElement.cs" />
     <Compile Include="Elements\Base\Element.cs" />
     <Compile Include="Elements\Para.cs" />
     <Compile Include="Elements\Span.cs" />

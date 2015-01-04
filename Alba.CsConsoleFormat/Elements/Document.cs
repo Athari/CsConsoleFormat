@@ -1,5 +1,5 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class Document : ContainerElement
+    public class Document : BlockElement
     {}
 }
