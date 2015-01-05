@@ -45,12 +45,15 @@
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
     <Compile Include="Elements\Base\BlockElement.cs" />
+    <Compile Include="Elements\Base\ContainerElement.cs" />
     <Compile Include="Elements\Base\InlineElement.cs" />
     <Compile Include="Elements\Base\GeneratorElement.cs" />
     <Compile Include="Elements\Border.cs" />
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Core\Enums\Orientation.cs" />
+    <Compile Include="Elements\Containers\InlineSequence.cs" />
     <Compile Include="Elements\Line.cs" />
+    <Compile Include="Elements\Containers\Stack.cs" />
     <Compile Include="Formatting\ColorMaps.cs" />
     <Compile Include="Formatting\Chars.cs" />
     <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />

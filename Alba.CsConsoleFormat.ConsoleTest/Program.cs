@@ -28,6 +28,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             });
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
+            doc.GenerateVisualTree();
             Console.WriteLine(doc);
 
             var buffer = new ConsoleRenderBuffer { LineCharRenderer = LineCharRenderer.Box };

@@ -21,21 +21,23 @@ namespace Alba.CsConsoleFormat.Markup
         public Element TargetObject { get; set; }
         public Type TargetType { get; set; }
 
-        private object EffectiveSource
-        {
-            get { return Source ?? TargetObject.DataContext; }
-        }
-
         private CultureInfo EffectiveCulture
         {
             get { return _effectiveCulture ?? (_effectiveCulture = Culture ?? TargetObject.EffectiveCulture ?? Thread.CurrentThread.CurrentCulture); }
         }
 
-        public object GetValue ()
+        public object GetValue (Element targetObject = null)
         {
-            object source = EffectiveSource;
+            object source = Source;
+            if (source == null) {
+                if (targetObject != null)
+                    source = targetObject.DataContext;
+                else if (TargetObject != null)
+                    source = TargetObject.DataContext;
+            }
             if (source == null)
                 return null;
+
             if (Path.IsNullOrEmpty())
                 return ConvertValue(source);
 

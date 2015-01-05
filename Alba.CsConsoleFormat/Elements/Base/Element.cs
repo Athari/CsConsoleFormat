@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -14,10 +15,10 @@ namespace Alba.CsConsoleFormat
     [RuntimeNameProperty ("Name"), ContentProperty ("Children"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
     public abstract class Element : ISupportInitialize
     {
+        private object _dataContext;
         private ElementCollection _children;
+        private IList<Element> _visualChildren;
         private IDictionary<PropertyInfo, GetExpression> _getters;
-
-        public object DataContext { get; set; }
 
         public string Name { get; set; }
 
@@ -31,6 +32,18 @@ namespace Alba.CsConsoleFormat
         [TypeConverter (typeof(ConsoleColorConverter))]
         public ConsoleColor? BgColor { get; set; }
 
+        public object DataContext
+        {
+            get { return _dataContext; }
+            set
+            {
+                if (_dataContext == value)
+                    return;
+                _dataContext = value;
+                UpdateDataContext();
+            }
+        }
+
         public ElementCollection Children
         {
             get
@@ -39,6 +52,13 @@ namespace Alba.CsConsoleFormat
                     throw new NotSupportedException("Element '{0}' cannot contain children.".Fmt(GetType().Name));
                 return _children ?? (_children = new ElementCollection(this));
             }
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        protected internal IList<Element> VisualChildren
+        {
+            get { return _visualChildren ?? (_visualChildren = new List<Element>()); }
+            internal set { _visualChildren = value; }
         }
 
         protected virtual bool CanHaveChildren
@@ -55,12 +75,67 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        private bool HasChildren
+        {
+            get { return _children != null && _children.Count > 0; }
+        }
+
+        public void GenerateVisualTree ()
+        {
+            if (!HasChildren)
+                return;
+            var children = new List<Element>();
+            InlineSequence inlines = null;
+            foreach (Element el in _children.SelectMany(c => c.GetVisualElements())) {
+                var inlineEl = el as InlineElement;
+                if (inlineEl != null) {
+                    if (inlines == null) {
+                        inlines = new InlineSequence { DataContext = DataContext };
+                        children.Add(inlines);
+                    }
+                    inlines.Children.Add(inlineEl);
+                }
+                else {
+                    if (inlines != null) {
+                        inlines.VisualChildren = inlines.Children.ToList();
+                        inlines = null;
+                    }
+                    children.Add(el);
+                }
+                el.GenerateVisualTree();
+            }
+            if (inlines != null) {
+                inlines.VisualChildren = inlines.Children.ToList();
+            }
+            SetVisualChildren(children);
+        }
+
+        protected virtual void SetVisualChildren (IList<Element> visualChildren)
+        {
+            if (visualChildren.Count == 1) {
+                VisualChildren = visualChildren;
+            }
+            else if (visualChildren.Count > 1) {
+                VisualChildren = new List<Element>(1) {
+                    new Stack {
+                        DataContext = DataContext,
+                        VisualChildren = visualChildren,
+                    }
+                };
+            }
+        }
+
+        protected virtual IEnumerable<Element> GetVisualElements ()
+        {
+            yield return this;
+        }
+
         private void UpdateDataContext ()
         {
             if (_getters == null)
                 return;
             foreach (KeyValuePair<PropertyInfo, GetExpression> getter in _getters)
-                getter.Key.SetValue(this, getter.Value.GetValue());
+                getter.Key.SetValue(this, getter.Value.GetValue(this));
         }
 
         public void Bind (PropertyInfo prop, GetExpression getter)
@@ -97,7 +172,7 @@ namespace Alba.CsConsoleFormat
                 GetType().Name,
                 Name != null ? " Name={0}".Fmt(Name) : "",
                 " DC={0}".Fmt(DataContext ?? "null"),
-                _children != null && _children.Count > 0 ? " Children={0}".Fmt(_children.Count) : "");
+                HasChildren ? " Children={0}".Fmt(_children.Count) : "");
         }
     }
 }

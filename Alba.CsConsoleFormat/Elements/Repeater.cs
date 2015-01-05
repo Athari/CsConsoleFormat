@@ -17,15 +17,15 @@ namespace Alba.CsConsoleFormat
             get { return _itemTemplate ?? (_itemTemplate = new ElementCollection(null)); }
         }
 
-        private void UpdateGeneratedItems ()
+        protected override IEnumerable<Element> GetVisualElements ()
         {
             if (Items == null || _itemTemplate == null)
-                return;
+                yield break;
             foreach (object item in Items) {
                 foreach (Element element in _itemTemplate) {
                     Element generatedEl = element.Clone();
                     generatedEl.DataContext = item;
-                    Parent.Children.Add(generatedEl);
+                    yield return generatedEl;
                 }
             }
         }
