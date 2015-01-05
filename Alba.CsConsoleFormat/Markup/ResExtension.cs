@@ -6,14 +6,15 @@ using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat.Markup
 {
+    [MarkupExtensionReturnType (typeof(object))]
     public class ResExtension : MarkupExtension
     {
-        [ConstructorArgument ("name")]
-        public string Name { get; set; }
+        [ConstructorArgument ("key")]
+        public string Key { get; set; }
 
-        public ResExtension (string name)
+        public ResExtension (string key)
         {
-            Name = name;
+            Key = key;
         }
 
         public ResExtension () : this(null)
@@ -24,12 +25,12 @@ namespace Alba.CsConsoleFormat.Markup
             var rootObjectProvider = provider.GetService<IRootObjectProvider>();
             var doc = (Document)rootObjectProvider.RootObject;
             object value;
-            if (doc.Resources.TryGetValue(Name, out value))
+            if (doc.Resources.TryGetValue(Key, out value))
                 return value;
 
             var lineInfo = provider.GetService<IXamlLineInfo>();
             throw new InvalidOperationException("Resource '{0}' not found ({1}:{2})."
-                .Fmt(Name, lineInfo.LineNumber, lineInfo.LinePosition));
+                .Fmt(Key, lineInfo.LineNumber, lineInfo.LinePosition));
         }
     }
 }
