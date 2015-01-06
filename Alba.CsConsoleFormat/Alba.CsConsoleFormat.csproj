@@ -42,8 +42,14 @@
   <ItemGroup>
     <Compile Include="Converters\ConsoleColorConverter.cs" />
     <Compile Include="Converters\LineThicknessConverter.cs" />
+    <Compile Include="Converters\RectConverter.cs" />
+    <Compile Include="Converters\SizeConverter.cs" />
+    <Compile Include="Converters\VectorConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
+    <Compile Include="Core\Rect.cs" />
+    <Compile Include="Core\Size.cs" />
+    <Compile Include="Core\Vector.cs" />
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\ContainerElement.cs" />
     <Compile Include="Elements\Base\InlineElement.cs" />

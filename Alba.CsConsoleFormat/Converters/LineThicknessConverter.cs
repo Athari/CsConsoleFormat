@@ -16,46 +16,38 @@ namespace Alba.CsConsoleFormat
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
         {
             TypeCode type = Type.GetTypeCode(sourceType);
-            return type == TypeCode.String || TypeCode.Int16 <= type && type <= TypeCode.Decimal;
+            return type == TypeCode.String || TypeCode.Int16 <= type && type <= TypeCode.Decimal || base.CanConvertFrom(context, sourceType);
         }
 
         public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
                 throw GetConvertFromException(null);
-            if (value is string)
+            else if (value is string)
                 return FromString((string)value);
-            if (value is LineWidth)
+            else if (value is LineWidth)
                 return new LineThickness((LineWidth)value);
-            return new LineThickness((LineWidth)Convert.ToInt32(value, CultureInfo.InvariantCulture));
-        }
-
-        public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            var thickness = (LineThickness)value;
-            if (destinationType == typeof(string))
-                return ToString(thickness);
-            throw GetConvertToException(value, destinationType);
+            else {
+                TypeCode type = Type.GetTypeCode(value.GetType());
+                if (TypeCode.Int16 <= type && type <= TypeCode.Decimal)
+                    return new LineThickness((LineWidth)Convert.ToInt32(value, CultureInfo.InvariantCulture));
+            }
+            return base.ConvertFrom(context, culture, value);
         }
 
         private static LineThickness FromString (string str)
         {
-            string[] strParts = str.Split(new[] { ' ', ',' }, 4, StringSplitOptions.RemoveEmptyEntries);
-            switch (strParts.Length) {
+            string[] parts = str.Split(new[] { ' ', ',' }, 4, StringSplitOptions.RemoveEmptyEntries);
+            switch (parts.Length) {
                 case 1:
-                    return new LineThickness(GetWidth(strParts[0]));
+                    return new LineThickness(GetWidth(parts[0]));
                 case 2:
-                    return new LineThickness(GetWidth(strParts[0]), GetWidth(strParts[1]), GetWidth(strParts[0]), GetWidth(strParts[1]));
+                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[0]), GetWidth(parts[1]));
                 case 4:
-                    return new LineThickness(GetWidth(strParts[0]), GetWidth(strParts[1]), GetWidth(strParts[2]), GetWidth(strParts[3]));
+                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
                 default:
                     throw new FormatException("Invalid LineThickness format: \"{0}\"".Fmt(str));
             }
-        }
-
-        private static string ToString (LineThickness thickness)
-        {
-            return "{0} {1} {2} {3}".FmtInv(thickness.Left, thickness.Top, thickness.Right, thickness.Bottom);
         }
 
         private static LineWidth GetWidth (string str)

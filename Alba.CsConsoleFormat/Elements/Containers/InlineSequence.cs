@@ -1,5 +1,5 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    internal class InlineSequence : BlockElement
+    internal class InlineSequence : Element
     {}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -41,6 +42,11 @@ namespace Alba.CsConsoleFormat
                 hashCode = (hashCode * 397) ^ (int)Bottom;
                 return hashCode;
             }
+        }
+
+        public override string ToString ()
+        {
+            return "{0} {1} {2} {3}".FmtInv(Left, Top, Right, Bottom);
         }
 
         public static bool operator == (LineThickness left, LineThickness right)
