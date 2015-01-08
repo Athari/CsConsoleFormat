@@ -10,6 +10,7 @@
         <Para TextAlign="Center">
             <Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}" Color="Gray"/><Br/>
+            <Span Text="SubSubTitle" Color="Gray" Visibility="Collapsed"/><Br/>
             <Line Orientation="Horizontal" Stroke="Wide"/>
             <Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
             <!--<Span Text="{Get Date, Format=D}" Color="Green"/><Br/>

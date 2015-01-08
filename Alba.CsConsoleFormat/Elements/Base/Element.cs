@@ -32,6 +32,8 @@ namespace Alba.CsConsoleFormat
         [TypeConverter (typeof(ConsoleColorConverter))]
         public ConsoleColor? BgColor { get; set; }
 
+        public Visibility Visibility { get; set; }
+
         public object DataContext
         {
             get { return _dataContext; }
