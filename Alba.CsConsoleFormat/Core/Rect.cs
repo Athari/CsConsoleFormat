@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat
     [TypeConverter (typeof(RectConverter))]
     public struct Rect : IEquatable<Rect>
     {
-        private static readonly Rect _Empty = new Rect { _x = Int32.MaxValue, _y = Int32.MaxValue, _width = Int32.MinValue, _height = Int32.MinValue };
+        private static readonly Rect _Empty = new Rect { _x = int.MaxValue, _y = int.MaxValue, _width = int.MinValue, _height = int.MinValue };
 
         private int _x;
         private int _y;
@@ -96,12 +96,12 @@ namespace Alba.CsConsoleFormat
 
         public int Right
         {
-            get { return IsEmpty ? Int32.MinValue : _x + _width; }
+            get { return IsEmpty ? int.MinValue : _x + _width; }
         }
 
         public int Bottom
         {
-            get { return IsEmpty ? Int32.MinValue : _y + _height; }
+            get { return IsEmpty ? int.MinValue : _y + _height; }
         }
 
         public Size Size

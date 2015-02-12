@@ -16,9 +16,9 @@ namespace Alba.CsConsoleFormat
     public abstract class Element : ISupportInitialize
     {
         private object _dataContext;
+        private IDictionary<PropertyInfo, GetExpression> _getters;
         private ElementCollection _children;
         private IList<Element> _visualChildren;
-        private IDictionary<PropertyInfo, GetExpression> _getters;
 
         public string Name { get; set; }
 

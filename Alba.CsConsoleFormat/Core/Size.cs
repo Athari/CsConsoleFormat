@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat
     [TypeConverter (typeof(SizeConverter))]
     public struct Size : IEquatable<Size>
     {
-        private static readonly Size _Empty = new Size { _width = Int32.MinValue, _height = Int32.MinValue };
+        private static readonly Size _Empty = new Size { _width = int.MinValue, _height = int.MinValue };
 
         private int _width;
         private int _height;
@@ -30,6 +30,11 @@ namespace Alba.CsConsoleFormat
         public bool IsEmpty
         {
             get { return Width < 0; }
+        }
+
+        public bool IsFinite
+        {
+            get { return Width != int.MaxValue && Height != int.MaxValue; }
         }
 
         public int Width

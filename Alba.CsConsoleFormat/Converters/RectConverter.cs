@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using Alba.CsConsoleFormat.Framework.Text;
 
+// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
     public class RectConverter : TypeConverter
