@@ -74,18 +74,23 @@ namespace Alba.CsConsoleFormat
             get { return true; }
         }
 
+        private bool HasChildren
+        {
+            get { return _children != null && _children.Count > 0; }
+        }
+
+        private IEnumerable<Element> Parents
+        {
+            get { return this.TraverseList(e => e.Parent); }
+        }
+
         internal CultureInfo EffectiveCulture
         {
             get
             {
-                Element elWithLng = this.TraverseList(e => e.Parent).FirstOrDefault(e => e.Language != null);
+                Element elWithLng = Parents.FirstOrDefault(e => e.Language != null);
                 return elWithLng != null ? elWithLng.Language.Culture : null;
             }
-        }
-
-        private bool HasChildren
-        {
-            get { return _children != null && _children.Count > 0; }
         }
 
         public void GenerateVisualTree ()
@@ -98,7 +103,8 @@ namespace Alba.CsConsoleFormat
                 var inlineEl = el as InlineElement;
                 if (inlineEl != null) {
                     if (inlines == null) {
-                        inlines = new InlineContainer { DataContext = DataContext };
+                        BlockElement parentBlockEl = Parents.OfType<BlockElement>().First();
+                        inlines = new InlineContainer { DataContext = DataContext, TextAlign = parentBlockEl.TextAlign };
                         children.Add(inlines);
                     }
                     inlines.Children.Add(inlineEl);

@@ -6,7 +6,7 @@ using Alba.CsConsoleFormat.Framework.Text;
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
-    public class VectorConverter : TypeConverter
+    public class PointConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
         {
@@ -21,12 +21,12 @@ namespace Alba.CsConsoleFormat
             return base.ConvertFrom(context, culture, value);
         }
 
-        private static Vector FromString (string str)
+        private static Point FromString (string str)
         {
             string[] parts = str.Split(new[] { ' ', ',' }, 2, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
-                throw new FormatException("Invalid Vector format: \"{0}\"".Fmt(str));
-            return new Vector(GetValue(parts[0]), GetValue(parts[1]));
+                throw new FormatException("Invalid Point format: \"{0}\"".Fmt(str));
+            return new Point(GetValue(parts[0]), GetValue(parts[1]));
         }
 
         private static int GetValue (string str)

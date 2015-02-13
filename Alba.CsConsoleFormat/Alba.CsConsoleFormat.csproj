@@ -45,11 +45,13 @@
     <Compile Include="Converters\RectConverter.cs" />
     <Compile Include="Converters\SizeConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Converters\PointConverter.cs" />
     <Compile Include="Converters\VectorConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
     <Compile Include="Core\Enums\Visibility.cs" />
     <Compile Include="Core\LayoutInfo.cs" />
+    <Compile Include="Core\Point.cs" />
     <Compile Include="Core\Rect.cs" />
     <Compile Include="Core\Size.cs" />
     <Compile Include="Core\Thickness.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Elements\Containers\Stack.cs" />
     <Compile Include="Formatting\ColorMaps.cs" />
     <Compile Include="Formatting\Chars.cs" />
+    <Compile Include="Formatting\ConsoleRenderer.cs" />
     <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />
     <Compile Include="Formatting\Lines\LineChar.cs" />
     <Compile Include="Formatting\ConsoleRenderBuffer.cs" />

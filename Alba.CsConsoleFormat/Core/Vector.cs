@@ -47,6 +47,21 @@ namespace Alba.CsConsoleFormat
             return "{0} {1}".FmtInv(_x, _y);
         }
 
+        public static Vector Add (Vector left, Vector right)
+        {
+            return new Vector(left.X + right.X, left.Y + right.Y);
+        }
+
+        public static Vector Subtract (Vector left, Vector right)
+        {
+            return new Vector(left.X - right.X, left.Y - right.Y);
+        }
+
+        public static Vector Negate (Vector self)
+        {
+            return new Vector(-self.X, -self.Y);
+        }
+
         public static bool operator == (Vector left, Vector right)
         {
             return left.Equals(right);
@@ -55,6 +70,21 @@ namespace Alba.CsConsoleFormat
         public static bool operator != (Vector left, Vector right)
         {
             return !left.Equals(right);
+        }
+
+        public static Vector operator + (Vector left, Vector right)
+        {
+            return Add(left, right);
+        }
+
+        public static Vector operator - (Vector left, Vector right)
+        {
+            return Subtract(left, right);
+        }
+
+        public static Vector operator - (Vector self)
+        {
+            return Negate(self);
         }
     }
 }

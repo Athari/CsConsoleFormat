@@ -34,6 +34,11 @@ namespace Alba.CsConsoleFormat
             _height = height;
         }
 
+        public Rect (Vector position, Size size)
+        {
+            this = size.IsEmpty ? Empty : new Rect(position.X, position.Y, size.Width, size.Height);
+        }
+
         public Rect (Size size)
         {
             if (size.IsEmpty) {
@@ -106,39 +111,59 @@ namespace Alba.CsConsoleFormat
 
         public int Left
         {
-            get { return _x; }
+            get { return X; }
         }
 
         public int Top
         {
-            get { return _y; }
+            get { return Y; }
         }
 
         public int Right
         {
-            get { return IsEmpty ? int.MinValue : _x + _width; }
+            get { return IsEmpty ? int.MinValue : X + Width; }
         }
 
         public int Bottom
         {
-            get { return IsEmpty ? int.MinValue : _y + _height; }
+            get { return IsEmpty ? int.MinValue : Y + Height; }
         }
 
         public Size Size
         {
-            get { return IsEmpty ? Size.Empty : new Size(_width, _height); }
+            get { return IsEmpty ? Size.Empty : new Size(Width, Height); }
             set
             {
                 if (value.IsEmpty) {
-                    this = _Empty;
+                    this = Empty;
                 }
                 else {
                     if (IsEmpty)
                         throw new InvalidOperationException("Cannot modify empty rect.");
-                    _width = value.Width;
-                    _height = value.Height;
+                    Width = value.Width;
+                    Height = value.Height;
                 }
             }
+        }
+
+        public bool Contains (Point point)
+        {
+            return !IsEmpty && X <= point.X && point.X < Right && Y <= point.Y && point.Y < Bottom;
+        }
+
+        public bool Contains (int x, int y)
+        {
+            return Contains(new Point(x, y));
+        }
+
+        public bool IntersectsHorizontalLine (int y)
+        {
+            return !IsEmpty && Y <= y && y < Bottom;
+        }
+
+        public bool IntersectsVerticalLine (int x)
+        {
+            return !IsEmpty && X <= x && x < Right;
         }
 
         public Rect Deflate (Thickness th, bool throwOnError = false)
@@ -148,7 +173,7 @@ namespace Alba.CsConsoleFormat
 
         public bool Equals (Rect other)
         {
-            return _x == other._x && _y == other._y && _width == other._width && _height == other._height;
+            return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
         }
 
         public override bool Equals (object obj)
@@ -163,7 +188,7 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString ()
         {
-            return IsEmpty ? "Empty" : "{0} {1} {2} {3}".FmtInv(_x, _y, _width, _height);
+            return IsEmpty ? "Empty" : "{0} {1} {2} {3}".FmtInv(X, Y, Width, Height);
         }
 
         public static bool operator == (Rect left, Rect right)

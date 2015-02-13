@@ -40,9 +40,9 @@ namespace Alba.CsConsoleFormat
             get { return Width < 0; }
         }
 
-        public bool IsFinite
+        public bool IsInfinite
         {
-            get { return Width != int.MaxValue && Height != int.MaxValue; }
+            get { return Width == int.MaxValue || Height == int.MaxValue; }
         }
 
         public int Width
@@ -96,9 +96,34 @@ namespace Alba.CsConsoleFormat
             return new Size(left.Width + right.Width, left.Height + right.Height);
         }
 
+        public static Size Add (Size left, Thickness right, bool throwOnError = false)
+        {
+            return new Size(left.Width + right.Width, left.Height + right.Height, throwOnError);
+        }
+
         public static Size Subtract (Size left, Size right, bool throwOnError = false)
         {
             return new Size(left.Width - right.Width, left.Height - right.Height, throwOnError);
+        }
+
+        public static Size Max (Size size1, Size size2)
+        {
+            return new Size(Math.Max(size1.Width, size2.Width), Math.Max(size1.Height, size2.Height));
+        }
+
+        public static Size Min (Size size1, Size size2)
+        {
+            return new Size(Math.Min(size1.Width, size2.Width), Math.Min(size1.Height, size2.Height));
+        }
+
+        public static Size MinMax (Size size, Size min, Size max)
+        {
+            return new Size(MinMax(size.Width, min.Width, max.Width), MinMax(size.Height, min.Height, max.Height));
+        }
+
+        private static int MinMax (int value, int min, int max)
+        {
+            return Math.Max(Math.Min(value, max), min);
         }
 
         public static bool operator == (Size left, Size right)
@@ -112,6 +137,11 @@ namespace Alba.CsConsoleFormat
         }
 
         public static Size operator + (Size left, Size right)
+        {
+            return Add(left, right);
+        }
+
+        public static Size operator + (Size left, Thickness right)
         {
             return Add(left, right);
         }
