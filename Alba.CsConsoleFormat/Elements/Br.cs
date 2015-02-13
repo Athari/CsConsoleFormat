@@ -7,5 +7,10 @@
         {
             get { return false; }
         }
+
+        public override string GeneratedText
+        {
+            get { return "\n"; }
+        }
     }
 }

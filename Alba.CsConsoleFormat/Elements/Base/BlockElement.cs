@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Alba.CsConsoleFormat
 {
@@ -34,7 +35,7 @@ namespace Alba.CsConsoleFormat
             MinWidth = 0;
             MinHeight = 0;
             MaxWidth = int.MaxValue;
-            MinWidth = int.MinValue;
+            MaxHeight = int.MaxValue;
             Align = HorizontalAlignment.Stretch;
             VAlign = VerticalAlignment.Stretch;
         }
@@ -43,6 +44,18 @@ namespace Alba.CsConsoleFormat
         {
             get { return layoutInfo.actualOffset; }
             private set { layoutInfo.actualOffset = value; }
+        }
+
+        public Size DesiredSize
+        {
+            get { return layoutInfo.desiredSize; }
+            set { layoutInfo.desiredSize = value; }
+        }
+
+        private Size UnclippedDesiredSize
+        {
+            get { return layoutInfo.unclippedDesiredSize; }
+            set { layoutInfo.unclippedDesiredSize = value; }
         }
 
         public Size RenderSize
@@ -57,9 +70,10 @@ namespace Alba.CsConsoleFormat
             private set { layoutInfo.renderSlotRect = value; }
         }
 
-        public Rect LayoutClip
+        internal Rect LayoutClip
         {
             get { return layoutInfo.layoutClip; }
+            private set { layoutInfo.layoutClip = value; }
         }
 
         public void Measure (Size availableSize)
@@ -67,13 +81,13 @@ namespace Alba.CsConsoleFormat
             layoutInfo.measureArgument = availableSize;
 
             if (Visibility == Visibility.Collapsed) {
-                layoutInfo.unclippedDesiredSize = Size.Empty;
-                layoutInfo.desiredSize = Size.Empty;
+                UnclippedDesiredSize = Size.Empty;
+                DesiredSize = Size.Empty;
                 return;
             }
 
             // Apply margin.
-            int marginWidth = Margin.Left + Margin.Right, marginHeight = Margin.Top + Margin.Bottom;
+            int marginWidth = Margin.Width, marginHeight = Margin.Height;
 
             // Parent size is what parent want us to be.
             Size constrainedAvailableSize = new Size(
@@ -81,26 +95,26 @@ namespace Alba.CsConsoleFormat
                 Math.Max(availableSize.Height - marginHeight, 0));
 
             // Apply min/max/currentvalue constraints.
-            MinMax mm = new MinMax(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
-            constrainedAvailableSize.Width = GetMinMax(constrainedAvailableSize.Width, mm.minWidth, mm.maxWidth);
-            constrainedAvailableSize.Height = GetMinMax(constrainedAvailableSize.Height, mm.minHeight, mm.maxHeight);
+            MinMaxSize mm = new MinMaxSize(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
+            constrainedAvailableSize.Width = MinMax(constrainedAvailableSize.Width, mm.MinWidth, mm.MaxWidth);
+            constrainedAvailableSize.Height = MinMax(constrainedAvailableSize.Height, mm.MinHeight, mm.MaxHeight);
 
             Size desiredSize = MeasureOverride(constrainedAvailableSize);
             if (!desiredSize.IsFinite)
                 throw new InvalidOperationException("MeasureOverride must return finite size.");
 
             // Maximize desiredSize with user provided min size.
-            desiredSize = new Size(Math.Max(desiredSize.Width, mm.minWidth), Math.Max(desiredSize.Height, mm.minHeight));
+            desiredSize = new Size(Math.Max(desiredSize.Width, mm.MinWidth), Math.Max(desiredSize.Height, mm.MinHeight));
 
             // Here is the "true minimum" desired size - the one that is for sure enough for the control to render its content.
             Size unclippedDesiredSize = desiredSize;
 
             // User-specified max size starts to "clip" the control here.
             // Starting from this point desiredSize could be smaller then actually needed to render the whole control.
-            if (desiredSize.Width > mm.maxWidth)
-                desiredSize.Width = mm.maxWidth;
-            if (desiredSize.Height > mm.maxHeight)
-                desiredSize.Height = mm.maxHeight;
+            if (desiredSize.Width > mm.MaxWidth)
+                desiredSize.Width = mm.MaxWidth;
+            if (desiredSize.Height > mm.MaxHeight)
+                desiredSize.Height = mm.MaxHeight;
 
             // Because of negative margins, clipped desired size may be negative.
             // Need to keep it as ints for that reason and maximize with 0 at the very last point - before returning desired size to the parent.
@@ -115,13 +129,17 @@ namespace Alba.CsConsoleFormat
 
             // Note: unclippedDesiredSize is needed in ArrangeCore, because due to the layout protocol, arrange should be called
             // with constraints greater or equal to child's desired size returned from MeasureOverride.
-            layoutInfo.unclippedDesiredSize = unclippedDesiredSize;
-            layoutInfo.desiredSize = new Size(Math.Max(0, clippedDesiredWidth), Math.Max(0, clippedDesiredHeight));
+            UnclippedDesiredSize = unclippedDesiredSize;
+            DesiredSize = new Size(Math.Max(0, clippedDesiredWidth), Math.Max(0, clippedDesiredHeight));
         }
 
         protected virtual Size MeasureOverride (Size availableSize)
         {
-            return new Size(0, 0);
+            BlockElement child = VisualChild;
+            if (child == null)
+                return new Size(0, 0);
+            child.Measure(availableSize);
+            return child.DesiredSize;
         }
 
         public void Arrange (Rect finalRect)
@@ -129,7 +147,7 @@ namespace Alba.CsConsoleFormat
             if (Visibility == Visibility.Collapsed) {
                 RenderSlotRect = Rect.Empty;
                 RenderSize = Size.Empty;
-                layoutInfo.layoutClip = calculateLayoutClip();
+                LayoutClip = CalculateLayoutClip();
                 return;
             }
 
@@ -137,13 +155,13 @@ namespace Alba.CsConsoleFormat
 
             // Start to compute arrange size for the child. It starts from layout slot or deisred size if layout slot is smaller then desired,
             // and then we reduce it by margins, apply Width/Height etc, to arrive at the size that child will get in its ArrangeOverride.
-            int marginWidth = Margin.Left + Margin.Right, marginHeight = Margin.Top + Margin.Bottom;
+            int marginWidth = Margin.Width, marginHeight = Margin.Height;
             Size arrangeSize = finalRect.Size;
             arrangeSize.Width = Math.Max(0, arrangeSize.Width - marginWidth);
             arrangeSize.Height = Math.Max(0, arrangeSize.Height - marginHeight);
 
             // Next, compare against unclipped, transformed size.
-            Size unclippedDesiredSize = layoutInfo.unclippedDesiredSize;
+            Size unclippedDesiredSize = UnclippedDesiredSize;
 
             if (arrangeSize.Width < unclippedDesiredSize.Width)
                 arrangeSize.Width = unclippedDesiredSize.Width;
@@ -161,57 +179,57 @@ namespace Alba.CsConsoleFormat
             // as much space to render as it returned from its own ArrangeOverride.
             RenderSize = ArrangeOverride(arrangeSize);
 
-            Vector offset = computeAlignmentOffset();
+            Vector offset = CalculateAlignmentOffset();
             offset.X += finalRect.X + Margin.Left;
             offset.Y += finalRect.Y + Margin.Top;
             if (!ActualOffset.Equals(offset))
                 ActualOffset = offset;
 
-            layoutInfo.layoutClip = calculateLayoutClip();
+            LayoutClip = CalculateLayoutClip();
         }
 
         protected virtual Size ArrangeOverride (Size finalSize)
         {
+            BlockElement child = VisualChild;
+            if (child != null)
+                child.Arrange(new Rect(finalSize));
             return finalSize;
         }
 
         public virtual void Render (ConsoleRenderBuffer buffer)
         {}
 
-        private Rect calculateLayoutClip ()
+        private Rect CalculateLayoutClip ()
         {
-            Vector offset = computeAlignmentOffset();
-            Size clientSize = getClientSize();
+            Vector offset = CalculateAlignmentOffset();
+            Size clientSize = GetClientSize();
             return new Rect(-offset.X, -offset.Y, clientSize.Width, clientSize.Height);
         }
 
-        private Vector computeAlignmentOffset ()
+        private Vector CalculateAlignmentOffset ()
         {
             // clippedInkSize differs from InkSize only what MaxWidth/Height explicitly clip the
             // otherwise good arrangement. For ex, DS<clientSize but DS>MaxWidth - in this
             // case we should initiate clip at MaxWidth and only show Top-Left portion
             // of the element limited by Max properties. It is Top-left because in case when we
             // are clipped by container we also degrade to Top-Left, so we are consistent.
-            MinMax mm = new MinMax(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
+            MinMaxSize mm = new MinMaxSize(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
             Size renderSize = RenderSize;
-            Size clippedInkSize = new Size(
-                Math.Min(renderSize.Width, mm.maxWidth),
-                Math.Min(renderSize.Height, mm.maxHeight));
-            Size clientSize = getClientSize();
-
-            return computeAlignmentOffsetCore(clientSize, clippedInkSize);
+            Size clippedInkSize = new Size(Math.Min(renderSize.Width, mm.MaxWidth), Math.Min(renderSize.Height, mm.MaxHeight));
+            Size clientSize = GetClientSize();
+            return CalculateAlignmentOffsetCore(clientSize, clippedInkSize);
         }
 
-        private Size getClientSize ()
+        private Size GetClientSize ()
         {
-            int marginWidth = Margin.Left + Margin.Right, marginHeight = Margin.Top + Margin.Bottom;
+            int marginWidth = Margin.Width, marginHeight = Margin.Height;
             Rect renderSlotRect = RenderSlotRect;
             return new Size(
                 Math.Max(0, renderSlotRect.Width - marginWidth),
                 Math.Max(0, renderSlotRect.Height - marginHeight));
         }
 
-        private Vector computeAlignmentOffsetCore (Size clientSize, Size inkSize)
+        private Vector CalculateAlignmentOffsetCore (Size clientSize, Size inkSize)
         {
             Vector offset = new Vector();
 
@@ -241,25 +259,25 @@ namespace Alba.CsConsoleFormat
             return offset;
         }
 
-        private static int GetMinMax (int value, int min, int max)
+        private static int MinMax (int value, int min, int max)
         {
             return Math.Max(Math.Min(value, max), min);
         }
 
-        private struct MinMax
+        private struct MinMaxSize
         {
-            public MinMax (int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
+            public MinMaxSize (int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height) : this()
             {
-                this.maxHeight = GetMinMax(height ?? int.MaxValue, minHeight, maxHeight);
-                this.minHeight = GetMinMax(height ?? 0, minHeight, this.maxHeight);
-                this.maxWidth = GetMinMax(width ?? int.MaxValue, minWidth, maxWidth);
-                this.minWidth = GetMinMax(width ?? 0, minWidth, this.maxWidth);
+                MaxHeight = MinMax(height ?? int.MaxValue, minHeight, maxHeight);
+                MinHeight = MinMax(height ?? 0, minHeight, MaxHeight);
+                MaxWidth = MinMax(width ?? int.MaxValue, minWidth, maxWidth);
+                MinWidth = MinMax(width ?? 0, minWidth, MaxWidth);
             }
 
-            public readonly int minWidth;
-            public readonly int maxWidth;
-            public readonly int minHeight;
-            public readonly int maxHeight;
+            public int MinWidth { get; private set; }
+            public int MaxWidth { get; private set; }
+            public int MinHeight { get; private set; }
+            public int MaxHeight { get; private set; }
         }
     }
 }

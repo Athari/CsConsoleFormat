@@ -61,7 +61,7 @@
     <Compile Include="Elements\Border.cs" />
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Core\Enums\Orientation.cs" />
-    <Compile Include="Elements\Containers\InlineSequence.cs" />
+    <Compile Include="Elements\Containers\InlineContainer.cs" />
     <Compile Include="Elements\Line.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />
     <Compile Include="Formatting\ColorMaps.cs" />

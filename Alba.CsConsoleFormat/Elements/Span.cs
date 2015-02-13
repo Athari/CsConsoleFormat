@@ -14,6 +14,11 @@ namespace Alba.CsConsoleFormat
         public Span () : this(null)
         {}
 
+        public override string GeneratedText
+        {
+            get { return Text; }
+        }
+
         public override string ToString ()
         {
             return base.ToString() + " Text=\"{0}\"".Fmt(Text);

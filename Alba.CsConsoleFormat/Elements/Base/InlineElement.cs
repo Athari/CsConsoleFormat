@@ -1,5 +1,7 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class InlineElement : Element
-    {}
+    public abstract class InlineElement : Element
+    {
+        public abstract string GeneratedText { get; }
+    }
 }

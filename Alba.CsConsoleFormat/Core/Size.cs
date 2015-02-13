@@ -12,12 +12,20 @@ namespace Alba.CsConsoleFormat
         private int _width;
         private int _height;
 
-        public Size (int width, int height)
+        public Size (int width, int height, bool throwOnError = true)
         {
-            if (width < 0)
-                throw new ArgumentException("Width cannot be negative.", "width");
-            if (height < 0)
-                throw new ArgumentException("Height cannot be negative.", "height");
+            if (width < 0) {
+                if (throwOnError)
+                    throw new ArgumentException("Width cannot be negative.", "width");
+                else
+                    width = 0;
+            }
+            if (height < 0) {
+                if (throwOnError)
+                    throw new ArgumentException("Height cannot be negative.", "height");
+                else
+                    height = 0;
+            }
             _width = width;
             _height = height;
         }
@@ -83,6 +91,16 @@ namespace Alba.CsConsoleFormat
             return IsEmpty ? "Empty" : "{0} {1}".FmtInv(_width, _height);
         }
 
+        public static Size Add (Size left, Size right)
+        {
+            return new Size(left.Width + right.Width, left.Height + right.Height);
+        }
+
+        public static Size Subtract (Size left, Size right, bool throwOnError = false)
+        {
+            return new Size(left.Width - right.Width, left.Height - right.Height, throwOnError);
+        }
+
         public static bool operator == (Size left, Size right)
         {
             return left.Equals(right);
@@ -91,6 +109,16 @@ namespace Alba.CsConsoleFormat
         public static bool operator != (Size left, Size right)
         {
             return !left.Equals(right);
+        }
+
+        public static Size operator + (Size left, Size right)
+        {
+            return Add(left, right);
+        }
+
+        public static Size operator - (Size left, Size right)
+        {
+            return Subtract(left, right);
         }
     }
 }

@@ -23,6 +23,16 @@ namespace Alba.CsConsoleFormat
         public LineThickness (LineWidth width) : this(width, width, width, width)
         {}
 
+        public Thickness CharThickness
+        {
+            get { return new Thickness(Left.ToCharWidth(), Top.ToCharWidth(), Right.ToCharWidth(), Bottom.ToCharWidth()); }
+        }
+
+        public Size CollapsedCharThickness
+        {
+            get { return CharThickness.CollapsedThickness; }
+        }
+
         public bool Equals (LineThickness other)
         {
             return Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
@@ -35,13 +45,7 @@ namespace Alba.CsConsoleFormat
 
         public override int GetHashCode ()
         {
-            unchecked {
-                int hashCode = (int)Left;
-                hashCode = (hashCode * 397) ^ (int)Top;
-                hashCode = (hashCode * 397) ^ (int)Right;
-                hashCode = (hashCode * 397) ^ (int)Bottom;
-                return hashCode;
-            }
+            return Left.GetHashCode() ^ Top.GetHashCode() ^ Right.GetHashCode() & Bottom.GetHashCode();
         }
 
         public override string ToString ()

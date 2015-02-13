@@ -56,11 +56,17 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        // TODO Change type of Element.VisualChildren to IList<BlockElement>
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         protected internal IList<Element> VisualChildren
         {
             get { return _visualChildren ?? (_visualChildren = new List<Element>()); }
             internal set { _visualChildren = value; }
+        }
+
+        internal BlockElement VisualChild
+        {
+            get { return _visualChildren != null ? (BlockElement)_visualChildren.SingleOrDefault() : null; }
         }
 
         protected virtual bool CanHaveChildren
@@ -87,12 +93,12 @@ namespace Alba.CsConsoleFormat
             if (!HasChildren)
                 return;
             var children = new List<Element>();
-            InlineSequence inlines = null;
+            InlineContainer inlines = null;
             foreach (Element el in _children.SelectMany(c => c.GetVisualElements())) {
                 var inlineEl = el as InlineElement;
                 if (inlineEl != null) {
                     if (inlines == null) {
-                        inlines = new InlineSequence { DataContext = DataContext };
+                        inlines = new InlineContainer { DataContext = DataContext };
                         children.Add(inlines);
                     }
                     inlines.Children.Add(inlineEl);

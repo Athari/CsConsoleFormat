@@ -9,6 +9,7 @@ namespace Alba.CsConsoleFormat
         public Document ()
         {
             Resources = new Dictionary<string, object>();
+            VAlign = VerticalAlignment.Top;
         }
     }
 }

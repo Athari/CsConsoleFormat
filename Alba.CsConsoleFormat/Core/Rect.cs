@@ -14,16 +14,36 @@ namespace Alba.CsConsoleFormat
         private int _width;
         private int _height;
 
-        public Rect (int x, int y, int width, int height)
+        public Rect (int x, int y, int width, int height, bool throwOnError = true)
         {
-            if (width < 0)
-                throw new ArgumentException("Width cannot be negative.", "width");
-            if (height < 0)
-                throw new ArgumentException("Height cannot be negative.", "height");
+            if (width < 0) {
+                if (throwOnError)
+                    throw new ArgumentException("Width cannot be negative.", "width");
+                else
+                    width = 0;
+            }
+            if (height < 0) {
+                if (throwOnError)
+                    throw new ArgumentException("Height cannot be negative.", "height");
+                else
+                    height = 0;
+            }
             _x = x;
             _y = y;
             _width = width;
             _height = height;
+        }
+
+        public Rect (Size size)
+        {
+            if (size.IsEmpty) {
+                this = Empty;
+            }
+            else {
+                _x = _y = 0;
+                _width = size.Width;
+                _height = size.Height;
+            }
         }
 
         public static Rect Empty
@@ -119,6 +139,11 @@ namespace Alba.CsConsoleFormat
                     _height = value.Height;
                 }
             }
+        }
+
+        public Rect Deflate (Thickness th, bool throwOnError = false)
+        {
+            return new Rect(Left + th.Left, Top + th.Top, Width - th.Left - th.Right, Height - th.Top - th.Bottom, throwOnError);
         }
 
         public bool Equals (Rect other)

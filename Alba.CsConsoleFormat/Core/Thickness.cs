@@ -23,6 +23,21 @@ namespace Alba.CsConsoleFormat
         public Thickness (int width) : this(width, width, width, width)
         {}
 
+        public int Width
+        {
+            get { return Left + Right; }
+        }
+
+        public int Height
+        {
+            get { return Top + Bottom; }
+        }
+
+        public Size CollapsedThickness
+        {
+            get { return new Size(Left + Right, Top + Bottom); }
+        }
+
         public bool Equals (Thickness other)
         {
             return Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
@@ -35,18 +50,22 @@ namespace Alba.CsConsoleFormat
 
         public override int GetHashCode ()
         {
-            unchecked {
-                int hashCode = Left;
-                hashCode = (hashCode * 397) ^ Top;
-                hashCode = (hashCode * 397) ^ Right;
-                hashCode = (hashCode * 397) ^ Bottom;
-                return hashCode;
-            }
+            return Left.GetHashCode() ^ Top.GetHashCode() ^ Right.GetHashCode() & Bottom.GetHashCode();
         }
 
         public override string ToString ()
         {
             return "{0} {1} {2} {3}".FmtInv(Left, Top, Right, Bottom);
+        }
+
+        public static Thickness Add (Thickness left, Thickness right)
+        {
+            return new Thickness(left.Left + right.Left, left.Top + right.Top, left.Right + right.Right, left.Bottom + right.Bottom);
+        }
+
+        public static Thickness Subtract (Thickness left, Thickness right)
+        {
+            return new Thickness(left.Left - right.Left, left.Top - right.Top, left.Right - right.Right, left.Bottom - right.Bottom);
         }
 
         public static bool operator == (Thickness left, Thickness right)
@@ -57,6 +76,16 @@ namespace Alba.CsConsoleFormat
         public static bool operator != (Thickness left, Thickness right)
         {
             return !left.Equals(right);
+        }
+
+        public static Thickness operator + (Thickness left, Thickness right)
+        {
+            return Add(left, right);
+        }
+
+        public static Thickness operator - (Thickness left, Thickness right)
+        {
+            return Subtract(left, right);
         }
     }
 }
