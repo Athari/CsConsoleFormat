@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat
     {
         public void RenderDocument (Document document)
         {
-            var consoleSize = new Size(Console.BufferWidth, int.MaxValue);
+            var consoleSize = new Size(Console.BufferWidth, Size.Infinity);
             document.GenerateVisualTree();
             document.Measure(consoleSize);
             document.Arrange(new Rect(consoleSize));
@@ -21,9 +21,10 @@ namespace Alba.CsConsoleFormat
         private void RenderElement (BlockElement element, ConsoleRenderBuffer buffer, Vector parentOffset)
         {
             Vector offset = parentOffset + element.ActualOffset;
-            if (element.Visibility == Visibility.Visible && element.RenderSize.Width > 0 && element.RenderSize.Height > 0) {
-                // TODO >>>
-                buffer.Clip = new Rect(element.RenderSize).Offset(offset);
+            if (element.Visibility == Visibility.Visible && !element.RenderSize.IsEmpty) {
+                /*if (element is Line)
+                    Debugger.Break();*/
+                buffer.Clip = new Rect(element.RenderSize).Intersect(element.LayoutClip).Offset(offset);
                 buffer.Offset = offset;
                 element.Render(buffer);
 

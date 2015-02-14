@@ -92,7 +92,7 @@
     <Compile Include="Elements\Collections\ElementCollection.cs" />
     <Compile Include="Elements\Document.cs" />
     <Compile Include="Elements\Base\Element.cs" />
-    <Compile Include="Elements\Para.cs" />
+    <Compile Include="Elements\Div.cs" />
     <Compile Include="Elements\Span.cs" />
   </ItemGroup>
   <ItemGroup>

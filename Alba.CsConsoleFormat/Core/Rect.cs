@@ -2,13 +2,12 @@
 using System.ComponentModel;
 using Alba.CsConsoleFormat.Framework.Text;
 
+// TODO Make sure separate Rect.Empty values is actually needed, also check other core values
 namespace Alba.CsConsoleFormat
 {
     [TypeConverter (typeof(RectConverter))]
     public struct Rect : IEquatable<Rect>
     {
-        private static readonly Rect _Empty = new Rect { _x = int.MaxValue, _y = int.MaxValue, _width = int.MinValue, _height = int.MinValue };
-
         private int _x;
         private int _y;
         private int _width;
@@ -35,52 +34,46 @@ namespace Alba.CsConsoleFormat
         }
 
         public Rect (Vector position, Size size)
-        {
-            this = size.IsEmpty ? Empty : new Rect(position.X, position.Y, size.Width, size.Height);
-        }
+            : this(position.X, position.Y, size.Width, size.Height)
+        {}
 
         public Rect (Size size)
         {
-            if (size.IsEmpty) {
-                this = Empty;
-            }
-            else {
-                _x = _y = 0;
-                _width = size.Width;
-                _height = size.Height;
-            }
+            _x = _y = 0;
+            _width = size.Width;
+            _height = size.Height;
+        }
+
+        public static Rect FromBounds (int left, int top, int right, int bottom, bool throwOnError = true)
+        {
+            return new Rect(left, top, right - left, bottom - top, throwOnError);
         }
 
         public static Rect Empty
         {
-            get { return _Empty; }
+            get { return new Rect(0, 0, 0, 0); }
         }
 
         public bool IsEmpty
         {
-            get { return Width < 0; }
+            get { return Width == 0 || Height == 0; }
+        }
+
+        public bool IsInfinite
+        {
+            get { return Width == Size.Infinity || Height == Size.Infinity; }
         }
 
         public int X
         {
             get { return _x; }
-            set
-            {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty rect.");
-                _x = value;
-            }
+            set { _x = value; }
         }
 
         public int Y
         {
             get { return _y; }
-            set
-            {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty rect.");
-                _y = value;
-            }
+            set { _y = value; }
         }
 
         public int Width
@@ -88,8 +81,6 @@ namespace Alba.CsConsoleFormat
             get { return _width; }
             set
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty rect.");
                 if (value < 0)
                     throw new ArgumentException("Width cannot be negative.", "value");
                 _width = value;
@@ -101,8 +92,6 @@ namespace Alba.CsConsoleFormat
             get { return _height; }
             set
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty rect.");
                 if (value < 0)
                     throw new ArgumentException("Height cannot be negative.", "value");
                 _height = value;
@@ -121,34 +110,27 @@ namespace Alba.CsConsoleFormat
 
         public int Right
         {
-            get { return IsEmpty ? int.MinValue : X + Width; }
+            get { return X + Width; }
         }
 
         public int Bottom
         {
-            get { return IsEmpty ? int.MinValue : Y + Height; }
+            get { return Y + Height; }
         }
 
         public Size Size
         {
-            get { return IsEmpty ? Size.Empty : new Size(Width, Height); }
+            get { return new Size(Width, Height); }
             set
             {
-                if (value.IsEmpty) {
-                    this = Empty;
-                }
-                else {
-                    if (IsEmpty)
-                        throw new InvalidOperationException("Cannot modify empty rect.");
-                    Width = value.Width;
-                    Height = value.Height;
-                }
+                Width = value.Width;
+                Height = value.Height;
             }
         }
 
         public bool Contains (Point point)
         {
-            return !IsEmpty && X <= point.X && point.X < Right && Y <= point.Y && point.Y < Bottom;
+            return X <= point.X && point.X < Right && Y <= point.Y && point.Y < Bottom;
         }
 
         public bool Contains (int x, int y)
@@ -158,17 +140,42 @@ namespace Alba.CsConsoleFormat
 
         public bool IntersectsHorizontalLine (int y)
         {
-            return !IsEmpty && Y <= y && y < Bottom;
+            return Y <= y && y < Bottom;
         }
 
         public bool IntersectsVerticalLine (int x)
         {
-            return !IsEmpty && X <= x && x < Right;
+            return X <= x && x < Right;
+        }
+
+        public bool IntersectsWith (Rect rect)
+        {
+            return Left <= rect.Right && Right >= rect.Left && Top <= rect.Bottom && Bottom >= rect.Top;
         }
 
         public Rect Deflate (Thickness th, bool throwOnError = false)
         {
             return new Rect(Left + th.Left, Top + th.Top, Width - th.Left - th.Right, Height - th.Top - th.Bottom, throwOnError);
+        }
+
+        public Rect Deflate (Size size, bool throwOnError = false)
+        {
+            return new Rect(Left + size.Width, Top + size.Height, Width - size.Width * 2, Height - size.Height * 2, throwOnError);
+        }
+
+        public Rect Inflate (Thickness th, bool throwOnError = false)
+        {
+            return new Rect(Left - th.Left, Top - th.Top, Width + th.Left + th.Right, Height + th.Top + th.Bottom, throwOnError);
+        }
+
+        public Rect Inflate (Size size, bool throwOnError = false)
+        {
+            return new Rect(Left - size.Width, Top - size.Height, Width + size.Width * 2, Height + size.Height * 2, throwOnError);
+        }
+
+        public Rect Intersect (Rect rect)
+        {
+            return FromBounds(Math.Max(Left, rect.Left), Math.Max(Top, rect.Top), Math.Min(Right, rect.Right), Math.Min(Bottom, rect.Bottom), false);
         }
 
         public Rect Offset (Vector offset)
@@ -188,12 +195,12 @@ namespace Alba.CsConsoleFormat
 
         public override int GetHashCode ()
         {
-            return IsEmpty ? 0 : X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();
         }
 
         public override string ToString ()
         {
-            return IsEmpty ? "Empty" : "{0} {1} {2} {3}".FmtInv(X, Y, Width, Height);
+            return "{0} {1} {2} {3}".FmtInv(X, Y, Width, Height);
         }
 
         public static bool operator == (Rect left, Rect right)

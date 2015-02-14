@@ -157,7 +157,7 @@ namespace Alba.CsConsoleFormat
 
         public void ResetClip ()
         {
-            Clip = new Rect(0, 0, Width, int.MaxValue);
+            Clip = new Rect(0, 0, Width, Size.Infinity);
         }
 
         public void ApplyForegroundColorMap (int x, int y, int w, int h,

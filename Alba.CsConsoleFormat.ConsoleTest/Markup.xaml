@@ -6,8 +6,8 @@
     <Document.Resources>
         <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
     </Document.Resources>
-    <Border Stroke="1 2, Single Wide" Color="Yellow" Padding="1 0">
-        <Para TextAlign="Center" Color="Gray">
+    <Border Stroke="1 2, Single Wide" Color="Yellow" BgColor="Blue" Padding="1 0" Margin="1">
+        <Div TextAlign="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0">
             <Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}"/><Br/>
             <Span Text="SubSubTitle"/>
@@ -16,39 +16,32 @@
             <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>
-        </Para>
+        </Div>
     </Border>
-    <Stack Orientation="Horizontal">
+    <Stack Orientation="Horizontal" Margin="1 0">
         <Border Padding="0 0 1 0" Color="Green">
             <Repeater Items="{Get Items}">
-                <Para>
+                <Div>
                     <Span Text="{Get Id}"/>
                     <Span Text=" = "/>
                     <Span Text="{Get Name}"/>
-                </Para>
+                </Div>
                 <Repeater Items="{Get SubItems}">
-                    <Para>
+                    <Div>
                         <Span Text="  "/>
                         <Span Text="{Get Id}"/>
                         <Span Text=" = "/>
                         <Span Text="{Get Name}"/>
-                    </Para>
+                    </Div>
                 </Repeater>
             </Repeater>
         </Border>
         <Border Color="Red">
             <Repeater Items="{Get Items}">
-                <Para>
+                <Div>
                     <Span Text="{Get Value}"/>
-                </Para>
+                </Div>
             </Repeater>
         </Border>
     </Stack>
-    <!--<Para Align="{Get A, Element=a}"/>
-    <Para x:Name="a" Color="Red"> red </Para>
-    <x:Reference Name="a"/>
-    <Para BgColor="DarkBlue">
-        <Span Text="q" Color="Yellow"/>
-        w
-    </Para>-->
 </Document>

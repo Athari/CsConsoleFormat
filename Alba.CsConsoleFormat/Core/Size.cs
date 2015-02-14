@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat
     [TypeConverter (typeof(SizeConverter))]
     public struct Size : IEquatable<Size>
     {
-        private static readonly Size _Empty = new Size { _width = int.MinValue, _height = int.MinValue };
+        public const int Infinity = Int32.MaxValue;
 
         private int _width;
         private int _height;
@@ -32,17 +32,17 @@ namespace Alba.CsConsoleFormat
 
         public static Size Empty
         {
-            get { return _Empty; }
+            get { return new Size(0, 0); }
         }
 
         public bool IsEmpty
         {
-            get { return Width < 0; }
+            get { return Width == 0 || Height == 0; }
         }
 
         public bool IsInfinite
         {
-            get { return Width == int.MaxValue || Height == int.MaxValue; }
+            get { return Width == Infinity || Height == Infinity; }
         }
 
         public int Width
@@ -50,8 +50,6 @@ namespace Alba.CsConsoleFormat
             get { return _width; }
             set
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty size.");
                 if (value < 0)
                     throw new ArgumentException("Width cannot be negative.", "value");
                 _width = value;
@@ -63,8 +61,6 @@ namespace Alba.CsConsoleFormat
             get { return _height; }
             set
             {
-                if (IsEmpty)
-                    throw new InvalidOperationException("Cannot modify empty size.");
                 if (value < 0)
                     throw new ArgumentException("Height cannot be negative.", "value");
                 _height = value;
@@ -83,12 +79,12 @@ namespace Alba.CsConsoleFormat
 
         public override int GetHashCode ()
         {
-            return IsEmpty ? 0 : Width.GetHashCode() ^ Height.GetHashCode();
+            return Width.GetHashCode() ^ Height.GetHashCode();
         }
 
         public override string ToString ()
         {
-            return IsEmpty ? "Empty" : "{0} {1}".FmtInv(_width, _height);
+            return "{0} {1}".FmtInv(_width, _height);
         }
 
         public static Size Add (Size left, Size right)
@@ -102,6 +98,11 @@ namespace Alba.CsConsoleFormat
         }
 
         public static Size Subtract (Size left, Size right, bool throwOnError = false)
+        {
+            return new Size(left.Width - right.Width, left.Height - right.Height, throwOnError);
+        }
+
+        public static Size Subtract (Size left, Thickness right, bool throwOnError = false)
         {
             return new Size(left.Width - right.Width, left.Height - right.Height, throwOnError);
         }
@@ -147,6 +148,11 @@ namespace Alba.CsConsoleFormat
         }
 
         public static Size operator - (Size left, Size right)
+        {
+            return Subtract(left, right);
+        }
+
+        public static Size operator - (Size left, Thickness right)
         {
             return Subtract(left, right);
         }

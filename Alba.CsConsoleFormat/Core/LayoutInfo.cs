@@ -2,13 +2,12 @@
 {
     internal class LayoutInfo
     {
-        public Size measureArgument;
-        public Size unclippedDesiredSize;
-        public Size desiredSize;
-        public Rect renderSlotRect;
-        public Size renderSize;
-        public Rect layoutClip;
-        public Vector actualOffset;
+        public Vector ActualOffset { get; set; }
+        public Size DesiredSize { get; set; }
+        public Rect LayoutClip { get; set; }
+        public Size RenderSize { get; set; }
+        public Rect RenderSlotRect { get; set; }
+        public Size UnclippedDesiredSize { get; set; }
 
         public LayoutInfo Clone ()
         {

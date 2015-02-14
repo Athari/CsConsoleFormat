@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xaml;
 
 namespace Alba.CsConsoleFormat.ConsoleTest
@@ -16,6 +17,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private void Run ()
         {
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
+
             var doc = ReadXaml<Document>(new Data {
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
@@ -70,21 +74,36 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             buffer.DrawString(15, 16, ConsoleColor.White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
-            buffer.RenderToConsole();
+            //buffer.RenderToConsole();
 
             /*Console.WriteLine(Console.OutputEncoding);
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.Unicode;
             Console.WriteLine("■▬▲►▼◄");
             Console.WriteLine("▀▄█▌▐");
             Console.WriteLine("♠♣♥♦");
             Console.WriteLine("☺☻☼♀♂♫");
             Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
+            /*foreach (EncodingInfo encoding in Encoding.GetEncodings()) {
+                try {
+                    Console.OutputEncoding = encoding.GetEncoding();
+                    Console.WriteLine("{0,-10}{1,-20}«»‘’‚‛“”„‟‹›", encoding.CodePage, encoding.Name);
+                }
+                catch {
+                    Console.WriteLine("{0,-10}{1,-20}FAILED", encoding.CodePage, encoding.Name);
+                }
+            }*/
+            /*for (int i = 1; i < 10000; i += 10) {
+                var sb = new StringBuilder();
+                for (int j = 0; j < 10; j++)
+                    sb.AppendFormat("{0,-6}{1} ", (i + j), (char)(i + j));
+                Console.Write(sb);
+            }*/
         }
 
         private T ReadXaml<T> (object dataContext) where T : Element, new()
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
-                //return (Document)XamlServices.Load(resStream);
+                //return (T)XamlServices.Load(resStream);
                 //int pad = 1;
                 var context = new XamlSchemaContext(new[] {
                     typeof(Document).Assembly,

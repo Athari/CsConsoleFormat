@@ -14,7 +14,6 @@
         public Line ()
         {
             Stroke = LineWidth.Single;
-            Align = HorizontalAlignment.Stretch;
         }
 
         protected override Size MeasureOverride (Size availableSize)
