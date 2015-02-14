@@ -41,6 +41,8 @@ namespace Alba.CsConsoleFormat
 
         public void DrawHorizontalLine (int y, int x1, int x2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
+            if (width == LineWidth.None)
+                return;
             OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
@@ -54,6 +56,8 @@ namespace Alba.CsConsoleFormat
 
         public void DrawVerticalLine (int x, int y1, int y2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
+            if (width == LineWidth.None)
+                return;
             OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
             if (!ClipVerticalLine(x, ref y1, ref y2))
                 return;

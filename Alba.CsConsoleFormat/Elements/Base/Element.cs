@@ -161,7 +161,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        protected virtual IEnumerable<Element> GetVisualElements ()
+        public virtual IEnumerable<Element> GetVisualElements ()
         {
             yield return this;
         }
@@ -182,6 +182,25 @@ namespace Alba.CsConsoleFormat
         }
 
         public Element Clone ()
+        {
+            Element clone = CreateInstance();
+            clone.CloneOverride(this);
+            return clone;
+        }
+
+        protected virtual void CloneOverride (Element source)
+        {
+            if (HasChildren) {
+                _children = new ElementCollection(source);
+                foreach (Element child in source._children) {
+                    Element childClone = child.Clone();
+                    childClone.DataContext = null;
+                    _children.Add(childClone);
+                }
+            }
+        }
+
+        protected virtual Element CreateInstance ()
         {
             return (Element)MemberwiseClone();
         }

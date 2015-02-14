@@ -18,20 +18,32 @@
             <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>
         </Para>
     </Border>
-    <Para>
-        <Repeater Items="{Get Items}">
-            <Para>
-                <Span Text="{Get Id}"/>
-                <Span Text=" = "/>
-                <Span Text="{Get Name}"/>
-            </Para>
-        </Repeater>
-        <Repeater Items="{Get Items}">
-            <Para>
-                <Span Text="{Get Value}"/>
-            </Para>
-        </Repeater>
-    </Para>
+    <Stack Orientation="Horizontal">
+        <Border Padding="0 0 1 0" Color="Green">
+            <Repeater Items="{Get Items}">
+                <Para>
+                    <Span Text="{Get Id}"/>
+                    <Span Text=" = "/>
+                    <Span Text="{Get Name}"/>
+                </Para>
+                <Repeater Items="{Get SubItems}">
+                    <Para>
+                        <Span Text="  "/>
+                        <Span Text="{Get Id}"/>
+                        <Span Text=" = "/>
+                        <Span Text="{Get Name}"/>
+                    </Para>
+                </Repeater>
+            </Repeater>
+        </Border>
+        <Border Color="Red">
+            <Repeater Items="{Get Items}">
+                <Para>
+                    <Span Text="{Get Value}"/>
+                </Para>
+            </Repeater>
+        </Border>
+    </Stack>
     <!--<Para Align="{Get A, Element=a}"/>
     <Para x:Name="a" Color="Red"> red </Para>
     <x:Reference Name="a"/>

@@ -9,5 +9,10 @@
         public Size renderSize;
         public Rect layoutClip;
         public Vector actualOffset;
+
+        public LayoutInfo Clone ()
+        {
+            return (LayoutInfo)MemberwiseClone();
+        }
     }
 }

@@ -22,7 +22,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Guid = Guid.NewGuid(),
                 Date = DateTime.Now,
                 Items = new List<DataItem> {
-                    new DataItem { Id = 1, Name = "Name 1", Value = "Value 1" },
+                    new DataItem {
+                        Id = 1, Name = "Name 1", Value = "Value 1",
+                        SubItems = new List<DataItem> {
+                            new DataItem { Id = 11, Name = "Name 1.1", Value = "Value 1.1" },
+                            new DataItem { Id = 12, Name = "Name 1.2", Value = "Value 1.2" },
+                        }
+                    },
                     new DataItem { Id = 2, Name = "Name 2", Value = "Value 2" },
                 }
             });
@@ -79,7 +85,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
                 //return (Document)XamlServices.Load(resStream);
-                int pad = 1;
+                //int pad = 1;
                 var context = new XamlSchemaContext(new[] {
                     typeof(Document).Assembly,
                     typeof(Console).Assembly,
@@ -92,8 +98,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 };
                 var writerSettings = new XamlObjectWriterSettings {
                     RootObjectInstance = new T { DataContext = dataContext },
-                    AfterBeginInitHandler = (sender, args) => Console.WriteLine(new string(' ', pad++ * 2) + "<{0}>", args.Instance),
-                    AfterEndInitHandler = (sender, args) => Console.WriteLine(new string(' ', --pad * 2) + "</{0}>", args.Instance),
+                    //AfterBeginInitHandler = (sender, args) => Console.WriteLine(new string(' ', pad++ * 2) + "<{0}>", args.Instance),
+                    //AfterEndInitHandler = (sender, args) => Console.WriteLine(new string(' ', --pad * 2) + "</{0}>", args.Instance),
                 };
                 using (var xamlReader = new XamlXmlReader(resStream, context, readerSettings))
                 using (var xamlWriter = new XamlObjectWriter(xamlReader.SchemaContext, writerSettings)) {
@@ -123,6 +129,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public int Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+        public List<DataItem> SubItems { get; set; }
 
         public override string ToString ()
         {

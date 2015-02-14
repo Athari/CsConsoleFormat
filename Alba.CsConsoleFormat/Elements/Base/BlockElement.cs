@@ -5,7 +5,7 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class BlockElement : Element
     {
-        private readonly LayoutInfo layoutInfo = new LayoutInfo();
+        private LayoutInfo layoutInfo = new LayoutInfo();
 
         [TypeConverter (typeof(LengthConverter))]
         public int? Width { get; set; }
@@ -219,6 +219,13 @@ namespace Alba.CsConsoleFormat
         {
             if (BgColor != null)
                 buffer.FillBackgroundRectangle(0, 0, RenderSize.Width, RenderSize.Height, BgColor.Value);
+        }
+
+        protected override void CloneOverride (Element sourceElement)
+        {
+            var source = (BlockElement)sourceElement;
+            base.CloneOverride(source);
+            layoutInfo = source.layoutInfo.Clone();
         }
 
         private static int MinMax (int value, int min, int max)
