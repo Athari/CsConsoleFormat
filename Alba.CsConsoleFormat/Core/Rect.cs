@@ -171,6 +171,11 @@ namespace Alba.CsConsoleFormat
             return new Rect(Left + th.Left, Top + th.Top, Width - th.Left - th.Right, Height - th.Top - th.Bottom, throwOnError);
         }
 
+        public Rect Offset (Vector offset)
+        {
+            return new Rect(X + offset.X, Y + offset.Y, Width, Height);
+        }
+
         public bool Equals (Rect other)
         {
             return X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;

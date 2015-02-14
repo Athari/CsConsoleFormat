@@ -15,6 +15,9 @@ namespace Alba.CsConsoleFormat
     [RuntimeNameProperty ("Name"), ContentProperty ("Children"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
     public abstract class Element : ISupportInitialize
     {
+        private const ConsoleColor DefaultColor = ConsoleColor.White;
+        private const ConsoleColor DefaultBgColor = ConsoleColor.Black;
+
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpression> _getters;
         private ElementCollection _children;
@@ -84,6 +87,26 @@ namespace Alba.CsConsoleFormat
             get { return this.TraverseList(e => e.Parent); }
         }
 
+        internal ConsoleColor EffectiveColor
+        {
+            get
+            {
+                Element elWithColor = Parents.FirstOrDefault(e => e.Color != null);
+                // ReSharper disable once PossibleInvalidOperationException
+                return elWithColor != null ? elWithColor.Color.Value : DefaultColor;
+            }
+        }
+
+        internal ConsoleColor EffectiveBgColor
+        {
+            get
+            {
+                Element elWithColor = Parents.FirstOrDefault(e => e.BgColor != null);
+                // ReSharper disable once PossibleInvalidOperationException
+                return elWithColor != null ? elWithColor.BgColor.Value : DefaultBgColor;
+            }
+        }
+
         internal CultureInfo EffectiveCulture
         {
             get
@@ -103,8 +126,7 @@ namespace Alba.CsConsoleFormat
                 var inlineEl = el as InlineElement;
                 if (inlineEl != null) {
                     if (inlines == null) {
-                        BlockElement parentBlockEl = Parents.OfType<BlockElement>().First();
-                        inlines = new InlineContainer { DataContext = DataContext, TextAlign = parentBlockEl.TextAlign };
+                        inlines = new InlineContainer(this);
                         children.Add(inlines);
                     }
                     inlines.Children.Add(inlineEl);

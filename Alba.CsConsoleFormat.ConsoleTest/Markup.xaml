@@ -6,25 +6,30 @@
     <Document.Resources>
         <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
     </Document.Resources>
-    <Border Stroke="1 2, Single Wide">
-        <Para TextAlign="Center">
+    <Border Stroke="1 2, Single Wide" Color="Yellow" Padding="1 0">
+        <Para TextAlign="Center" Color="Gray">
             <Span Text="{Get Title}" Color="White"/><Br/>
-            <Span Text="{Get SubTitle}" Color="Gray"/><Br/>
-            <Span Text="SubSubTitle" Color="Gray" Visibility="Collapsed"/><Br/>
-            <Line Orientation="Horizontal" Stroke="Wide"/>
+            <Span Text="{Get SubTitle}"/><Br/>
+            <Span Text="SubSubTitle"/>
+            <Line Orientation="Horizontal" Stroke="Wide" Margin="5 1" Width="40" Align="Center"/>
             <Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
-            <!--<Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
+            <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>
-            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->
+            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>
         </Para>
     </Border>
     <Para>
         <Repeater Items="{Get Items}">
-            <Span Text="{Get Id}"/>
-            <Span Text="{Get Name}"/>
+            <Para>
+                <Span Text="{Get Id}"/>
+                <Span Text=" = "/>
+                <Span Text="{Get Name}"/>
+            </Para>
         </Repeater>
         <Repeater Items="{Get Items}">
-            <Span Text="{Get Value}"/>
+            <Para>
+                <Span Text="{Get Value}"/>
+            </Para>
         </Repeater>
     </Para>
     <!--<Para Align="{Get A, Element=a}"/>

@@ -18,6 +18,7 @@ namespace Alba.CsConsoleFormat
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Rect Clip { get; set; }
+        public Vector Offset { get; set; }
 
         public ConsoleRenderBuffer (int? width = null)
         {
@@ -40,6 +41,7 @@ namespace Alba.CsConsoleFormat
 
         public void DrawHorizontalLine (int y, int x1, int x2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
+            OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
             ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
@@ -52,12 +54,21 @@ namespace Alba.CsConsoleFormat
 
         public void DrawVerticalLine (int x, int y1, int y2, ConsoleColor color, LineWidth width = LineWidth.Single)
         {
+            OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
             if (!ClipVerticalLine(x, ref y1, ref y2))
                 return;
             for (int iy = y1; iy < y2; iy++) {
                 GetLine(_foreColors, iy)[x] = color;
                 ModifyLineChar(ref GetLine(_lineChars, iy)[x], width, true);
             }
+        }
+
+        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor color, LineThickness thickness)
+        {
+            DrawHorizontalLine(y, x, x + w, color, thickness.Top);
+            DrawHorizontalLine(y + h - 1, x, x + w, color, thickness.Bottom);
+            DrawVerticalLine(x, y, y + h, color, thickness.Left);
+            DrawVerticalLine(x + w - 1, y, y + h, color, thickness.Right);
         }
 
         public void DrawRectangle (int x, int y, int w, int h, ConsoleColor color, LineWidth width = LineWidth.Single)
@@ -70,6 +81,7 @@ namespace Alba.CsConsoleFormat
 
         public void DrawString (int x, int y, ConsoleColor color, string str)
         {
+            OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + str.Length;
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
@@ -84,6 +96,7 @@ namespace Alba.CsConsoleFormat
         public void FillForegroundHorizontalLine (int y, int x1, int x2, ConsoleColor color,
             [ValueProvider (CharsProvider)] char fill)
         {
+            OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
             ConsoleColor[] foreColorsLine = GetLine(_foreColors, y);
@@ -97,6 +110,7 @@ namespace Alba.CsConsoleFormat
         public void FillForegroundVerticalLine (int x, int y1, int y2, ConsoleColor color,
             [ValueProvider (CharsProvider)] char fill)
         {
+            OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
             if (!ClipVerticalLine(x, ref y1, ref y2))
                 return;
             for (int iy = y1; iy < y2; iy++) {
@@ -114,6 +128,7 @@ namespace Alba.CsConsoleFormat
 
         public void FillBackgroundHorizontalLine (int y, int x1, int x2, ConsoleColor color)
         {
+            OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
             ConsoleColor[] backColorsLine = GetLine(_backColors, y);
@@ -123,6 +138,7 @@ namespace Alba.CsConsoleFormat
 
         public void FillBackgroundVerticalLine (int x, int y1, int y2, ConsoleColor color)
         {
+            OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
             if (!ClipVerticalLine(x, ref y1, ref y2))
                 return;
             for (int iy = y1; iy < y2; iy++)
@@ -159,6 +175,7 @@ namespace Alba.CsConsoleFormat
                 throw new ArgumentNullException("colorMap");
             if (colorMap.Length != ColorMaps.ConsoleColorCount)
                 throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.");
+            OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + w, y1 = y, y2 = y + h;
             if (!ClipRectangle(ref x1, ref y1, ref x2, ref y2))
                 return;
@@ -227,6 +244,18 @@ namespace Alba.CsConsoleFormat
             y1 = Math.Max(y1, Clip.Y);
             y2 = Math.Min(y2, Clip.Bottom);
             return x1 < x2 && y1 < y2;
+        }
+
+        private ConsoleRenderBuffer OffsetX (ref int x)
+        {
+            x += Offset.X;
+            return this;
+        }
+
+        private ConsoleRenderBuffer OffsetY (ref int y)
+        {
+            y += Offset.Y;
+            return this;
         }
 
         private LineChar GetLineCharAt (int x, int y)

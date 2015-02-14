@@ -22,5 +22,14 @@
             int width = Stroke.ToCharWidth();
             return Orientation == Orientation.Vertical ? new Size(width, 0) : new Size(0, width);
         }
+
+        public override void Render (ConsoleRenderBuffer buffer)
+        {
+            base.Render(buffer);
+            if (Orientation == Orientation.Vertical)
+                buffer.DrawVerticalLine(0, 0, RenderSize.Height, EffectiveColor, Stroke);
+            else
+                buffer.DrawHorizontalLine(0, 0, RenderSize.Width, EffectiveColor, Stroke);
+        }
     }
 }

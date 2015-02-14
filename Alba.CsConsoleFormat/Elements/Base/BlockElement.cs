@@ -164,9 +164,6 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        public virtual void Render (ConsoleRenderBuffer buffer)
-        {}
-
         private Rect CalculateLayoutClip ()
         {
             return new Rect(-CalculateAlignmentOffset(), CalculateClientSize());
@@ -216,6 +213,12 @@ namespace Alba.CsConsoleFormat
                 offset.Y = 0;
 
             return offset;
+        }
+
+        public virtual void Render (ConsoleRenderBuffer buffer)
+        {
+            if (BgColor != null)
+                buffer.FillBackgroundRectangle(0, 0, RenderSize.Width, RenderSize.Height, BgColor.Value);
         }
 
         private static int MinMax (int value, int min, int max)

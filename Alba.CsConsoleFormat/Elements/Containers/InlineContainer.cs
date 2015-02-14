@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Alba.CsConsoleFormat
 {
     internal class InlineContainer : BlockElement
     {
+        private List<string> actualStrings;
+
+        public InlineContainer (Element source)
+        {
+            DataContext = source.DataContext;
+            Color = source.Color;
+            Parent = source;
+        }
+
         protected override Size MeasureOverride (Size availableSize)
         {
             int width = availableSize.Width;
@@ -13,11 +23,15 @@ namespace Alba.CsConsoleFormat
                 return new Size(0, 0);
 
             var sb = new StringBuilder();
-            foreach (InlineElement child in VisualChildren)
-                sb.Append(child.GeneratedText);
-            IList<string> generatedStrings = sb.Replace("\r", "").ToString().Split('\n');
+            foreach (InlineElement child in VisualChildren.Cast<InlineElement>()) {
+                if (child.Visibility == Visibility.Visible)
+                    sb.Append(child.GeneratedText);
+                else if (child.Visibility == Visibility.Hidden)
+                    sb.Append(new string(' ', child.GeneratedText.Length));
+            }
+            string[] generatedStrings = sb.Replace("\r", "").ToString().Split('\n');
 
-            IList<string> actualStrings = new List<string>();
+            actualStrings = new List<string>();
             int maxLineLength = 0;
             foreach (string generatedString in generatedStrings) {
                 if (generatedString.Length <= width) {
@@ -37,6 +51,14 @@ namespace Alba.CsConsoleFormat
         protected override Size ArrangeOverride (Size finalSize)
         {
             return finalSize;
+        }
+
+        public override void Render (ConsoleRenderBuffer buffer)
+        {
+            // TODO >> Render InlineContainer
+            base.Render(buffer);
+            for (int i = 0; i < actualStrings.Count; i++)
+                buffer.DrawString(0, i, EffectiveColor, actualStrings[i]);
         }
     }
 }
