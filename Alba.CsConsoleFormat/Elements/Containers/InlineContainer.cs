@@ -43,24 +43,67 @@ namespace Alba.CsConsoleFormat
                     curLine.Add(sourceSeg);
                 }
                 else {
-                    var curSeg = InlineSegment.CreateWithBuilder(availableWidth);
-                    foreach (char c in sourceSeg.Text) {
-                        if (TextWrapping == TextWrapping.NoWrap) {
-                            if (c == '\n') {
-                                curLine = new List<InlineSegment>();
-                                _lines.Add(curLine);
-                            }
-                            else if (c != Chars.SoftHyphen && c != Chars.ZeroWidthSpace) {
-                                curSeg.TextBuilder.Append(c);
-                            }
-                        }
+                    if (TextWrapping == TextWrapping.NoWrap) {
+                        AppendTextSegmentNoWrap(ref curLine, sourceSeg, availableWidth);
                     }
-                    if (curSeg.TextBuilder.Length > 0)
-                        curLine.Add(curSeg);
+                    else if (TextWrapping == TextWrapping.CharWrap) {
+                        AppendTextSegmentCharWrap(ref curLine, sourceSeg, availableWidth);
+                    }
                 }
             }
 
             return new Size(_lines.Select(GetLineLength).Max(), _lines.Count);
+        }
+
+        private void AppendTextSegmentNoWrap (ref List<InlineSegment> curLine, InlineSegment sourceSeg, int availableWidth)
+        {
+            var curSeg = InlineSegment.CreateWithBuilder(availableWidth);
+            foreach (char c in sourceSeg.Text) {
+                bool isNewLine = c == '\n';
+                bool isNotZeroWidth = c != Chars.SoftHyphen && c != Chars.ZeroWidthSpace;
+
+                if (isNewLine) {
+                    if (curSeg.TextBuilder.Length > 0) {
+                        curLine.Add(curSeg);
+                        curSeg = InlineSegment.CreateWithBuilder(availableWidth);
+                    }
+                    curLine = new List<InlineSegment>();
+                    _lines.Add(curLine);
+                }
+                else if (isNotZeroWidth) {
+                    curSeg.TextBuilder.Append(c);
+                }
+            }
+            if (curSeg.TextBuilder.Length > 0)
+                curLine.Add(curSeg);
+        }
+
+        private void AppendTextSegmentCharWrap (ref List<InlineSegment> curLine, InlineSegment sourceSeg, int availableWidth)
+        {
+            var curSeg = InlineSegment.CreateWithBuilder(availableWidth);
+            for (int i = 0; i < sourceSeg.Text.Length; i++) {
+                char c = sourceSeg.Text[i];
+                bool isNewLine = c == '\n';
+                bool isNotZeroWidth = c != Chars.SoftHyphen && c != Chars.ZeroWidthSpace;
+
+                if (isNotZeroWidth && curSeg.TextBuilder.Length >= availableWidth) {
+                    i--; // Repeat with this character again.
+                    isNewLine = true;
+                }
+                if (isNewLine) {
+                    if (curSeg.TextBuilder.Length > 0) {
+                        curLine.Add(curSeg);
+                        curSeg = InlineSegment.CreateWithBuilder(availableWidth);
+                    }
+                    curLine = new List<InlineSegment>();
+                    _lines.Add(curLine);
+                }
+                else if (isNotZeroWidth) {
+                    curSeg.TextBuilder.Append(c);
+                }
+            }
+            if (curSeg.TextBuilder.Length > 0)
+                curLine.Add(curSeg);
         }
 
         protected override Size ArrangeOverride (Size finalSize)
