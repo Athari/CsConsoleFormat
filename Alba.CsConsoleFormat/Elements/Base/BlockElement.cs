@@ -208,10 +208,10 @@ namespace Alba.CsConsoleFormat
             VerticalAlignment valign = VAlign;
 
             // This is to degenerate Stretch to Top-Left in case when clipping is about to occur.
-            if (halign == HorizontalAlignment.Stretch && renderSize.Width > clientSize.Width)
+            /*if (halign == HorizontalAlignment.Stretch && renderSize.Width > clientSize.Width)
                 halign = HorizontalAlignment.Left;
             if (valign == VerticalAlignment.Stretch && renderSize.Height > clientSize.Height)
-                valign = VerticalAlignment.Top;
+                valign = VerticalAlignment.Top;*/
 
             if (halign == HorizontalAlignment.Center || halign == HorizontalAlignment.Stretch)
                 offset.X = (clientSize.Width - renderSize.Width) / 2;

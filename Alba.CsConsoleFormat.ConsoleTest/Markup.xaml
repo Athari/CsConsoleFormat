@@ -11,8 +11,10 @@
             <!--<Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}"/><Br/>
             <Span Text="SubSubTitle"/><Br/>-->
-            <Span Color="Yellow">Left<Span Color="Red">Center</Span>Right</Span><Br/>
-            <Span Color="White">Left<Span Color="Cyan" BgColor="DarkCyan">Center</Span>Right</Span>
+            <!--<Span Color="Yellow">Left<Span Color="Red">Center</Span>Right</Span><Br/>
+            <Span Color="White">Left<Span Color="Cyan" BgColor="DarkCyan">Center</Span>Right</Span><Br/>-->
+            <Span Color="Yellow"/>
+            <Span Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
             <Line Orientation="Horizontal" Stroke="Wide" Margin="5 1" Width="40" Align="Center"/>
             <!--<Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>

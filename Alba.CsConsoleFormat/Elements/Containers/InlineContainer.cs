@@ -118,7 +118,8 @@ namespace Alba.CsConsoleFormat
                     BgColor = container.EffectiveBgColor,
                 };
                 _formattingStack.Push(initSegment);
-                Segments = new List<InlineSegment> { initSegment };
+                Segments = new List<InlineSegment>();
+                AddFormattingSegment();
             }
 
             public void AppendText (string text)
@@ -147,8 +148,8 @@ namespace Alba.CsConsoleFormat
             [SuppressMessage ("ReSharper", "PossibleInvalidOperationException", Justification = "Value is guaranteed not be not null.")]
             private void AddFormattingSegment ()
             {
-                InlineSegment lastSegment = Segments.Last();
-                if (lastSegment.Text != null) {
+                InlineSegment lastSegment = Segments.LastOrDefault();
+                if (lastSegment == null || lastSegment.Text != null) {
                     lastSegment = new InlineSegment();
                     Segments.Add(lastSegment);
                 }
