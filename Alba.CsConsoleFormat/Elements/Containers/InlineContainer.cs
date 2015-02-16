@@ -22,89 +22,18 @@ namespace Alba.CsConsoleFormat
 
         protected override Size MeasureOverride (Size availableSize)
         {
-            int availableWidth = availableSize.Width;
-            if (availableWidth == 0)
+            if (availableSize.Width == 0)
                 return new Size(0, 0);
-
-            _lines = new List<List<InlineSegment>>();
 
             if (_inlineSequence == null) {
                 _inlineSequence = new InlineSequence(this);
                 foreach (InlineElement child in VisualChildren.Cast<InlineElement>())
                     child.GenerateSequence(_inlineSequence);
             }
-
-            var curLine = new List<InlineSegment>();
-            bool isEOL = false;
-            _lines.Add(curLine);
-
-            foreach (InlineSegment sourceSeg in _inlineSequence.Segments) {
-                if (sourceSeg.Color != null || sourceSeg.BgColor != null) {
-                    curLine.Add(sourceSeg);
-                }
-                else {
-                    if (TextWrapping == TextWrapping.NoWrap) {
-                        AppendTextSegmentNoWrap(ref curLine, sourceSeg, availableWidth);
-                    }
-                    else if (TextWrapping == TextWrapping.CharWrap) {
-                        AppendTextSegmentCharWrap(ref curLine, sourceSeg, availableWidth);
-                    }
-                }
-            }
-
+            _lines = new WrapContext(this, availableSize).WrapSegments();
             return new Size(_lines.Select(GetLineLength).Max(), _lines.Count);
         }
 
-        private void AppendTextSegmentNoWrap (ref List<InlineSegment> curLine, InlineSegment sourceSeg, int availableWidth)
-        {
-            var curSeg = InlineSegment.CreateWithBuilder(availableWidth);
-            foreach (char c in sourceSeg.Text) {
-                bool isNewLine = c == '\n';
-                bool isNotZeroWidth = c != Chars.SoftHyphen && c != Chars.ZeroWidthSpace;
-
-                if (isNewLine) {
-                    if (curSeg.TextBuilder.Length > 0) {
-                        curLine.Add(curSeg);
-                        curSeg = InlineSegment.CreateWithBuilder(availableWidth);
-                    }
-                    curLine = new List<InlineSegment>();
-                    _lines.Add(curLine);
-                }
-                else if (isNotZeroWidth) {
-                    curSeg.TextBuilder.Append(c);
-                }
-            }
-            if (curSeg.TextBuilder.Length > 0)
-                curLine.Add(curSeg);
-        }
-
-        private void AppendTextSegmentCharWrap (ref List<InlineSegment> curLine, InlineSegment sourceSeg, int availableWidth)
-        {
-            var curSeg = InlineSegment.CreateWithBuilder(availableWidth);
-            for (int i = 0; i < sourceSeg.Text.Length; i++) {
-                char c = sourceSeg.Text[i];
-                bool isNewLine = c == '\n';
-                bool isNotZeroWidth = c != Chars.SoftHyphen && c != Chars.ZeroWidthSpace;
-
-                if (isNotZeroWidth && curSeg.TextBuilder.Length >= availableWidth) {
-                    i--; // Repeat with this character again.
-                    isNewLine = true;
-                }
-                if (isNewLine) {
-                    if (curSeg.TextBuilder.Length > 0) {
-                        curLine.Add(curSeg);
-                        curSeg = InlineSegment.CreateWithBuilder(availableWidth);
-                    }
-                    curLine = new List<InlineSegment>();
-                    _lines.Add(curLine);
-                }
-                else if (isNotZeroWidth) {
-                    curSeg.TextBuilder.Append(c);
-                }
-            }
-            if (curSeg.TextBuilder.Length > 0)
-                curLine.Add(curSeg);
-        }
 
         protected override Size ArrangeOverride (Size finalSize)
         {
@@ -145,7 +74,101 @@ namespace Alba.CsConsoleFormat
 
         private static int GetLineLength (List<InlineSegment> line)
         {
-            return line.Sum(s => s.TextBuilder != null ? s.TextBuilder.Length : s.Text != null ? s.Text.Length : 0);
+            return line.Sum(s => s.TextLength);
+        }
+
+        private class WrapContext
+        {
+            private readonly InlineContainer _container;
+            private readonly Size _availableSize;
+            private List<List<InlineSegment>> _lines;
+            private List<InlineSegment> _curLine;
+            private InlineSegment _curSeg;
+
+            public WrapContext (InlineContainer container, Size availableSize)
+            {
+                _container = container;
+                _availableSize = availableSize;
+            }
+
+            private int AvailableWidth
+            {
+                get { return _availableSize.Width; }
+            }
+
+            public List<List<InlineSegment>> WrapSegments ()
+            {
+                _curLine = new List<InlineSegment>();
+                _lines = new List<List<InlineSegment>> { _curLine };
+
+                foreach (InlineSegment sourceSeg in _container._inlineSequence.Segments) {
+                    if (sourceSeg.Color != null || sourceSeg.BgColor != null) {
+                        _curLine.Add(sourceSeg);
+                    }
+                    else {
+                        TextWrapping textWrapping = _container.TextWrapping;
+                        if (textWrapping == TextWrapping.NoWrap)
+                            AppendTextSegmentNoWrap(sourceSeg);
+                        else if (textWrapping == TextWrapping.CharWrap)
+                            AppendTextSegmentCharWrap(sourceSeg);
+                        else if (textWrapping == TextWrapping.WordWrap)
+                            AppendTextSegmentWordWrap(sourceSeg);
+                    }
+                }
+
+                return _lines;
+            }
+
+            private void AppendTextSegmentNoWrap (InlineSegment sourceSeg)
+            {
+                _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
+                foreach (CharInfo c in sourceSeg.Text.Select(CharInfo.From)) {
+                    if (c.IsNewLine)
+                        StartNewLine();
+                    else if (c.IsZeroWidth)
+                        _curSeg.TextBuilder.Append(c);
+                }
+                AppendLastSegment();
+            }
+
+            private void AppendTextSegmentCharWrap (InlineSegment sourceSeg)
+            {
+                _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
+                for (int i = 0; i < sourceSeg.Text.Length; i++) {
+                    CharInfo c = CharInfo.From(sourceSeg.Text[i]);
+
+                    if (c.IsZeroWidth && _curSeg.TextLength >= AvailableWidth) {
+                        i--; // Repeat with this character again.
+                        c = CharInfo.From('\n');
+                    }
+                    if (c.IsNewLine)
+                        StartNewLine();
+                    else if (c.IsZeroWidth)
+                        _curSeg.TextBuilder.Append(c);
+                }
+                AppendLastSegment();
+            }
+
+            private void AppendTextSegmentWordWrap (InlineSegment sourceSeg)
+            {
+                throw new NotImplementedException();
+            }
+
+            private void StartNewLine ()
+            {
+                if (_curSeg.TextLength > 0) {
+                    _curLine.Add(_curSeg);
+                    _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
+                }
+                _curLine = new List<InlineSegment>();
+                _lines.Add(_curLine);
+            }
+
+            private void AppendLastSegment ()
+            {
+                if (_curSeg.TextLength > 0)
+                    _curLine.Add(_curSeg);
+            }
         }
 
         private class InlineSequence : IInlineSequence
@@ -208,6 +231,11 @@ namespace Alba.CsConsoleFormat
             public string Text { get; private set; }
             public StringBuilder TextBuilder { get; private set; }
 
+            public int TextLength
+            {
+                get { return TextBuilder != null ? TextBuilder.Length : Text != null ? Text.Length : 0; }
+            }
+
             public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? bgColor)
             {
                 return new InlineSegment { Color = color, BgColor = bgColor };
@@ -231,6 +259,36 @@ namespace Alba.CsConsoleFormat
                     return Text;
                 else
                     return (Color != null ? Color.ToString() : "null") + " " + (BgColor != null ? BgColor.ToString() : "null");
+            }
+        }
+
+        private struct CharInfo
+        {
+            private readonly char _c;
+
+            private CharInfo (char c)
+            {
+                _c = c;
+            }
+
+            public bool IsNewLine
+            {
+                get { return _c == '\n'; }
+            }
+
+            public bool IsZeroWidth
+            {
+                get { return _c != Chars.SoftHyphen && _c != Chars.ZeroWidthSpace; }
+            }
+
+            public static CharInfo From (char c)
+            {
+                return new CharInfo(c);
+            }
+
+            public static implicit operator char (CharInfo self)
+            {
+                return self._c;
             }
         }
     }
