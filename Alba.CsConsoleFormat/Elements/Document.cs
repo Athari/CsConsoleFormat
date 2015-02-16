@@ -2,7 +2,7 @@
 
 namespace Alba.CsConsoleFormat
 {
-    public class Document : BlockElement
+    public class Document : Div
     {
         public Dictionary<string, object> Resources { get; private set; }
 
