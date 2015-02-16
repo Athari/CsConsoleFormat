@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private void Run ()
         {
-            Console.OutputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
 
             var doc = ReadXaml<Document>(new Data {
@@ -76,13 +76,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.RenderToConsole();
 
-            /*Console.WriteLine(Console.OutputEncoding);
-            Console.OutputEncoding = Encoding.Unicode;
+            Console.WriteLine(Console.OutputEncoding);
+            Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("■▬▲►▼◄");
             Console.WriteLine("▀▄█▌▐");
             Console.WriteLine("♠♣♥♦");
             Console.WriteLine("☺☻☼♀♂♫");
-            Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
+            Console.WriteLine("«»‘’‚‛“”„‟‹›");
             /*foreach (EncodingInfo encoding in Encoding.GetEncodings()) {
                 try {
                     Console.OutputEncoding = encoding.GetEncoding();

@@ -12,5 +12,10 @@
         {
             get { return "\n"; }
         }
+
+        public override void GenerateSequence (IInlineSequence sequence)
+        {
+            sequence.AppendText("\n");
+        }
     }
 }

@@ -7,18 +7,20 @@
         <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
     </Document.Resources>
     <Border Stroke="1 2, Single Wide" Color="Yellow" BgColor="Blue" Padding="1 0" Margin="1">
-        <Div TextAlign="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0">
-            <Span Text="{Get Title}" Color="White"/><Br/>
+        <Div TextAlign="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0" TextWrapping="NoWrap">
+            <!--<Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}"/><Br/>
-            <Span Text="SubSubTitle"/>
+            <Span Text="SubSubTitle"/><Br/>-->
+            <Span Color="Yellow">Left<Span Color="Red">Center</Span>Right</Span><Br/>
+            <Span Color="White">Left<Span Color="Cyan" BgColor="DarkCyan">Center</Span>Right</Span>
             <Line Orientation="Horizontal" Stroke="Wide" Margin="5 1" Width="40" Align="Center"/>
-            <Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
+            <!--<Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>
-            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>
+            <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->
         </Div>
     </Border>
-    <Stack Orientation="Horizontal" Margin="1 0">
+    <!--<Stack Orientation="Horizontal" Margin="1 0">
         <Border Padding="0 0 1 0" Color="Green">
             <Repeater Items="{Get Items}">
                 <Div>
@@ -43,5 +45,5 @@
                 </Div>
             </Repeater>
         </Border>
-    </Stack>
+    </Stack>-->
 </Document>

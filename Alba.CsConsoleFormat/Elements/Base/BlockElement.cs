@@ -27,6 +27,8 @@ namespace Alba.CsConsoleFormat
 
         public HorizontalAlignment TextAlign { get; set; }
 
+        public TextWrapping TextWrapping { get; set; }
+
         public Thickness Margin { get; set; }
 
         protected BlockElement ()
@@ -37,6 +39,8 @@ namespace Alba.CsConsoleFormat
             MaxHeight = Size.Infinity;
             Align = HorizontalAlignment.Stretch;
             VAlign = VerticalAlignment.Stretch;
+            TextAlign = HorizontalAlignment.Left;
+            TextWrapping = TextWrapping.WordWrap;
         }
 
         /// <summary>Render area width.</summary><seealso cref="RenderSize"/>

@@ -49,6 +49,7 @@
     <Compile Include="Converters\VectorConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
+    <Compile Include="Core\Enums\TextWrapping.cs" />
     <Compile Include="Core\Enums\Visibility.cs" />
     <Compile Include="Core\LayoutInfo.cs" />
     <Compile Include="Core\Point.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Elements\Border.cs" />
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Core\Enums\Orientation.cs" />
+    <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
     <Compile Include="Elements\Line.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />

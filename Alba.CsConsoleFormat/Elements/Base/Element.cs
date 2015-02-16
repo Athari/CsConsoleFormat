@@ -124,25 +124,39 @@ namespace Alba.CsConsoleFormat
             InlineContainer inlines = null;
             foreach (Element el in _children.SelectMany(c => c.GetVisualElements())) {
                 var inlineEl = el as InlineElement;
+                // Add inline child.
                 if (inlineEl != null) {
-                    if (inlines == null) {
-                        inlines = new InlineContainer(this);
-                        children.Add(inlines);
+                    // Add inline child to inline element.
+                    if (this is InlineElement) {
+                        VisualChildren.Add(inlineEl);
                     }
-                    inlines.Children.Add(inlineEl);
+                    // Add inline child to block element.
+                    else {
+                        // Group inline children into single inline container.
+                        if (inlines == null) {
+                            inlines = new InlineContainer((BlockElement)this);
+                            children.Add(inlines);
+                        }
+                        inlines.Children.Add(inlineEl);
+                    }
                 }
+                // Add block or generator child.
                 else {
                     if (inlines != null) {
+                        // Close inline container.
                         inlines.VisualChildren = inlines.Children.ToList();
                         inlines = null;
                     }
                     children.Add(el);
                 }
+                // Recurse.
                 el.GenerateVisualTree();
             }
+            // Close inline container (if not closed within foreach).
             if (inlines != null) {
                 inlines.VisualChildren = inlines.Children.ToList();
             }
+            // Let element decide how to add children: directly or grouped into stack.
             SetVisualChildren(children);
         }
 

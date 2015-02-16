@@ -1,9 +1,13 @@
-﻿// Other available chars: ☺☻☼♀♂♫
+﻿// Other available chars: ☼♀♂♫
 
 namespace Alba.CsConsoleFormat
 {
     public static class Chars
     {
+        public const char SoftHyphen = '­';
+        public const char NoBreakSpace = ' ';
+        public const char ZeroWidthSpace = '​';
+
         public const char FullBlock = '█';
         public const char UpperHalfBlock = '▀';
         public const char LowerHalfBlock = '▄';
@@ -24,5 +28,7 @@ namespace Alba.CsConsoleFormat
         public const char Club = '♣';
         public const char Heart = '♥';
         public const char Diamond = '♦';
+        public const char WhiteSmilingFace = '☺';
+        public const char BlackSmilingFace = '☻';
     }
 }

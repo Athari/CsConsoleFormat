@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
 
@@ -45,7 +44,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size ArrangeOverride (Size finalSize)
         {
             if (Orientation == Orientation.Vertical) {
