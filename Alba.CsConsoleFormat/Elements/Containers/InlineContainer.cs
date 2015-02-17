@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Alba.CsConsoleFormat.Framework.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -50,11 +51,11 @@ namespace Alba.CsConsoleFormat
                 int length = GetLineLength(line);
 
                 int offset = 0;
-                if (TextAlign == HorizontalAlignment.Left || TextAlign == HorizontalAlignment.Stretch)
+                if (TextAlign == TextAlignment.Left || TextAlign == TextAlignment.Justify)
                     offset = 0;
-                else if (TextAlign == HorizontalAlignment.Center)
+                else if (TextAlign == TextAlignment.Center)
                     offset = (ActualWidth - length) / 2;
-                else if (TextAlign == HorizontalAlignment.Right)
+                else if (TextAlign == TextAlignment.Right)
                     offset = ActualWidth - length;
 
                 int x = offset;
@@ -100,6 +101,7 @@ namespace Alba.CsConsoleFormat
                 _wrapPos = -1;
             }
 
+            [UsedImplicitly]
             private IEnumerable<object> DebugLines
             {
                 get
@@ -176,12 +178,14 @@ namespace Alba.CsConsoleFormat
                 for (int i = 0; i < sourceSeg.Text.Length; i++, _curLineLength++, _segPos++) {
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
                     if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
-                        // Proceed as if the current char is '\n', repeat with current char in the next iteration.
+                        // Proceed as if the current char is '\n', repeat with current char in the next iteration if not consumed.
                         if (_wrapPos == -1) {
+                            if (!c.IsConsumedOnWrap) {
+                                i--;
+                                _curLineLength--;
+                                _segPos--;
+                            }
                             c = CharInfo.From('\n');
-                            i--;
-                            _curLineLength--;
-                            _segPos--;
                         }
                         else {
                             _curLine.Add(_curSeg);
@@ -416,6 +420,11 @@ namespace Alba.CsConsoleFormat
             public bool IsSpace
             {
                 get { return _c == ' '; }
+            }
+
+            public bool IsConsumedOnWrap
+            {
+                get { return _c == ' ' || _c == '\n' || _c == Chars.ZeroWidthSpace; }
             }
 
             public bool IsWrappable

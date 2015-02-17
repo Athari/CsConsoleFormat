@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             var doc = ReadXaml<Document>(new Data {
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
-                Formatted = "Cen\nter",
+                Formatted = "Aaaa\nBbbb\nCccc",
                 Guid = Guid.NewGuid(),
                 Date = DateTime.Now,
                 Items = new List<DataItem> {

@@ -25,7 +25,7 @@ namespace Alba.CsConsoleFormat
 
         public VerticalAlignment VAlign { get; set; }
 
-        public HorizontalAlignment TextAlign { get; set; }
+        public TextAlignment TextAlign { get; set; }
 
         public TextWrapping TextWrapping { get; set; }
 
@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat
             MaxHeight = Size.Infinity;
             Align = HorizontalAlignment.Stretch;
             VAlign = VerticalAlignment.Stretch;
-            TextAlign = HorizontalAlignment.Left;
+            TextAlign = TextAlignment.Left;
             TextWrapping = TextWrapping.WordWrap;
         }
 
