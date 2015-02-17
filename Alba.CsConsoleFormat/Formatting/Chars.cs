@@ -5,6 +5,7 @@ namespace Alba.CsConsoleFormat
     public static class Chars
     {
         public const char SoftHyphen = '­';
+        public const char NoBreakHyphen = '‑';
         public const char NoBreakSpace = ' ';
         public const char ZeroWidthSpace = '​';
 

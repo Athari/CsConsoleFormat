@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -29,11 +30,11 @@ namespace Alba.CsConsoleFormat
                 _inlineSequence = new InlineSequence(this);
                 foreach (InlineElement child in VisualChildren.Cast<InlineElement>())
                     child.GenerateSequence(_inlineSequence);
+                _inlineSequence.ValidateStackSize();
             }
-            _lines = new WrapContext(this, availableSize).WrapSegments();
+            _lines = new LineWrapper(this, availableSize).WrapSegments();
             return new Size(_lines.Select(GetLineLength).Max(), _lines.Count);
         }
-
 
         protected override Size ArrangeOverride (Size finalSize)
         {
@@ -77,18 +78,37 @@ namespace Alba.CsConsoleFormat
             return line.Sum(s => s.TextLength);
         }
 
-        private class WrapContext
+        private class LineWrapper
         {
             private readonly InlineContainer _container;
             private readonly Size _availableSize;
             private List<List<InlineSegment>> _lines;
             private List<InlineSegment> _curLine;
             private InlineSegment _curSeg;
+            private int _segPos;
+            private int _curLineLength;
 
-            public WrapContext (InlineContainer container, Size availableSize)
+            // Last possible wrap info:
+            private int _wrapPos;
+            private CharInfo _wrapChar;
+            private int _wrapSegmentIndex;
+
+            public LineWrapper (InlineContainer container, Size availableSize)
             {
                 _container = container;
                 _availableSize = availableSize;
+                _wrapPos = -1;
+            }
+
+            private IEnumerable<object> DebugLines
+            {
+                get
+                {
+                    return _lines.Select(l => new {
+                        text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
+                        len = GetLineLength(l),
+                    });
+                }
             }
 
             private int AvailableWidth
@@ -115,20 +135,20 @@ namespace Alba.CsConsoleFormat
                             AppendTextSegmentWordWrap(sourceSeg);
                     }
                 }
-
                 return _lines;
             }
 
             private void AppendTextSegmentNoWrap (InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
-                foreach (CharInfo c in sourceSeg.Text.Select(CharInfo.From)) {
+                for (int i = 0; i < sourceSeg.Text.Length; i++) {
+                    CharInfo c = CharInfo.From(sourceSeg.Text[i]);
                     if (c.IsNewLine)
                         StartNewLine();
-                    else if (c.IsZeroWidth)
+                    else if (!c.IsZeroWidth)
                         _curSeg.TextBuilder.Append(c);
                 }
-                AppendLastSegment();
+                AppendCurrentSegment();
             }
 
             private void AppendTextSegmentCharWrap (InlineSegment sourceSeg)
@@ -136,35 +156,136 @@ namespace Alba.CsConsoleFormat
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
-
-                    if (c.IsZeroWidth && _curSeg.TextLength >= AvailableWidth) {
-                        i--; // Repeat with this character again.
+                    if (!c.IsZeroWidth && _curSeg.TextLength >= AvailableWidth) {
+                        // Proceed as if the current char is '\n', repeat with current char in the next iteration.
                         c = CharInfo.From('\n');
+                        i--;
                     }
                     if (c.IsNewLine)
                         StartNewLine();
-                    else if (c.IsZeroWidth)
+                    else if (!c.IsZeroWidth)
                         _curSeg.TextBuilder.Append(c);
                 }
-                AppendLastSegment();
+                AppendCurrentSegment();
             }
 
             private void AppendTextSegmentWordWrap (InlineSegment sourceSeg)
             {
-                throw new NotImplementedException();
+                _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
+                _segPos = 0;
+                for (int i = 0; i < sourceSeg.Text.Length; i++, _curLineLength++, _segPos++) {
+                    CharInfo c = CharInfo.From(sourceSeg.Text[i]);
+                    if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
+                        // Proceed as if the current char is '\n', repeat with current char in the next iteration.
+                        if (_wrapPos == -1) {
+                            c = CharInfo.From('\n');
+                            i--;
+                            _curLineLength--;
+                            _segPos--;
+                        }
+                        else {
+                            _curLine.Add(_curSeg);
+                            WrapLine();
+                        }
+                    }
+                    if (c.IsWrappable) {
+                        _wrapPos = _segPos;
+                        _wrapChar = c;
+                        _wrapSegmentIndex = _curLine.Count;
+                    }
+                    if (c.IsNewLine) {
+                        StartNewLine();
+                        _curLineLength = -1;
+                        _segPos = -1;
+                    }
+                    else if (!c.IsZeroWidth)
+                        _curSeg.TextBuilder.Append(c);
+                }
+                AppendCurrentSegment();
             }
 
             private void StartNewLine ()
             {
-                if (_curSeg.TextLength > 0) {
+                if (_curSeg != null && _curSeg.TextLength > 0) {
                     _curLine.Add(_curSeg);
                     _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 }
                 _curLine = new List<InlineSegment>();
                 _lines.Add(_curLine);
+                _curLineLength = 0;
+                _wrapPos = -1;
+                _segPos = 0;
             }
 
-            private void AppendLastSegment ()
+            private void WrapLine ()
+            {
+                string wrappedText = _curSeg.ToString(), textBeforeWrap, textAfterWrap;
+                SplitWrappedText(wrappedText, out textBeforeWrap, out textAfterWrap);
+
+                if (wrappedText != textBeforeWrap) {
+                    InlineSegment wrappedSeg = _curLine[_wrapSegmentIndex];
+                    wrappedSeg.TextBuilder.Clear();
+                    wrappedSeg.TextBuilder.Append(textBeforeWrap);
+                }
+
+                List<InlineSegment> prevLine = _curLine;
+                _curSeg = null;
+                StartNewLine();
+
+                _curLine.AddRange(prevLine.Skip(_wrapSegmentIndex + 1));
+                _curLineLength = GetLineLength(_curLine);
+                prevLine.RemoveRange(_wrapSegmentIndex + 1, prevLine.Count - _wrapSegmentIndex - 1);
+
+                if (textAfterWrap != "") {
+                    if (_curLineLength + textAfterWrap.Length <= AvailableWidth) {
+                        InlineSegment nextSeg = InlineSegment.CreateWithBuilder(textAfterWrap.Length);
+                        nextSeg.TextBuilder.Append(textAfterWrap);
+                        _curLine.Add(nextSeg);
+                        _curLineLength += textAfterWrap.Length;
+                    }
+                    else {
+                        int lineOffset = _curLineLength;
+                        for (int i = 0; i < textAfterWrap.Length; i += AvailableWidth) {
+                            string nextSegText = textAfterWrap.SubstringSafe(i * AvailableWidth, AvailableWidth - lineOffset);
+                            InlineSegment nextSeg = InlineSegment.CreateWithBuilder(nextSegText.Length);
+                            nextSeg.TextBuilder.Append(nextSegText);
+                            _curLine.Add(nextSeg);
+                            if (nextSegText.Length >= AvailableWidth) {
+                                StartNewLine();
+                                lineOffset = 0;
+                            }
+                            else {
+                                _curLineLength = nextSegText.Length;
+                            }
+                        }
+                    }
+                }
+
+                _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
+            }
+
+            private void SplitWrappedText (string wrappedText, out string textBeforeWrap, out string textAfterWrap)
+            {
+                if (_wrapChar.IsSpace) {
+                    // "aaa bb" => "aaa" + "bb"
+                    textBeforeWrap = wrappedText.Substring(0, _wrapPos);
+                    textAfterWrap = wrappedText.Substring(_wrapPos + 1);
+                }
+                else if (_wrapChar.IsHyphen) {
+                    // "aaa-bb" => "aaa-" + "bb"
+                    textBeforeWrap = wrappedText.Substring(0, _wrapPos + 1);
+                    textAfterWrap = wrappedText.Substring(_wrapPos + 1);
+                }
+                else if (_wrapChar.IsSoftHyphen) {
+                    // "aaabb" => "aaa-" + "bb"
+                    textBeforeWrap = wrappedText.Substring(0, _wrapPos) + "-";
+                    textAfterWrap = wrappedText.Substring(_wrapPos);
+                }
+                else
+                    throw new InvalidOperationException();
+            }
+
+            private void AppendCurrentSegment ()
             {
                 if (_curSeg.TextLength > 0)
                     _curLine.Add(_curSeg);
@@ -209,6 +330,12 @@ namespace Alba.CsConsoleFormat
             {
                 _formattingStack.Pop();
                 AddFormattingSegment();
+            }
+
+            public void ValidateStackSize ()
+            {
+                if (_formattingStack.Count != 1)
+                    throw new InvalidOperationException("Push and Pop calls during inline generation must be balanced.");
             }
 
             [SuppressMessage ("ReSharper", "PossibleInvalidOperationException", Justification = "Value is guaranteed not be not null.")]
@@ -271,14 +398,34 @@ namespace Alba.CsConsoleFormat
                 _c = c;
             }
 
+            public bool IsHyphen
+            {
+                get { return _c == '-'; }
+            }
+
             public bool IsNewLine
             {
                 get { return _c == '\n'; }
             }
 
+            public bool IsSoftHyphen
+            {
+                get { return _c == Chars.SoftHyphen; }
+            }
+
+            public bool IsSpace
+            {
+                get { return _c == ' '; }
+            }
+
+            public bool IsWrappable
+            {
+                get { return _c == ' ' || _c == '-' || _c == Chars.SoftHyphen; }
+            }
+
             public bool IsZeroWidth
             {
-                get { return _c != Chars.SoftHyphen && _c != Chars.ZeroWidthSpace; }
+                get { return _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace; }
             }
 
             public static CharInfo From (char c)
@@ -289,6 +436,11 @@ namespace Alba.CsConsoleFormat
             public static implicit operator char (CharInfo self)
             {
                 return self._c;
+            }
+
+            public override string ToString ()
+            {
+                return _c.ToString();
             }
         }
     }

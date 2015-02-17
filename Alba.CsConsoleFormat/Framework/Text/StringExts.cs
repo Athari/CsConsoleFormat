@@ -25,6 +25,11 @@ namespace Alba.CsConsoleFormat.Framework.Text
             return @this.Remove(@this.Length - postfix.Length);
         }
 
+        public static string SubstringSafe (this string @this, int startIndex, int length)
+        {
+            return @this.Substring(startIndex, Math.Min(length, @this.Length - startIndex));
+        }
+
         [StringFormatMethod ("format")]
         public static string Fmt (this string format, params object[] args)
         {
