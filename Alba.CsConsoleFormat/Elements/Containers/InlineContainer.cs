@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -175,9 +176,11 @@ namespace Alba.CsConsoleFormat
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 _segPos = 0;
-                for (int i = 0; i < sourceSeg.Text.Length; i++, _curLineLength++, _segPos++) {
+                for (int i = 0; i < sourceSeg.Text.Length; i++) {
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
-                    if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
+                    Debug.Assert(_curLineLength == GetLineLength(_curLine) + _curSeg.TextLength);
+                    bool canAddChar = _curLineLength < AvailableWidth;
+                    if (!canAddChar && !c.IsZeroWidth) {
                         // Proceed as if the current char is '\n', repeat with current char in the next iteration if not consumed.
                         if (_wrapPos == -1) {
                             if (!c.IsConsumedOnWrap) {
@@ -187,23 +190,25 @@ namespace Alba.CsConsoleFormat
                             }
                             c = CharInfo.From('\n');
                         }
-                        else {
-                            _curLine.Add(_curSeg);
+                        else if (!c.IsNewLine) {
+                            //_curLine.Add(_curSeg);
+                            AppendCurrentSegment();
                             WrapLine();
                         }
                     }
-                    if (c.IsWrappable) {
+                    if (c.IsWrappable && (canAddChar || c.IsZeroWidth && !c.IsSoftHyphen)) {
                         _wrapPos = _segPos;
                         _wrapChar = c;
                         _wrapSegmentIndex = _curLine.Count;
                     }
                     if (c.IsNewLine) {
                         StartNewLine();
-                        _curLineLength = -1;
-                        _segPos = -1;
                     }
-                    else if (!c.IsZeroWidth)
+                    else if (!c.IsZeroWidth) {
                         _curSeg.TextBuilder.Append(c);
+                        _curLineLength++;
+                        _segPos++;
+                    }
                 }
                 AppendCurrentSegment();
             }

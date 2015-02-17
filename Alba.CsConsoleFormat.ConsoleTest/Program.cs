@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             new ConsoleRenderer().RenderDocument(doc);
-            Console.WriteLine(doc);
+            //Console.WriteLine(doc);
 
             var buffer = new ConsoleRenderBuffer {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -77,13 +77,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.RenderToConsole();
 
-            Console.WriteLine(Console.OutputEncoding);
+            /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("■▬▲►▼◄");
             Console.WriteLine("▀▄█▌▐");
             Console.WriteLine("♠♣♥♦");
             Console.WriteLine("☺☻☼♀♂♫");
-            Console.WriteLine("«»‘’‚‛“”„‟‹›");
+            Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
             /*foreach (EncodingInfo encoding in Encoding.GetEncodings()) {
                 try {
                     Console.OutputEncoding = encoding.GetEncoding();
