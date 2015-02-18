@@ -1,40 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
-using System.Threading;
 using Alba.CsConsoleFormat.Framework.Text;
 
 // TODO Support more complex getter expressions
 // TODO Support converters properly (see MS.Internal.Data.DefaultValueConverter)
 namespace Alba.CsConsoleFormat.Markup
 {
-    public class GetExpression
+    public class GetExpression : GetExpressionBase
     {
-        private CultureInfo _effectiveCulture;
-
-        public object Source { get; set; }
-        public string Path { get; set; }
         public string Format { get; set; }
-        public Func<object, object> Converter { get; set; }
-        public CultureInfo Culture { get; set; }
-        public Element TargetObject { get; set; }
-        public Type TargetType { get; set; }
+        public Func<object, CultureInfo, object> Converter { get; set; }
 
-        private CultureInfo EffectiveCulture
+        protected override object GetValueFromSource (object source)
         {
-            get { return _effectiveCulture ?? (_effectiveCulture = Culture ?? TargetObject.EffectiveCulture ?? Thread.CurrentThread.CurrentCulture); }
-        }
-
-        public object GetValue (Element targetObject = null)
-        {
-            object source = Source;
-            if (source == null) {
-                if (targetObject != null)
-                    source = targetObject.DataContext;
-                else if (TargetObject != null)
-                    source = TargetObject.DataContext;
-            }
             if (source == null)
                 return null;
 
@@ -42,13 +21,10 @@ namespace Alba.CsConsoleFormat.Markup
                 return ConvertValue(source);
 
             object value = source;
-            foreach (string propName in Path.Split('.')) {
+            foreach (string memberName in Path.Split('.')) {
+                value = Get(value, memberName);
                 if (value == null)
                     return ConvertValue(null);
-                PropertyInfo prop = value.GetType().GetProperty(propName);
-                if (prop == null)
-                    throw new InvalidOperationException("Cannot resolve property '{0}'.".Fmt(propName));
-                value = prop.GetValue(value);
             }
             return ConvertValue(value);
         }
@@ -56,7 +32,7 @@ namespace Alba.CsConsoleFormat.Markup
         private object ConvertValue (object value)
         {
             if (Converter != null)
-                value = Converter(value);
+                value = Converter(value, EffectiveCulture);
             if (Format != null)
                 value = string.Format(EffectiveCulture, Format, value);
 

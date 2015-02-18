@@ -19,7 +19,7 @@ namespace Alba.CsConsoleFormat
         private const ConsoleColor DefaultBgColor = ConsoleColor.Black;
 
         private object _dataContext;
-        private IDictionary<PropertyInfo, GetExpression> _getters;
+        private IDictionary<PropertyInfo, GetExpressionBase> _getters;
         private ElementCollection _children;
         private IList<Element> _visualChildren;
 
@@ -184,14 +184,14 @@ namespace Alba.CsConsoleFormat
         {
             if (_getters == null)
                 return;
-            foreach (KeyValuePair<PropertyInfo, GetExpression> getter in _getters)
+            foreach (KeyValuePair<PropertyInfo, GetExpressionBase> getter in _getters)
                 getter.Key.SetValue(this, getter.Value.GetValue(this));
         }
 
-        public void Bind (PropertyInfo prop, GetExpression getter)
+        public void Bind (PropertyInfo prop, GetExpressionBase getter)
         {
             if (_getters == null)
-                _getters = new SortedList<PropertyInfo, GetExpression>();
+                _getters = new SortedList<PropertyInfo, GetExpressionBase>();
             _getters[prop] = getter;
         }
 

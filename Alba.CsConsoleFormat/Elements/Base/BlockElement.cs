@@ -27,7 +27,7 @@ namespace Alba.CsConsoleFormat
 
         public TextAlignment TextAlign { get; set; }
 
-        public TextWrapping TextWrapping { get; set; }
+        public TextWrapping TextWrap { get; set; }
 
         public Thickness Margin { get; set; }
 
@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat
             Align = HorizontalAlignment.Stretch;
             VAlign = VerticalAlignment.Stretch;
             TextAlign = TextAlignment.Left;
-            TextWrapping = TextWrapping.WordWrap;
+            TextWrap = TextWrapping.WordWrap;
         }
 
         /// <summary>Render area width.</summary><seealso cref="RenderSize"/>

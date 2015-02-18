@@ -118,6 +118,16 @@ namespace Alba.CsConsoleFormat
             get { return Y + Height; }
         }
 
+        public Point Position
+        {
+            get { return new Point(X, Y); }
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+            }
+        }
+
         public Size Size
         {
             get { return new Size(Width, Height); }

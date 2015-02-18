@@ -1,28 +1,64 @@
 ﻿<Document x:Name="doc" xml:lang="en-us"
         xmlns="urn:alba:cs-console-format"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        BgColor="Black" Color="Inherit" Width="80">
+        xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Document.Resources>
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
-        <sys:Int32 x:Key="ParaWidth">20</sys:Int32>
+        <sys:Int32 x:Key="ParaWidth">25</sys:Int32>
+        <Call x:Key="ReplaceEmpty" Path="ReplaceEmpty"/>
+        <Call x:Key="ReplaceHyphen" Path="ReplaceHyphen"/>
+        <Call x:Key="ReplaceNoBreakHyphen" Path="ReplaceNoBreakHyphen"/>
+        <Call x:Key="ReplaceSoftHyphen" Path="ReplaceSoftHyphen"/>
+        <Call x:Key="ReplaceNoBreakSpace" Path="ReplaceNoBreakSpace"/>
+        <Call x:Key="ReplaceZeroWidthSpace" Path="ReplaceZeroWidthSpace"/>
     </Document.Resources>
-    <Stack Orientation="Horizontal" Color="Gray" BgColor="DarkBlue">
-        <Div Width="{Res ParaWidth}" Margin="1" Padding="1" BgColor="Blue">
+    <Stack Orientation="Horizontal" Color="Gray" BgColor="Blue">
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
+            <Span Text="Char wrap" Color="White"/>
+            <Br/>
+            <Br/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceEmpty}}"/>
+        </Div>
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
             <Span Text="Word wrap with spaces" Color="White"/>
             <Br/>
             <Br/>
-            <Span Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceEmpty}}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1" Padding="1" BgColor="Blue">
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with no-break spaces" Color="White"/>
+            <Br/>
+            <Br/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceNoBreakSpace}}"/>
+        </Div>
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with zero-width spaces" Color="White"/>
+            <Br/>
+            <Br/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceZeroWidthSpace}}"/>
+        </Div>
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with hyphens" Color="White"/>
+            <Br/>
+            <Br/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceHyphen}}"/>
+        </Div>
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with no-break hyphens" Color="White"/>
+            <Br/>
+            <Br/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceNoBreakHyphen}}"/>
+        </Div>
+        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
             <Span Text="Word wrap with soft hyphens" Color="White"/>
             <Br/>
             <Br/>
-            <Span Text="Lo­rem ip­sum do­lor sit amet, con­sec­te­tur adi­pis­cing elit, sed do eius­mod tem­por in­ci­di­dunt ut la­bo­re et do­lo­re mag­na ali­qua. Ut enim ad mi­nim ve­ni­am, qu­is nos­trud exer­ci­ta­tion ul­lam­co la­bo­ris ni­si ut ali­quip ex ea com­mo­do con­se­quat. Du­is au­te iru­re do­lor in rep­re­hen­de­rit in vo­lup­ta­te ve­lit es­se cil­lum do­lo­re eu fu­gi­at nul­la pa­ri­a­tur. Ex­cep­te­ur sint oc­ca­e­cat cu­pi­da­tat non pro­i­dent, sunt in cul­pa qui of­fi­cia de­se­runt mol­lit anim id est la­bo­rum."/>
+            <Span Text="{Get LoremIpsum, Converter={Res ReplaceSoftHyphen}}"/>
         </Div>
     </Stack>
     <Border Stroke="1 2, Single Wide" Color="Yellow" BgColor="Blue" Padding="1 0" Margin="1" Visibility="Collapsed">
-        <Div TextAlign="Left" Align="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0" TextWrapping="WordWrap" Width="20">
+        <Div TextAlign="Left" Align="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0" TextWrap="WordWrap" Width="20">
             <!--<Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}"/><Br/>
             <Span Text="SubSubTitle"/><Br/>-->

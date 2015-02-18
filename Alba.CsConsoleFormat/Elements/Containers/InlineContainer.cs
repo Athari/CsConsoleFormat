@@ -19,7 +19,7 @@ namespace Alba.CsConsoleFormat
         {
             DataContext = source.DataContext;
             TextAlign = source.TextAlign;
-            TextWrapping = source.TextWrapping;
+            TextWrap = source.TextWrap;
             Parent = source;
         }
 
@@ -129,12 +129,12 @@ namespace Alba.CsConsoleFormat
                         _curLine.Add(sourceSeg);
                     }
                     else {
-                        TextWrapping textWrapping = _container.TextWrapping;
-                        if (textWrapping == TextWrapping.NoWrap)
+                        TextWrapping textWrap = _container.TextWrap;
+                        if (textWrap == TextWrapping.NoWrap)
                             AppendTextSegmentNoWrap(sourceSeg);
-                        else if (textWrapping == TextWrapping.CharWrap)
+                        else if (textWrap == TextWrapping.CharWrap)
                             AppendTextSegmentCharWrap(sourceSeg);
-                        else if (textWrapping == TextWrapping.WordWrap)
+                        else if (textWrap == TextWrapping.WordWrap)
                             AppendTextSegmentWordWrap(sourceSeg);
                     }
                 }
@@ -191,7 +191,6 @@ namespace Alba.CsConsoleFormat
                             c = CharInfo.From('\n');
                         }
                         else if (!c.IsNewLine) {
-                            //_curLine.Add(_curSeg);
                             AppendCurrentSegment();
                             WrapLine();
                         }
@@ -288,6 +287,11 @@ namespace Alba.CsConsoleFormat
                 else if (_wrapChar.IsSoftHyphen) {
                     // "aaabb" => "aaa-" + "bb"
                     textBeforeWrap = wrappedText.Substring(0, _wrapPos) + "-";
+                    textAfterWrap = wrappedText.Substring(_wrapPos);
+                }
+                else if (_wrapChar.IsZeroWidthSpace) {
+                    // "aaabb" => "aaa" + "bb"
+                    textBeforeWrap = wrappedText.Substring(0, _wrapPos);
                     textAfterWrap = wrappedText.Substring(_wrapPos);
                 }
                 else
@@ -434,12 +438,17 @@ namespace Alba.CsConsoleFormat
 
             public bool IsWrappable
             {
-                get { return _c == ' ' || _c == '-' || _c == Chars.SoftHyphen; }
+                get { return _c == ' ' || _c == '-' || _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace; }
             }
 
             public bool IsZeroWidth
             {
                 get { return _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace; }
+            }
+
+            public bool IsZeroWidthSpace
+            {
+                get { return _c == Chars.ZeroWidthSpace; }
             }
 
             public static CharInfo From (char c)

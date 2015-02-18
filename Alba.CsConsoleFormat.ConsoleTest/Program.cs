@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xaml;
@@ -12,11 +13,24 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         {
             new Program().Run();
             Console.WriteLine("Done!");
-            Console.ReadKey();
+            if (Debugger.IsAttached)
+                Console.ReadKey();
         }
 
         private void Run ()
         {
+            Size consoleSize = Size.Min(ConsoleRenderer.ConsoleLargestWindowSize, new Size((25 + 1) * 7 + 1, 60));
+            try {
+                ConsoleRenderer.ConsoleWindowRect = new Rect(consoleSize);
+                Console.BufferWidth = consoleSize.Width;
+            }
+            catch (Exception e) {
+                var consoleRect = new Rect(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight);
+                Console.WriteLine(consoleRect);
+                var bufferRect = new Size(Console.BufferWidth, Console.BufferHeight);
+                Console.WriteLine(bufferRect);
+                Console.WriteLine(e.Message);
+            }
             Console.OutputEncoding = Encoding.UTF8;
             Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
 
@@ -24,6 +38,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
                 Formatted = "Aaaa\nBbbb\nCccc",
+                LoremIpsum = "Lo|rem ip|sum do|lor sit amet, con|sec|te|tur adi|pis|cing elit, sed do eius|mod tem|por in|ci|di|dunt ut la|bo|re et do|lo|re mag|na ali|qua. Ut enim ad mi|nim ve|ni|am, qu|is nos|trud exer|ci|ta|tion ul|lam|co la|bo|ris ni|si ut ali|quip ex ea com|mo|do con|se|quat. Du|is au|te iru|re do|lor in rep|re|hen|de|rit in vo|lup|ta|te ve|lit es|se cil|lum do|lo|re eu fu|gi|at nul|la pa|ri|a|tur. Ex|cep|te|ur sint oc|ca|e|cat cu|pi|da|tat non pro|i|dent, sunt in cul|pa qui of|fi|cia de|se|runt mol|lit anim id est la|bo|rum.",
                 Guid = Guid.NewGuid(),
                 Date = DateTime.Now,
                 Items = new List<DataItem> {
@@ -104,6 +119,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         private T ReadXaml<T> (object dataContext) where T : Element, new()
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
+                if (resStream == null)
+                    throw new FileNotFoundException("Resource not found.");
                 //return (T)XamlServices.Load(resStream);
                 //int pad = 1;
                 var context = new XamlSchemaContext(new[] {
@@ -130,14 +147,45 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         }
     }
 
-    internal class Data
+    public class Data
     {
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Formatted { get; set; }
+        public string LoremIpsum { get; set; }
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
+
+        public static string ReplaceEmpty (string value)
+        {
+            return value.Replace("|", "");
+        }
+
+        public static string ReplaceHyphen (string value)
+        {
+            return value.Replace('|', '-');
+        }
+
+        public static string ReplaceNoBreakHyphen (string value)
+        {
+            return value.Replace('|', Chars.NoBreakHyphen);
+        }
+
+        public static string ReplaceSoftHyphen (string value)
+        {
+            return value.Replace('|', Chars.SoftHyphen);
+        }
+
+        public static string ReplaceNoBreakSpace (string value)
+        {
+            return value.Replace('|', Chars.NoBreakSpace);
+        }
+
+        public static string ReplaceZeroWidthSpace (string value)
+        {
+            return value.Replace('|', Chars.ZeroWidthSpace);
+        }
 
         public override string ToString ()
         {
@@ -145,7 +193,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         }
     }
 
-    internal class DataItem
+    public class DataItem
     {
         public int Id { get; set; }
         public string Name { get; set; }

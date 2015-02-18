@@ -79,6 +79,12 @@
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
     <Compile Include="Core\Enums\LineWidth.cs" />
     <Compile Include="Core\LineThickness.cs" />
+    <Compile Include="Framework\Reflection\DynamicCaller.cs" />
+    <Compile Include="Framework\Reflection\MethodInfoExts.cs" />
+    <Compile Include="Markup\CallExpression.cs" />
+    <Compile Include="Markup\CallExtension.cs" />
+    <Compile Include="Markup\GetExpression.cs" />
+    <Compile Include="Markup\GetExtensionBase.cs" />
     <Compile Include="Markup\ResExtension.cs" />
     <Compile Include="Markup\XmlLanguage.cs" />
     <Compile Include="Elements\Repeater.cs" />
@@ -88,7 +94,7 @@
     <Compile Include="Framework\Sys\ServiceProviderExts.cs" />
     <Compile Include="Framework\Text\StringExts.cs" />
     <Compile Include="Markup\GetExtension.cs" />
-    <Compile Include="Markup\GetExpression.cs" />
+    <Compile Include="Markup\GetExpressionBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Enums\HorizontalAlignment.cs" />
     <Compile Include="Core\Enums\VerticalAlignment.cs" />
