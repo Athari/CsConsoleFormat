@@ -7,10 +7,13 @@ using Alba.CsConsoleFormat.Framework.Text;
 // TODO Support converters properly (see MS.Internal.Data.DefaultValueConverter)
 namespace Alba.CsConsoleFormat.Markup
 {
+    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
+
     public class GetExpression : GetExpressionBase
     {
         public string Format { get; set; }
-        public Func<object, CultureInfo, object> Converter { get; set; }
+        public ConverterDelegate Converter { get; set; }
+        public object Parameter { get; set; }
 
         protected override object GetValueFromSource (object source)
         {
@@ -32,7 +35,7 @@ namespace Alba.CsConsoleFormat.Markup
         private object ConvertValue (object value)
         {
             if (Converter != null)
-                value = Converter(value, EffectiveCulture);
+                value = Converter(value, Parameter, EffectiveCulture);
             if (Format != null)
                 value = string.Format(EffectiveCulture, Format, value);
 

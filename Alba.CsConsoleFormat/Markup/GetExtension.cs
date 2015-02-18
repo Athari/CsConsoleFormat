@@ -5,11 +5,14 @@ using System.Windows.Markup;
 
 namespace Alba.CsConsoleFormat.Markup
 {
+    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
+
     [MarkupExtensionReturnType (typeof(object))]
     public class GetExtension : GetExtensionBase
     {
         public string Format { get; set; }
-        public Func<object, CultureInfo, object> Converter { get; set; }
+        public ConverterDelegate Converter { get; set; }
+        public object Parameter { get; set; }
         public CultureInfo Culture { get; set; }
 
         public GetExtension ()
@@ -26,6 +29,7 @@ namespace Alba.CsConsoleFormat.Markup
                 Format = Format != null && Format.IndexOf('{') < 0 ? "{0:" + Format + "}" : Format,
                 Converter = Converter,
                 Culture = Culture,
+                Parameter = Parameter,
                 TargetObject = obj,
                 TargetType = prop.PropertyType,
             };

@@ -7,7 +7,9 @@ using Alba.CsConsoleFormat.Framework.Sys;
 
 namespace Alba.CsConsoleFormat.Markup
 {
-    [MarkupExtensionReturnType (typeof(object))]
+    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
+
+    [MarkupExtensionReturnType (typeof(ConverterDelegate))]
     public class CallExtension : GetExtensionBase
     {
         public CultureInfo Culture { get; set; }

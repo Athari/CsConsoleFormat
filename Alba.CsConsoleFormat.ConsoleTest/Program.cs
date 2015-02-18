@@ -157,6 +157,16 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
 
+        public static string Replace (string value, string newValue)
+        {
+            return value.Replace("|", newValue);
+        }
+
+        public static string Replace (string value, char newValue)
+        {
+            return value.Replace('|', newValue);
+        }
+
         public static string ReplaceEmpty (string value)
         {
             return value.Replace("|", "");
