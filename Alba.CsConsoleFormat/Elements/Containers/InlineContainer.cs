@@ -160,7 +160,7 @@ namespace Alba.CsConsoleFormat
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
                     Debug.Assert(_curLineLength == GetLineLength(_curLine) + _curSeg.TextLength);
                     if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
-                        // Proceed as if the current char is '\n', repeat with current char in the next iteration.
+                        // Proceed as if the current char is '\n', repeat with current char on the next iteration.
                         c = CharInfo.From('\n');
                         i--;
                         _curLineLength--;
@@ -184,17 +184,18 @@ namespace Alba.CsConsoleFormat
                     Debug.Assert(_curLineLength == GetLineLength(_curLine) + _curSeg.TextLength);
                     bool canAddChar = _curLineLength < AvailableWidth;
                     if (!canAddChar && !c.IsZeroWidth) {
-                        // Proceed as if the current char is '\n', repeat with current char in the next iteration if not consumed.
-                        if (_wrapPos == -1) {
-                            if (!c.IsConsumedOnWrap) {
-                                i--;
-                                _curLineLength--;
-                                _segPos--;
-                            }
+                        if (c.IsConsumedOnWrap) {
                             c = CharInfo.From('\n');
                         }
+                        else if (_wrapPos == -1) {
+                            c = CharInfo.From('\n');
+                            // Repeat with current char on the next iteration
+                            i--;
+                            _curLineLength--;
+                            _segPos--;
+                        }
                         else if (!c.IsNewLine) {
-                            AppendCurrentSegment();
+                            _curLine.Add(_curSeg);
                             WrapLine();
                         }
                     }
@@ -230,7 +231,8 @@ namespace Alba.CsConsoleFormat
 
             private void WrapLine ()
             {
-                string wrappedText = _curSeg.ToString(), textBeforeWrap, textAfterWrap;
+                string wrappedText = _curLine[_wrapSegmentIndex].ToString();
+                string textBeforeWrap, textAfterWrap;
                 SplitWrappedText(wrappedText, out textBeforeWrap, out textAfterWrap);
 
                 if (wrappedText != textBeforeWrap) {
