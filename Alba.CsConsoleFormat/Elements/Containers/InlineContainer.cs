@@ -42,7 +42,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        public override void Render (ConsoleRenderBuffer buffer)
+        public override void Render (ConsoleBuffer buffer)
         {
             base.Render(buffer);
             ConsoleColor color = EffectiveColor, bgColor = EffectiveBgColor;

@@ -22,7 +22,7 @@
             return Orientation == Orientation.Vertical ? new Size(width, 0) : new Size(0, width);
         }
 
-        public override void Render (ConsoleRenderBuffer buffer)
+        public override void Render (ConsoleBuffer buffer)
         {
             base.Render(buffer);
             if (Orientation == Orientation.Vertical)

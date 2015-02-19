@@ -230,7 +230,7 @@ namespace Alba.CsConsoleFormat
             return offset;
         }
 
-        public virtual void Render (ConsoleRenderBuffer buffer)
+        public virtual void Render (ConsoleBuffer buffer)
         {
             if (BgColor != null)
                 buffer.FillBackgroundRectangle(0, 0, RenderSize.Width, RenderSize.Height, BgColor.Value);

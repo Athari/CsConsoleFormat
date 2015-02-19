@@ -30,7 +30,7 @@
             return finalSize;
         }
 
-        public override void Render (ConsoleRenderBuffer buffer)
+        public override void Render (ConsoleBuffer buffer)
         {
             base.Render(buffer);
             buffer.DrawRectangle(0, 0, RenderSize.Width, RenderSize.Height, EffectiveColor, Stroke);

@@ -59,7 +59,7 @@ namespace Alba.CsConsoleFormat
         public override string ToString ()
         {
             return "{0}{1} ({2} @ {3})".FmtInv(
-                _char,
+                _char >= ' ' ? _char.ToString() : "#" + (int)_char,
                 (LineChar != LineChar.None ? " ({0}x{1})".FmtInv(LineWidthHorizontal, LineWidthVertical) : ""),
                 ForegroundColor, BackgroundColor);
         }

@@ -44,20 +44,22 @@ namespace Alba.CsConsoleFormat
             get { return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight); }
         }
 
-        public void RenderDocument (Document document)
+        public void RenderDocument (Document document, IRenderTarget target = null)
         {
             _renderRect = RenderRect;
             document.GenerateVisualTree();
             document.Measure(_renderRect.Size);
             document.Arrange(_renderRect);
 
-            var buffer = new ConsoleRenderBuffer(_renderRect.Size.Width);
+            var buffer = new ConsoleBuffer(_renderRect.Size.Width);
             RenderElement(document, buffer, new Vector(0, 0));
 
-            buffer.RenderToConsole();
+            if (target == null)
+                target = new ConsoleRenderTarget();
+            target.Render(buffer);
         }
 
-        private void RenderElement (BlockElement element, ConsoleRenderBuffer buffer, Vector parentOffset)
+        private void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset)
         {
             Vector offset = parentOffset + element.ActualOffset;
             if (element.Visibility == Visibility.Visible && !element.RenderSize.IsEmpty) {

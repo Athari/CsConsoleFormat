@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public class ConsoleRenderBuffer
+    public class ConsoleBuffer : IConsoleBufferSource
     {
         private delegate void ApplyColorMapDelegate (ref ConsoleChar c);
 
@@ -19,7 +19,7 @@ namespace Alba.CsConsoleFormat
         public Rect Clip { get; set; }
         public Vector Offset { get; set; }
 
-        public ConsoleRenderBuffer (int? width = null)
+        public ConsoleBuffer (int? width = null)
         {
             _lineCharRenderer = CsConsoleFormat.LineCharRenderer.Box;
             Width = width ?? Console.BufferWidth;
@@ -190,45 +190,9 @@ namespace Alba.CsConsoleFormat
             if (!ClipRectangle(ref x1, ref y1, ref x2, ref y2))
                 return;
             for (int iy = y1; iy < y2; iy++) {
-                ConsoleChar[] charsLine = GetLine(y);
+                ConsoleChar[] charsLine = GetLine(iy);
                 for (int ix = x1; ix < x2; ix++)
                     processChar(ref charsLine[ix]);
-            }
-        }
-
-        public void RenderToConsole ()
-        {
-            ConsoleColor currentForeColor = Console.ForegroundColor, oldForeColor = currentForeColor;
-            ConsoleColor currentBackColor = Console.BackgroundColor, oldBackColor = currentBackColor;
-            try {
-                for (int iy = 0; iy < Height; iy++) {
-                    ConsoleChar[] charsLine = GetLine(iy);
-
-                    for (int ix = 0; ix < Width; ix++) {
-                        ConsoleColor foreColor = charsLine[ix].ForegroundColor;
-                        if (foreColor != currentForeColor)
-                            Console.ForegroundColor = currentForeColor = foreColor;
-                        ConsoleColor backColor = charsLine[ix].BackgroundColor;
-                        if (backColor != currentBackColor)
-                            Console.BackgroundColor = currentBackColor = backColor;
-                        LineChar lineChr = charsLine[ix].LineChar;
-                        char chr = charsLine[ix].Char;
-                        if (!lineChr.IsEmpty() && chr == '\0')
-                            chr = LineCharRenderer.GetChar(lineChr,
-                                GetLineCharAt(ix - 1, iy), GetLineCharAt(ix, iy - 1), GetLineCharAt(ix + 1, iy), GetLineCharAt(ix, iy + 1));
-                        if (chr < ' ')
-                            chr = ' ';
-                        else if (chr == Chars.NoBreakHyphen || chr == Chars.SoftHyphen)
-                            chr = '-';
-                        else if (chr == Chars.NoBreakSpace || chr == Chars.ZeroWidthSpace)
-                            chr = ' ';
-                        Console.Write(chr);
-                    }
-                }
-            }
-            finally {
-                Console.ForegroundColor = oldForeColor;
-                Console.BackgroundColor = oldBackColor;
             }
         }
 
@@ -259,23 +223,16 @@ namespace Alba.CsConsoleFormat
             return x1 < x2 && y1 < y2;
         }
 
-        private ConsoleRenderBuffer OffsetX (ref int x)
+        private ConsoleBuffer OffsetX (ref int x)
         {
             x += Offset.X;
             return this;
         }
 
-        private ConsoleRenderBuffer OffsetY (ref int y)
+        private ConsoleBuffer OffsetY (ref int y)
         {
             y += Offset.Y;
             return this;
-        }
-
-        private LineChar GetLineCharAt (int x, int y)
-        {
-            if (x < 0 || x >= Width || y < 0 || y >= Height)
-                return LineChar.None;
-            return GetLine(y)[x].LineChar;
         }
 
         private ConsoleChar[] GetLine (int y)
@@ -285,6 +242,50 @@ namespace Alba.CsConsoleFormat
             if (Height <= y)
                 Height = y + 1;
             return _chars[y];
+        }
+
+        ConsoleChar[] IConsoleBufferSource.GetLine (int y)
+        {
+            return GetLine(y);
+        }
+
+        private ConsoleChar? GetChar (int x, int y)
+        {
+            if (!new Rect(0, 0, Width, Height).Contains(x, y))
+                return null;
+            return GetLine(y)[x];
+        }
+
+        ConsoleChar? IConsoleBufferSource.GetChar (int x, int y)
+        {
+            return GetChar(x, y);
+        }
+
+        char IConsoleBufferSource.GetLineChar (int x, int y)
+        {
+            ConsoleChar? chr = GetChar(x, y);
+            if (chr == null)
+                return '\0';
+            ConsoleChar? chrLeft = GetChar(x - 1, y);
+            ConsoleChar? chrTop = GetChar(x, y - 1);
+            ConsoleChar? chrRight = GetChar(x + 1, y);
+            ConsoleChar? chrBottom = GetChar(x, y + 1);
+            return LineCharRenderer.GetChar(chr.Value.LineChar,
+                chrLeft != null ? chrLeft.Value.LineChar : LineChar.None,
+                chrTop != null ? chrTop.Value.LineChar : LineChar.None,
+                chrRight != null ? chrRight.Value.LineChar : LineChar.None,
+                chrBottom != null ? chrBottom.Value.LineChar : LineChar.None);
+        }
+
+        char IConsoleBufferSource.SafeChar (char chr)
+        {
+            if (chr < ' ')
+                return ' ';
+            if (chr == Chars.NoBreakHyphen || chr == Chars.SoftHyphen)
+                return '-';
+            if (chr == Chars.NoBreakSpace || chr == Chars.ZeroWidthSpace)
+                return ' ';
+            return chr;
         }
     }
 }
