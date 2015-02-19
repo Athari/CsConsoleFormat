@@ -104,7 +104,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             buffer.DrawString(15, 16, ConsoleColor.White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
-            //buffer.RenderToConsole();
+            buffer.RenderToConsole();
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;
