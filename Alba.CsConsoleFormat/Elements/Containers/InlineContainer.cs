@@ -231,6 +231,7 @@ namespace Alba.CsConsoleFormat
 
             private void WrapLine ()
             {
+                // TODO MemPerf: Avoid calling StringBuilder.ToString (pass string builder instead of string to SplitWrappedText, remove text from it).
                 string wrappedText = _curLine[_wrapSegmentIndex].ToString();
                 string textBeforeWrap, textAfterWrap;
                 SplitWrappedText(wrappedText, out textBeforeWrap, out textAfterWrap);
@@ -393,6 +394,7 @@ namespace Alba.CsConsoleFormat
 
             public static InlineSegment CreateWithBuilder (int length)
             {
+                // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).
                 return new InlineSegment { TextBuilder = new StringBuilder(length) };
             }
 

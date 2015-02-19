@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             Console.OutputEncoding = Encoding.UTF8;
             Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
 
-            var doc = ReadXaml<Document>(new Data {
+            var data = new Data {
                 Title = "Header Title",
                 SubTitle = "Header SubTitle",
                 Formatted = "Aaaa\nBbbb\nCccc",
@@ -52,11 +52,24 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     },
                     new DataItem { Id = 2, Name = "Name 2", Value = "Value 2" },
                 }
-            });
+            };
+
+            /*if (MemoryProfiler.IsActive) {
+                MemoryProfiler.EnableAllocations();
+                MemoryProfiler.Dump();
+            }
+            new ConsoleRenderer().RenderDocument(ReadXaml<Document>(data));
+            if (MemoryProfiler.IsActive)
+                MemoryProfiler.Dump();*/
+            /*for (int i = 0; i < 100; i++)
+                new ConsoleRenderer().RenderDocument(ReadXaml<Document>(data));*/
+            /*if (MemoryProfiler.IsActive)
+                MemoryProfiler.Dump();*/
+
+            var doc = ReadXaml<Document>(data);
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             new ConsoleRenderer().RenderDocument(doc);
-            //Console.WriteLine(doc);
 
             var buffer = new ConsoleRenderBuffer {
                 LineCharRenderer = LineCharRenderer.Box,
