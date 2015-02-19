@@ -8,12 +8,12 @@ namespace Alba.CsConsoleFormat
 {
     public class HtmlRenderTarget : IRenderTarget
     {
-        private readonly StringBuilder _html = new StringBuilder();
-
         private static readonly List<string> ColorMap = new List<string> {
             "000", "008", "080", "088", "800", "808", "880", "CCC",
             "888", "00F", "0F0", "0FF", "F00", "F0F", "FF0", "FFF",
         };
+
+        private readonly StringBuilder _html = new StringBuilder();
 
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BgColorOverride { get; set; }

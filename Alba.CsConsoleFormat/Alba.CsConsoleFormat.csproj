@@ -82,6 +82,7 @@
     <Compile Include="Formatting\ConsoleBuffer.cs" />
     <Compile Include="Formatting\ConsoleChar.cs" />
     <Compile Include="Formatting\ConsoleRenderer.cs" />
+    <Compile Include="Formatting\RenderTargets\AnsiRenderTarget.cs" />
     <Compile Include="Formatting\RenderTargets\ConsoleRenderTarget.cs" />
     <Compile Include="Formatting\RenderTargets\HtmlRenderTarget.cs" />
     <Compile Include="Formatting\RenderTargets\IRenderTarget.cs" />

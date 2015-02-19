@@ -13,10 +13,11 @@ namespace Alba.CsConsoleFormat
             BgColorOverride = null;
         }
 
-        public virtual void Render (IConsoleBufferSource buffer)
+        public void Render (IConsoleBufferSource buffer)
         {
             ConsoleColor currentForeColor = Console.ForegroundColor, oldForeColor = currentForeColor;
             ConsoleColor currentBackColor = Console.BackgroundColor, oldBackColor = currentBackColor;
+            bool isManualWrap = buffer.Width < Console.BufferWidth;
             try {
                 for (int iy = 0; iy < buffer.Height; iy++) {
                     ConsoleChar[] charsLine = buffer.GetLine(iy);
@@ -34,6 +35,8 @@ namespace Alba.CsConsoleFormat
                             chr = buffer.GetLineChar(ix, iy);
                         Console.Write(buffer.SafeChar(chr));
                     }
+                    if (isManualWrap)
+                        Console.WriteLine();
                 }
             }
             finally {

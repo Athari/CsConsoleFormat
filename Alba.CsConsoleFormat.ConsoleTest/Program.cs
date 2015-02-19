@@ -71,7 +71,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             new ConsoleRenderer().RenderDocument(doc);
 
-            var buffer = new ConsoleBuffer {
+            var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
                 //Clip = new Rect(1, 1, 78, 30),
             };
@@ -109,7 +109,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
             var html = new HtmlRenderTarget();
             html.Render(buffer);
-            File.WriteAllText("1.html", html.OutputHtml, new UTF8Encoding(false));
+            File.WriteAllText(@"../../Tmp/1.html", html.OutputHtml, new UTF8Encoding(false));
+
+            var ansi = new AnsiRenderTarget();
+            ansi.Render(buffer);
+            File.WriteAllText(@"../../Tmp/1.ans", ansi.OutputText, Encoding.GetEncoding("IBM437"));
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;
