@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xaml;
 
@@ -157,44 +158,29 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
 
-        public static string Replace (string value, string newValue)
+        public static string Replace (string value, string to)
         {
-            return value.Replace("|", newValue);
+            return value.Replace("|", to);
         }
 
-        public static string Replace (string value, char newValue)
+        public static string Replace (string value, char to)
         {
-            return value.Replace('|', newValue);
+            return value.Replace('|', to);
         }
 
-        public static string ReplaceEmpty (string value)
+        public static IEnumerable<string> ReplaceSplit (string value, string to)
         {
-            return value.Replace("|", "");
+            return Split(Replace(value, to));
         }
 
-        public static string ReplaceHyphen (string value)
+        public static IEnumerable<string> ReplaceSplit (string value, char to)
         {
-            return value.Replace('|', '-');
+            return Split(Replace(value, to));
         }
 
-        public static string ReplaceNoBreakHyphen (string value)
+        private static IEnumerable<string> Split (string value)
         {
-            return value.Replace('|', Chars.NoBreakHyphen);
-        }
-
-        public static string ReplaceSoftHyphen (string value)
-        {
-            return value.Replace('|', Chars.SoftHyphen);
-        }
-
-        public static string ReplaceNoBreakSpace (string value)
-        {
-            return value.Replace('|', Chars.NoBreakSpace);
-        }
-
-        public static string ReplaceZeroWidthSpace (string value)
-        {
-            return value.Replace('|', Chars.ZeroWidthSpace);
+            return value.Select(c => c.ToString());
         }
 
         public override string ToString ()

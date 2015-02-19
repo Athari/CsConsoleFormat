@@ -10,19 +10,19 @@ namespace Alba.CsConsoleFormat.Markup
     using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
 
     [MarkupExtensionReturnType (typeof(ConverterDelegate))]
-    public class CallExtension : GetExtensionBase
+    public class CallConverterExtension : GetExtensionBase
     {
         public CultureInfo Culture { get; set; }
 
-        public CallExtension ()
+        public CallConverterExtension ()
         {}
 
-        public CallExtension (string path) : base(path)
+        public CallConverterExtension (string path) : base(path)
         {}
 
         protected override object ProvideExpression (IServiceProvider provider, Element obj, PropertyInfo prop)
         {
-            var expression = new CallExpression {
+            var expression = new CallConverterExpression {
                 Source = Source,
                 Path = Path,
                 Culture = Culture,

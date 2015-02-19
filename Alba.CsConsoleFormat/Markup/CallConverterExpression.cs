@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Reflection;
 using Alba.CsConsoleFormat.Framework.Text;
 
@@ -13,7 +11,7 @@ namespace Alba.CsConsoleFormat.Markup
     using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
     using ConverterDelegatesCache = Dictionary<MethodInfo, Func<Object, Object, CultureInfo, Object>>;
 
-    public class CallExpression : GetExpressionBase
+    public class CallConverterExpression : GetExpressionBase
     {
         private static readonly ThreadLocal<ConverterDelegatesCache> _converterFunctions =
             new ThreadLocal<ConverterDelegatesCache>(() => new ConverterDelegatesCache());
@@ -22,65 +20,32 @@ namespace Alba.CsConsoleFormat.Markup
         {
             if (source == null)
                 throw new InvalidOperationException("Source cannot be null.");
-
             if (Path.IsNullOrEmpty())
-                return ConvertValueToConverter(source);
-
-            string[] memberNames = Path.Split('.');
-            object value = source;
-            for (int i = 0; i < memberNames.Length; i++) {
-                string memberName = memberNames[i];
-                Type valueType = value.GetType();
-                if (i < memberNames.Length - 1) {
-                    value = Get(value, memberName);
-                    if (value == null)
-                        throw new InvalidOperationException("Property or field '{0}' cannot be null.".FmtInv(memberName));
-                }
-                else {
-                    MethodInfo method;
-                    try {
-                        method = valueType.GetMethod(memberName);
-                    }
-                    catch (AmbiguousMatchException) {
-                        MethodInfo[] allMethods = valueType.GetMethods();
-                        method = allMethods.First(m => m.Name == memberName);
-
-                        ConverterDelegate func;
-                        if (_converterFunctions.Value.TryGetValue(method, out func))
-                            return func;
-
-                        List<MethodInfo> candidateMethods = allMethods.Where(m => m.Name == memberName).ToList();
-                        if (!candidateMethods.Select(m => m.IsStatic).AllEqual() || !candidateMethods.Select(m => m.GetParameters().Length).AllEqual())
-                            throw new InvalidOperationException("All overloads of '{0}' must have the same signature.".FmtInv(memberName));
-                    }
-                    if (method != null)
-                        return ConvertMethodToConverter(method, value);
-                    try {
-                        return ConvertValueToConverter(Get(value, memberName));
-                    }
-                    catch (InvalidOperationException ex) {
-                        throw new InvalidOperationException("Cannot resolve method, property or field '{0}'.".FmtInv(memberName), ex);
-                    }
-                }
-            }
-            throw new InvalidOperationException();
+                return ConvertValue(source);
+            return TraversePathToMethod(source);
         }
 
-        private ConverterDelegate ConvertValueToConverter (object value)
+        protected override object TryGetCachedMethod (MethodInfo method)
         {
-            var func3 = value as Func<object, object, CultureInfo, object>;
+            ConverterDelegate func;
+            return _converterFunctions.Value.TryGetValue(method, out func) ? func : null;
+        }
+
+        protected override object ConvertValue (object value)
+        {
+            var func3 = value as ConverterDelegate;
             if (func3 != null)
                 return func3;
             var func2 = value as Func<object, object, object>;
             if (func2 != null)
-                return (v, p, c) => func2(v, p);
+                return (ConverterDelegate)((v, p, c) => func2(v, p));
             var func1 = value as Func<object, object>;
             if (func1 != null)
-                return (v, p, c) => func1(v);
+                return (ConverterDelegate)((v, p, c) => func1(v));
             throw new InvalidOperationException("Cannot cast value to converter delegate.");
         }
 
-        private ConverterDelegate ConvertMethodToConverter (MethodInfo method, object target)
+        protected override object ConvertMethod (MethodInfo method, object target)
         {
             ConverterDelegate func;
             if (!_converterFunctions.Value.TryGetValue(method, out func)) {

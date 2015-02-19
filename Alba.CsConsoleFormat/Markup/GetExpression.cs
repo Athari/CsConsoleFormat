@@ -19,20 +19,12 @@ namespace Alba.CsConsoleFormat.Markup
         {
             if (source == null)
                 return null;
-
             if (Path.IsNullOrEmpty())
                 return ConvertValue(source);
-
-            object value = source;
-            foreach (string memberName in Path.Split('.')) {
-                value = Get(value, memberName);
-                if (value == null)
-                    return ConvertValue(null);
-            }
-            return ConvertValue(value);
+            return TraversePathToProperty(source);
         }
 
-        private object ConvertValue (object value)
+        protected override object ConvertValue (object value)
         {
             if (Converter != null)
                 value = Converter(value, Parameter, EffectiveCulture);
