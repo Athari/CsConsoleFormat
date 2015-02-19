@@ -85,11 +85,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 buffer.FillRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);*/
             for (int i = 0; i < rainbow.Length; i++)
                 buffer.FillBackgroundRectangle(i, i, 80 - i * 2, (rainbow.Length - i) * 2, rainbow[i]);
-            buffer.DrawHorizontalLine(0, 1, 79, ConsoleColor.White);
-            buffer.DrawHorizontalLine(1, 1, 79, ConsoleColor.White, LineWidth.Wide);
-            buffer.DrawHorizontalLine(3, 3, 10, ConsoleColor.White);
-            buffer.DrawVerticalLine(1, 1, 10, ConsoleColor.White);
-            buffer.DrawVerticalLine(2, 2, 6, ConsoleColor.White);
+            buffer.DrawHorizontalLine(1, 0, 78, ConsoleColor.White);
+            buffer.DrawHorizontalLine(1, 1, 78, ConsoleColor.White, LineWidth.Wide);
+            buffer.DrawHorizontalLine(3, 3, 7, ConsoleColor.White);
+            buffer.DrawVerticalLine(1, 1, 9, ConsoleColor.White);
+            buffer.DrawVerticalLine(2, 2, 4, ConsoleColor.White);
             buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White, LineWidth.Wide);
             buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White);
             buffer.DrawVerticalLine(6, 0, 6, ConsoleColor.White);
