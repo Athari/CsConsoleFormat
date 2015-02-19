@@ -213,7 +213,7 @@ namespace Alba.CsConsoleFormat
                         if (lineChr.HasValue && !lineChr.Value.IsEmpty() && chr == '\0')
                             chr = LineCharRenderer.GetChar(lineChr.Value,
                                 GetLineCharAt(ix - 1, iy), GetLineCharAt(ix, iy - 1), GetLineCharAt(ix + 1, iy), GetLineCharAt(ix, iy + 1));
-                        if (chr == '\0' || chr == '\r' || chr == '\n')
+                        if (chr < ' ')
                             chr = ' ';
                         else if (chr == Chars.NoBreakHyphen || chr == Chars.SoftHyphen)
                             chr = '-';

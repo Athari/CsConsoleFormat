@@ -11,7 +11,6 @@ namespace Alba.CsConsoleFormat
 {
     internal class InlineContainer : BlockElement
     {
-        //private List<string> _actualStrings;
         private InlineSequence _inlineSequence;
         private List<List<InlineSegment>> _lines;
 
@@ -159,15 +158,19 @@ namespace Alba.CsConsoleFormat
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
-                    if (!c.IsZeroWidth && _curSeg.TextLength >= AvailableWidth) {
+                    Debug.Assert(_curLineLength == GetLineLength(_curLine) + _curSeg.TextLength);
+                    if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
                         // Proceed as if the current char is '\n', repeat with current char in the next iteration.
                         c = CharInfo.From('\n');
                         i--;
+                        _curLineLength--;
                     }
                     if (c.IsNewLine)
                         StartNewLine();
-                    else if (!c.IsZeroWidth)
+                    else if (!c.IsZeroWidth) {
                         _curSeg.TextBuilder.Append(c);
+                        _curLineLength++;
+                    }
                 }
                 AppendCurrentSegment();
             }
