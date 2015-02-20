@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat
             ColorOverride = null;
             BgColorOverride = null;
 
-            Charset = "utf-8";
+            Charset = Encoding.Unicode.WebName;
             BodyOnly = false;
             Font = "12pt/100% \"Lucida Console\", Consolas, monospace";
             PageTitle = "Console output";

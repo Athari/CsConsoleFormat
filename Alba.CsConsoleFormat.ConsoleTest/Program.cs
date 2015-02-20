@@ -107,13 +107,18 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BgColorOverride = ConsoleColor.Black }.Render(buffer);
             new ConsoleRenderTarget().Render(buffer);
 
-            var html = new HtmlRenderTarget();
+            var html = new HtmlRenderTarget { Charset = Encoding.UTF8.WebName };
             html.Render(buffer);
             File.WriteAllText(@"../../Tmp/1.html", html.OutputHtml, new UTF8Encoding(false));
 
             var ansi = new AnsiRenderTarget();
             ansi.Render(buffer);
-            File.WriteAllText(@"../../Tmp/1.ans", ansi.OutputText, Encoding.GetEncoding("IBM437"));
+            File.WriteAllText(@"../../Tmp/1.ans", ansi.OutputText, Encoding.GetEncoding("ibm437"));
+
+            var text = new TextRenderTarget();
+            text.Render(buffer);
+            File.WriteAllText(@"../../Tmp/1.txt", text.OutputText);
+            File.WriteAllText(@"../../Tmp/1.asc", text.OutputText, Encoding.GetEncoding("ibm437"));
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;
@@ -122,15 +127,21 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             Console.WriteLine("♠♣♥♦");
             Console.WriteLine("☺☻☼♀♂♫");
             Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
-            /*foreach (EncodingInfo encoding in Encoding.GetEncodings()) {
+            const string TestString1 = "«»‘’‚‛“”„‟‹›", TestString2 = "─═│║┼╪╫╬";
+            foreach (EncodingInfo encodingInfo in Encoding.GetEncodings()) {
                 try {
-                    Console.OutputEncoding = encoding.GetEncoding();
-                    Console.WriteLine("{0,-10}{1,-20}«»‘’‚‛“”„‟‹›", encoding.CodePage, encoding.Name);
+                    Encoding encoding = encodingInfo.GetEncoding();
+                    bool matched1 = encoding.GetString(encoding.GetBytes(TestString1)) == TestString1;
+                    bool matched2 = encoding.GetString(encoding.GetBytes(TestString2)) == TestString2;
+                    Console.OutputEncoding = encoding;
+                    Console.WriteLine("{0,-10}{1,-20}{2}{3} {4} {5}",
+                        encodingInfo.CodePage, encodingInfo.Name, matched1 ? "+" : "-", matched2 ? "+" : "-", TestString1, TestString2);
                 }
                 catch {
-                    Console.WriteLine("{0,-10}{1,-20}FAILED", encoding.CodePage, encoding.Name);
+                    Console.WriteLine("{0,-10}{1,-20}xx FAILED",
+                        encodingInfo.CodePage, encodingInfo.Name);
                 }
-            }*/
+            }
             /*for (int i = 1; i < 10000; i += 10) {
                 var sb = new StringBuilder();
                 for (int j = 0; j < 10; j++)

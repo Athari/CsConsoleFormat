@@ -91,6 +91,7 @@
     <Compile Include="Formatting\Lines\LineChar.cs" />
     <Compile Include="Formatting\Lines\LineCharExts.cs" />
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
+    <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
     <Compile Include="Framework\Collections\ListExts.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />

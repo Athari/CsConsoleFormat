@@ -22,11 +22,13 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BgColorOverride { get; set; }
+        public string NewLine { get; set; }
 
         public AnsiRenderTarget ()
         {
             ColorOverride = null;
             BgColorOverride = null;
+            NewLine = "";
         }
 
         public string OutputText
@@ -61,7 +63,7 @@ namespace Alba.CsConsoleFormat
                         chr = buffer.GetLineChar(ix, iy);
                     _text.Append(buffer.SafeChar(chr));
                 }
-                //_text.Append("\n");
+                _text.Append(NewLine);
             }
         }
     }
