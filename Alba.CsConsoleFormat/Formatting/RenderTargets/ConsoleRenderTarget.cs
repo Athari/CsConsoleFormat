@@ -29,8 +29,8 @@ namespace Alba.CsConsoleFormat
                         ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
                         if (backColor != currentBackColor)
                             Console.BackgroundColor = currentBackColor = backColor;
-                        LineChar lineChr = charsLine[ix].LineChar;
                         char chr = charsLine[ix].Char;
+                        LineChar lineChr = charsLine[ix].LineChar;
                         if (!lineChr.IsEmpty() && chr == '\0')
                             chr = buffer.GetLineChar(ix, iy);
                         Console.Write(buffer.SafeChar(chr));

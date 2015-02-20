@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Alba.CsConsoleFormat
 {
-    public class AnsiRenderTarget : IRenderTarget
+    public class AnsiRenderTarget : TextRenderTargetBase
     {
         private static readonly List<string> ColorMap = new List<string> {
             "0;30", "0;34", "0;32", "0;36", "0;31", "0;35", "0;33", "0;37",
@@ -18,31 +19,21 @@ namespace Alba.CsConsoleFormat
             //"100", "104", "102", "106", "101", "105", "103", "107",
         };
 
-        private readonly StringBuilder _text = new StringBuilder();
-
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BgColorOverride { get; set; }
-        public string NewLine { get; set; }
 
-        public AnsiRenderTarget ()
-        {
-            ColorOverride = null;
-            BgColorOverride = null;
-            NewLine = "";
-        }
+        public AnsiRenderTarget (Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        {}
 
-        public string OutputText
-        {
-            get { return _text.ToString(); }
-        }
+        public AnsiRenderTarget (TextWriter writer = null) : base(writer)
+        {}
 
-        public void Render (IConsoleBufferSource buffer)
+        protected override void RenderOverride (IConsoleBufferSource buffer)
         {
             ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
             ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
 
-            _text.Clear();
-            _text.Append("\x1B[0m");
+            Writer.Write("\x1B[0m");
 
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
@@ -51,19 +42,21 @@ namespace Alba.CsConsoleFormat
                     ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
                     ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
                     if (foreColor != currentForeColor || backColor != currentBackColor) {
-                        _text.Append("\x1B[")
-                            .Append(ColorMap[(int)foreColor]).Append(";")
-                            .Append(BgColorMap[(int)backColor]).Append("m");
+                        Writer.Write("\x1B[");
+                        Writer.Write(ColorMap[(int)foreColor]);
+                        Writer.Write(";");
+                        Writer.Write(BgColorMap[(int)backColor]);
+                        Writer.Write("m");
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
                     }
-                    LineChar lineChr = charsLine[ix].LineChar;
                     char chr = charsLine[ix].Char;
+                    LineChar lineChr = charsLine[ix].LineChar;
                     if (!lineChr.IsEmpty() && chr == '\0')
                         chr = buffer.GetLineChar(ix, iy);
-                    _text.Append(buffer.SafeChar(chr));
+                    Writer.Write(buffer.SafeChar(chr));
                 }
-                _text.Append(NewLine);
+                Writer.WriteLine();
             }
         }
     }

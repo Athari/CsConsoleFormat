@@ -1,39 +1,28 @@
-﻿using System;
+﻿using System.IO;
 using System.Text;
 
 namespace Alba.CsConsoleFormat
 {
-    public class TextRenderTarget
+    public class TextRenderTarget : TextRenderTargetBase
     {
-        private readonly StringBuilder _text = new StringBuilder();
+        public TextRenderTarget (Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        {}
 
-        public string NewLine { get; set; }
+        public TextRenderTarget (TextWriter writer = null) : base(writer)
+        {}
 
-        public TextRenderTarget ()
+        protected override void RenderOverride (IConsoleBufferSource buffer)
         {
-            NewLine = Environment.NewLine;
-        }
-
-        public string OutputText
-        {
-            get { return _text.ToString(); }
-        }
-
-        public void Render (IConsoleBufferSource buffer)
-        {
-            _text.Clear();
-
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
-
                 for (int ix = 0; ix < buffer.Width; ix++) {
-                    LineChar lineChr = charsLine[ix].LineChar;
                     char chr = charsLine[ix].Char;
+                    LineChar lineChr = charsLine[ix].LineChar;
                     if (!lineChr.IsEmpty() && chr == '\0')
                         chr = buffer.GetLineChar(ix, iy);
-                    _text.Append(buffer.SafeChar(chr));
+                    Writer.Write(buffer.SafeChar(chr));
                 }
-                _text.Append(NewLine);
+                Writer.WriteLine();
             }
         }
     }

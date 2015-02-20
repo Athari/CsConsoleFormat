@@ -70,6 +70,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             new ConsoleRenderer().RenderDocument(doc);
+            new ConsoleRenderer().RenderDocument(doc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -104,21 +105,17 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             buffer.DrawString(15, 16, ConsoleColor.White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
-            new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BgColorOverride = ConsoleColor.Black }.Render(buffer);
+
             new ConsoleRenderTarget().Render(buffer);
-
-            var html = new HtmlRenderTarget { Charset = Encoding.UTF8.WebName };
-            html.Render(buffer);
-            File.WriteAllText(@"../../Tmp/1.html", html.OutputHtml, new UTF8Encoding(false));
-
-            var ansi = new AnsiRenderTarget();
-            ansi.Render(buffer);
-            File.WriteAllText(@"../../Tmp/1.ans", ansi.OutputText, Encoding.GetEncoding("ibm437"));
+            new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BgColorOverride = ConsoleColor.Black }.Render(buffer);
+            new HtmlRenderTarget(File.Create(@"../../Tmp/1.html"), new UTF8Encoding(false)).Render(buffer);
+            new AnsiRenderTarget(new StreamWriter(File.Create(@"../../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" }).Render(buffer);
+            new TextRenderTarget(File.Create(@"../../Tmp/1.txt")).Render(buffer);
+            new TextRenderTarget(File.Create(@"../../Tmp/1.asc"), Encoding.GetEncoding("ibm437")).Render(buffer);
 
             var text = new TextRenderTarget();
             text.Render(buffer);
-            File.WriteAllText(@"../../Tmp/1.txt", text.OutputText);
-            File.WriteAllText(@"../../Tmp/1.asc", text.OutputText, Encoding.GetEncoding("ibm437"));
+            Console.WriteLine(text.OutputText);
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;
@@ -127,7 +124,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             Console.WriteLine("♠♣♥♦");
             Console.WriteLine("☺☻☼♀♂♫");
             Console.WriteLine("«»‘’‚‛“”„‟‹›");*/
-            const string TestString1 = "«»‘’‚‛“”„‟‹›", TestString2 = "─═│║┼╪╫╬";
+            /*const string TestString1 = "«»‘’‚‛“”„‟‹›", TestString2 = "─═│║┼╪╫╬";
             foreach (EncodingInfo encodingInfo in Encoding.GetEncodings()) {
                 try {
                     Encoding encoding = encodingInfo.GetEncoding();
@@ -141,7 +138,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     Console.WriteLine("{0,-10}{1,-20}xx FAILED",
                         encodingInfo.CodePage, encodingInfo.Name);
                 }
-            }
+            }*/
             /*for (int i = 1; i < 10000; i += 10) {
                 var sb = new StringBuilder();
                 for (int j = 0; j < 10; j++)
