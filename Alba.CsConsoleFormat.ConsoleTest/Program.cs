@@ -69,8 +69,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             var doc = ReadXaml<Document>(data);
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
-            new ConsoleRenderer().RenderDocument(doc);
-            new ConsoleRenderer().RenderDocument(doc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
+            ConsoleRenderer.RenderDocument(doc);
+            ConsoleRenderer.RenderDocument(doc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -115,7 +115,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
             var text = new TextRenderTarget();
             text.Render(buffer);
-            Console.WriteLine(text.OutputText);
+            Console.Write(text.OutputText);
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;

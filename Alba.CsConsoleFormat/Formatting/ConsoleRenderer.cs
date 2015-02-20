@@ -3,17 +3,8 @@ using System.Linq;
 
 namespace Alba.CsConsoleFormat
 {
-    public class ConsoleRenderer
+    public static class ConsoleRenderer
     {
-        private Rect _renderRect;
-
-        public Rect RenderRect { get; set; }
-
-        public ConsoleRenderer ()
-        {
-            RenderRect = new Rect(0, 0, Console.BufferWidth, Size.Infinity);
-        }
-
         public static Size ConsoleBufferSize
         {
             get { return new Size(Console.BufferWidth, Console.BufferHeight); }
@@ -29,6 +20,11 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        public static Size ConsoleLargestWindowSize
+        {
+            get { return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight); }
+        }
+
         public static Rect ConsoleWindowRect
         {
             get { return new Rect(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight); }
@@ -39,36 +35,47 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static Size ConsoleLargestWindowSize
+        public static Rect DefaultRenderRect
         {
-            get { return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight); }
+            get { return new Rect(0, 0, Console.BufferWidth, Size.Infinity); }
         }
 
-        public void RenderDocument (Document document, IRenderTarget target = null)
+        public static void RenderDocument (Document document, IRenderTarget target = null)
         {
-            _renderRect = RenderRect;
-            document.GenerateVisualTree();
-            document.Measure(_renderRect.Size);
-            document.Arrange(_renderRect);
-
-            var buffer = new ConsoleBuffer(_renderRect.Size.Width);
-            RenderElement(document, buffer, new Vector(0, 0));
-
             if (target == null)
                 target = new ConsoleRenderTarget();
+            Rect renderRect = DefaultRenderRect;
+            var buffer = new ConsoleBuffer(renderRect.Size.Width);
+            RenderDocumentToBuffer(document, buffer, renderRect);
             target.Render(buffer);
         }
 
-        private void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset)
+        public static string RenderDocumentToText (Document document, TextRenderTargetBase target)
+        {
+            Rect renderRect = DefaultRenderRect;
+            var buffer = new ConsoleBuffer(renderRect.Size.Width);
+            RenderDocumentToBuffer(document, buffer, renderRect);
+            target.Render(buffer);
+            return target.OutputText;
+        }
+
+        public static void RenderDocumentToBuffer (Document document, ConsoleBuffer buffer, Rect renderRect)
+        {
+            document.GenerateVisualTree();
+            document.Measure(renderRect.Size);
+            document.Arrange(renderRect);
+            RenderElement(document, buffer, new Vector(0, 0), renderRect);
+        }
+
+        private static void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect renderRect)
         {
             Vector offset = parentOffset + element.ActualOffset;
             if (element.Visibility == Visibility.Visible && !element.RenderSize.IsEmpty) {
-                buffer.Clip = new Rect(element.RenderSize).Intersect(element.LayoutClip).Offset(offset).Intersect(_renderRect);
+                buffer.Clip = new Rect(element.RenderSize).Intersect(element.LayoutClip).Offset(offset).Intersect(renderRect);
                 buffer.Offset = offset;
                 element.Render(buffer);
-
                 foreach (BlockElement childElement in element.VisualChildren.OfType<BlockElement>())
-                    RenderElement(childElement, buffer, offset);
+                    RenderElement(childElement, buffer, offset, renderRect);
             }
         }
     }
