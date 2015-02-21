@@ -5,10 +5,10 @@ namespace Alba.CsConsoleFormat
 {
     public class Canvas : ContainerElement
     {
-        public static AttachedProperty<int?> LeftProperty = AttachedProperty.Register<Canvas, int?>(() => LeftProperty);
-        public static AttachedProperty<int?> TopProperty = AttachedProperty.Register<Canvas, int?>(() => TopProperty);
-        public static AttachedProperty<int?> RightProperty = AttachedProperty.Register<Canvas, int?>(() => RightProperty);
-        public static AttachedProperty<int?> BottomProperty = AttachedProperty.Register<Canvas, int?>(() => BottomProperty);
+        public static readonly AttachedProperty<int?> LeftProperty = AttachedProperty.Register<Canvas, int?>(() => LeftProperty);
+        public static readonly AttachedProperty<int?> TopProperty = AttachedProperty.Register<Canvas, int?>(() => TopProperty);
+        public static readonly AttachedProperty<int?> RightProperty = AttachedProperty.Register<Canvas, int?>(() => RightProperty);
+        public static readonly AttachedProperty<int?> BottomProperty = AttachedProperty.Register<Canvas, int?>(() => BottomProperty);
 
         [TypeConverter (typeof(LengthConverter))]
         public static int? GetLeft (Element el)
@@ -69,10 +69,6 @@ namespace Alba.CsConsoleFormat
             foreach (BlockElement child in VisualChildren) {
                 int x = 0, y = 0;
 
-                // Compute offset of the child:
-                // If Left is specified, then Right is ignored.
-                // If Left is not specified, then Right is used.
-                // If both are not there, then 0.
                 int? left = GetLeft(child);
                 if (left != null)
                     x = left.Value;

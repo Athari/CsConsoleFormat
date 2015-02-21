@@ -48,6 +48,7 @@
     <Compile Include="Converters\VectorConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Core\AttachedProperty.cs" />
+    <Compile Include="Core\Enums\DockTo.cs" />
     <Compile Include="Core\Enums\HorizontalAlignment.cs" />
     <Compile Include="Core\Enums\LineWidth.cs" />
     <Compile Include="Core\Enums\Orientation.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Elements\Collections\ElementCollection.cs" />
     <Compile Include="Elements\Containers\Canvas.cs" />
+    <Compile Include="Elements\Containers\Dock.cs" />
     <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />

@@ -17,6 +17,8 @@ namespace Alba.CsConsoleFormat
         public InlineContainer (BlockElement source)
         {
             DataContext = source.DataContext;
+            Align = HorizontalAlignment.Left;
+            VAlign = VerticalAlignment.Top;
             TextAlign = source.TextAlign;
             TextWrap = source.TextWrap;
             Parent = source;
