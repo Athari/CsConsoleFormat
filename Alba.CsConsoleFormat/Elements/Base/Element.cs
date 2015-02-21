@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
+using System.Xaml;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Text;
 using Alba.CsConsoleFormat.Markup;
@@ -13,13 +15,14 @@ using Alba.CsConsoleFormat.Markup;
 namespace Alba.CsConsoleFormat
 {
     [RuntimeNameProperty ("Name"), ContentProperty ("Children"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
-    public abstract class Element : ISupportInitialize
+    public abstract class Element : ISupportInitialize, IAttachedPropertyStore
     {
         private const ConsoleColor DefaultColor = ConsoleColor.White;
         private const ConsoleColor DefaultBgColor = ConsoleColor.Black;
 
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
+        private IDictionary<AttachableMemberIdentifier, object> _attachedProperties;
         private ElementCollection _children;
         private IList<Element> _visualChildren;
 
@@ -234,6 +237,60 @@ namespace Alba.CsConsoleFormat
 
         protected virtual void EndInit ()
         {}
+
+        int IAttachedPropertyStore.PropertyCount
+        {
+            get { return _attachedProperties != null ? _attachedProperties.Count : 0; }
+        }
+
+        bool IAttachedPropertyStore.TryGetProperty (AttachableMemberIdentifier identifier, out object value)
+        {
+            if (_attachedProperties == null || !_attachedProperties.TryGetValue(identifier, out value)) {
+                value = AttachedProperty.Get(identifier).DefaultValueUntyped;
+                return false;
+            }
+            return true;
+        }
+
+        void IAttachedPropertyStore.SetProperty (AttachableMemberIdentifier identifier, object value)
+        {
+            if (_attachedProperties == null)
+                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+            _attachedProperties[identifier] = value;
+        }
+
+        bool IAttachedPropertyStore.RemoveProperty (AttachableMemberIdentifier identifier)
+        {
+            return _attachedProperties != null && _attachedProperties.Remove(identifier);
+        }
+
+        void IAttachedPropertyStore.CopyPropertiesTo (KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        {
+            if (_attachedProperties == null)
+                return;
+            _attachedProperties.CopyTo(array, index);
+        }
+
+        public T GetValue<T> (AttachedProperty<T> property)
+        {
+            object value;
+            return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out value)
+                ? property.DefaultValue : (T)value;
+        }
+
+        public void SetValue<T> (AttachedProperty<T> property, T value)
+        {
+            if (_attachedProperties == null)
+                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+            _attachedProperties[property.Identifier] = value;
+        }
+
+        public void ResetValue<T> (AttachedProperty<T> property)
+        {
+            if (_attachedProperties == null)
+                return;
+            _attachedProperties.Remove(property.Identifier);
+        }
 
         public override string ToString ()
         {
