@@ -106,16 +106,16 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
 
-            new ConsoleRenderTarget().Render(buffer);
-            new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BgColorOverride = ConsoleColor.Black }.Render(buffer);
+            //new ConsoleRenderTarget().Render(buffer);
+            //new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BgColorOverride = ConsoleColor.Black }.Render(buffer);
             new HtmlRenderTarget(File.Create(@"../../Tmp/1.html"), new UTF8Encoding(false)).Render(buffer);
             new AnsiRenderTarget(new StreamWriter(File.Create(@"../../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" }).Render(buffer);
             new TextRenderTarget(File.Create(@"../../Tmp/1.txt")).Render(buffer);
             new TextRenderTarget(File.Create(@"../../Tmp/1.asc"), Encoding.GetEncoding("ibm437")).Render(buffer);
 
-            var text = new TextRenderTarget();
+            /*var text = new TextRenderTarget();
             text.Render(buffer);
-            Console.Write(text.OutputText);
+            Console.Write(text.OutputText);*/
 
             /*Console.WriteLine(Console.OutputEncoding);
             Console.OutputEncoding = Encoding.UTF8;

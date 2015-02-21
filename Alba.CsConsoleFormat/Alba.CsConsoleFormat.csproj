@@ -71,6 +71,7 @@
     <Compile Include="Elements\Border.cs" />
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Elements\Collections\ElementCollection.cs" />
+    <Compile Include="Elements\Containers\Canvas.cs" />
     <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />

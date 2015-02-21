@@ -37,6 +37,10 @@ namespace Alba.CsConsoleFormat
             : this(position.X, position.Y, size.Width, size.Height)
         {}
 
+        public Rect (Point position, Size size)
+            : this(position.X, position.Y, size.Width, size.Height)
+        {}
+
         public Rect (Size size)
         {
             _x = _y = 0;
