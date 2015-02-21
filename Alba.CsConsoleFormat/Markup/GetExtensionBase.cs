@@ -48,13 +48,13 @@ namespace Alba.CsConsoleFormat.Markup
             }
 
             var targetProvider = provider.GetService<IProvideValueTarget>();
-            var obj = targetProvider.TargetObject as Element;
+            var obj = targetProvider.TargetObject as BindableObject;
             var prop = (PropertyInfo)targetProvider.TargetProperty;
 
             return ProvideExpression(provider, obj, prop);
         }
 
-        protected abstract object ProvideExpression (IServiceProvider provider, Element obj, PropertyInfo prop);
+        protected abstract object ProvideExpression (IServiceProvider provider, BindableObject obj, PropertyInfo prop);
 
         public override string ToString ()
         {

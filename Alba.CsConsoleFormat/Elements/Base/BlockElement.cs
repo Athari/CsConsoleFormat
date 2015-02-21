@@ -236,9 +236,9 @@ namespace Alba.CsConsoleFormat
                 buffer.FillBackgroundRectangle(0, 0, RenderSize.Width, RenderSize.Height, BgColor.Value);
         }
 
-        protected override void CloneOverride (Element sourceElement)
+        protected override void CloneOverride (BindableObject obj)
         {
-            var source = (BlockElement)sourceElement;
+            var source = (BlockElement)obj;
             base.CloneOverride(source);
             layoutInfo = source.layoutInfo.Clone();
         }

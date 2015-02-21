@@ -62,6 +62,7 @@
     <Compile Include="Core\Size.cs" />
     <Compile Include="Core\Thickness.cs" />
     <Compile Include="Core\Vector.cs" />
+    <Compile Include="Elements\Base\BindableObject.cs" />
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\ContainerElement.cs" />
     <Compile Include="Elements\Base\Element.cs" />

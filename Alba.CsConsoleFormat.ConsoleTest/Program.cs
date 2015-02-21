@@ -147,7 +147,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             }*/
         }
 
-        private T ReadXaml<T> (object dataContext) where T : Element, new()
+        private T ReadXaml<T> (object dataContext) where T : BindableObject, new()
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
                 if (resStream == null)

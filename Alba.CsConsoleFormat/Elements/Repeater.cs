@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat
                 yield break;
             foreach (object item in Items) {
                 foreach (Element element in _itemTemplate) {
-                    Element elementClone = element.Clone();
+                    var elementClone = (Element)element.Clone();
                     elementClone.DataContext = item;
                     foreach (Element visualElement in elementClone.GetVisualElements())
                         yield return visualElement;

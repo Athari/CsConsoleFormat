@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat.Markup
         public object Source { get; set; }
         public string Path { get; set; }
         public CultureInfo Culture { get; set; }
-        public Element TargetObject { get; set; }
+        public BindableObject TargetObject { get; set; }
         public Type TargetType { get; set; }
 
         protected CultureInfo EffectiveCulture
@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat.Markup
             get
             {
                 return _effectiveCulture ?? (_effectiveCulture = Culture
-                    ?? (TargetObject != null ? TargetObject.EffectiveCulture : null)
+                    ?? (TargetObject is Element ? ((Element)TargetObject).EffectiveCulture : null)
                         ?? Thread.CurrentThread.CurrentCulture);
             }
         }
@@ -41,7 +41,7 @@ namespace Alba.CsConsoleFormat.Markup
         {
             object source = Source;
             if (source == null) {
-                var targetElement = targetObject as Element;
+                var targetElement = targetObject as BindableObject;
                 if (targetElement != null)
                     source = targetElement.DataContext;
                 else if (targetObject != null)
