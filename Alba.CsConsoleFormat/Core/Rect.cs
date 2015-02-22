@@ -142,6 +142,26 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        public Line LeftLine
+        {
+            get { return Line.Vertical(X, Y, Height); }
+        }
+
+        public Line TopLine
+        {
+            get { return Line.Horizontal(X, Y, Width); }
+        }
+
+        public Line RightLine
+        {
+            get { return Line.Vertical(Right - 1, Y, Height); }
+        }
+
+        public Line BottomLine
+        {
+            get { return Line.Horizontal(X, Bottom - 1, Width); }
+        }
+
         public bool Contains (Point point)
         {
             return X <= point.X && point.X < Right && Y <= point.Y && point.Y < Bottom;

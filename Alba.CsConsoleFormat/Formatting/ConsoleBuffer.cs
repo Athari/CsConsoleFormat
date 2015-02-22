@@ -4,13 +4,10 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public class ConsoleBuffer : IConsoleBufferSource
+    public delegate void ApplyColorMapDelegate (ref ConsoleChar c);
+
+    public sealed class ConsoleBuffer : IConsoleBufferSource
     {
-        private delegate void ApplyColorMapDelegate (ref ConsoleChar c);
-
-        private const string ColorMapsProvider = "Alba.CsConsoleFormat.ColorMaps";
-        private const string CharsProvider = "Alba.CsConsoleFormat.Chars";
-
         private ILineCharRenderer _lineCharRenderer;
         private readonly List<ConsoleChar[]> _chars = new List<ConsoleChar[]>();
 
@@ -38,7 +35,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void DrawHorizontalLine (int x, int y, int w, ConsoleColor color, LineWidth width = LineWidth.Single)
+        public void DrawHorizontalLine (int x, int y, int w, ConsoleColor? color = null, LineWidth width = LineWidth.Single)
         {
             if (width == LineWidth.None)
                 return;
@@ -48,13 +45,14 @@ namespace Alba.CsConsoleFormat
                 return;
             ConsoleChar[] charsLine = GetLine(y);
             for (int ix = x1; ix < x2; ix++) {
-                charsLine[ix].ForegroundColor = color;
+                if (color != null)
+                    charsLine[ix].ForegroundColor = color.Value;
                 // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
                 charsLine[ix].LineWidthHorizontal = width | LineWidth.Single;
             }
         }
 
-        public void DrawVerticalLine (int x, int y, int h, ConsoleColor color, LineWidth width = LineWidth.Single)
+        public void DrawVerticalLine (int x, int y, int h, ConsoleColor? color = null, LineWidth width = LineWidth.Single)
         {
             if (width == LineWidth.None)
                 return;
@@ -64,21 +62,37 @@ namespace Alba.CsConsoleFormat
                 return;
             for (int iy = y1; iy < y2; iy++) {
                 ConsoleChar[] charsLine = GetLine(iy);
-                charsLine[x].ForegroundColor = color;
+                if (color != null)
+                    charsLine[x].ForegroundColor = color.Value;
                 // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
                 charsLine[x].LineWidthVertical = width | LineWidth.Single;
             }
         }
 
-        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor color, LineThickness thickness)
+        public void DrawLine (Line line, ConsoleColor? color = null, LineWidth width = LineWidth.Single)
         {
-            DrawHorizontalLine(x, y, w, color, thickness.Top);
-            DrawHorizontalLine(x, y + h - 1, w, color, thickness.Bottom);
-            DrawVerticalLine(x, y, h, color, thickness.Left);
-            DrawVerticalLine(x + w - 1, y, h, color, thickness.Right);
+            if (line.IsHorizontal)
+                DrawHorizontalLine(line.X, line.Y, line.Width, color, width);
+            else if (line.IsVertical)
+                DrawVerticalLine(line.X, line.Y, line.Height, color, width);
         }
 
-        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor color, LineWidth width = LineWidth.Single)
+        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor? color = null, LineThickness? thickness = null)
+        {
+            if (thickness == null)
+                thickness = new LineThickness(LineWidth.Single);
+            DrawHorizontalLine(x, y, w, color, thickness.Value.Top);
+            DrawHorizontalLine(x, y + h - 1, w, color, thickness.Value.Bottom);
+            DrawVerticalLine(x, y, h, color, thickness.Value.Left);
+            DrawVerticalLine(x + w - 1, y, h, color, thickness.Value.Right);
+        }
+
+        public void DrawRectangle (Rect rect, ConsoleColor? color = null, LineThickness? thickness = null)
+        {
+            DrawRectangle(rect.X, rect.Y, rect.Width, rect.Height, color, thickness);
+        }
+
+        public void DrawRectangle (int x, int y, int w, int h, ConsoleColor? color = null, LineWidth width = LineWidth.Single)
         {
             DrawHorizontalLine(x, y, w, color, width);
             DrawHorizontalLine(x, y + h - 1, w, color, width);
@@ -86,7 +100,12 @@ namespace Alba.CsConsoleFormat
             DrawVerticalLine(x + w - 1, y, h, color, width);
         }
 
-        public void DrawString (int x, int y, ConsoleColor color, string str)
+        public void DrawRectangle (Rect rect, ConsoleColor? color = null, LineWidth width = LineWidth.Single)
+        {
+            DrawRectangle(rect.X, rect.Y, rect.Width, rect.Height, color, width);
+        }
+
+        public void DrawString (int x, int y, ConsoleColor? color, string str)
         {
             OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + str.Length;
@@ -94,12 +113,13 @@ namespace Alba.CsConsoleFormat
                 return;
             ConsoleChar[] charsLine = GetLine(y);
             for (int ix = x1; ix < x2; ix++) {
-                charsLine[ix].ForegroundColor = color;
+                if (color != null)
+                    charsLine[ix].ForegroundColor = color.Value;
                 charsLine[ix].Char = str[ix - x];
             }
         }
 
-        public void FillForegroundHorizontalLine (int x, int y, int w, ConsoleColor color, [ValueProvider (CharsProvider)] char fill)
+        public void FillForegroundHorizontalLine (int x, int y, int w, ConsoleColor? color = null, [ValueProvider (ValueProviders.Chars)] char fill = '\0')
         {
             int x1 = x, x2 = x + w;
             OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
@@ -107,12 +127,13 @@ namespace Alba.CsConsoleFormat
                 return;
             ConsoleChar[] charsLine = GetLine(y);
             for (int ix = x1; ix < x2; ix++) {
-                charsLine[ix].ForegroundColor = color;
+                if (color != null)
+                    charsLine[ix].ForegroundColor = color.Value;
                 charsLine[ix].Char = fill;
             }
         }
 
-        public void FillForegroundVerticalLine (int x, int y, int h, ConsoleColor color, [ValueProvider (CharsProvider)] char fill)
+        public void FillForegroundVerticalLine (int x, int y, int h, ConsoleColor? color = null, [ValueProvider (ValueProviders.Chars)] char fill = '\0')
         {
             int y1 = y, y2 = y + h;
             OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
@@ -120,16 +141,30 @@ namespace Alba.CsConsoleFormat
                 return;
             for (int iy = y1; iy < y2; iy++) {
                 ConsoleChar[] charsLine = GetLine(iy);
-                charsLine[x].ForegroundColor = color;
+                if (color != null)
+                    charsLine[x].ForegroundColor = color.Value;
                 charsLine[x].Char = fill;
             }
         }
 
-        public void FillForegroundRectangle (int x, int y, int w, int h, ConsoleColor color, [ValueProvider (CharsProvider)] char fill)
+        public void FillForegroundLine (Line line, ConsoleColor? color = null, [ValueProvider (ValueProviders.Chars)] char fill = '\0')
+        {
+            if (line.IsHorizontal)
+                FillForegroundHorizontalLine(line.X, line.Y, line.Width, color, fill);
+            else if (line.IsVertical)
+                FillForegroundVerticalLine(line.X, line.Y, line.Height, color, fill);
+        }
+
+        public void FillForegroundRectangle (int x, int y, int w, int h, ConsoleColor? color = null, [ValueProvider (ValueProviders.Chars)] char fill = '\0')
         {
             int y1 = y, y2 = y + h;
             for (int iy = y1; iy < y2; iy++)
                 FillForegroundHorizontalLine(x, iy, w, color, fill);
+        }
+
+        public void FillForegroundRectangle (Rect rect, ConsoleColor? color = null, [ValueProvider (ValueProviders.Chars)] char fill = '\0')
+        {
+            FillForegroundRectangle(rect.X, rect.Y, rect.Width, rect.Height, color, fill);
         }
 
         public void FillBackgroundHorizontalLine (int x, int y, int w, ConsoleColor color)
@@ -155,6 +190,14 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        public void FillBackgroundLine (Line line, ConsoleColor color)
+        {
+            if (line.IsHorizontal)
+                FillBackgroundHorizontalLine(line.X, line.Y, line.Width, color);
+            else if (line.IsVertical)
+                FillBackgroundVerticalLine(line.X, line.Y, line.Height, color);
+        }
+
         public void FillBackgroundRectangle (int x, int y, int w, int h, ConsoleColor color)
         {
             int y1 = y, y2 = y + h;
@@ -162,24 +205,40 @@ namespace Alba.CsConsoleFormat
                 FillBackgroundHorizontalLine(x, iy, w, color);
         }
 
+        public void FillBackgroundRectangle (Rect rect, ConsoleColor color)
+        {
+            FillBackgroundRectangle(rect.X, rect.Y, rect.Width, rect.Height, color);
+        }
+
         public void ResetClip ()
         {
             Clip = new Rect(0, 0, Width, Size.Infinity);
         }
 
-        public void ApplyForegroundColorMap (int x, int y, int w, int h, [ValueProvider (ColorMapsProvider)] ConsoleColor[] colorMap)
+        public void ApplyForegroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
         {
             ApplyColorMap(x, y, w, h, colorMap,
                 (ref ConsoleChar c) => c.ForegroundColor = colorMap[(int)c.ForegroundColor]);
         }
 
-        public void ApplyBackgroundColorMap (int x, int y, int w, int h, [ValueProvider (ColorMapsProvider)] ConsoleColor[] colorMap)
+        public void ApplyForegroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        {
+            ApplyForegroundColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap);
+        }
+
+        public void ApplyBackgroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
         {
             ApplyColorMap(x, y, w, h, colorMap,
                 (ref ConsoleChar c) => c.BackgroundColor = colorMap[(int)c.BackgroundColor]);
         }
 
-        private void ApplyColorMap (int x, int y, int w, int h, ConsoleColor[] colorMap, ApplyColorMapDelegate processChar)
+        public void ApplyBackgroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        {
+            ApplyBackgroundColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap);
+        }
+
+        public void ApplyColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
+            ApplyColorMapDelegate processChar)
         {
             if (colorMap == null)
                 throw new ArgumentNullException("colorMap");
@@ -194,6 +253,12 @@ namespace Alba.CsConsoleFormat
                 for (int ix = x1; ix < x2; ix++)
                     processChar(ref charsLine[ix]);
             }
+        }
+
+        public void ApplyColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
+            ApplyColorMapDelegate processChar)
+        {
+            ApplyColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap, processChar);
         }
 
         private bool ClipHorizontalLine (int y, ref int x1, ref int x2)

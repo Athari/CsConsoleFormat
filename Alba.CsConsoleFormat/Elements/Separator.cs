@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public class Line : BlockElement
+    public class Separator : BlockElement
     {
         public Orientation Orientation { get; set; }
 
@@ -11,7 +11,7 @@
             get { return false; }
         }
 
-        public Line ()
+        public Separator ()
         {
             Stroke = LineWidth.Single;
         }

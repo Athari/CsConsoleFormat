@@ -233,8 +233,8 @@ namespace Alba.CsConsoleFormat
         public virtual void Render (ConsoleBuffer buffer)
         {
             if (BgColor != null)
-                buffer.FillBackgroundRectangle(0, 0, RenderSize.Width, RenderSize.Height, BgColor.Value);
-            buffer.FillForegroundRectangle(0, 0, ActualWidth, ActualHeight, EffectiveColor, '\0');
+                buffer.FillBackgroundRectangle(new Rect(RenderSize), BgColor.Value);
+            buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor, '\0');
         }
 
         protected override void CloneOverride (BindableObject obj)

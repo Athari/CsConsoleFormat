@@ -23,6 +23,11 @@ namespace Alba.CsConsoleFormat
         public Thickness (int width) : this(width, width, width, width)
         {}
 
+        public bool IsEmpty
+        {
+            get { return Left == 0 && Top == 0 && Right == 0 && Bottom == 0; }
+        }
+
         public int Width
         {
             get { return Left + Right; }
@@ -58,6 +63,16 @@ namespace Alba.CsConsoleFormat
             return "{0} {1} {2} {3}".FmtInv(Left, Top, Right, Bottom);
         }
 
+        public static Thickness Max (Thickness left, Thickness right)
+        {
+            return new Thickness(Math.Max(left.Left, right.Left), Math.Max(left.Top, right.Top), Math.Max(left.Right, right.Right), Math.Max(left.Bottom, right.Bottom));
+        }
+
+        public static Thickness Min (Thickness left, Thickness right)
+        {
+            return new Thickness(Math.Min(left.Left, right.Left), Math.Min(left.Top, right.Top), Math.Min(left.Right, right.Right), Math.Min(left.Bottom, right.Bottom));
+        }
+
         public static Thickness Add (Thickness left, Thickness right)
         {
             return new Thickness(left.Left + right.Left, left.Top + right.Top, left.Right + right.Right, left.Bottom + right.Bottom);
@@ -66,6 +81,11 @@ namespace Alba.CsConsoleFormat
         public static Thickness Subtract (Thickness left, Thickness right)
         {
             return new Thickness(left.Left - right.Left, left.Top - right.Top, left.Right - right.Right, left.Bottom - right.Bottom);
+        }
+
+        public static Thickness Negate (Thickness left)
+        {
+            return new Thickness(-left.Left, -left.Top, -left.Right, -left.Bottom);
         }
 
         public static bool operator == (Thickness left, Thickness right)
@@ -86,6 +106,11 @@ namespace Alba.CsConsoleFormat
         public static Thickness operator - (Thickness left, Thickness right)
         {
             return Subtract(left, right);
+        }
+
+        public static Thickness operator - (Thickness left)
+        {
+            return Negate(left);
         }
     }
 }

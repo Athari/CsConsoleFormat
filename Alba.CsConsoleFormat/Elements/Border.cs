@@ -1,20 +1,31 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using System;
+using JetBrains.Annotations;
+
+namespace Alba.CsConsoleFormat
 {
     public class Border : BlockElement
     {
         public Thickness Padding { get; set; }
+
+        public Thickness Shadow { get; set; }
+
+        public ConsoleColor? ShadowColor { get; set; }
+
+        [ValueProvider (ValueProviders.ColorMaps)]
+        public ConsoleColor[] ShadowColorMap { get; set; }
 
         public LineThickness Stroke { get; set; }
 
         public Border ()
         {
             Stroke = new LineThickness(LineWidth.None);
+            ShadowColorMap = ColorMaps.Darkest;
         }
 
         protected override Size MeasureOverride (Size availableSize)
         {
             BlockElement child = VisualChild;
-            Size borderThickness = Stroke.CollapsedCharThickness + Padding.CollapsedThickness;
+            Size borderThickness = (Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))).CollapsedThickness;
             if (child != null) {
                 child.Measure(availableSize - borderThickness);
                 return child.DesiredSize + borderThickness;
@@ -26,14 +37,41 @@
         {
             BlockElement child = VisualChild;
             if (child != null)
-                child.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding));
+                child.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))));
             return finalSize;
         }
 
         public override void Render (ConsoleBuffer buffer)
         {
-            base.Render(buffer);
-            buffer.DrawRectangle(0, 0, RenderSize.Width, RenderSize.Height, EffectiveColor, Stroke);
+            Rect renderRectWithoutShadow = new Rect(RenderSize).Deflate(Thickness.Max(Shadow, new Thickness(0)));
+
+            //base.Render(buffer);
+            if (BgColor != null)
+                buffer.FillBackgroundRectangle(renderRectWithoutShadow, BgColor.Value);
+            buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
+
+            if (!Shadow.IsEmpty) {
+                // 3 2 2 1:     -1 -1 2 3:
+                // ▄▄▄▄▄▄▄▄▄    oooo▄▄
+                // █████████    oooo██
+                // ███oooo██     █████
+                // ███oooo██     █████
+                // ▀▀▀▀▀▀▀▀▀     ▀▀▀▀▀
+                Thickness shadowLineDelta = new Thickness(0, 1, 0, 1);
+                Thickness shadowOffset = Thickness.Max(-Shadow - shadowLineDelta, new Thickness(0));
+                Rect shadowRect = new Rect(RenderSize).Deflate(shadowOffset);
+
+                if (Shadow.Top != 0)
+                    buffer.FillForegroundLine(shadowRect.TopLine, ShadowColor, Chars.LowerHalfBlock);
+                if (Shadow.Bottom != 0)
+                    buffer.FillForegroundLine(shadowRect.BottomLine, ShadowColor, Chars.UpperHalfBlock);
+                buffer.FillForegroundRectangle(shadowRect.Deflate(shadowLineDelta), ShadowColor, Chars.FullBlock);
+                if (ShadowColor == null && ShadowColorMap != null)
+                    buffer.ApplyColorMap(shadowRect, ShadowColorMap,
+                        (ref ConsoleChar c) => c.ForegroundColor = ShadowColorMap[(int)c.BackgroundColor]);
+            }
+            buffer.FillForegroundRectangle(renderRectWithoutShadow, EffectiveColor);
+            buffer.DrawRectangle(renderRectWithoutShadow, EffectiveColor, Stroke);
         }
     }
 }
