@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             new Program().Run();
             Console.WriteLine("Done!");
             if (Debugger.IsAttached)
-                Console.ReadKey();
+                Console.ReadLine();
         }
 
         private void Run ()
