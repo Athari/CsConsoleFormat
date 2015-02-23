@@ -2,9 +2,10 @@
 using Alba.CsConsoleFormat.Framework.Text;
 
 // ReSharper disable ConvertToAutoProperty
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
-    public struct ConsoleChar
+    public struct ConsoleChar : IEquatable<ConsoleChar>
     {
         private char _char;
         private byte _colors;
@@ -62,6 +63,31 @@ namespace Alba.CsConsoleFormat
                 _char >= ' ' ? _char.ToString() : "#" + (int)_char,
                 (LineChar != LineChar.None ? " ({0}x{1})".FmtInv(LineWidthHorizontal, LineWidthVertical) : ""),
                 ForegroundColor, BackgroundColor);
+        }
+
+        public bool Equals (ConsoleChar other)
+        {
+            return _char == other._char && _colors == other._colors && _state == other._state;
+        }
+
+        public override bool Equals (object obj)
+        {
+            return obj is ConsoleChar && Equals((ConsoleChar)obj);
+        }
+
+        public override int GetHashCode ()
+        {
+            return _char.GetHashCode() ^ _colors.GetHashCode() ^ _state.GetHashCode();
+        }
+
+        public static bool operator == (ConsoleChar left, ConsoleChar right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator != (ConsoleChar left, ConsoleChar right)
+        {
+            return !left.Equals(right);
         }
     }
 }

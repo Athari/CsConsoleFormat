@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat.Markup
                 return value;
             // Try converting using Convert class
             if (typeof(IConvertible).IsAssignableFrom(TargetType) && typeof(IConvertible).IsAssignableFrom(valueType))
-                return Convert.ChangeType(value, TargetType);
+                return Convert.ChangeType(value, TargetType, EffectiveCulture);
             // Try converting with value's TypeConverter
             TypeConverter valueConverter = TypeDescriptor.GetConverter(valueType);
             if (valueConverter.CanConvertTo(TargetType))

@@ -20,8 +20,8 @@ namespace Alba.CsConsoleFormat
             var str = value as string;
             if (str == null)
                 return Convert.ToInt32(value, culture);
-            str = str.ToLowerInvariant();
-            return str == "auto" ? (object)null : Convert.ToInt32(str, culture);
+            str = str.ToUpperInvariant();
+            return str == "AUTO" ? (object)null : Convert.ToInt32(str, culture);
         }
 
         public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

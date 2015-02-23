@@ -41,8 +41,11 @@ namespace Alba.CsConsoleFormat
 
         public static AttachedProperty<T> Register<TOwner, T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T))
         {
-            string name = ((MemberExpression)nameExpression.Body).Member.Name;
-            if (name.EndsWith(PropertySuffix))
+            string name = "";
+            var memberExpr = nameExpression.Body as MemberExpression;
+            if (memberExpr != null)
+                name = memberExpr.Member.Name;
+            if (name.EndsWith(PropertySuffix, StringComparison.Ordinal))
                 name = name.Substring(0, name.Length - PropertySuffix.Length);
             return Register<TOwner, T>(name, defaultValue);
         }

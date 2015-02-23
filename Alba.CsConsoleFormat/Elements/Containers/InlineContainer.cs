@@ -252,7 +252,7 @@ namespace Alba.CsConsoleFormat
                 _curLineLength = GetLineLength(_curLine);
                 prevLine.RemoveRange(_wrapSegmentIndex + 1, prevLine.Count - _wrapSegmentIndex - 1);
 
-                if (textAfterWrap != "") {
+                if (textAfterWrap.Length > 0) {
                     if (_curLineLength + textAfterWrap.Length <= AvailableWidth) {
                         InlineSegment nextSeg = InlineSegment.CreateWithBuilder(textAfterWrap.Length);
                         nextSeg.TextBuilder.Append(textAfterWrap);

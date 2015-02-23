@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat
             get { return _itemTemplate ?? (_itemTemplate = new ElementCollection(null)); }
         }
 
-        public override IEnumerable<Element> GetVisualElements ()
+        public override IEnumerable<Element> GenerateVisualElements ()
         {
             if (Items == null || _itemTemplate == null)
                 yield break;
@@ -25,7 +25,7 @@ namespace Alba.CsConsoleFormat
                 foreach (Element element in _itemTemplate) {
                     var elementClone = (Element)element.Clone();
                     elementClone.DataContext = item;
-                    foreach (Element visualElement in elementClone.GetVisualElements())
+                    foreach (Element visualElement in elementClone.GenerateVisualElements())
                         yield return visualElement;
                 }
             }

@@ -42,6 +42,8 @@ namespace Alba.CsConsoleFormat
 
         public static void RenderDocument (Document document, IRenderTarget target = null)
         {
+            if (document == null)
+                throw new ArgumentNullException("document");
             if (target == null)
                 target = new ConsoleRenderTarget();
             Rect renderRect = DefaultRenderRect;
@@ -52,6 +54,10 @@ namespace Alba.CsConsoleFormat
 
         public static string RenderDocumentToText (Document document, TextRenderTargetBase target)
         {
+            if (document == null)
+                throw new ArgumentNullException("document");
+            if (target == null)
+                throw new ArgumentNullException("target");
             Rect renderRect = DefaultRenderRect;
             var buffer = new ConsoleBuffer(renderRect.Size.Width);
             RenderDocumentToBuffer(document, buffer, renderRect);
@@ -61,6 +67,10 @@ namespace Alba.CsConsoleFormat
 
         public static void RenderDocumentToBuffer (Document document, ConsoleBuffer buffer, Rect renderRect)
         {
+            if (document == null)
+                throw new ArgumentNullException("document");
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
             document.Arrange(renderRect);

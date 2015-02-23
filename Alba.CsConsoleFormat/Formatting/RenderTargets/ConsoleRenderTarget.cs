@@ -15,6 +15,8 @@ namespace Alba.CsConsoleFormat
 
         public void Render (IConsoleBufferSource buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
             ConsoleColor currentForeColor = Console.ForegroundColor, oldForeColor = currentForeColor;
             ConsoleColor currentBackColor = Console.BackgroundColor, oldBackColor = currentBackColor;
             bool isManualWrap = buffer.Width < Console.BufferWidth;

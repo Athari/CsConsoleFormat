@@ -20,8 +20,8 @@ namespace Alba.CsConsoleFormat
             var str = value as string;
             if (str == null)
                 return (ConsoleColor)Convert.ToInt32(value, culture);
-            str = str.ToLowerInvariant();
-            return str == "inherit" ? (ConsoleColor?)null : (ConsoleColor)Enum.Parse(typeof(ConsoleColor), str, true);
+            str = str.ToUpperInvariant();
+            return str == "INHERIT" ? (ConsoleColor?)null : (ConsoleColor)Enum.Parse(typeof(ConsoleColor), str, true);
         }
 
         public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

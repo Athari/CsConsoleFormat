@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -102,7 +102,6 @@
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBase.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
-    <Compile Include="Framework\Collections\ListExts.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
     <Compile Include="Framework\Reflection\DynamicCaller.cs" />
     <Compile Include="Framework\Reflection\MethodInfoExts.cs" />

@@ -101,13 +101,14 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public void GenerateVisualTree ()
         {
             if (!HasChildren)
                 return;
             var children = new List<Element>();
             InlineContainer inlines = null;
-            foreach (Element el in _children.SelectMany(c => c.GetVisualElements())) {
+            foreach (Element el in _children.SelectMany(c => c.GenerateVisualElements())) {
                 var inlineEl = el as InlineElement;
                 // Add inline child.
                 if (inlineEl != null) {
@@ -160,7 +161,8 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public virtual IEnumerable<Element> GetVisualElements ()
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
+        public virtual IEnumerable<Element> GenerateVisualElements ()
         {
             yield return this;
         }

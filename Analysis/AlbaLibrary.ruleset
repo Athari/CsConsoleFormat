@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Alba Library Rules" Description=" " ToolsVersion="12.0">
+  <Include Path="extendeddesignguidelinerules.ruleset" Action="Default" />
+  <Include Path="securityrules.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1004" Action="None" />
+    <Rule Id="CA1006" Action="None" />
+    <Rule Id="CA1026" Action="None" />
+    <Rule Id="CA1045" Action="None" />
+  </Rules>
+</RuleSet>

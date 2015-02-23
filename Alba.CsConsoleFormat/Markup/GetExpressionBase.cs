@@ -69,7 +69,7 @@ namespace Alba.CsConsoleFormat.Markup
             return null;
         }
 
-        internal object Get (object value, string memberName)
+        internal static object Get (object value, string memberName)
         {
             GetterDelegate func;
             if (!_getterFunctions.Value.TryGetValue(memberName, out func)) {

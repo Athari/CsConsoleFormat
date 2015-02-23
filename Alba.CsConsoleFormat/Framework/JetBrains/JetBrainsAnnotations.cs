@@ -397,6 +397,7 @@ namespace JetBrains.Annotations
     /// which should not be removed and so is treated as used
     /// </summary>
     [MeansImplicitUse]
+    [AttributeUsage(AttributeTargets.All)]
     [Conditional("JETBRAINS_ANNOTATIONS")]
     public sealed class PublicAPIAttribute : Attribute
     {

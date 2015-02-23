@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -20,7 +21,7 @@ namespace Alba.CsConsoleFormat
 
         protected TextRenderTargetBase (TextWriter writer = null)
         {
-            Writer = writer ?? new StringWriter();
+            Writer = writer ?? new StringWriter(CultureInfo.InvariantCulture);
         }
 
         public string OutputText
@@ -36,6 +37,8 @@ namespace Alba.CsConsoleFormat
 
         public void Render (IConsoleBufferSource buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
             RenderOverride(buffer);
             if (_leaveOpen)
                 Writer.Flush();

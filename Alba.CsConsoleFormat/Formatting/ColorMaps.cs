@@ -1,8 +1,10 @@
-﻿using C = System.ConsoleColor;
+﻿using System;
 
 // ReSharper disable RedundantExplicitArraySize
 namespace Alba.CsConsoleFormat
 {
+    using C = ConsoleColor;
+
     public static class ColorMaps
     {
         internal const int ConsoleColorCount = 16;

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alba.CsConsoleFormat.Framework.Text;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public delegate void ApplyColorMapDelegate (ref ConsoleChar c);
+    public delegate void ApplyColorMapCallback (ref ConsoleChar chr);
 
     public sealed class ConsoleBuffer : IConsoleBufferSource
     {
@@ -107,6 +108,8 @@ namespace Alba.CsConsoleFormat
 
         public void DrawString (int x, int y, ConsoleColor? color, string str)
         {
+            if (str.IsNullOrEmpty())
+                return;
             OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + str.Length;
             if (!ClipHorizontalLine(y, ref x1, ref x2))
@@ -238,10 +241,12 @@ namespace Alba.CsConsoleFormat
         }
 
         public void ApplyColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
-            ApplyColorMapDelegate processChar)
+            ApplyColorMapCallback processChar)
         {
             if (colorMap == null)
                 throw new ArgumentNullException("colorMap");
+            if (processChar == null)
+                throw new ArgumentNullException("processChar");
             if (colorMap.Length != ColorMaps.ConsoleColorCount)
                 throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.");
             OffsetX(ref x).OffsetY(ref y);
@@ -256,7 +261,7 @@ namespace Alba.CsConsoleFormat
         }
 
         public void ApplyColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
-            ApplyColorMapDelegate processChar)
+            ApplyColorMapCallback processChar)
         {
             ApplyColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap, processChar);
         }

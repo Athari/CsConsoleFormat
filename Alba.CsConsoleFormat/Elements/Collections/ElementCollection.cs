@@ -32,12 +32,14 @@ namespace Alba.CsConsoleFormat
             return AddText(text);
         }
 
-        protected override void InsertItem (int index, Element el)
+        protected override void InsertItem (int index, Element item)
         {
-            el.Parent = _parent;
-            if (el.DataContext == null && _parent != null)
-                el.DataContext = _parent.DataContext;
-            base.InsertItem(index, el);
+            if (item == null)
+                throw new ArgumentNullException("item");
+            item.Parent = _parent;
+            if (item.DataContext == null && _parent != null)
+                item.DataContext = _parent.DataContext;
+            base.InsertItem(index, item);
         }
 
         private int AddText (string text)

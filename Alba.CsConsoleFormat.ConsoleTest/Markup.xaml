@@ -12,7 +12,7 @@
     <!--<Div Width="5" BgColor="DarkBlue" Align="Left">
         <Span Text="Lorem ipsum sit amet"/>
     </Div>-->
-    <!--<Dock Width="80" Align="Left" Color="Gray" BgColor="Blue" LastChildFill="True">
+    <Dock Width="80" Align="Left" Color="Gray" BgColor="Blue" LastChildFill="True">
         <Div Dock.To="Left" Width="20" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
@@ -29,11 +29,11 @@
             <Span Text="Word wrap with no-break spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
         </Div>
-        <Div Margin="1 1 1 1" Padding="1" BgColor="DarkCyan">
+        <Border Margin="1 1 1 1" Padding="1" BgColor="DarkCyan" Shadow="-1 -1 1 1" Stroke="1">
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
-        </Div>
-    </Dock>-->
+        </Border>
+    </Dock>
     <Span/>
     <Canvas Width="80" Align="Left" Height="43" Color="Gray" BgColor="Blue">
         <Div Canvas.Left="1" Canvas.Top="1" Width="38" Height="20" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
@@ -52,13 +52,13 @@
             <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
         </Div>
-        <Border Canvas.Left="21" Canvas.Top="11" Width="38" Height="20" Padding="5" BgColor="DarkCyan" Shadow="-1 -1 1 1" Stroke="1">
+        <Border Canvas.Left="21" Canvas.Top="11" Width="38" Height="20" Padding="1" BgColor="DarkCyan" Shadow="-1 -1 1 1" Stroke="1">
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Border>
     </Canvas>
     <Span/>
-    <!--<Stack Orientation="Horizontal" Color="Gray" BgColor="Blue">
+    <Stack Orientation="Horizontal" Color="Gray" BgColor="Blue">
         <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
@@ -87,7 +87,7 @@
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Div>
-    </Stack>-->
+    </Stack>
     <!--<Stack Orientation="Horizontal" Color="Gray" BgColor="Blue">
         <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/>
@@ -166,30 +166,4 @@
             <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->
         </Div>
     </Border>
-    <!--<Stack Orientation="Horizontal" Margin="1 0">
-        <Border Padding="0 0 1 0" Color="Green">
-            <Repeater Items="{Get Items}">
-                <Div>
-                    <Span Text="{Get Id}"/>
-                    <Span Text=" = "/>
-                    <Span Text="{Get Name}"/>
-                </Div>
-                <Repeater Items="{Get SubItems}">
-                    <Div>
-                        <Span Text="  "/>
-                        <Span Text="{Get Id}"/>
-                        <Span Text=" = "/>
-                        <Span Text="{Get Name}"/>
-                    </Div>
-                </Repeater>
-            </Repeater>
-        </Border>
-        <Border Color="Red">
-            <Repeater Items="{Get Items}">
-                <Div>
-                    <Span Text="{Get Value}"/>
-                </Div>
-            </Repeater>
-        </Border>
-    </Stack>-->
 </Document>

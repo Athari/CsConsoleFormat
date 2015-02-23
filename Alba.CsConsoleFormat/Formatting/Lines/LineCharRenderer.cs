@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
@@ -19,7 +20,7 @@ namespace Alba.CsConsoleFormat
         {
             public abstract char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom);
 
-            protected Exception GetCharException (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            protected static Exception GetCharException (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
                 return new NotSupportedException("Line joint not supported: {0} ({1} {2} {3} {4})."
                     .Fmt(chr, chrLeft, chrTop, chrRight, chrBottom));
@@ -39,6 +40,7 @@ namespace Alba.CsConsoleFormat
             private static readonly char[] MapBottomLeft = { '┐', '╕', '╖', '╗' };
             private static readonly char[] MapBottomRight = { '┌', '╒', '╓', '╔' };
 
+            [SuppressMessage ("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
             public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
                 if (chr.IsEmpty())

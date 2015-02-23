@@ -56,6 +56,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Element position (relative to visual parent).</summary>
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Vector ActualOffset
         {
             get { return layoutInfo.ActualOffset; }
@@ -63,6 +64,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, constrained by max element size and available size with margins.</summary>
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Size DesiredSize
         {
             get { return layoutInfo.DesiredSize; }
@@ -77,6 +79,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Render area size.</summary><seealso cref="ActualWidth"/><seealso cref="ActualHeight"/>
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Size RenderSize
         {
             get { return layoutInfo.RenderSize; }
@@ -84,6 +87,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Area occupied by element, including margins (relative to visual parent).</summary>
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Rect RenderSlotRect
         {
             get { return layoutInfo.RenderSlotRect; }
@@ -97,6 +101,7 @@ namespace Alba.CsConsoleFormat
             set { layoutInfo.UnclippedDesiredSize = value; }
         }
 
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public void Measure (Size availableSize)
         {
             if (Visibility == Visibility.Collapsed) {
@@ -143,6 +148,7 @@ namespace Alba.CsConsoleFormat
             return child.DesiredSize;
         }
 
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public void Arrange (Rect finalRect)
         {
             if (Visibility == Visibility.Collapsed) {
@@ -230,8 +236,11 @@ namespace Alba.CsConsoleFormat
             return offset;
         }
 
+        [EditorBrowsable (EditorBrowsableState.Advanced)]
         public virtual void Render (ConsoleBuffer buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
             if (BgColor != null)
                 buffer.FillBackgroundRectangle(new Rect(RenderSize), BgColor.Value);
             buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor, '\0');

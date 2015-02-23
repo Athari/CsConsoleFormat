@@ -66,7 +66,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             /*if (MemoryProfiler.IsActive)
                 MemoryProfiler.Dump();*/
 
-            var doc = ReadXaml<Document>(data);
+            var doc = ReadXaml<Document>("Markup.xaml", data);
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
             ConsoleRenderer.RenderDocument(doc);
@@ -147,9 +147,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             }*/
         }
 
-        private T ReadXaml<T> (object dataContext) where T : BindableObject, new()
+        private T ReadXaml<T> (string filename, object dataContext) where T : BindableObject, new()
         {
-            using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), "Markup.xaml")) {
+            using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), filename)) {
                 if (resStream == null)
                     throw new FileNotFoundException("Resource not found.");
                 //return (T)XamlServices.Load(resStream);
