@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ConsoleColorConverter.cs" />
+    <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
     <Compile Include="Converters\LineThicknessConverter.cs" />
     <Compile Include="Converters\PointConverter.cs" />
@@ -57,6 +58,8 @@
     <Compile Include="Core\Enums\TextWrapping.cs" />
     <Compile Include="Core\Enums\VerticalAlignment.cs" />
     <Compile Include="Core\Enums\Visibility.cs" />
+    <Compile Include="Core\GridLength.cs" />
+    <Compile Include="Core\GridUnitType.cs" />
     <Compile Include="Core\LayoutInfo.cs" />
     <Compile Include="Core\Line.cs" />
     <Compile Include="Core\LineThickness.cs" />
@@ -76,7 +79,10 @@
     <Compile Include="Elements\Br.cs" />
     <Compile Include="Elements\Collections\ElementCollection.cs" />
     <Compile Include="Elements\Containers\Canvas.cs" />
+    <Compile Include="Elements\Containers\Cell.cs" />
+    <Compile Include="Elements\Containers\Column.cs" />
     <Compile Include="Elements\Containers\Dock.cs" />
+    <Compile Include="Elements\Containers\Grid.cs" />
     <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />
