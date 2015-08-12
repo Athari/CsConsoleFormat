@@ -5,7 +5,7 @@ namespace Alba.CsConsoleFormat
 {
     public class Dock : ContainerElement
     {
-        public static readonly AttachedProperty<DockTo> ToProperty = AttachedProperty.Register<ContainerElement, DockTo>(() => ToProperty);
+        public static readonly AttachedProperty<DockTo> ToProperty = AttachedProperty.Register<Dock, DockTo>(() => ToProperty);
 
         public bool LastChildFill { get; set; }
 

@@ -46,12 +46,12 @@ namespace Alba.CsConsoleFormat
             UVSize curLineSize = new UVSize(Orientation);
             UVSize panelSize = new UVSize(Orientation);
             UVSize availableSizeUV = new UVSize(Orientation, availableSize);
-            Size childAvailableSize = new Size(ItemWidth ?? availableSize.Width, ItemHeight ?? availableSize.Height);
+            Size childAvailableSize = OverrideSize(availableSize);
 
             foreach (BlockElement child in VisualChildren) {
                 child.Measure(childAvailableSize);
 
-                UVSize childSize = new UVSize(Orientation, ItemWidth ?? child.DesiredSize.Width, ItemHeight ?? child.DesiredSize.Height);
+                UVSize childSize = new UVSize(Orientation, OverrideSize(child.DesiredSize));
                 // Need to switch to another line.
                 if (curLineSize.U + childSize.U > availableSizeUV.U) {
                     panelSize.U = Math.Max(curLineSize.U, panelSize.U);
@@ -88,7 +88,7 @@ namespace Alba.CsConsoleFormat
             for (int i = 0; i < VisualChildren.Count; i++) {
                 var child = (BlockElement)VisualChildren[i];
 
-                UVSize childSize = new UVSize(Orientation, ItemWidth ?? child.DesiredSize.Width, ItemHeight ?? child.DesiredSize.Height);
+                UVSize childSize = new UVSize(Orientation, OverrideSize(child.DesiredSize));
                 // Need to switch to another line.
                 if (curLineSize.U + childSize.U > finalSizeUV.U) {
                     ArrangeLine(accumulatedV, curLineSize.V, firstInLine, i, itemU);
@@ -120,7 +120,7 @@ namespace Alba.CsConsoleFormat
         {
             for (int i = start, u = 0, layoutSlotU; i < end; i++, u += layoutSlotU) {
                 var child = (BlockElement)VisualChildren[i];
-                UVSize childSize = new UVSize(Orientation, child.DesiredSize.Width, child.DesiredSize.Height);
+                UVSize childSize = new UVSize(Orientation, child.DesiredSize);
                 layoutSlotU = itemU ?? childSize.U;
                 child.Arrange(new Rect(
                     GetU(u, v),
@@ -138,6 +138,11 @@ namespace Alba.CsConsoleFormat
         private T GetV<T> (T u, T v)
         {
             return Orientation == Orientation.Horizontal ? v : u;
+        }
+
+        private Size OverrideSize (Size size)
+        {
+            return new Size(ItemWidth ?? size.Width, ItemHeight ?? size.Height);
         }
 
         private struct UVSize
