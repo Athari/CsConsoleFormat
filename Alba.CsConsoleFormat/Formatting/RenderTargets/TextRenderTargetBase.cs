@@ -9,12 +9,12 @@ namespace Alba.CsConsoleFormat
     {
         private readonly bool _leaveOpen;
 
-        protected TextWriter Writer { get; private set; }
+        protected TextWriter Writer { get; }
 
         protected TextRenderTargetBase (Stream output, Encoding encoding = null, bool leaveOpen = false)
         {
             if (output == null)
-                throw new ArgumentNullException("output");
+                throw new ArgumentNullException(nameof(output));
             Writer = new StreamWriter(output, encoding ?? Encoding.Unicode);
             _leaveOpen = leaveOpen;
         }
@@ -38,7 +38,7 @@ namespace Alba.CsConsoleFormat
         public void Render (IConsoleBufferSource buffer)
         {
             if (buffer == null)
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException(nameof(buffer));
             RenderOverride(buffer);
             if (_leaveOpen)
                 Writer.Flush();

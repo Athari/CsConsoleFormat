@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using Alba.CsConsoleFormat.Framework.Text;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -46,7 +45,7 @@ namespace Alba.CsConsoleFormat
                 case 4:
                     return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
                 default:
-                    throw new FormatException("Invalid LineThickness format: \"{0}\"".Fmt(str));
+                    throw new FormatException($"Invalid LineThickness format: '{str}'.");
             }
         }
 

@@ -12,8 +12,8 @@ namespace Alba.CsConsoleFormat
         private static readonly Dictionary<AttachableMemberIdentifier, AttachedProperty> _Properties =
             new Dictionary<AttachableMemberIdentifier, AttachedProperty>();
 
-        internal AttachableMemberIdentifier Identifier { get; private set; }
-        internal object DefaultValueUntyped { get; private set; }
+        internal AttachableMemberIdentifier Identifier { get; }
+        internal object DefaultValueUntyped { get; }
 
         internal AttachedProperty (AttachableMemberIdentifier identifier, object defaultValue)
         {
@@ -21,15 +21,10 @@ namespace Alba.CsConsoleFormat
             DefaultValueUntyped = defaultValue;
         }
 
-        public string Name
-        {
-            get { return Identifier.MemberName; }
-        }
+        public string Name => Identifier.MemberName;
+        public Type OwnerType => Identifier.DeclaringType;
 
-        public Type OwnerType
-        {
-            get { return Identifier.DeclaringType; }
-        }
+        internal static AttachedProperty Get (AttachableMemberIdentifier identifier) => _Properties[identifier];
 
         public static AttachedProperty<T> Register<TOwner, T> (string name, T defaultValue = default(T))
         {
@@ -49,19 +44,11 @@ namespace Alba.CsConsoleFormat
                 name = name.Substring(0, name.Length - PropertySuffix.Length);
             return Register<TOwner, T>(name, defaultValue);
         }
-
-        internal static AttachedProperty Get (AttachableMemberIdentifier identifier)
-        {
-            return _Properties[identifier];
-        }
     }
 
     public class AttachedProperty<T> : AttachedProperty
     {
-        public T DefaultValue
-        {
-            get { return (T)DefaultValueUntyped; }
-        }
+        public T DefaultValue => (T)DefaultValueUntyped;
 
         internal AttachedProperty (AttachableMemberIdentifier identifier, T defaultValue) : base(identifier, defaultValue)
         {}

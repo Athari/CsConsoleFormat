@@ -4,9 +4,6 @@ namespace Alba.CsConsoleFormat.Framework.Sys
 {
     internal static class ServiceProviderExts
     {
-        public static T GetService<T> (this IServiceProvider @this)
-        {
-            return (T)@this.GetService(typeof(T));
-        }
+        public static T GetService<T> (this IServiceProvider @this) => (T)@this.GetService(typeof(T));
     }
 }

@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Windows.Markup;
 using System.Xaml;
 using Alba.CsConsoleFormat.Framework.Sys;
-using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat.Markup
 {
@@ -42,8 +41,7 @@ namespace Alba.CsConsoleFormat.Markup
                     return nameResolver.GetFixupToken(new[] { Element });
                 else {
                     var lineInfo = provider.GetService<IXamlLineInfo>();
-                    throw new InvalidOperationException("Element '{0}' not found ({1}:{2})."
-                        .Fmt(Element, lineInfo.LineNumber, lineInfo.LinePosition));
+                    throw new InvalidOperationException($"Element '{Element}' not found ({lineInfo.LineNumber}:{lineInfo.LinePosition}).");
                 }
             }
 
@@ -56,9 +54,6 @@ namespace Alba.CsConsoleFormat.Markup
 
         protected abstract object ProvideExpression (IServiceProvider provider, BindableObject obj, PropertyInfo prop);
 
-        public override string ToString ()
-        {
-            return "{{Get Path={0}}}".FmtInv(Path);
-        }
+        public override string ToString () => $"{{Get Path={Path}}}";
     }
 }

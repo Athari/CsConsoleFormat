@@ -3,15 +3,9 @@
     //[TrimSurroundingWhitespace]
     public class Br : InlineElement
     {
-        protected override bool CanHaveChildren
-        {
-            get { return false; }
-        }
+        protected override bool CanHaveChildren => false;
 
-        public override string GeneratedText
-        {
-            get { return "\n"; }
-        }
+        public override string GeneratedText => "\n";
 
         public override void GenerateSequence (IInlineSequence sequence)
         {

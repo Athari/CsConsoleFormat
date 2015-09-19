@@ -74,19 +74,15 @@ namespace Alba.CsConsoleFormat
         {}
 
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        int IAttachedPropertyStore.PropertyCount
-        {
-            get { return _attachedProperties != null ? _attachedProperties.Count : 0; }
-        }
+        int IAttachedPropertyStore.PropertyCount => _attachedProperties?.Count ?? 0;
 
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         bool IAttachedPropertyStore.TryGetProperty (AttachableMemberIdentifier identifier, out object value)
         {
-            if (_attachedProperties == null || !_attachedProperties.TryGetValue(identifier, out value)) {
-                value = AttachedProperty.Get(identifier).DefaultValueUntyped;
-                return false;
-            }
-            return true;
+            if (_attachedProperties != null && _attachedProperties.TryGetValue(identifier, out value))
+                return true;
+            value = AttachedProperty.Get(identifier).DefaultValueUntyped;
+            return false;
         }
 
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
@@ -106,15 +102,13 @@ namespace Alba.CsConsoleFormat
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         void IAttachedPropertyStore.CopyPropertiesTo (KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
         {
-            if (_attachedProperties == null)
-                return;
-            _attachedProperties.CopyTo(array, index);
+            _attachedProperties?.CopyTo(array, index);
         }
 
         public T GetValue<T> (AttachedProperty<T> property)
         {
             if (property == null)
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             object value;
             return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out value)
                 ? property.DefaultValue : (T)value;
@@ -123,7 +117,7 @@ namespace Alba.CsConsoleFormat
         public void SetValue<T> (AttachedProperty<T> property, T value)
         {
             if (property == null)
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             if (_attachedProperties == null)
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
             _attachedProperties[property.Identifier] = value;
@@ -132,10 +126,8 @@ namespace Alba.CsConsoleFormat
         public void ResetValue<T> (AttachedProperty<T> property)
         {
             if (property == null)
-                throw new ArgumentNullException("property");
-            if (_attachedProperties == null)
-                return;
-            _attachedProperties.Remove(property.Identifier);
+                throw new ArgumentNullException(nameof(property));
+            _attachedProperties?.Remove(property.Identifier);
         }
     }
 }

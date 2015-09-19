@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -15,10 +14,8 @@ namespace Alba.CsConsoleFormat
         public Span () : this(null)
         {}
 
-        public override string GeneratedText
-        {
-            get { return Text ?? string.Concat(VisualChildren.Cast<InlineElement>().Select(c => c.GeneratedText)); }
-        }
+        public override string GeneratedText =>
+            Text ?? string.Concat(VisualChildren.Cast<InlineElement>().Select(c => c.GeneratedText));
 
         public override void GenerateSequence (IInlineSequence sequence)
         {
@@ -41,9 +38,6 @@ namespace Alba.CsConsoleFormat
                 sequence.PopFormatting();
         }
 
-        public override string ToString ()
-        {
-            return base.ToString() + " Text=\"{0}\"".Fmt(Text);
-        }
+        public override string ToString () => base.ToString() + $" Text=\"{Text}\"";
     }
 }

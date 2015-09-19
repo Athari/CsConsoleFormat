@@ -20,7 +20,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private void Run ()
         {
-            Size consoleSize = Size.Min(ConsoleRenderer.ConsoleLargestWindowSize, new Size((25 + 1) * 7 + 1, 60));
+            /*Size consoleSize = Size.Min(ConsoleRenderer.ConsoleLargestWindowSize, new Size((25 + 1) * 7 + 1, 60));
             try {
                 ConsoleRenderer.ConsoleWindowRect = new Rect(consoleSize);
                 Console.BufferWidth = consoleSize.Width;
@@ -31,7 +31,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 var bufferRect = new Size(Console.BufferWidth, Console.BufferHeight);
                 Console.WriteLine(bufferRect);
                 Console.WriteLine(e.Message);
-            }
+            }*/
             Console.OutputEncoding = Encoding.UTF8;
             Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
 
@@ -190,35 +190,17 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
 
-        public static string Replace (string value, string to)
-        {
-            return value.Replace("|", to);
-        }
+        public static string Replace (string value, string to) => value.Replace("|", to);
 
-        public static string Replace (string value, char to)
-        {
-            return value.Replace('|', to);
-        }
+        public static string Replace (string value, char to) => value.Replace('|', to);
 
-        public static IEnumerable<string> ReplaceSplit (string value, string to)
-        {
-            return Split(Replace(value, to));
-        }
+        public static IEnumerable<string> ReplaceSplit (string value, string to) => Split(Replace(value, to));
 
-        public static IEnumerable<string> ReplaceSplit (string value, char to)
-        {
-            return Split(Replace(value, to));
-        }
+        public static IEnumerable<string> ReplaceSplit (string value, char to) => Split(Replace(value, to));
 
-        private static IEnumerable<string> Split (string value)
-        {
-            return value.Select(c => c.ToString());
-        }
+        private static IEnumerable<string> Split (string value) => value.Select(c => c.ToString());
 
-        public override string ToString ()
-        {
-            return "Data";
-        }
+        public override string ToString () => "Data";
     }
 
     public class DataItem
@@ -228,9 +210,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public string Value { get; set; }
         public List<DataItem> SubItems { get; set; }
 
-        public override string ToString ()
-        {
-            return "DataItem";
-        }
+        public override string ToString () => "DataItem";
     }
 }

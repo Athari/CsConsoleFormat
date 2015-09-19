@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -63,8 +62,7 @@ namespace Alba.CsConsoleFormat
                     ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
                     ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
                     if (foreColor != currentForeColor || backColor != currentBackColor) {
-                        Writer.Write("</span><span style=\"color:#{0};background:#{1}\">"
-                            .FmtInv(ColorMap[(int)foreColor], ColorMap[(int)backColor]));
+                        Writer.Write($"</span><span style=\"color:#{ColorMap[(int)foreColor]};background:#{ColorMap[(int)backColor]}\">");
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
                     }

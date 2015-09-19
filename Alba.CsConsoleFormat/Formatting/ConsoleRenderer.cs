@@ -5,10 +5,11 @@ namespace Alba.CsConsoleFormat
 {
     public static class ConsoleRenderer
     {
-        public static Size ConsoleBufferSize
-        {
-            get { return new Size(Console.BufferWidth, Console.BufferHeight); }
-        }
+        public static Size ConsoleBufferSize => new Size(Console.BufferWidth, Console.BufferHeight);
+
+        public static Size ConsoleLargestWindowSize => new Size(Console.LargestWindowWidth, Console.LargestWindowHeight);
+
+        public static Rect DefaultRenderRect => new Rect(0, 0, Console.BufferWidth, Size.Infinity);
 
         public static Point ConsoleCursorPosition
         {
@@ -18,11 +19,6 @@ namespace Alba.CsConsoleFormat
                 Console.CursorLeft = value.X;
                 Console.CursorTop = value.Y;
             }
-        }
-
-        public static Size ConsoleLargestWindowSize
-        {
-            get { return new Size(Console.LargestWindowWidth, Console.LargestWindowHeight); }
         }
 
         public static Rect ConsoleWindowRect
@@ -35,15 +31,10 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static Rect DefaultRenderRect
-        {
-            get { return new Rect(0, 0, Console.BufferWidth, Size.Infinity); }
-        }
-
         public static void RenderDocument (Document document, IRenderTarget target = null)
         {
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
             if (target == null)
                 target = new ConsoleRenderTarget();
             Rect renderRect = DefaultRenderRect;
@@ -55,9 +46,9 @@ namespace Alba.CsConsoleFormat
         public static string RenderDocumentToText (Document document, TextRenderTargetBase target)
         {
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
             if (target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             Rect renderRect = DefaultRenderRect;
             var buffer = new ConsoleBuffer(renderRect.Size.Width);
             RenderDocumentToBuffer(document, buffer, renderRect);
@@ -68,9 +59,9 @@ namespace Alba.CsConsoleFormat
         public static void RenderDocumentToBuffer (Document document, ConsoleBuffer buffer, Rect renderRect)
         {
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
             if (buffer == null)
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException(nameof(buffer));
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
             document.Arrange(renderRect);

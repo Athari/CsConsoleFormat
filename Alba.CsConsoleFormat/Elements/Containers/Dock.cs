@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Alba.CsConsoleFormat
 {
     public class Dock : ContainerElement
     {
-        public static readonly AttachedProperty<DockTo> ToProperty = AttachedProperty.Register<Dock, DockTo>(() => ToProperty);
+        public static readonly AttachedProperty<DockTo> ToProperty = RegisterAttached(() => ToProperty);
 
         public bool LastChildFill { get; set; }
 
-        public static DockTo GetTo (Element el)
-        {
-            return el.GetValue(ToProperty);
-        }
+        public static DockTo GetTo (Element el) => el.GetValue(ToProperty);
 
-        public static void SetTo (Element el, DockTo value)
-        {
-            el.SetValue(ToProperty, value);
-        }
+        public static void SetTo (Element el, DockTo value) => el.SetValue(ToProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)
@@ -82,5 +77,8 @@ namespace Alba.CsConsoleFormat
             }
             return finalSize;
         }
+
+        private static AttachedProperty<T> RegisterAttached<T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+            AttachedProperty.Register<Dock, T>(nameExpression, defaultValue);
     }
 }

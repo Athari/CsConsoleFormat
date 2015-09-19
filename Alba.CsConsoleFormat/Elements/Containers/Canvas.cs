@@ -1,58 +1,36 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Alba.CsConsoleFormat
 {
     public class Canvas : ContainerElement
     {
-        public static readonly AttachedProperty<int?> LeftProperty = AttachedProperty.Register<Canvas, int?>(() => LeftProperty);
-        public static readonly AttachedProperty<int?> TopProperty = AttachedProperty.Register<Canvas, int?>(() => TopProperty);
-        public static readonly AttachedProperty<int?> RightProperty = AttachedProperty.Register<Canvas, int?>(() => RightProperty);
-        public static readonly AttachedProperty<int?> BottomProperty = AttachedProperty.Register<Canvas, int?>(() => BottomProperty);
+        public static readonly AttachedProperty<int?> LeftProperty = RegisterAttached(() => LeftProperty);
+        public static readonly AttachedProperty<int?> TopProperty = RegisterAttached(() => TopProperty);
+        public static readonly AttachedProperty<int?> RightProperty = RegisterAttached(() => RightProperty);
+        public static readonly AttachedProperty<int?> BottomProperty = RegisterAttached(() => BottomProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetLeft (Element el)
-        {
-            return el.GetValue(LeftProperty);
-        }
+        public static int? GetLeft (Element el) => el.GetValue(LeftProperty);
 
-        public static void SetLeft (Element el, int? value)
-        {
-            el.SetValue(LeftProperty, value);
-        }
+        public static void SetLeft (Element el, int? value) => el.SetValue(LeftProperty, value);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetTop (Element el)
-        {
-            return el.GetValue(TopProperty);
-        }
+        public static int? GetTop (Element el) => el.GetValue(TopProperty);
 
-        public static void SetTop (Element el, int? value)
-        {
-            el.SetValue(TopProperty, value);
-        }
+        public static void SetTop (Element el, int? value) => el.SetValue(TopProperty, value);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetRight (Element el)
-        {
-            return el.GetValue(RightProperty);
-        }
+        public static int? GetRight (Element el) => el.GetValue(RightProperty);
 
-        public static void SetRight (Element el, int? value)
-        {
-            el.SetValue(RightProperty, value);
-        }
+        public static void SetRight (Element el, int? value) => el.SetValue(RightProperty, value);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetBottom (Element el)
-        {
-            return el.GetValue(BottomProperty);
-        }
+        public static int? GetBottom (Element el) => el.GetValue(BottomProperty);
 
-        public static void SetBottom (Element el, int? value)
-        {
-            el.SetValue(BottomProperty, value);
-        }
+        public static void SetBottom (Element el, int? value) => el.SetValue(BottomProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)
@@ -91,5 +69,8 @@ namespace Alba.CsConsoleFormat
             }
             return finalSize;
         }
+
+        private static AttachedProperty<T> RegisterAttached<T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+            AttachedProperty.Register<Canvas, T>(nameExpression, defaultValue);
     }
 }

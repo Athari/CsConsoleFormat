@@ -14,4 +14,14 @@ namespace Alba.CsConsoleFormat
         MaskHorizontal = Horizontal | HorizontalWide,
         MaskVertical = Vertical | VerticalWide,
     }
+
+    internal static class LineCharExts
+    {
+        public static bool IsEmpty (this LineChar @this) => @this.IsNone() || !@this.IsHorizontal() && !@this.IsVertical();
+        public static bool IsNone (this LineChar @this) => @this == LineChar.None;
+        public static bool IsHorizontal (this LineChar @this) => (@this & LineChar.Horizontal) != 0;
+        public static bool IsHorizontalWide (this LineChar @this) => (@this & LineChar.HorizontalWide) != 0;
+        public static bool IsVertical (this LineChar @this) => (@this & LineChar.Vertical) != 0;
+        public static bool IsVerticalWide (this LineChar @this) => (@this & LineChar.VerticalWide) != 0;
+    }
 }

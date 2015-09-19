@@ -49,40 +49,21 @@ namespace Alba.CsConsoleFormat.Markup
             if (targetConverter.CanConvertFrom(valueType))
                 return targetConverter.ConvertFrom(ValueConverterContext.Context, EffectiveCulture, value);
 
-            throw new InvalidOperationException("Cannot convert from '{0}' to '{1}'.".Fmt(valueType, TargetType));
+            throw new InvalidOperationException($"Cannot convert from '{valueType}' to '{TargetType}'.");
         }
 
         private class ValueConverterContext : ITypeDescriptorContext
         {
             public static readonly ValueConverterContext Context = new ValueConverterContext();
 
-            public IContainer Container
-            {
-                get { return null; }
-            }
-
-            public object Instance
-            {
-                get { return null; }
-            }
-
-            public PropertyDescriptor PropertyDescriptor
-            {
-                get { return null; }
-            }
-
-            public bool OnComponentChanging ()
-            {
-                return false;
-            }
+            public IContainer Container => null;
+            public object Instance => null;
+            public PropertyDescriptor PropertyDescriptor => null;
+            public object GetService (Type serviceType) => null;
+            public bool OnComponentChanging () => false;
 
             public void OnComponentChanged ()
             {}
-
-            public object GetService (Type serviceType)
-            {
-                return null;
-            }
         }
     }
 }

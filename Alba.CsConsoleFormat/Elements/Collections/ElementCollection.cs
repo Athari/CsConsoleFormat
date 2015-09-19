@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat
             var el = value as Element;
             if (el != null)
                 return AddElement(el);
-            throw new ArgumentException("Only Element and string can be added.", "value");
+            throw new ArgumentException("Only Element and string can be added.", nameof(value));
         }
 
         public int Add (string text)
@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat
         protected override void InsertItem (int index, Element item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             item.Parent = _parent;
             if (item.DataContext == null && _parent != null)
                 item.DataContext = _parent.DataContext;

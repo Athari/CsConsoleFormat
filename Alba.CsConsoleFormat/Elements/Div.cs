@@ -17,9 +17,7 @@
 
         protected override Size ArrangeOverride (Size finalSize)
         {
-            BlockElement child = VisualChild;
-            if (child != null)
-                child.Arrange(new Rect(finalSize).Deflate(Padding));
+            VisualChild?.Arrange(new Rect(finalSize).Deflate(Padding));
             return finalSize;
         }
     }

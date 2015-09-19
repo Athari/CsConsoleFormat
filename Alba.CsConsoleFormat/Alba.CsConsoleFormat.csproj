@@ -59,7 +59,7 @@
     <Compile Include="Core\Enums\VerticalAlignment.cs" />
     <Compile Include="Core\Enums\Visibility.cs" />
     <Compile Include="Core\GridLength.cs" />
-    <Compile Include="Core\GridUnitType.cs" />
+    <Compile Include="Core\Enums\GridUnitType.cs" />
     <Compile Include="Core\LayoutInfo.cs" />
     <Compile Include="Core\Line.cs" />
     <Compile Include="Core\LineThickness.cs" />
@@ -104,11 +104,11 @@
     <Compile Include="Formatting\IConsoleBufferSource.cs" />
     <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />
     <Compile Include="Formatting\Lines\LineChar.cs" />
-    <Compile Include="Formatting\Lines\LineCharExts.cs" />
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBase.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
+    <Compile Include="Framework\Compatibility\FormattableString.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
     <Compile Include="Framework\Reflection\DynamicCaller.cs" />
     <Compile Include="Framework\Reflection\MethodInfoExts.cs" />

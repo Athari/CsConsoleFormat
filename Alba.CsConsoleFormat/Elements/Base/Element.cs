@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Collections;
-using Alba.CsConsoleFormat.Framework.Text;
 using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
@@ -39,7 +38,7 @@ namespace Alba.CsConsoleFormat
             get
             {
                 if (!CanHaveChildren)
-                    throw new NotSupportedException("Element '{0}' cannot contain children.".Fmt(GetType().Name));
+                    throw new NotSupportedException($"Element '{(GetType().Name)}' cannot contain children.");
                 return _children ?? (_children = new ElementCollection(this));
             }
         }
@@ -52,54 +51,17 @@ namespace Alba.CsConsoleFormat
             internal set { _visualChildren = value; }
         }
 
-        internal BlockElement VisualChild
-        {
-            get { return _visualChildren != null ? (BlockElement)_visualChildren.SingleOrDefault() : null; }
-        }
+        internal BlockElement VisualChild => (BlockElement)_visualChildren?.SingleOrDefault();
 
-        protected virtual bool CanHaveChildren
-        {
-            get { return true; }
-        }
+        protected virtual bool CanHaveChildren => true;
 
-        private bool HasChildren
-        {
-            get { return _children != null && _children.Count > 0; }
-        }
+        private bool HasChildren => _children != null && _children.Count > 0;
 
-        private IEnumerable<Element> Parents
-        {
-            get { return this.TraverseList(e => e.Parent); }
-        }
+        private IEnumerable<Element> Parents => this.TraverseList(e => e.Parent);
 
-        internal ConsoleColor EffectiveColor
-        {
-            get
-            {
-                Element elWithColor = Parents.FirstOrDefault(e => e.Color != null);
-                // ReSharper disable once PossibleInvalidOperationException
-                return elWithColor != null ? elWithColor.Color.Value : DefaultColor;
-            }
-        }
-
-        internal ConsoleColor EffectiveBgColor
-        {
-            get
-            {
-                Element elWithColor = Parents.FirstOrDefault(e => e.BgColor != null);
-                // ReSharper disable once PossibleInvalidOperationException
-                return elWithColor != null ? elWithColor.BgColor.Value : DefaultBgColor;
-            }
-        }
-
-        internal CultureInfo EffectiveCulture
-        {
-            get
-            {
-                Element elWithLng = Parents.FirstOrDefault(e => e.Language != null);
-                return elWithLng != null ? elWithLng.Language.Culture : null;
-            }
-        }
+        internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
+        internal ConsoleColor EffectiveBgColor => Parents.FirstOrDefault(e => e.BgColor != null)?.BgColor ?? DefaultBgColor;
+        internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language.Culture;
 
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public void GenerateVisualTree ()
@@ -181,13 +143,10 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override string ToString ()
-        {
-            return "{0}:{1}{2}{3}".Fmt(
-                GetType().Name,
-                Name != null ? " Name={0}".Fmt(Name) : "",
-                " DC={0}".Fmt(DataContext ?? "null"),
-                HasChildren ? " Children={0}".Fmt(_children.Count) : "");
-        }
+        public override string ToString () =>
+            $"{GetType().Name}:"
+                + (Name != null ? $" Name={Name}" : "")
+                + (DataContext != null ? $" DC={DataContext}" : " DC=null")
+                + (HasChildren ? $" Children={_children.Count}" : "");
     }
 }

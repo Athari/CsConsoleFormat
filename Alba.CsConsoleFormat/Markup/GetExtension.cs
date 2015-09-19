@@ -33,8 +33,7 @@ namespace Alba.CsConsoleFormat.Markup
                 TargetObject = obj,
                 TargetType = prop.PropertyType,
             };
-            if (obj != null)
-                obj.Bind(prop, expression);
+            obj?.Bind(prop, expression);
             return expression.GetValue();
         }
     }

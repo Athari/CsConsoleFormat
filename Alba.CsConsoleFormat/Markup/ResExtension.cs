@@ -2,7 +2,6 @@
 using System.Windows.Markup;
 using System.Xaml;
 using Alba.CsConsoleFormat.Framework.Sys;
-using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat.Markup
 {
@@ -29,8 +28,7 @@ namespace Alba.CsConsoleFormat.Markup
                 return value;
 
             var lineInfo = provider.GetService<IXamlLineInfo>();
-            throw new InvalidOperationException("Resource '{0}' not found ({1}:{2})."
-                .Fmt(Key, lineInfo.LineNumber, lineInfo.LinePosition));
+            throw new InvalidOperationException($"Resource '{Key}' not found ({lineInfo.LineNumber}:{lineInfo.LinePosition}).");
         }
     }
 }

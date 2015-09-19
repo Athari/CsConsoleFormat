@@ -1,5 +1,6 @@
 ﻿using System;
-using Alba.CsConsoleFormat.Framework.Text;
+using System.Globalization;
+using static System.FormattableString;
 
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable NonReadonlyMemberInGetHashCode
@@ -57,37 +58,18 @@ namespace Alba.CsConsoleFormat
             data = (byte)((data & ~(mask << offset)) | (value & mask) << offset);
         }
 
-        public override string ToString ()
-        {
-            return "{0}{1} ({2} @ {3})".FmtInv(
+        public override string ToString () =>
+            string.Format(CultureInfo.InvariantCulture, "{0}{1} ({2} @ {3})",
                 _char >= ' ' ? _char.ToString() : "#" + (int)_char,
-                (LineChar != LineChar.None ? " ({0}x{1})".FmtInv(LineWidthHorizontal, LineWidthVertical) : ""),
-                ForegroundColor, BackgroundColor);
-        }
+                (LineChar != LineChar.None ? Invariant($" ({LineWidthHorizontal}x{LineWidthVertical})") : ""),
+                ForegroundColor,
+                BackgroundColor);
 
-        public bool Equals (ConsoleChar other)
-        {
-            return _char == other._char && _colors == other._colors && _state == other._state;
-        }
+        public bool Equals (ConsoleChar other) => _char == other._char && _colors == other._colors && _state == other._state;
+        public override bool Equals (object obj) => obj is ConsoleChar && Equals((ConsoleChar)obj);
+        public override int GetHashCode () => _char.GetHashCode() ^ _colors.GetHashCode() ^ _state.GetHashCode();
 
-        public override bool Equals (object obj)
-        {
-            return obj is ConsoleChar && Equals((ConsoleChar)obj);
-        }
-
-        public override int GetHashCode ()
-        {
-            return _char.GetHashCode() ^ _colors.GetHashCode() ^ _state.GetHashCode();
-        }
-
-        public static bool operator == (ConsoleChar left, ConsoleChar right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator != (ConsoleChar left, ConsoleChar right)
-        {
-            return !left.Equals(right);
-        }
+        public static bool operator == (ConsoleChar left, ConsoleChar right) => left.Equals(right);
+        public static bool operator != (ConsoleChar left, ConsoleChar right) => !left.Equals(right);
     }
 }

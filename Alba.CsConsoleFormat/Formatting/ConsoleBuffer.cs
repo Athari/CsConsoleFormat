@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat
         private ILineCharRenderer _lineCharRenderer;
         private readonly List<ConsoleChar[]> _chars = new List<ConsoleChar[]>();
 
-        public int Width { get; private set; }
+        public int Width { get; }
         public int Height { get; private set; }
         public Rect Clip { get; set; }
         public Vector Offset { get; set; }
@@ -31,7 +31,7 @@ namespace Alba.CsConsoleFormat
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 _lineCharRenderer = value;
             }
         }
@@ -244,9 +244,9 @@ namespace Alba.CsConsoleFormat
             ApplyColorMapCallback processChar)
         {
             if (colorMap == null)
-                throw new ArgumentNullException("colorMap");
+                throw new ArgumentNullException(nameof(colorMap));
             if (processChar == null)
-                throw new ArgumentNullException("processChar");
+                throw new ArgumentNullException(nameof(processChar));
             if (colorMap.Length != ColorMaps.ConsoleColorCount)
                 throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.");
             OffsetX(ref x).OffsetY(ref y);
@@ -334,17 +334,11 @@ namespace Alba.CsConsoleFormat
         char IConsoleBufferSource.GetLineChar (int x, int y)
         {
             ConsoleChar? chr = GetChar(x, y);
-            if (chr == null)
-                return '\0';
-            ConsoleChar? chrLeft = GetChar(x - 1, y);
-            ConsoleChar? chrTop = GetChar(x, y - 1);
-            ConsoleChar? chrRight = GetChar(x + 1, y);
-            ConsoleChar? chrBottom = GetChar(x, y + 1);
-            return LineCharRenderer.GetChar(chr.Value.LineChar,
-                chrLeft != null ? chrLeft.Value.LineChar : LineChar.None,
-                chrTop != null ? chrTop.Value.LineChar : LineChar.None,
-                chrRight != null ? chrRight.Value.LineChar : LineChar.None,
-                chrBottom != null ? chrBottom.Value.LineChar : LineChar.None);
+            return chr == null ? '\0' : LineCharRenderer.GetChar(chr.Value.LineChar,
+                chrLeft: GetChar(x - 1, y)?.LineChar ?? LineChar.None,
+                chrTop: GetChar(x, y - 1)?.LineChar ?? LineChar.None,
+                chrRight: GetChar(x + 1, y)?.LineChar ?? LineChar.None,
+                chrBottom: GetChar(x, y + 1)?.LineChar ?? LineChar.None);
         }
 
         char IConsoleBufferSource.SafeChar (char chr)

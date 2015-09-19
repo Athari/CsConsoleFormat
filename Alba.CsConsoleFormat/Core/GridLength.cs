@@ -6,75 +6,29 @@ namespace Alba.CsConsoleFormat
     [TypeConverter (typeof(GridLengthConverter))]
     public struct GridLength : IEquatable<GridLength>
     {
-        private readonly int _value;
-        private readonly GridUnitType _unitType;
+        public int Value { get; }
+        public GridUnitType UnitType { get; }
 
         public GridLength (int value, GridUnitType unitType)
         {
             if (value < 0)
-                throw new ArgumentException("Value cannot be negative.", "value");
-            _value = unitType != GridUnitType.Auto ? value : 0;
-            _unitType = unitType;
+                throw new ArgumentException("Value cannot be negative.", nameof(value));
+            Value = unitType != GridUnitType.Auto ? value : 0;
+            UnitType = unitType;
         }
 
-        public static GridLength Char (int value)
-        {
-            return new GridLength(value, GridUnitType.Char);
-        }
+        public static GridLength Auto => new GridLength(0, GridUnitType.Auto);
+        public static GridLength Char (int value) => new GridLength(value, GridUnitType.Char);
+        public static GridLength Star (int value) => new GridLength(value, GridUnitType.Star);
 
-        public static GridLength Star (int value)
-        {
-            return new GridLength(value, GridUnitType.Star);
-        }
+        public bool IsAbsolute => UnitType == GridUnitType.Char;
+        public bool IsAuto => UnitType == GridUnitType.Auto;
+        public bool IsStar => UnitType == GridUnitType.Star;
 
-        public static GridLength Auto
-        {
-            get { return new GridLength(0, GridUnitType.Auto); }
-        }
+        public bool Equals (GridLength other) => Value == other.Value && UnitType == other.UnitType;
+        public override bool Equals (object obj) => obj is GridLength && Equals((GridLength)obj);
+        public override int GetHashCode () => Value.GetHashCode() ^ UnitType.GetHashCode();
 
-        public bool IsAbsolute
-        {
-            get { return _unitType == GridUnitType.Char; }
-        }
-
-        public bool IsAuto
-        {
-            get { return _unitType == GridUnitType.Auto; }
-        }
-
-        public bool IsStar
-        {
-            get { return _unitType == GridUnitType.Star; }
-        }
-
-        public int Value
-        {
-            get { return _value; }
-        }
-
-        public GridUnitType UnitType
-        {
-            get { return (_unitType); }
-        }
-
-        public bool Equals (GridLength other)
-        {
-            return _value == other._value && _unitType == other._unitType;
-        }
-
-        public override bool Equals (object obj)
-        {
-            return obj is GridLength && Equals((GridLength)obj);
-        }
-
-        public override int GetHashCode ()
-        {
-            return _value.GetHashCode() ^ _unitType.GetHashCode();
-        }
-
-        public override string ToString ()
-        {
-            return GridLengthConverter.ToString(this);
-        }
+        public override string ToString () => GridLengthConverter.ToString(this);
     }
 }

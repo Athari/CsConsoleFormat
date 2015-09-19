@@ -104,21 +104,12 @@ namespace Alba.CsConsoleFormat
             }
 
             [UsedImplicitly]
-            private IEnumerable<object> DebugLines
-            {
-                get
-                {
-                    return _lines.Select(l => new {
-                        text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
-                        len = GetLineLength(l),
-                    });
-                }
-            }
+            private IEnumerable<object> DebugLines => _lines.Select(l => new {
+                text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
+                len = GetLineLength(l),
+            });
 
-            private int AvailableWidth
-            {
-                get { return _availableSize.Width; }
-            }
+            private int AvailableWidth => _availableSize.Width;
 
             public List<List<InlineSegment>> WrapSegments ()
             {
@@ -317,7 +308,7 @@ namespace Alba.CsConsoleFormat
         {
             private readonly Stack<InlineSegment> _formattingStack = new Stack<InlineSegment>();
 
-            public List<InlineSegment> Segments { get; private set; }
+            public List<InlineSegment> Segments { get; }
 
             public InlineSequence (InlineContainer container)
             {
@@ -379,26 +370,17 @@ namespace Alba.CsConsoleFormat
             public string Text { get; private set; }
             public StringBuilder TextBuilder { get; private set; }
 
-            public int TextLength
-            {
-                get { return TextBuilder != null ? TextBuilder.Length : Text != null ? Text.Length : 0; }
-            }
+            public int TextLength => TextBuilder?.Length ?? Text?.Length ?? 0;
 
-            public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? bgColor)
-            {
-                return new InlineSegment { Color = color, BgColor = bgColor };
-            }
+            public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? bgColor) =>
+                new InlineSegment { Color = color, BgColor = bgColor };
 
-            public static InlineSegment CreateFromText (string text)
-            {
-                return new InlineSegment { Text = text != null ? text.Replace("\r", "") : "" };
-            }
+            public static InlineSegment CreateFromText (string text) =>
+                new InlineSegment { Text = text?.Replace("\r", "") ?? "" };
 
-            public static InlineSegment CreateWithBuilder (int length)
-            {
-                // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).
-                return new InlineSegment { TextBuilder = new StringBuilder(length) };
-            }
+            // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).
+            public static InlineSegment CreateWithBuilder (int length) =>
+                new InlineSegment { TextBuilder = new StringBuilder(length) };
 
             public override string ToString ()
             {
@@ -407,7 +389,7 @@ namespace Alba.CsConsoleFormat
                 else if (Text != null)
                     return Text;
                 else
-                    return (Color != null ? Color.ToString() : "null") + " " + (BgColor != null ? BgColor.ToString() : "null");
+                    return $"{(Color?.ToString() ?? "null")} {(BgColor?.ToString() ?? "null")}";
             }
         }
 
@@ -420,60 +402,20 @@ namespace Alba.CsConsoleFormat
                 _c = c;
             }
 
-            public bool IsHyphen
-            {
-                get { return _c == '-'; }
-            }
+            public bool IsHyphen => _c == '-';
+            public bool IsNewLine => _c == '\n';
+            public bool IsSoftHyphen => _c == Chars.SoftHyphen;
+            public bool IsSpace => _c == ' ';
+            public bool IsConsumedOnWrap => _c == ' ' || _c == '\n' || _c == Chars.ZeroWidthSpace;
+            public bool IsWrappable => _c == ' ' || _c == '-' || _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace;
+            public bool IsZeroWidth => _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace;
+            public bool IsZeroWidthSpace => _c == Chars.ZeroWidthSpace;
 
-            public bool IsNewLine
-            {
-                get { return _c == '\n'; }
-            }
+            public static CharInfo From (char c) => new CharInfo(c);
 
-            public bool IsSoftHyphen
-            {
-                get { return _c == Chars.SoftHyphen; }
-            }
+            public static implicit operator char (CharInfo self) => self._c;
 
-            public bool IsSpace
-            {
-                get { return _c == ' '; }
-            }
-
-            public bool IsConsumedOnWrap
-            {
-                get { return _c == ' ' || _c == '\n' || _c == Chars.ZeroWidthSpace; }
-            }
-
-            public bool IsWrappable
-            {
-                get { return _c == ' ' || _c == '-' || _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace; }
-            }
-
-            public bool IsZeroWidth
-            {
-                get { return _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace; }
-            }
-
-            public bool IsZeroWidthSpace
-            {
-                get { return _c == Chars.ZeroWidthSpace; }
-            }
-
-            public static CharInfo From (char c)
-            {
-                return new CharInfo(c);
-            }
-
-            public static implicit operator char (CharInfo self)
-            {
-                return self._c;
-            }
-
-            public override string ToString ()
-            {
-                return _c.ToString();
-            }
+            public override string ToString () => _c.ToString();
         }
     }
 }

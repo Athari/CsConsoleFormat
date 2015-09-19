@@ -3,9 +3,7 @@
     public class Column : Element
     {
         public GridLength Width { get; set; }
-
         public int MinWidth { get; set; }
-
         public int MaxWidth { get; set; }
 
         public Column ()
@@ -15,9 +13,6 @@
             MaxWidth = Size.Infinity;
         }
 
-        protected override bool CanHaveChildren
-        {
-            get { return false; }
-        }
+        protected override bool CanHaveChildren => false;
     }
 }

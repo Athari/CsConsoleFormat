@@ -8,14 +8,11 @@ namespace Alba.CsConsoleFormat.Markup
     {
         public string Name { get; set; }
 
-        public CultureInfo Culture
-        {
-            get { return Name != null ? new CultureInfo(Name) : null; }
-        }
-
         public XmlLanguage (string name)
         {
             Name = name;
         }
+
+        public CultureInfo Culture => Name != null ? new CultureInfo(Name) : null;
     }
 }

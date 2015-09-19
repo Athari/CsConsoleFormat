@@ -14,19 +14,13 @@ namespace Alba.CsConsoleFormat
         public int? Height { get; set; }
 
         public int MinWidth { get; set; }
-
         public int MinHeight { get; set; }
-
         public int MaxWidth { get; set; }
-
         public int MaxHeight { get; set; }
 
         public HorizontalAlignment Align { get; set; }
-
         public VerticalAlignment VAlign { get; set; }
-
         public TextAlignment TextAlign { get; set; }
-
         public TextWrapping TextWrap { get; set; }
 
         public Thickness Margin { get; set; }
@@ -44,16 +38,10 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Render area width.</summary><seealso cref="RenderSize"/>
-        public int ActualWidth
-        {
-            get { return RenderSize.Width; }
-        }
+        public int ActualWidth => RenderSize.Width;
 
         /// <summary>Render area height.</summary><seealso cref="RenderSize"/>
-        public int ActualHeight
-        {
-            get { return RenderSize.Height; }
-        }
+        public int ActualHeight => RenderSize.Height;
 
         /// <summary>Element position (relative to visual parent).</summary>
         [EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -180,9 +168,7 @@ namespace Alba.CsConsoleFormat
 
         protected virtual Size ArrangeOverride (Size finalSize)
         {
-            BlockElement child = VisualChild;
-            if (child != null)
-                child.Arrange(new Rect(finalSize));
+            VisualChild?.Arrange(new Rect(finalSize));
             return finalSize;
         }
 
@@ -240,10 +226,10 @@ namespace Alba.CsConsoleFormat
         public virtual void Render (ConsoleBuffer buffer)
         {
             if (buffer == null)
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException(nameof(buffer));
             if (BgColor != null)
                 buffer.FillBackgroundRectangle(new Rect(RenderSize), BgColor.Value);
-            buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor, '\0');
+            buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
         }
 
         protected override void CloneOverride (BindableObject obj)
@@ -260,7 +246,7 @@ namespace Alba.CsConsoleFormat
 
         private struct MinMaxSize
         {
-            public MinMaxSize (int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height) : this()
+            public MinMaxSize (int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
             {
                 MaxHeight = MinMax(height ?? Size.Infinity, minHeight, maxHeight);
                 MinHeight = MinMax(height ?? 0, minHeight, MaxHeight);
@@ -268,20 +254,13 @@ namespace Alba.CsConsoleFormat
                 MinWidth = MinMax(width ?? 0, minWidth, MaxWidth);
             }
 
-            private int MinWidth { get; set; }
-            private int MaxWidth { get; set; }
-            private int MinHeight { get; set; }
-            private int MaxHeight { get; set; }
+            private int MinWidth { get; }
+            private int MaxWidth { get; }
+            private int MinHeight { get; }
+            private int MaxHeight { get; }
 
-            public Size MaxSize
-            {
-                get { return new Size(MaxWidth, MaxHeight); }
-            }
-
-            public Size MinSize
-            {
-                get { return new Size(MinWidth, MinHeight); }
-            }
+            public Size MaxSize => new Size(MaxWidth, MaxHeight);
+            public Size MinSize => new Size(MinWidth, MinHeight);
         }
     }
 }

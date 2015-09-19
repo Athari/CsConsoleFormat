@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("value", "ItemWidth cannot be negative.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "ItemWidth cannot be negative.");
                 _itemWidth = value;
             }
         }
@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("value", "ItemHeight cannot be negative.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "ItemHeight cannot be negative.");
                 _itemHeight = value;
             }
         }
@@ -130,20 +130,10 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private T GetU<T> (T u, T v)
-        {
-            return Orientation == Orientation.Horizontal ? u : v;
-        }
+        private T GetU<T> (T u, T v) => Orientation == Orientation.Horizontal ? u : v;
+        private T GetV<T> (T u, T v) => Orientation == Orientation.Horizontal ? v : u;
 
-        private T GetV<T> (T u, T v)
-        {
-            return Orientation == Orientation.Horizontal ? v : u;
-        }
-
-        private Size OverrideSize (Size size)
-        {
-            return new Size(ItemWidth ?? size.Width, ItemHeight ?? size.Height);
-        }
+        private Size OverrideSize (Size size) => new Size(ItemWidth ?? size.Width, ItemHeight ?? size.Height);
 
         private struct UVSize
         {
@@ -162,15 +152,8 @@ namespace Alba.CsConsoleFormat
             public UVSize (Orientation orientation, Size size) : this(orientation, size.Width, size.Height)
             {}
 
-            public int Width
-            {
-                get { return _orientation == Orientation.Horizontal ? U : V; }
-            }
-
-            public int Height
-            {
-                get { return _orientation == Orientation.Horizontal ? V : U; }
-            }
+            public int Width => _orientation == Orientation.Horizontal ? U : V;
+            public int Height => _orientation == Orientation.Horizontal ? V : U;
         }
     }
 }

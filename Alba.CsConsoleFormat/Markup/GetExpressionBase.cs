@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Reflection;
-using Alba.CsConsoleFormat.Framework.Text;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace Alba.CsConsoleFormat.Markup
@@ -27,15 +26,10 @@ namespace Alba.CsConsoleFormat.Markup
         public BindableObject TargetObject { get; set; }
         public Type TargetType { get; set; }
 
-        protected CultureInfo EffectiveCulture
-        {
-            get
-            {
-                return _effectiveCulture ?? (_effectiveCulture = Culture
-                    ?? (TargetObject is Element ? ((Element)TargetObject).EffectiveCulture : null)
-                        ?? Thread.CurrentThread.CurrentCulture);
-            }
-        }
+        protected CultureInfo EffectiveCulture =>
+            _effectiveCulture ?? (_effectiveCulture = Culture
+                ?? (TargetObject as Element)?.EffectiveCulture
+                    ?? Thread.CurrentThread.CurrentCulture);
 
         public object GetValue (object targetObject = null)
         {
@@ -80,7 +74,7 @@ namespace Alba.CsConsoleFormat.Markup
                 return func(value);
             }
             catch (RuntimeBinderException ex) {
-                throw new InvalidOperationException("Cannot resolve property or field '{0}'.".FmtInv(memberName), ex);
+                throw new InvalidOperationException($"Cannot resolve property or field '{memberName}'.", ex);
             }
         }
 
@@ -93,7 +87,7 @@ namespace Alba.CsConsoleFormat.Markup
                 memberName = memberNames[i];
                 value = Get(value, memberName);
                 if (value == null)
-                    throw new InvalidOperationException("Property or field '{0}' cannot be null.".FmtInv(memberName));
+                    throw new InvalidOperationException($"Property or field '{memberName}' cannot be null.");
             }
 
             memberName = memberNames[memberNames.Length - 1];
@@ -112,7 +106,7 @@ namespace Alba.CsConsoleFormat.Markup
 
                 List<MethodInfo> candidateMethods = allMethods.Where(m => m.Name == memberName).ToList();
                 if (!candidateMethods.Select(m => m.IsStatic).AllEqual() || !candidateMethods.Select(m => m.GetParameters().Length).AllEqual())
-                    throw new InvalidOperationException("All overloads of '{0}' must have compatible signatures.".FmtInv(memberName));
+                    throw new InvalidOperationException($"All overloads of '{memberName}' must have compatible signatures.");
             }
             if (method != null)
                 return ConvertMethod(method, value);
@@ -120,7 +114,7 @@ namespace Alba.CsConsoleFormat.Markup
                 return ConvertValue(Get(value, memberName));
             }
             catch (InvalidOperationException ex) {
-                throw new InvalidOperationException("Cannot resolve method, property or field '{0}'.".FmtInv(memberName), ex);
+                throw new InvalidOperationException($"Cannot resolve method, property or field '{memberName}'.", ex);
             }
         }
 

@@ -9,9 +9,6 @@
 
     internal static class LineWidthExts
     {
-        public static int ToCharWidth (this LineWidth @this)
-        {
-            return @this == LineWidth.None ? 0 : 1;
-        }
+        public static int ToCharWidth (this LineWidth @this) => @this == LineWidth.None ? 0 : 1;
     }
 }

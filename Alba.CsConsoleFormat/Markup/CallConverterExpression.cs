@@ -6,6 +6,7 @@ using System.Threading;
 using Alba.CsConsoleFormat.Framework.Reflection;
 using Alba.CsConsoleFormat.Framework.Text;
 
+// ReSharper disable BuiltInTypeReferenceStyle
 namespace Alba.CsConsoleFormat.Markup
 {
     using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;

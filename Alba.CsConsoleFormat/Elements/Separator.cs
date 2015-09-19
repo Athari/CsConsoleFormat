@@ -6,15 +6,12 @@
 
         public LineWidth Stroke { get; set; }
 
-        protected override bool CanHaveChildren
-        {
-            get { return false; }
-        }
-
         public Separator ()
         {
             Stroke = LineWidth.Single;
         }
+
+        protected override bool CanHaveChildren => false;
 
         protected override Size MeasureOverride (Size availableSize)
         {

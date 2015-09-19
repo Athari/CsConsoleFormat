@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using Alba.CsConsoleFormat.Framework.Text;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -25,7 +24,7 @@ namespace Alba.CsConsoleFormat
         {
             string[] parts = str.Split(new[] { ' ', ',' }, 2, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
-                throw new FormatException("Invalid Point format: \"{0}\"".Fmt(str));
+                throw new FormatException($"Invalid Point format: '{str}'.");
             return new Point(GetValue(parts[0]), GetValue(parts[1]));
         }
 

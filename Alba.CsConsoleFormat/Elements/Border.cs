@@ -35,9 +35,7 @@ namespace Alba.CsConsoleFormat
 
         protected override Size ArrangeOverride (Size finalSize)
         {
-            BlockElement child = VisualChild;
-            if (child != null)
-                child.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))));
+            VisualChild?.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))));
             return finalSize;
         }
 

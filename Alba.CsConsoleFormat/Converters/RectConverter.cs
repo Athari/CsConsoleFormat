@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using Alba.CsConsoleFormat.Framework.Text;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -25,7 +24,7 @@ namespace Alba.CsConsoleFormat
         {
             string[] parts = str.Split(new[] { ' ', ',' }, 4, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 4)
-                throw new FormatException("Invalid Rect format: \"{0}\"".Fmt(str));
+                throw new FormatException($"Invalid Rect format: '{str}'.");
             return new Rect(GetValue(parts[0]), GetValue(parts[1]), GetValue(parts[2]), GetValue(parts[3]));
         }
 

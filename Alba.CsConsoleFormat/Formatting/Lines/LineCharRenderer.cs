@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Alba.CsConsoleFormat.Framework.Text;
 
 namespace Alba.CsConsoleFormat
 {
@@ -10,11 +9,7 @@ namespace Alba.CsConsoleFormat
         public static readonly ILineCharRenderer Box = new BoxLineCharRenderer();
         public static readonly ILineCharRenderer None = new CharLineCharRenderer('\0');
         public static readonly ILineCharRenderer Simple = new SimpleLineCharRenderer();
-
-        public static ILineCharRenderer Char (char chr)
-        {
-            return new CharLineCharRenderer(chr);
-        }
+        public static ILineCharRenderer Char (char chr) => new CharLineCharRenderer(chr);
 
         private abstract class LineCharRendererBase : ILineCharRenderer
         {
@@ -22,8 +17,7 @@ namespace Alba.CsConsoleFormat
 
             protected static Exception GetCharException (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
             {
-                return new NotSupportedException("Line joint not supported: {0} ({1} {2} {3} {4})."
-                    .Fmt(chr, chrLeft, chrTop, chrRight, chrBottom));
+                return new NotSupportedException($"Line joint not supported: {chr} ({chrLeft} {chrTop} {chrRight} {chrBottom}).");
             }
         }
 
@@ -103,7 +97,7 @@ namespace Alba.CsConsoleFormat
                     case LineChar.Horizontal | LineChar.Vertical | LineChar.HorizontalWide | LineChar.VerticalWide:
                         return map[7];
                     default:
-                        throw new ArgumentOutOfRangeException("chr");
+                        throw new ArgumentOutOfRangeException(nameof(chr));
                 }
             }
 
@@ -118,7 +112,7 @@ namespace Alba.CsConsoleFormat
                     return map[2];
                 if (chr.IsHorizontalWide() && chr.IsVerticalWide())
                     return map[3];
-                throw new ArgumentOutOfRangeException("chr");
+                throw new ArgumentOutOfRangeException(nameof(chr));
             }
         }
 

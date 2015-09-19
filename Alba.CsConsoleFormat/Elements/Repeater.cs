@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Markup;
-using Alba.CsConsoleFormat.Framework.Text;
 
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
@@ -12,10 +11,7 @@ namespace Alba.CsConsoleFormat
 
         public IEnumerable<object> Items { get; set; }
 
-        public ElementCollection ItemTemplate
-        {
-            get { return _itemTemplate ?? (_itemTemplate = new ElementCollection(null)); }
-        }
+        public ElementCollection ItemTemplate => _itemTemplate ?? (_itemTemplate = new ElementCollection(null));
 
         public override IEnumerable<Element> GenerateVisualElements ()
         {
@@ -31,9 +27,6 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override string ToString ()
-        {
-            return base.ToString() + " ItemTpl={0}".Fmt(_itemTemplate != null ? _itemTemplate.Count : 0);
-        }
+        public override string ToString () => base.ToString() + $" ItemTpl={_itemTemplate?.Count ?? 0}";
     }
 }
