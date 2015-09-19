@@ -11,6 +11,8 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
 {
     internal static class DynamicCaller
     {
+        private static readonly Action Delegate = null;
+
         public static TDelegate Call<TDelegate> (string memberName, object context = null, Type[] genericArgs = null)
         {
             MethodInfo method = GetDelegateMethod<TDelegate>();
@@ -63,7 +65,7 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
         {
             List<ParameterExpression> exprParams = methodParams.Select(p => Expression.Parameter(p.ParameterType)).ToList();
             Expression exprInvokeCallSiteTarget = Expression.Invoke(
-                Expression.Field(Expression.Constant(callSite), "Target"),
+                Expression.Field(Expression.Constant(callSite), nameof(Delegate.Target)),
                 Enumerable.Repeat((Expression)Expression.Constant(callSite), 1).Concat(exprParams)
                 );
             Expression<TDelegate> call = Expression.Lambda<TDelegate>(
@@ -82,24 +84,16 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
                 yield return Arg;
         }
 
-        private static CSharpArgumentInfo ArgCompileTimeStatic
-        {
-            get { return CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType | CSharpArgumentInfoFlags.IsStaticType, null); }
-        }
+        private static CSharpArgumentInfo ArgCompileTimeStatic =>
+            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType | CSharpArgumentInfoFlags.IsStaticType, null);
 
-        private static CSharpArgumentInfo Arg
-        {
-            get { return CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null); }
-        }
+        private static CSharpArgumentInfo Arg =>
+            CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null);
 
-        private static Type Context (object context)
-        {
-            return context is Type ? (Type)context : context != null ? context.GetType() : typeof(object);
-        }
+        private static Type Context (object context) =>
+            context is Type ? (Type)context : context?.GetType() ?? typeof(object);
 
-        private static MethodInfo GetDelegateMethod<TDelegate> ()
-        {
-            return typeof(TDelegate).GetMethod("Invoke");
-        }
+        private static MethodInfo GetDelegateMethod<TDelegate> () =>
+            typeof(TDelegate).GetMethod(nameof(Delegate.Invoke));
     }
 }

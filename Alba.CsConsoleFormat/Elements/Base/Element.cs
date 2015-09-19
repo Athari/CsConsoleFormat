@@ -10,7 +10,7 @@ using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
 {
-    [RuntimeNameProperty ("Name"), ContentProperty ("Children"), XmlLangProperty ("Language"), UsableDuringInitialization (true)]
+    [RuntimeNameProperty (nameof(Name)), ContentProperty (nameof(Children)), XmlLangProperty (nameof(Language)), UsableDuringInitialization (true)]
     public abstract class Element : BindableObject
     {
         private const ConsoleColor DefaultColor = ConsoleColor.White;

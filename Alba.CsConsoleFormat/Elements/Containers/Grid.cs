@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int> RowSpanProperty = RegisterAttached(() => RowSpanProperty, 1);
         public static readonly AttachedProperty<LineThickness> StrokeProperty = RegisterAttached(() => StrokeProperty);
 
-        public ElementCollection Columns { get; private set; }
+        public ElementCollection Columns { get; }
 
         public Grid ()
         {

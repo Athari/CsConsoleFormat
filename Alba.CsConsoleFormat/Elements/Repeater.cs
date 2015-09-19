@@ -4,7 +4,7 @@ using System.Windows.Markup;
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
 {
-    [ContentProperty ("ItemTemplate")]
+    [ContentProperty (nameof(ItemTemplate))]
     public class Repeater : GeneratorElement
     {
         private ElementCollection _itemTemplate;

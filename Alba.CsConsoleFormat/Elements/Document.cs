@@ -4,11 +4,10 @@ namespace Alba.CsConsoleFormat
 {
     public class Document : Div
     {
-        public Dictionary<string, object> Resources { get; private set; }
+        public Dictionary<string, object> Resources { get; } = new Dictionary<string, object>();
 
         public Document ()
         {
-            Resources = new Dictionary<string, object>();
             VAlign = VerticalAlignment.Top;
         }
     }

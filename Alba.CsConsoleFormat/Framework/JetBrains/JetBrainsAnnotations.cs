@@ -86,7 +86,7 @@ namespace JetBrains.Annotations
             FormatParameterName = formatParameterName;
         }
 
-        public string FormatParameterName { get; private set; }
+        public string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ namespace JetBrains.Annotations
         }
 
         [NotNull]
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     /// <summary>
@@ -167,7 +167,7 @@ namespace JetBrains.Annotations
             ParameterName = parameterName;
         }
 
-        public string ParameterName { get; private set; }
+        public string ParameterName { get; }
     }
 
     /// <summary>
@@ -226,8 +226,8 @@ namespace JetBrains.Annotations
             ForceFullStates = forceFullStates;
         }
 
-        public string Contract { get; private set; }
-        public bool ForceFullStates { get; private set; }
+        public string Contract { get; }
+        public bool ForceFullStates { get; }
     }
 
     /// <summary>
@@ -249,7 +249,7 @@ namespace JetBrains.Annotations
             Required = required;
         }
 
-        public bool Required { get; private set; }
+        public bool Required { get; }
     }
 
     /// <summary>
@@ -297,7 +297,7 @@ namespace JetBrains.Annotations
         }
 
         [NotNull]
-        public Type BaseType { get; private set; }
+        public Type BaseType { get; }
     }
 
     /// <summary>
@@ -325,8 +325,8 @@ namespace JetBrains.Annotations
             TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     /// <summary>
@@ -355,9 +355,9 @@ namespace JetBrains.Annotations
         }
 
         [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
         [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     [Flags]
@@ -407,7 +407,7 @@ namespace JetBrains.Annotations
             Comment = comment;
         }
 
-        public string Comment { get; private set; }
+        public string Comment { get; }
     }
 
     /// <summary>
@@ -448,7 +448,7 @@ namespace JetBrains.Annotations
             CollectionAccessType = collectionAccessType;
         }
 
-        public CollectionAccessType CollectionAccessType { get; private set; }
+        public CollectionAccessType CollectionAccessType { get; }
     }
 
     [Flags]
@@ -487,7 +487,7 @@ namespace JetBrains.Annotations
             ConditionType = conditionType;
         }
 
-        public AssertionConditionType ConditionType { get; private set; }
+        public AssertionConditionType ConditionType { get; }
     }
 
     /// <summary>

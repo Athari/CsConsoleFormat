@@ -312,10 +312,7 @@ namespace Alba.CsConsoleFormat
 
             public InlineSequence (InlineContainer container)
             {
-                var initSegment = new InlineSegment {
-                    Color = container.EffectiveColor,
-                    BgColor = container.EffectiveBgColor,
-                };
+                var initSegment = InlineSegment.CreateFromColors(container.EffectiveColor, container.EffectiveBgColor);
                 _formattingStack.Push(initSegment);
                 Segments = new List<InlineSegment>();
                 AddFormattingSegment();
@@ -355,7 +352,7 @@ namespace Alba.CsConsoleFormat
             {
                 InlineSegment lastSegment = Segments.LastOrDefault();
                 if (lastSegment == null || lastSegment.Text != null) {
-                    lastSegment = new InlineSegment();
+                    lastSegment = InlineSegment.CreateEmpty();
                     Segments.Add(lastSegment);
                 }
                 lastSegment.Color = _formattingStack.First(s => s.Color != null).Color.Value;
@@ -367,20 +364,29 @@ namespace Alba.CsConsoleFormat
         {
             public ConsoleColor? Color { get; set; }
             public ConsoleColor? BgColor { get; set; }
-            public string Text { get; private set; }
-            public StringBuilder TextBuilder { get; private set; }
+            public string Text { get; }
+            public StringBuilder TextBuilder { get; }
+
+            private InlineSegment (string text, StringBuilder textBuilder)
+            {
+                Text = text;
+                TextBuilder = textBuilder;
+            }
 
             public int TextLength => TextBuilder?.Length ?? Text?.Length ?? 0;
 
+            public static InlineSegment CreateEmpty () =>
+                new InlineSegment(null, null);
+
             public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? bgColor) =>
-                new InlineSegment { Color = color, BgColor = bgColor };
+                new InlineSegment(null, null) { Color = color, BgColor = bgColor };
 
             public static InlineSegment CreateFromText (string text) =>
-                new InlineSegment { Text = text?.Replace("\r", "") ?? "" };
+                new InlineSegment(text?.Replace("\r", "") ?? "", null);
 
             // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).
             public static InlineSegment CreateWithBuilder (int length) =>
-                new InlineSegment { TextBuilder = new StringBuilder(length) };
+                new InlineSegment(null, new StringBuilder(length));
 
             public override string ToString ()
             {

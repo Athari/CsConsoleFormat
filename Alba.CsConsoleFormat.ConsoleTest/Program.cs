@@ -200,7 +200,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private static IEnumerable<string> Split (string value) => value.Select(c => c.ToString());
 
-        public override string ToString () => "Data";
+        public override string ToString () => GetType().Name;
     }
 
     public class DataItem
@@ -210,6 +210,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public string Value { get; set; }
         public List<DataItem> SubItems { get; set; }
 
-        public override string ToString () => "DataItem";
+        public override string ToString () => GetType().Name;
     }
 }
