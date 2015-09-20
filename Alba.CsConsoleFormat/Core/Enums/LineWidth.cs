@@ -1,4 +1,8 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Alba.CsConsoleFormat
 {
     public enum LineWidth
     {
@@ -10,5 +14,9 @@
     internal static class LineWidthExts
     {
         public static int ToCharWidth (this LineWidth @this) => @this == LineWidth.None ? 0 : 1;
+
+        public static LineWidth Max (LineWidth left, LineWidth right) => (LineWidth)Math.Max((int)left, (int)right);
+
+        public static LineWidth Max (IEnumerable<LineWidth> items) => items.Aggregate(LineWidth.None, Max);
     }
 }

@@ -85,6 +85,7 @@
     <Compile Include="Elements\Containers\Grid.cs" />
     <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
+    <Compile Include="Elements\Containers\Row.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />
     <Compile Include="Elements\Containers\Wrap.cs" />
     <Compile Include="Elements\Div.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBase.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
+    <Compile Include="Framework\Collections\CollectionExts.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
     <Compile Include="Framework\Compatibility\FormattableString.cs" />
     <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />

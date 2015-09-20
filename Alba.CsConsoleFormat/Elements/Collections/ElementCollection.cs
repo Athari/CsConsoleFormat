@@ -7,7 +7,8 @@ namespace Alba.CsConsoleFormat
 {
     [ContentWrapper (typeof(Span))]
     //[WhitespaceSignificantCollection]
-    public class ElementCollection : Collection<Element>, IList
+    public class ElementCollection<T> : Collection<T>, IList
+        where T : Element
     {
         private readonly Element _parent;
 
@@ -21,10 +22,13 @@ namespace Alba.CsConsoleFormat
             var text = value as string;
             if (text != null)
                 return AddText(text);
-            var el = value as Element;
+            var el = value as T;
             if (el != null)
                 return AddElement(el);
-            throw new ArgumentException("Only Element and string can be added.", nameof(value));
+            if (typeof(T).IsAssignableFrom(typeof(Span)))
+                throw new ArgumentException($"Only {typeof(T).Name} and string can be added.", nameof(value));
+            else
+                throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));
         }
 
         public int Add (string text)
@@ -32,7 +36,7 @@ namespace Alba.CsConsoleFormat
             return AddText(text);
         }
 
-        protected override void InsertItem (int index, Element item)
+        protected override void InsertItem (int index, T item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -44,13 +48,22 @@ namespace Alba.CsConsoleFormat
 
         private int AddText (string text)
         {
-            return AddElement(new Span(text));
+            var el = new Span(text) as T;
+            if (el == null)
+                throw new ArgumentException("Text cannot be added.");
+            return AddElement(el);
         }
 
-        private int AddElement (Element el)
+        private int AddElement (T el)
         {
             InsertItem(Count, el);
             return Count - 1;
         }
+    }
+
+    public class ElementCollection : ElementCollection<Element>
+    {
+        public ElementCollection (Element parent) : base(parent)
+        {}
     }
 }

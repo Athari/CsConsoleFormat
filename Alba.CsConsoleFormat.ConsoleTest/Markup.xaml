@@ -139,6 +139,18 @@
         <Cell>
             <Span Text="$"/>
         </Cell>
+        <Cell>
+            <Span Text="2. "/>
+        </Cell>
+        <Cell>
+            <Span Text=" * "/>
+        </Cell>
+        <Cell>
+            <Span Text="%"/>
+        </Cell>
+        <Cell ColumnSpan="2">
+            <Span Text="%"/>
+        </Cell>
     </Grid>
     <Span/>
     <!--<Stack Orientation="Vertical" Color="Gray" BgColor="Blue">

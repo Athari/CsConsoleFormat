@@ -239,7 +239,7 @@ namespace Alba.CsConsoleFormat
             layoutInfo = source.layoutInfo.Clone();
         }
 
-        private static int MinMax (int value, int min, int max)
+        internal static int MinMax (int value, int min, int max)
         {
             return Math.Max(Math.Min(value, max), min);
         }

@@ -105,6 +105,13 @@ namespace Alba.CsConsoleFormat
             _attachedProperties?.CopyTo(array, index);
         }
 
+        public bool HasValue<T> (AttachedProperty<T> property)
+        {
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
+            return _attachedProperties != null && _attachedProperties.ContainsKey(property.Identifier);
+        }
+
         public T GetValue<T> (AttachedProperty<T> property)
         {
             if (property == null)

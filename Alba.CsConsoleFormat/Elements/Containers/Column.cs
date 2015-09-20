@@ -5,6 +5,8 @@
         public GridLength Width { get; set; }
         public int MinWidth { get; set; }
         public int MaxWidth { get; set; }
+        public int Index { get; internal set; }
+        public int ActualWidth { get; internal set; }
 
         public Column ()
         {
@@ -14,5 +16,7 @@
         }
 
         protected override bool CanHaveChildren => false;
+
+        public override string ToString () => base.ToString() + $" Width={Width}({MinWidth},{ActualWidth},{(MaxWidth == Size.Infinity ? "Inf" : MaxWidth + "")})";
     }
 }

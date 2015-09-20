@@ -2,8 +2,6 @@
 {
     public class Cell : Div
     {
-        public LineThickness Stroke { get; set; }
-
         public int Column
         {
             get { return Grid.GetColumn(this); }
@@ -27,5 +25,13 @@
             get { return Grid.GetRowSpan(this); }
             set { Grid.SetRowSpan(this, value); }
         }
+
+        public LineThickness Stroke
+        {
+            get { return Grid.GetStroke(this); }
+            set { Grid.SetStroke(this, value); }
+        }
+
+        public override string ToString () => base.ToString() + $" Pos=({Column} {Row} {ColumnSpan} {RowSpan})";
     }
 }
