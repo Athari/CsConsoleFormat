@@ -147,7 +147,6 @@ namespace Alba.CsConsoleFormat
             _maxRowBorders = _rowBorders.Select(widths => widths.Max().ToCharWidth()).ToList();
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)
         {
             if (Columns.Count == 0)
@@ -156,7 +155,19 @@ namespace Alba.CsConsoleFormat
             Size borderSize = new Size(_maxColumnBorders.Sum(), _maxRowBorders.Sum());
             int availableWidth = Max(availableSize.Width - borderSize.Width, 0);
 
-            // Absolute columns.
+            MeasureAbsoluteColumns(ref availableWidth);
+            MeasureAutoColumns(ref availableWidth);
+            MeasureStarColumns(ref availableWidth);
+            MeasureSpannedCells();
+            // TODO > Remeasure cells if not enough height.
+
+            return new Size(
+                Columns.Sum(c => c.ActualWidth) + borderSize.Width,
+                Rows.Sum(c => c.ActualHeight) + borderSize.Height);
+        }
+
+        private void MeasureAbsoluteColumns (ref int availableWidth)
+        {
             foreach (Column gridColumn in Columns.Where(c => c.Width.IsAbsolute)) {
                 gridColumn.ActualWidth = MinMax(gridColumn.Width.Value, gridColumn.MinWidth, gridColumn.MaxWidth);
                 Size maxCellSize = new Size(Min(gridColumn.ActualWidth, availableWidth), Size.Infinity);
@@ -169,8 +180,10 @@ namespace Alba.CsConsoleFormat
                 }
                 availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
             }
+        }
 
-            // Auto columns.
+        private void MeasureAutoColumns (ref int availableWidth)
+        {
             foreach (Column gridColumn in Columns.Where(c => c.Width.IsAuto)) {
                 gridColumn.ActualWidth = gridColumn.MinWidth;
                 Size maxCellSize = new Size(availableWidth, Size.Infinity);
@@ -184,8 +197,10 @@ namespace Alba.CsConsoleFormat
                 }
                 availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
             }
+        }
 
-            // Star columns.
+        private void MeasureStarColumns (ref int availableWidth)
+        {
             List<Column> starColumns = Columns.Where(c => c.Width.IsStar).ToList();
             if (starColumns.Count > 0) {
                 // Distribute widths according to weights.
@@ -214,8 +229,11 @@ namespace Alba.CsConsoleFormat
                     availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
                 }
             }
+        }
 
-            // Measure cells with spans larger than 1.
+        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        private void MeasureSpannedCells ()
+        {
             foreach (BlockElement cell in VisualChildren) {
                 int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
                 if (cellColumnSpan == 1 && cellRowSpan == 1)
@@ -232,12 +250,6 @@ namespace Alba.CsConsoleFormat
                     Rows[cellRow].ActualHeight = Max(Rows[cellRow].ActualHeight, cell.DesiredSize.Height);
                 }
             }
-
-            // TODO > Remeasure cells if not enough height.
-
-            return new Size(
-                Columns.Sum(c => c.ActualWidth) + borderSize.Width,
-                Rows.Sum(c => c.ActualHeight) + borderSize.Height);
         }
 
         protected override Size ArrangeOverride (Size finalSize)
@@ -278,7 +290,6 @@ namespace Alba.CsConsoleFormat
             cell.Arrange(cellRect);
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         public override void Render (ConsoleBuffer buffer)
         {
             base.Render(buffer);

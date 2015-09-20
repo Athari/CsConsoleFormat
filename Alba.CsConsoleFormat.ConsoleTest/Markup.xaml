@@ -120,36 +120,39 @@
         </Div>
     </Wrap>
     <Span/>
-    <Grid>
+    <Grid Color="Gray" BgColor="Blue">
         <Grid.Columns>
-            <Column Width="Auto"/>
-            <Column Width="3"/>
-            <Column Width="*"/>
+            <Column Width="2*"/>
+            <Column Width="1*"/>
             <Column Width="2*"/>
         </Grid.Columns>
-        <Cell>
-            <Span Text="1. "/>
+        <Cell Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
+            <Span Text="Char wrap" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
         </Cell>
-        <Cell>
-            <Span Text=" * "/>
+        <Cell Padding="1" BgColor="DarkBlue" RowSpan="2">
+            <Span Text="Word wrap with spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
         </Cell>
-        <Cell>
-            <Span Text="$"/>
+        <Cell Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with no-break spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
         </Cell>
-        <Cell>
-            <Span Text="$"/>
+        <Cell Padding="1" BgColor="DarkBlue">
+            <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
         </Cell>
-        <Cell>
-            <Span Text="2. "/>
+        <Cell Padding="1" BgColor="DarkBlue" RowSpan="2">
+            <Span Text="Word wrap with hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.Hyphen}}"/>
         </Cell>
-        <Cell>
-            <Span Text=" * "/>
+        <Cell Padding="1" BgColor="DarkBlue" ColumnSpan="2">
+            <Span Text="Word wrap with no-break hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakHyphen}}"/>
         </Cell>
-        <Cell>
-            <Span Text="%"/>
-        </Cell>
-        <Cell ColumnSpan="2">
-            <Span Text="%"/>
+        <Cell Padding="1" BgColor="DarkBlue" ColumnSpan="3">
+            <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Cell>
     </Grid>
     <Span/>
