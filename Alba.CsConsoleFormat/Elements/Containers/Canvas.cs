@@ -15,21 +15,18 @@ namespace Alba.CsConsoleFormat
         [TypeConverter (typeof(LengthConverter))]
         public static int? GetLeft (Element el) => el.GetValue(LeftProperty);
 
-        public static void SetLeft (Element el, int? value) => el.SetValue(LeftProperty, value);
-
         [TypeConverter (typeof(LengthConverter))]
         public static int? GetTop (Element el) => el.GetValue(TopProperty);
-
-        public static void SetTop (Element el, int? value) => el.SetValue(TopProperty, value);
 
         [TypeConverter (typeof(LengthConverter))]
         public static int? GetRight (Element el) => el.GetValue(RightProperty);
 
-        public static void SetRight (Element el, int? value) => el.SetValue(RightProperty, value);
-
         [TypeConverter (typeof(LengthConverter))]
         public static int? GetBottom (Element el) => el.GetValue(BottomProperty);
 
+        public static void SetLeft (Element el, int? value) => el.SetValue(LeftProperty, value);
+        public static void SetTop (Element el, int? value) => el.SetValue(TopProperty, value);
+        public static void SetRight (Element el, int? value) => el.SetValue(RightProperty, value);
         public static void SetBottom (Element el, int? value) => el.SetValue(BottomProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]

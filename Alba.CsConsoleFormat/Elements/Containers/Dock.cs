@@ -11,7 +11,6 @@ namespace Alba.CsConsoleFormat
         public bool LastChildFill { get; set; }
 
         public static DockTo GetTo (Element el) => el.GetValue(ToProperty);
-
         public static void SetTo (Element el, DockTo value) => el.SetValue(ToProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
