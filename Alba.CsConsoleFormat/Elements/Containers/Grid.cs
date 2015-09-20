@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int> RowProperty = RegisterAttached(() => RowProperty);
         public static readonly AttachedProperty<int> ColumnSpanProperty = RegisterAttached(() => ColumnSpanProperty, 1);
         public static readonly AttachedProperty<int> RowSpanProperty = RegisterAttached(() => RowSpanProperty, 1);
-        public static readonly AttachedProperty<LineThickness> StrokeProperty = RegisterAttached(() => StrokeProperty, new LineThickness(LineWidth.Single));
+        public static readonly AttachedProperty<LineThickness> StrokeProperty = RegisterAttached(() => StrokeProperty, LineThickness.Single);
 
         private List<List<BlockElement>> _cells;
         private List<List<LineWidth>> _rowBorders;
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat
         private List<int> _maxColumnBorders;
 
         public bool AutoPosition { get; set; } = true;
-        public LineWidth CellStroke { get; set; } = LineWidth.Single;
+        public LineWidth CellStroke { get; set; }
         public ElementCollection<Column> Columns { get; }
         internal ElementCollection<Row> Rows { get; }
 
@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat
         {
             Columns = new ElementCollection<Column>(this);
             Rows = new ElementCollection<Row>(this);
-            Stroke = new LineThickness(LineWidth.Wide);
+            Stroke = LineThickness.Wide;
         }
 
         public LineThickness Stroke
@@ -242,7 +242,40 @@ namespace Alba.CsConsoleFormat
 
         protected override Size ArrangeOverride (Size finalSize)
         {
+            var cellRect = new Rect { Y = _maxRowBorders[0] };
+            foreach (Row gridRow in Rows) {
+                cellRect.Height = gridRow.ActualHeight;
+                cellRect.X = _maxColumnBorders[0];
+                foreach (Column gridColumn in Columns) {
+                    cellRect.Width = gridColumn.ActualWidth;
+                    ArrangeCell(gridRow, gridColumn, cellRect);
+                    cellRect.X += gridColumn.ActualWidth + _maxColumnBorders[gridColumn.Index + 1];
+                }
+                cellRect.Y += gridRow.ActualHeight + _maxRowBorders[gridRow.Index + 1];
+            }
             return finalSize;
+        }
+
+        private void ArrangeCell (Row gridRow, Column gridColumn, Rect cellRect)
+        {
+            BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
+            if (cell == null)
+                return;
+
+            int cellColumn = GetColumn(cell), cellRow = GetRow(cell);
+            int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
+            // Cell rect is only valid for 1x1 cells, calculate size for spanned cells.
+            if (cellColumnSpan > 1 || cellRowSpan > 1) {
+                // Arrange only one time in the first cell.
+                if (cellColumn != gridColumn.Index || cellRow != gridRow.Index)
+                    return;
+                cellRect.Size = new Size(
+                    Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
+                        + _maxColumnBorders.Skip(cellColumn + 1).Take(cellColumnSpan - 1).Sum(),
+                    Rows.Skip(cellRow).Take(cellRowSpan).Sum(c => c.ActualHeight)
+                        + _maxRowBorders.Skip(cellRow + 1).Take(cellRowSpan - 1).Sum());
+            }
+            cell.Arrange(cellRect);
         }
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]

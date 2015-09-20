@@ -24,6 +24,10 @@ namespace Alba.CsConsoleFormat
         public LineThickness (LineWidth width) : this(width, width, width, width)
         {}
 
+        public static LineThickness None => new LineThickness(LineWidth.None);
+        public static LineThickness Single => new LineThickness(LineWidth.Single);
+        public static LineThickness Wide => new LineThickness(LineWidth.Wide);
+
         public Thickness CharThickness => new Thickness(Left.ToCharWidth(), Top.ToCharWidth(), Right.ToCharWidth(), Bottom.ToCharWidth());
         public Size CollapsedCharThickness => CharThickness.CollapsedThickness;
 

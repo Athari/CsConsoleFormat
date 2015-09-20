@@ -81,7 +81,7 @@ namespace Alba.CsConsoleFormat
         public void DrawRectangle (int x, int y, int w, int h, ConsoleColor? color = null, LineThickness? thickness = null)
         {
             if (thickness == null)
-                thickness = new LineThickness(LineWidth.Single);
+                thickness = LineThickness.Single;
             DrawHorizontalLine(x, y, w, color, thickness.Value.Top);
             DrawHorizontalLine(x, y + h - 1, w, color, thickness.Value.Bottom);
             DrawVerticalLine(x, y, h, color, thickness.Value.Left);

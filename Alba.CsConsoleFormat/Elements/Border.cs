@@ -18,7 +18,7 @@ namespace Alba.CsConsoleFormat
 
         public Border ()
         {
-            Stroke = new LineThickness(LineWidth.None);
+            Stroke = LineThickness.None;
             ShadowColorMap = ColorMaps.Darkest;
         }
 
