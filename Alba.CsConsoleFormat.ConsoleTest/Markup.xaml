@@ -124,7 +124,7 @@
         <Grid.Columns>
             <Column Width="2*"/>
             <Column Width="1*"/>
-            <Column Width="2*"/>
+            <Column Width="25"/>
         </Grid.Columns>
         <Cell Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
@@ -156,6 +156,39 @@
         </Cell>
     </Grid>
     <Span/>
+    <List Color="Gray" BgColor="DarkBlue" IndexFormat="{}{0:00}. ">
+        <Div Padding="0 0 0 1" BgColor="DarkBlue" TextWrap="CharWrap">
+            <Span Text="Char wrap" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
+        </Div>
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
+        </Div>
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with no-break spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
+        </Div>
+    </List>
+    <Span/>
+    <List Color="Gray" BgColor="DarkBlue" IndexFormat="* " StartIndex="0">
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
+        </Div>
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.Hyphen}}"/>
+        </Div>
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with no-break hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakHyphen}}"/>
+        </Div>
+        <Div Padding="0 0 0 1" BgColor="DarkBlue">
+            <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
+        </Div>
+    </List>
     <!--<Stack Orientation="Vertical" Color="Gray" BgColor="Blue">
         <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>

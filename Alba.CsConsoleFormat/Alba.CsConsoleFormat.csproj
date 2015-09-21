@@ -85,6 +85,7 @@
     <Compile Include="Elements\Containers\Grid.cs" />
     <Compile Include="Elements\Containers\IInlineSequence.cs" />
     <Compile Include="Elements\Containers\InlineContainer.cs" />
+    <Compile Include="Elements\Containers\List.cs" />
     <Compile Include="Elements\Containers\Row.cs" />
     <Compile Include="Elements\Containers\Stack.cs" />
     <Compile Include="Elements\Containers\Wrap.cs" />

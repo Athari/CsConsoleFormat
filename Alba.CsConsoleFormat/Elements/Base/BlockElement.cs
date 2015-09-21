@@ -239,10 +239,7 @@ namespace Alba.CsConsoleFormat
             layoutInfo = source.layoutInfo.Clone();
         }
 
-        internal static int MinMax (int value, int min, int max)
-        {
-            return Math.Max(Math.Min(value, max), min);
-        }
+        internal static int MinMax (int value, int min, int max) => Math.Max(Math.Min(value, max), min);
 
         private struct MinMaxSize
         {

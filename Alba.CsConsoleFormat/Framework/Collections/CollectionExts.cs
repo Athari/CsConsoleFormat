@@ -9,5 +9,11 @@ namespace Alba.CsConsoleFormat.Framework.Collections
             foreach (T item in items)
                 @this.Add(item);
         }
+
+        public static void Replace<T> (this ICollection<T> @this, IEnumerable<T> items)
+        {
+            @this.Clear();
+            @this.AddRange(items);
+        }
     }
 }
