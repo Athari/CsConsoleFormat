@@ -2,14 +2,9 @@
 {
     public class Separator : BlockElement
     {
-        public Orientation Orientation { get; set; }
+        public Orientation Orientation { get; set; } = Orientation.Horizontal;
 
-        public LineWidth Stroke { get; set; }
-
-        public Separator ()
-        {
-            Stroke = LineWidth.Single;
-        }
+        public LineWidth Stroke { get; set; } = LineWidth.Single;
 
         protected override bool CanHaveChildren => false;
 

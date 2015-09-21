@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xaml;
+using Alba.CsConsoleFormat.Generation;
 
 namespace Alba.CsConsoleFormat.ConsoleTest
 {
@@ -67,11 +68,16 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             /*if (MemoryProfiler.IsActive)
                 MemoryProfiler.Dump();*/
 
-            var doc = ReadXaml<Document>("Markup.xaml", data);
+            var xamlDoc = ReadXaml<Document>("Markup.xaml", data);
             //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
             //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
-            ConsoleRenderer.RenderDocument(doc);
-            ConsoleRenderer.RenderDocument(doc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
+            //ConsoleRenderer.RenderDocument(xamlDoc);
+            Console.WriteLine("XAML");
+            ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
+
+            Document builtDoc = BuildDoc(data);
+            Console.WriteLine("Builder");
+            ConsoleRenderer.RenderDocument(builtDoc);
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -148,6 +154,105 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             }*/
         }
 
+        private Document BuildDoc (Data data)
+        {
+            var builder = new DocumentBuilder();
+            return builder
+                .Color(ConsoleColor.White, ConsoleColor.Black)
+                .AddChildren(
+                    "Hello world!",
+                    builder.Create<List>()
+                        .AddChildren(
+                            data.Items.Select(d => builder.Create<Div>().AddChildren(d.Name))
+                        ),
+                    builder.Create<Div>()
+                        .AddChildren(
+                            data.Items.Select(d => d.Name + " ")
+                        )
+                    /*builder.Create<Dock>(lastChildFill: true)
+                        .Size(width: 80).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
+                        .AddChildren(
+                            builder.Create<Div>()
+                                .DockTo(DockTo.Left).Size(width: 20).Margin(1, 1, 0, 1).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue).WrapText(TextWrapping.CharWrap)
+                                .AddChildren(
+                                    builder.CreateText("Char wrap\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            builder.Create<Div>()
+                                .DockTo(DockTo.Top).Size(height: 10).Margin(1, 1, 1, 0).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            builder.Create<Div>()
+                                .DockTo(DockTo.Right).Size(width: 20).Margin(0, 1, 1, 1).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with zero-width spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.ZeroWidthSpace)
+                                ),
+                            builder.Create<Div>()
+                                .DockTo(DockTo.Bottom).Size(height: 10).Margin(1, 0, 1, 1).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with no-break spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.NoBreakSpace)
+                                ),
+                            builder.Create<Border>()
+                                .Margin(1).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkCyan)
+                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
+                                )
+                        ),*/
+                    /*builder.CreateText(""),
+                    builder.Create<Canvas>()
+                        .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
+                        .AddChildren(
+                            builder.Create<Div>()
+                                .At(left: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue).WrapText(TextWrapping.CharWrap)
+                                .AddChildren(
+                                    builder.CreateText("Char wrap\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            builder.Create<Div>()
+                                .At(left: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            builder.Create<Div>()
+                                .At(right: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with zero-width spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.ZeroWidthSpace)
+                                ),
+                            builder.Create<Div>()
+                                .At(right: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkBlue)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with no-break spaces\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.NoBreakSpace)
+                                ),
+                            builder.Create<Border>()
+                                .At(left: 21, top: 11).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: ConsoleColor.DarkCyan)
+                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
+                                .AddChildren(
+                                    builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
+                                    Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
+                                )
+                        )*/
+                );
+        }
+
         private T ReadXaml<T> (string filename, object dataContext) where T : BindableObject, new()
         {
             using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), filename)) {
@@ -191,13 +296,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public List<DataItem> Items { get; set; }
 
         public static string Replace (string value, string to) => value.Replace("|", to);
-
         public static string Replace (string value, char to) => value.Replace('|', to);
-
         public static IEnumerable<string> ReplaceSplit (string value, string to) => Split(Replace(value, to));
-
         public static IEnumerable<string> ReplaceSplit (string value, char to) => Split(Replace(value, to));
-
         private static IEnumerable<string> Split (string value) => value.Select(c => c.ToString());
 
         public override string ToString () => GetType().Name;

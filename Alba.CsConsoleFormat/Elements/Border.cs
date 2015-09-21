@@ -3,10 +3,8 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public class Border : BlockElement
+    public class Border : Div
     {
-        public Thickness Padding { get; set; }
-
         public Thickness Shadow { get; set; }
 
         public ConsoleColor? ShadowColor { get; set; }

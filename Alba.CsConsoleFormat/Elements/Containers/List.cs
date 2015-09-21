@@ -6,8 +6,10 @@ namespace Alba.CsConsoleFormat
 {
     public class List : BlockElement
     {
+        internal const string DefaultIndexFormat = "{0}. ";
+
+        public string IndexFormat { get; set; } = DefaultIndexFormat;
         public int StartIndex { get; set; } = 1;
-        public string IndexFormat { get; set; } = "{0}. ";
 
         public override IEnumerable<Element> GenerateVisualElements ()
         {

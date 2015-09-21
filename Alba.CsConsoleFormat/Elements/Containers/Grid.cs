@@ -24,7 +24,6 @@ namespace Alba.CsConsoleFormat
         private List<int> _maxColumnBorders;
 
         public bool AutoPosition { get; set; } = true;
-        public LineWidth CellStroke { get; set; }
         public ElementCollection<Column> Columns { get; }
         internal ElementCollection<Row> Rows { get; }
 
@@ -108,12 +107,12 @@ namespace Alba.CsConsoleFormat
             // | | |$|$|$|
             // +-+-+-+-+-+
 
-            // Initialize with default cell borders (CellStroke property).
+            // Initialize with empty cell borders.
             int ncolumns = Columns.Count, nrows = _cells.Count;
-            _columnBorders = ListOfListOf(nrows, ncolumns + 1, CellStroke);
-            _rowBorders = ListOfListOf(nrows + 1, ncolumns, CellStroke);
+            _columnBorders = ListOfListOf(nrows, ncolumns + 1, LineWidth.None);
+            _rowBorders = ListOfListOf(nrows + 1, ncolumns, LineWidth.None);
 
-            // Apply table borders (Stroke property).
+            // Apply table borders (Stroke property of grid).
             LineThickness tableStroke = Stroke;
             for (int row = 0; row < nrows; row++) {
                 MergeBorderWidth(_columnBorders, row, 0, tableStroke.Left);
@@ -124,7 +123,7 @@ namespace Alba.CsConsoleFormat
                 MergeBorderWidth(_rowBorders, nrows, column, tableStroke.Bottom);
             }
 
-            // Apply cell borders (attached Stroke property).
+            // Apply cell borders (attached Stroke property of cells).
             foreach (BlockElement cell in VisualChildren) {
                 int cellColumn = GetColumn(cell), cellRow = GetRow(cell);
                 int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
