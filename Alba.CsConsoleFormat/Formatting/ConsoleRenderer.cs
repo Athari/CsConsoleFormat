@@ -65,19 +65,27 @@ namespace Alba.CsConsoleFormat
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
             document.Arrange(renderRect);
-            RenderElement(document, buffer, new Vector(0, 0), renderRect);
+            RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip, renderRect);
         }
 
-        private static void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect renderRect)
+        private static void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
         {
+            if (element.Visibility != Visibility.Visible || element.RenderSize.IsEmpty)
+                return;
+
             Vector offset = parentOffset + element.ActualOffset;
-            if (element.Visibility == Visibility.Visible && !element.RenderSize.IsEmpty) {
-                buffer.Clip = new Rect(element.RenderSize).Intersect(element.LayoutClip).Offset(offset).Intersect(renderRect);
-                buffer.Offset = offset;
-                element.Render(buffer);
-                foreach (BlockElement childElement in element.VisualChildren.OfType<BlockElement>())
-                    RenderElement(childElement, buffer, offset, renderRect);
-            }
+            Rect clip = new Rect(/*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
+                .Intersect(element.LayoutClip)
+                .Offset(offset)
+                .Intersect(renderRect)
+                .Intersect(parentRect);
+
+            buffer.Offset = offset;
+            buffer.Clip = clip;
+            element.Render(buffer);
+
+            foreach (BlockElement childElement in element.VisualChildren.OfType<BlockElement>())
+                RenderElement(childElement, buffer, offset, clip, renderRect);
         }
     }
 }

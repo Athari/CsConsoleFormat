@@ -5,7 +5,7 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class BlockElement : Element
     {
-        private LayoutInfo layoutInfo = new LayoutInfo();
+        private LayoutInfo _layoutInfo = new LayoutInfo();
 
         [TypeConverter (typeof(LengthConverter))]
         public int? Width { get; set; }
@@ -47,46 +47,46 @@ namespace Alba.CsConsoleFormat
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Vector ActualOffset
         {
-            get { return layoutInfo.ActualOffset; }
-            private set { layoutInfo.ActualOffset = value; }
+            get { return _layoutInfo.ActualOffset; }
+            private set { _layoutInfo.ActualOffset = value; }
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, constrained by max element size and available size with margins.</summary>
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Size DesiredSize
         {
-            get { return layoutInfo.DesiredSize; }
-            private set { layoutInfo.DesiredSize = value; }
+            get { return _layoutInfo.DesiredSize; }
+            private set { _layoutInfo.DesiredSize = value; }
         }
 
         /// <summary>Render area constraint (relative to visual parent).</summary>
         internal Rect LayoutClip
         {
-            get { return layoutInfo.LayoutClip; }
-            private set { layoutInfo.LayoutClip = value; }
+            get { return _layoutInfo.LayoutClip; }
+            private set { _layoutInfo.LayoutClip = value; }
         }
 
         /// <summary>Render area size.</summary><seealso cref="ActualWidth"/><seealso cref="ActualHeight"/>
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Size RenderSize
         {
-            get { return layoutInfo.RenderSize; }
-            private set { layoutInfo.RenderSize = value; }
+            get { return _layoutInfo.RenderSize; }
+            private set { _layoutInfo.RenderSize = value; }
         }
 
         /// <summary>Area occupied by element, including margins (relative to visual parent).</summary>
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public Rect RenderSlotRect
         {
-            get { return layoutInfo.RenderSlotRect; }
-            private set { layoutInfo.RenderSlotRect = value; }
+            get { return _layoutInfo.RenderSlotRect; }
+            private set { _layoutInfo.RenderSlotRect = value; }
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, expanded by min element size.</summary><seealso cref="DesiredSize"/>
         private Size UnclippedDesiredSize
         {
-            get { return layoutInfo.UnclippedDesiredSize; }
-            set { layoutInfo.UnclippedDesiredSize = value; }
+            get { return _layoutInfo.UnclippedDesiredSize; }
+            set { _layoutInfo.UnclippedDesiredSize = value; }
         }
 
         [EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -200,10 +200,10 @@ namespace Alba.CsConsoleFormat
             VerticalAlignment valign = VAlign;
 
             // This is to degenerate Stretch to Top-Left in case when clipping is about to occur.
-            /*if (halign == HorizontalAlignment.Stretch && renderSize.Width > clientSize.Width)
+            if (halign == HorizontalAlignment.Stretch && renderSize.Width > clientSize.Width)
                 halign = HorizontalAlignment.Left;
             if (valign == VerticalAlignment.Stretch && renderSize.Height > clientSize.Height)
-                valign = VerticalAlignment.Top;*/
+                valign = VerticalAlignment.Top;
 
             if (halign == HorizontalAlignment.Center || halign == HorizontalAlignment.Stretch)
                 offset.X = (clientSize.Width - renderSize.Width) / 2;
@@ -236,7 +236,7 @@ namespace Alba.CsConsoleFormat
         {
             var source = (BlockElement)obj;
             base.CloneOverride(source);
-            layoutInfo = source.layoutInfo.Clone();
+            _layoutInfo = source._layoutInfo.Clone();
         }
 
         internal static int MinMax (int value, int min, int max) => Math.Max(Math.Min(value, max), min);

@@ -242,8 +242,7 @@ namespace Alba.CsConsoleFormat
                 Size cellsWithBordersSize = new Size(
                     Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
                         + _maxColumnBorders.Skip(cellColumn + 1).Take(cellColumnSpan - 1).Sum(),
-                    /*Rows.Skip(cellRow).Take(cellRowSpan).Sum(c => c.ActualHeight)
-                        + _maxRowBorders.Skip(cellRow + 1).Take(cellRowSpan - 1).Sum()*/Size.Infinity);
+                    Size.Infinity);
                 cell.Measure(cellsWithBordersSize);
                 // TODO Support spans better: take them into account earlier. This is a hack.
                 if (cellRowSpan == 1) {
