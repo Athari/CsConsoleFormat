@@ -5,7 +5,8 @@
     <Document.Resources>
         <!-- ReSharper disable Xaml.RedundantResource -->
         <sys:ConsoleColor x:Key="BoldColor">Red</sys:ConsoleColor>
-        <sys:Int32 x:Key="ParaWidth">25</sys:Int32>
+        <sys:Int32 x:Key="ParaWidth">26</sys:Int32>
+        <sys:Int32 x:Key="ParaWidthWide">70</sys:Int32>
         <CallConverter x:Key="Replace" Path="Replace"/>
         <CallConverter x:Key="ReplaceSplit" Path="ReplaceSplit"/>
     </Document.Resources>
@@ -122,9 +123,9 @@
     <Span/>
     <Grid Color="Gray" BgColor="Blue">
         <Grid.Columns>
+            <Column Width="3*"/>
+            <Column Width="12"/>
             <Column Width="2*"/>
-            <Column Width="1*"/>
-            <Column Width="25"/>
         </Grid.Columns>
         <Cell Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
@@ -155,7 +156,7 @@
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Cell>
     </Grid>
-    <Span/>
+    <!--<Span/>
     <List Color="Gray" BgColor="DarkBlue" IndexFormat="{}{0:00}. ">
         <Div Padding="0 0 0 1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
@@ -189,92 +190,34 @@
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Div>
     </List>
-    <!--<Stack Orientation="Vertical" Color="Gray" BgColor="Blue">
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
+    <Stack Orientation="Vertical" Color="Gray" BgColor="Blue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap" Align="Left">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" Align="Center">
             <Span Text="Word wrap with spaces" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" Align="Right">
             <Span Text="Word wrap with no-break spaces" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+        <Div Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" Align="Stretch">
             <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" Align="Left">
             <Span Text="Word wrap with hyphens" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.Hyphen}}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.Hyphen}}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue" Align="Center">
             <Span Text="Word wrap with no-break hyphens" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakHyphen}}"/>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakHyphen}}"/>
         </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 1 0" Padding="1" BgColor="DarkBlue">
+        <Div Width="{Res ParaWidthWide}" Margin="1 1 1 1" Padding="1" BgColor="DarkBlue" Align="Right">
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
-            <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
-        </Div>
-    </Stack>-->
-    <!--<Stack Orientation="Horizontal" Color="Gray" BgColor="Blue">
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue" TextWrap="CharWrap">
-            <Span Text="Char wrap" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter=''}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with spaces" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter=''}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with no-break spaces" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter={x:Static Chars.NoBreakSpace}}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with zero-width spaces" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter={x:Static Chars.ZeroWidthSpace}}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with hyphens" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter={x:Static Chars.Hyphen}}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with no-break hyphens" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter={x:Static Chars.NoBreakHyphen}}">
-                <Span Text="{Get}"/>
-            </Repeater>
-        </Div>
-        <Div Width="{Res ParaWidth}" Margin="1 1 0 1" Padding="1" BgColor="DarkBlue">
-            <Span Text="Word wrap with soft hyphens" Color="White"/>
-            <Br/>
-            <Br/>
-            <Repeater Items="{Get LoremIpsum, Converter={Res ReplaceSplit}, Parameter={x:Static Chars.SoftHyphen}}">
-                <Span Text="{Get}"/>
-            </Repeater>
+            <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Div>
     </Stack>-->
     <Border Stroke="1 2, Single Wide" Color="Yellow" BgColor="Blue" Padding="1 0" Margin="1" Visibility="Collapsed">

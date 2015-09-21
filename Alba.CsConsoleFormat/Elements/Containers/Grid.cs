@@ -231,22 +231,29 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         private void MeasureSpannedCells ()
         {
-            foreach (BlockElement cell in VisualChildren) {
+            foreach (BlockElement cell in VisualChildren.Cast<BlockElement>().OrderBy(GetCellMeasurePriority)) {
                 int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
                 if (cellColumnSpan == 1 && cellRowSpan == 1)
                     continue;
                 int cellColumn = GetColumn(cell), cellRow = GetRow(cell);
-                Size cellsWithBordersSize = new Size(
-                    Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
-                        + _maxColumnBorders.Skip(cellColumn + 1).Take(cellColumnSpan - 1).Sum(),
-                    Size.Infinity);
-                cell.Measure(cellsWithBordersSize);
-                // TODO Support spans better: take them into account earlier. This is a hack.
-                if (cellRowSpan == 1) {
-                    Rows[cellRow].ActualHeight = Max(Rows[cellRow].ActualHeight, cell.DesiredSize.Height);
+                Size cellSpannedSize = GetSpannedCellSize(cellColumn, cellRow, cellColumnSpan, cellRowSpan);
+                cell.Measure(new Size(cellSpannedSize.Width, Size.Infinity));
+                // TODO Support column spans too.
+                // Distribute extra height evenly between rows.
+                if (cell.DesiredSize.Height > cellSpannedSize.Height) {
+                    int extraHeight = cell.DesiredSize.Height - cellSpannedSize.Height;
+                    if (cellRowSpan == 1) {
+                        Rows[cellRow].ActualHeight += extraHeight;
+                    }
+                    else {
+                        List<Row> cellRows = Rows.Skip(cellRow).Take(cellRowSpan).ToList();
+                        List<double> weights = cellRows.Select(r => Max(r.ActualHeight, 0.0001)).ToList();
+                        List<int> extraRowHeights = Distribute(weights, extraHeight);
+                        for (int row = 0; row < cellRows.Count; row++)
+                            cellRows[row].ActualHeight += extraRowHeights[row];
+                    }
                 }
             }
         }
@@ -280,11 +287,7 @@ namespace Alba.CsConsoleFormat
                 // Arrange only one time in the first cell.
                 if (cellColumn != gridColumn.Index || cellRow != gridRow.Index)
                     return;
-                cellRect.Size = new Size(
-                    Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
-                        + _maxColumnBorders.Skip(cellColumn + 1).Take(cellColumnSpan - 1).Sum(),
-                    Rows.Skip(cellRow).Take(cellRowSpan).Sum(c => c.ActualHeight)
-                        + _maxRowBorders.Skip(cellRow + 1).Take(cellRowSpan - 1).Sum());
+                cellRect.Size = GetSpannedCellSize(cellColumn, cellRow, cellColumnSpan, cellRowSpan);
             }
             cell.Arrange(cellRect);
         }
@@ -337,6 +340,26 @@ namespace Alba.CsConsoleFormat
             while (cellRow >= _cells.Count)
                 _cells.Add(ListOf<BlockElement>(Columns.Count));
             _cells[cellRow][cellColumn] = cell;
+        }
+
+        private Size GetSpannedCellSize (int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
+        {
+            return new Size(
+                Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
+                    + _maxColumnBorders.Skip(cellColumn + 1).Take(cellColumnSpan - 1).Sum(),
+                Rows.Skip(cellRow).Take(cellRowSpan).Sum(c => c.ActualHeight)
+                    + _maxRowBorders.Skip(cellRow + 1).Take(cellRowSpan - 1).Sum());
+        }
+
+        private static int GetCellMeasurePriority (BlockElement cell)
+        {
+            int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
+            if (cellColumnSpan == 1 && cellRowSpan == 1)
+                return 0;
+            else if (cellRowSpan == 1)
+                return 1;
+            else
+                return 2;
         }
 
         private static void MergeBorderWidth (List<List<LineWidth>> borders, int row, int column, LineWidth width)
