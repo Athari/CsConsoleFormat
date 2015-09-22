@@ -9,16 +9,27 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderElementExts
     {
-        public static ElementBuilder<T> Create<T> (this DocumentBuilder @this)
+        public static ElementBuilder<T> Create<T> (this DocumentBuilder @this, string text = null)
             where T : Element, new()
         {
-            return new ElementBuilder<T>(new T());
+            var element = new T();
+            if (text != null)
+                element.Children.Add(text);
+            return new ElementBuilder<T>(element);
         }
 
-        public static ElementBuilder<T> Create<T> (this DocumentBuilder @this, out T element)
+        public static ElementBuilder<T> Name<T> (this ElementBuilder<T> @this, out T element)
             where T : Element, new()
         {
-            return new ElementBuilder<T>(element = new T());
+            element = @this.Element;
+            return @this;
+        }
+
+        public static ElementBuilder<T> Name<T> (this ElementBuilder<T> @this, string name)
+            where T : Element, new()
+        {
+            @this.Element.Name = name;
+            return @this;
         }
 
         public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, IEnumerable<Element> children)
@@ -69,9 +80,9 @@ namespace Alba.CsConsoleFormat.Generation
                 @this.Element.Children.Add(element);
                 return;
             }
-            var elementBuilder = child as ElementBuilder;
+            var elementBuilder = child as IElementBuilder;
             if (elementBuilder != null) {
-                @this.Element.Children.Add(elementBuilder.ElementUntyped);
+                @this.Element.Children.Add(elementBuilder.Element);
                 return;
             }
             throw new ArgumentException($"Unsupported child type: {child.GetType().Name}.");

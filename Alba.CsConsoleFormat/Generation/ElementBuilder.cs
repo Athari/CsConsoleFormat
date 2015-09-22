@@ -1,24 +1,19 @@
-﻿namespace Alba.CsConsoleFormat.Generation
+﻿using System;
+
+namespace Alba.CsConsoleFormat.Generation
 {
-    public abstract class ElementBuilder
-    {
-        internal abstract Element ElementUntyped { get; }
-
-        internal ElementBuilder ()
-        {}
-    }
-
-    public class ElementBuilder<T> : ElementBuilder
+    public class ElementBuilder<T> : IElementBuilder
         where T : Element, new()
     {
         public T Element { get; }
 
-        internal ElementBuilder (T element)
+        public ElementBuilder (T element)
         {
             Element = element;
         }
 
-        internal override Element ElementUntyped => Element;
+        Element IElementBuilder.Element => Element;
+        Type IElementBuilder.ElementType => typeof(T);
 
         public static implicit operator T (ElementBuilder<T> @this) => @this.Element;
     }

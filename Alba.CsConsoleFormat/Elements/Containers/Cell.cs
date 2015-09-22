@@ -2,6 +2,11 @@
 {
     public class Cell : Div
     {
+        public Cell ()
+        {
+            Stroke = LineThickness.Single;
+        }
+
         public int Column
         {
             get { return Grid.GetColumn(this); }

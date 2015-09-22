@@ -109,6 +109,7 @@
     <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBase.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
+    <Compile Include="Formatting\XamlElementReaderSettings.cs" />
     <Compile Include="Framework\Collections\CollectionExts.cs" />
     <Compile Include="Framework\Collections\EnumerableExts.cs" />
     <Compile Include="Framework\Compatibility\FormattableString.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="Generation\ElementBuilderBlockElementExts.cs" />
     <Compile Include="Generation\ElementBuilderBorderExts.cs" />
     <Compile Include="Generation\ElementBuilderCanvasExts.cs" />
-    <Compile Include="Generation\ElementBuilderColumnsExts.cs" />
+    <Compile Include="Generation\ElementBuilderColumnExts.cs" />
     <Compile Include="Generation\ElementBuilderDivExts.cs" />
     <Compile Include="Generation\ElementBuilderDockExts.cs" />
     <Compile Include="Generation\ElementBuilderElementExts.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Generation\ElementBuilderSpanExts.cs" />
     <Compile Include="Generation\ElementBuilderStackExts.cs" />
     <Compile Include="Generation\ElementBuilderWrapExts.cs" />
+    <Compile Include="Generation\IElementBuilder.cs" />
     <Compile Include="Markup\CallConverterExpression.cs" />
     <Compile Include="Markup\CallConverterExtension.cs" />
     <Compile Include="Markup\GetExpression.cs" />

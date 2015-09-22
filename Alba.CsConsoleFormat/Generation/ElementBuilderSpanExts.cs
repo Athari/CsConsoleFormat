@@ -6,10 +6,5 @@ namespace Alba.CsConsoleFormat.Generation
         {
             return new ElementBuilder<Span>(new Span(text ?? ""));
         }
-
-        public static ElementBuilder<Span> CreateText (this DocumentBuilder @this, out Span element, string text)
-        {
-            return new ElementBuilder<Span>(element = new Span(text ?? ""));
-        }
     }
 }
