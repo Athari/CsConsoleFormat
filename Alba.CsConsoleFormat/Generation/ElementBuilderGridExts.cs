@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-using Alba.CsConsoleFormat.Framework.Collections;
+using System;
+using System.Collections;
 
 namespace Alba.CsConsoleFormat.Generation
 {
@@ -13,17 +12,50 @@ namespace Alba.CsConsoleFormat.Generation
             });
         }
 
-        public static ElementBuilder<T> AddColumns<T> (this ElementBuilder<T> @this, IEnumerable<Column> columns)
+        public static ElementBuilder<T> AddColumns<T> (this ElementBuilder<T> @this, params object[] columns)
             where T : Grid, new()
         {
-            @this.Element.Columns.AddRange(columns);
+            foreach (object column in columns) {
+                if (column == null)
+                    continue;
+                var enumerable = column as IEnumerable;
+                if (enumerable != null) {
+                    foreach (object subchild in enumerable)
+                        @this.AddColumns(subchild);
+                }
+                else {
+                    @this.AddColumn(column);
+                }
+            }
             return @this;
         }
 
-        public static ElementBuilder<T> AddColumns<T> (this ElementBuilder<T> @this, params Column[] columns)
+        public static void AddColumn<T> (this ElementBuilder<T> @this, object child)
             where T : Grid, new()
         {
-            return AddColumns(@this, columns.AsEnumerable());
+            if (child is GridLength) {
+                var gridLength = (GridLength)child;
+                @this.Element.Columns.Add(new Column { Width = gridLength });
+                return;
+            }
+            var column = child as Column;
+            if (column != null) {
+                @this.Element.Columns.Add(column);
+                return;
+            }
+            var columnBuilder = child as ElementBuilder<Column>;
+            if (columnBuilder != null) {
+                @this.Element.Columns.Add(columnBuilder.Element);
+                return;
+            }
+            int width;
+            try {
+                width = Convert.ToInt32(child);
+            }
+            catch (Exception e) when (e is FormatException || e is InvalidCastException || e is OverflowException) {
+                throw new ArgumentException($"Value of type '{child.GetType().Name}' cannot be converted to column.");
+            }
+            @this.Element.Columns.Add(new Column { Width = GridLength.Char(width) });
         }
 
         public static ElementBuilder<T> AtCell<T> (this ElementBuilder<T> @this,

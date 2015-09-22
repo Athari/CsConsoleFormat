@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Globalization;
-using System.Linq;
-using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat.Generation
@@ -32,38 +30,21 @@ namespace Alba.CsConsoleFormat.Generation
             return @this;
         }
 
-        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, IEnumerable<Element> children)
-            where T : Element, new()
-        {
-            @this.Element.Children.AddRange(children);
-            return @this;
-        }
-
-        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, params Element[] children)
-            where T : Element, new()
-        {
-            return AddChildren(@this, children.AsEnumerable());
-        }
-
-        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, IEnumerable<object> children)
+        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, params object[] children)
             where T : Element, new()
         {
             foreach (object child in children) {
                 if (child == null)
                     continue;
-                var enumerable = child as IEnumerable<object>;
-                if (enumerable != null)
-                    AddChildren(@this, enumerable);
-                else
-                    AddChild(@this, child);
+                var enumerable = child as IEnumerable;
+                if (enumerable != null) {
+                    foreach (object subchild in enumerable)
+                        @this.AddChildren(subchild);
+                }
+                else {
+                    @this.AddChild(child);
+                }
             }
-            return @this;
-        }
-
-        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, params object[] children)
-            where T : Element, new()
-        {
-            AddChildren(@this, children.AsEnumerable());
             return @this;
         }
 
@@ -85,7 +66,12 @@ namespace Alba.CsConsoleFormat.Generation
                 @this.Element.Children.Add(elementBuilder.Element);
                 return;
             }
-            throw new ArgumentException($"Unsupported child type: {child.GetType().Name}.");
+            var formattable = child as IFormattable;
+            if (formattable != null) {
+                @this.Element.Children.Add(formattable.ToString(null, @this.Element.EffectiveCulture));
+                return;
+            }
+            @this.Element.Children.Add(child.ToString());
         }
 
         public static ElementBuilder<T> SetValue<T, TValue> (this ElementBuilder<T> @this, AttachedProperty<TValue> property, TValue value)

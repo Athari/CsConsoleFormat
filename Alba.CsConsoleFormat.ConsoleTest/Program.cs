@@ -69,8 +69,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
             Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType(), "Markup.xaml", data);
             //Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType().Assembly, "Alba.CsConsoleFormat.ConsoleTest.Markup.xaml", data);
-            ConsoleRenderer.RenderDocument(xamlDoc);
             Console.WriteLine("XAML");
+            ConsoleRenderer.RenderDocument(xamlDoc);
             ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
 
             Document builtDoc = BuildDoc(data);
@@ -154,7 +154,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private Document BuildDoc (Data data)
         {
-            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Single, LineWidth.Single, LineWidth.Wide);
+            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Wide, LineWidth.Single, LineWidth.Wide);
             var builder = new DocumentBuilder();
             return builder.Create<Document>()
                 .Color(ConsoleColor.White, ConsoleColor.Black)
@@ -169,25 +169,21 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             data.Items.Select(d => d.Name + " ")
                         ),
                     builder.Create<Grid>()
-                        .AddColumns(
-                            builder.CreateColumn(GridLength.Auto),
-                            builder.CreateColumn(GridLength.Auto),
-                            builder.CreateColumn(GridLength.Auto)
-                        )
+                        .AddColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto)
                         .AddChildren(
                             builder.Create<Cell>("Id").StrokeCell(cellHeaderStroke),
                             builder.Create<Cell>("Name").StrokeCell(cellHeaderStroke),
                             builder.Create<Cell>("Value").StrokeCell(cellHeaderStroke),
                             data.Items.Select(d => new Element[] {
-                                builder.Create<Cell>().AddChildren(d.Id.ToString())
+                                builder.Create<Cell>().AddChildren(d.Id)
                                     .Color(ConsoleColor.Yellow).Align(HorizontalAlignment.Right),
                                 builder.Create<Cell>().AddChildren(d.Name)
                                     .Color(ConsoleColor.Gray),
                                 builder.Create<Cell>().AddChildren(d.Value)
                                     .Color(ConsoleColor.Gray)
                             })
-                        )
-                /*builder.Create<Dock>(lastChildFill: true)
+                        ),
+                    builder.CreateDock()
                         .Size(width: 80).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
                         .AddChildren(
                             builder.Create<Div>()
@@ -226,8 +222,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                     builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
                                     Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
                                 )
-                        ),*/
-                /*builder.CreateText(""),
+                        ),
+                    builder.CreateText(""),
                     builder.Create<Canvas>()
                         .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
                         .AddChildren(
@@ -267,7 +263,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                     builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
                                     Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
                                 )
-                        )*/
+                        )
                 );
         }
     }
