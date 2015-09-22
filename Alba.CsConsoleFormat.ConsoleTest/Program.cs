@@ -156,6 +156,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
         private Document BuildDoc (Data data)
         {
+            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Single, LineWidth.Single, LineWidth.Wide);
             var builder = new DocumentBuilder();
             return builder
                 .Color(ConsoleColor.White, ConsoleColor.Black)
@@ -168,8 +169,24 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     builder.Create<Div>()
                         .AddChildren(
                             data.Items.Select(d => d.Name + " ")
+                        ),
+                    builder.Create<Grid>()
+                        .AddColumns(
+                            builder.Create<Column>(GridLength.Auto),
+                            builder.Create<Column>(GridLength.Auto),
+                            builder.Create<Column>(GridLength.Auto)
                         )
-                    /*builder.Create<Dock>(lastChildFill: true)
+                        .AddChildren(
+                            builder.Create<Cell>().AddChildren("Id").StrokeCell(cellHeaderStroke),
+                            builder.Create<Cell>().AddChildren("Name").StrokeCell(cellHeaderStroke),
+                            builder.Create<Cell>().AddChildren("Value").StrokeCell(cellHeaderStroke),
+                            data.Items.Select(d => new[] {
+                                builder.Create<Cell>().AddChildren(d.Id.ToString()).Align(HorizontalAlignment.Right),
+                                builder.Create<Cell>().AddChildren(d.Name),
+                                builder.Create<Cell>().AddChildren(d.Value)
+                            })
+                        )
+                /*builder.Create<Dock>(lastChildFill: true)
                         .Size(width: 80).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
                         .AddChildren(
                             builder.Create<Div>()
@@ -209,7 +226,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                     Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
                                 )
                         ),*/
-                    /*builder.CreateText(""),
+                /*builder.CreateText(""),
                     builder.Create<Canvas>()
                         .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
                         .AddChildren(

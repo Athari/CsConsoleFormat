@@ -34,45 +34,47 @@ namespace Alba.CsConsoleFormat.Generation
             return AddChildren(@this, children.AsEnumerable());
         }
 
-        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, params object[] children)
+        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, IEnumerable<object> children)
             where T : Element, new()
         {
             foreach (object child in children) {
                 if (child == null)
                     continue;
-                var text = child as string;
-                if (text != null) {
-                    @this.Element.Children.Add(text);
-                    continue;
-                }
-                var texts = child as IEnumerable<string>;
-                if (texts != null) {
-                    @this.Element.Children.Add(string.Concat(texts));
-                    continue;
-                }
-                var element = child as Element;
-                if (element != null) {
-                    @this.Element.Children.Add(element);
-                    continue;
-                }
-                var elements = child as IEnumerable<Element>;
-                if (elements != null) {
-                    @this.Element.Children.AddRange(elements);
-                    continue;
-                }
-                var elementBuilder = child as ElementBuilder;
-                if (elementBuilder != null) {
-                    @this.Element.Children.Add(elementBuilder.ElementUntyped);
-                    continue;
-                }
-                var elementBuilders = child as IEnumerable<ElementBuilder>;
-                if (elementBuilders != null) {
-                    @this.Element.Children.AddRange(elementBuilders.Select(b => b.ElementUntyped));
-                    continue;
-                }
-                throw new ArgumentException($"Unsupported child type: {child.GetType().Name}.");
+                var enumerable = child as IEnumerable<object>;
+                if (enumerable != null)
+                    AddChildren(@this, enumerable);
+                else
+                    AddChild(@this, child);
             }
             return @this;
+        }
+
+        public static ElementBuilder<T> AddChildren<T> (this ElementBuilder<T> @this, params object[] children)
+            where T : Element, new()
+        {
+            AddChildren(@this, children.AsEnumerable());
+            return @this;
+        }
+
+        private static void AddChild<T> (this ElementBuilder<T> @this, object child)
+            where T : Element, new()
+        {
+            var text = child as string;
+            if (text != null) {
+                @this.Element.Children.Add(text);
+                return;
+            }
+            var element = child as Element;
+            if (element != null) {
+                @this.Element.Children.Add(element);
+                return;
+            }
+            var elementBuilder = child as ElementBuilder;
+            if (elementBuilder != null) {
+                @this.Element.Children.Add(elementBuilder.ElementUntyped);
+                return;
+            }
+            throw new ArgumentException($"Unsupported child type: {child.GetType().Name}.");
         }
 
         public static ElementBuilder<T> SetValue<T, TValue> (this ElementBuilder<T> @this, AttachedProperty<TValue> property, TValue value)
