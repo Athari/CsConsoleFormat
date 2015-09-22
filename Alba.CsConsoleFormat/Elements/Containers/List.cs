@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
+using Alba.CsConsoleFormat.Generation;
 
 namespace Alba.CsConsoleFormat
 {
@@ -13,34 +14,22 @@ namespace Alba.CsConsoleFormat
 
         public override IEnumerable<Element> GenerateVisualElements ()
         {
-            var grid = new Grid {
-                AutoPosition = true,
-                Stroke = LineThickness.None,
-                Columns = {
-                    new Column { Width = GridLength.Auto },
-                    new Column { Width = GridLength.Star(1) },
-                }
-            };
-            grid.Children.AddRange(GenerateCells(Children));
+            var builder = new DocumentBuilder();
+            Grid grid = builder.CreateGrid()
+                .StrokeCell(LineThickness.None)
+                .AddColumns(
+                    builder.CreateColumn(GridLength.Auto),
+                    builder.CreateColumn(GridLength.Star(1))
+                )
+                .AddChildren(
+                    Enumerable.Range(0, Children.Count).Select(index => new[] {
+                        builder.Create<Div>(string.Format(IndexFormat, StartIndex + index))
+                            .AlignText(TextAlignment.Right),
+                        Children[index],
+                    })
+                );
             Children.Replace(new[] { grid });
             return base.GenerateVisualElements();
-        }
-
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        private IEnumerable<Element> GenerateCells (IEnumerable<Element> elements)
-        {
-            int index = StartIndex;
-            foreach (BlockElement child in elements) {
-                yield return new Cell {
-                    TextAlign = TextAlignment.Right,
-                    Stroke = LineThickness.None,
-                    Children = {
-                        new Span(string.Format(IndexFormat, index++))
-                    }
-                };
-                Grid.SetStroke(child, LineThickness.None);
-                yield return child;
-            }
         }
     }
 }
