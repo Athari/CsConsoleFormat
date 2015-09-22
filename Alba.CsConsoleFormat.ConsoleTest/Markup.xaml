@@ -156,8 +156,8 @@
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Cell>
     </Grid>
-    <!--<Span/>
-    <List Color="Gray" BgColor="DarkBlue" IndexFormat="{}{0:00}. ">
+    <Span/>
+    <List Color="Gray" BgColor="DarkBlue" IndexFormat="{}{0:00}. " StartIndex="0">
         <Div Padding="0 0 0 1" BgColor="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter=''}"/>
@@ -172,7 +172,7 @@
         </Div>
     </List>
     <Span/>
-    <List Color="Gray" BgColor="DarkBlue" IndexFormat="* " StartIndex="0">
+    <List Color="Gray" BgColor="DarkBlue" IndexFormat="* ">
         <Div Padding="0 0 0 1" BgColor="DarkBlue">
             <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
@@ -219,7 +219,7 @@
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Div>
-    </Stack>-->
+    </Stack>
     <Border Stroke="1 2, Single Wide" Color="Yellow" BgColor="Blue" Padding="1 0" Margin="1" Visibility="Collapsed">
         <Div TextAlign="Left" Align="Center" Color="Gray" BgColor="DarkBlue" Padding="1 0" TextWrap="WordWrap" Width="20">
             <!--<Span Text="{Get Title}" Color="White"/><Br/>

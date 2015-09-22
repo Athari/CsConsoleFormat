@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xaml;
 using Alba.CsConsoleFormat.Generation;
 
 namespace Alba.CsConsoleFormat.ConsoleTest
@@ -68,10 +67,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             /*if (MemoryProfiler.IsActive)
                 MemoryProfiler.Dump();*/
 
-            var xamlDoc = ReadXaml<Document>("Markup.xaml", data);
-            //Console.WriteLine(((Span)((Para)doc.Children[0]).Children[0]).Text);
-            //Console.WriteLine(((Span)((Para)doc.Children[1]).Children[0]).Text);
-            //ConsoleRenderer.RenderDocument(xamlDoc);
+            Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType(), "Markup.xaml", data);
+            //Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType().Assembly, "Alba.CsConsoleFormat.ConsoleTest.Markup.xaml", data);
+            ConsoleRenderer.RenderDocument(xamlDoc);
             Console.WriteLine("XAML");
             ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
 
@@ -158,13 +156,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         {
             var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Single, LineWidth.Single, LineWidth.Wide);
             var builder = new DocumentBuilder();
-            return builder
+            return builder.Create<Document>()
                 .Color(ConsoleColor.White, ConsoleColor.Black)
                 .AddChildren(
                     "Hello world!",
-                    builder.Create<List>()
+                    builder.CreateList()
                         .AddChildren(
-                            data.Items.Select(d => builder.Create<Div>().AddChildren(d.Name))
+                            data.Items.Select(d => builder.Create<Div>(d.Name))
                         ),
                     builder.Create<Div>()
                         .AddChildren(
@@ -172,18 +170,21 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                         ),
                     builder.Create<Grid>()
                         .AddColumns(
-                            builder.Create<Column>(GridLength.Auto),
-                            builder.Create<Column>(GridLength.Auto),
-                            builder.Create<Column>(GridLength.Auto)
+                            builder.CreateColumn(GridLength.Auto),
+                            builder.CreateColumn(GridLength.Auto),
+                            builder.CreateColumn(GridLength.Auto)
                         )
                         .AddChildren(
-                            builder.Create<Cell>().AddChildren("Id").StrokeCell(cellHeaderStroke),
-                            builder.Create<Cell>().AddChildren("Name").StrokeCell(cellHeaderStroke),
-                            builder.Create<Cell>().AddChildren("Value").StrokeCell(cellHeaderStroke),
-                            data.Items.Select(d => new[] {
-                                builder.Create<Cell>().AddChildren(d.Id.ToString()).Align(HorizontalAlignment.Right),
-                                builder.Create<Cell>().AddChildren(d.Name),
+                            builder.Create<Cell>("Id").StrokeCell(cellHeaderStroke),
+                            builder.Create<Cell>("Name").StrokeCell(cellHeaderStroke),
+                            builder.Create<Cell>("Value").StrokeCell(cellHeaderStroke),
+                            data.Items.Select(d => new Element[] {
+                                builder.Create<Cell>().AddChildren(d.Id.ToString())
+                                    .Color(ConsoleColor.Yellow).Align(HorizontalAlignment.Right),
+                                builder.Create<Cell>().AddChildren(d.Name)
+                                    .Color(ConsoleColor.Gray),
                                 builder.Create<Cell>().AddChildren(d.Value)
+                                    .Color(ConsoleColor.Gray)
                             })
                         )
                 /*builder.Create<Dock>(lastChildFill: true)
@@ -268,36 +269,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                 )
                         )*/
                 );
-        }
-
-        private T ReadXaml<T> (string filename, object dataContext) where T : BindableObject, new()
-        {
-            using (Stream resStream = GetType().Assembly.GetManifestResourceStream(GetType(), filename)) {
-                if (resStream == null)
-                    throw new FileNotFoundException("Resource not found.");
-                //return (T)XamlServices.Load(resStream);
-                //int pad = 1;
-                var context = new XamlSchemaContext(new[] {
-                    typeof(Document).Assembly,
-                    typeof(Console).Assembly,
-                    typeof(Program).Assembly,
-                }, new XamlSchemaContextSettings {
-                    SupportMarkupExtensionsWithDuplicateArity = true,
-                });
-                var readerSettings = new XamlXmlReaderSettings {
-                    ProvideLineInfo = true,
-                };
-                var writerSettings = new XamlObjectWriterSettings {
-                    RootObjectInstance = new T { DataContext = dataContext },
-                    //AfterBeginInitHandler = (sender, args) => Console.WriteLine(new string(' ', pad++ * 2) + "<{0}>", args.Instance),
-                    //AfterEndInitHandler = (sender, args) => Console.WriteLine(new string(' ', --pad * 2) + "</{0}>", args.Instance),
-                };
-                using (var xamlReader = new XamlXmlReader(resStream, context, readerSettings))
-                using (var xamlWriter = new XamlObjectWriter(xamlReader.SchemaContext, writerSettings)) {
-                    XamlServices.Transform(xamlReader, xamlWriter, false);
-                    return (T)xamlWriter.Result;
-                }
-            }
         }
     }
 

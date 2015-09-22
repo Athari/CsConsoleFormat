@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Xaml;
 
 namespace Alba.CsConsoleFormat
 {
@@ -29,6 +32,81 @@ namespace Alba.CsConsoleFormat
                 Console.SetWindowPosition(value.Left, value.Top);
                 Console.SetWindowSize(value.Width, value.Height);
             }
+        }
+
+        public static TElement ReadElementFromStream<TElement> (Stream stream,
+            object dataContext, XamlElementReaderSettings settings = null)
+            where TElement : Element, new()
+        {
+            if (stream == null)
+                throw new ArgumentNullException(nameof(stream));
+            if (settings == null)
+                settings = new XamlElementReaderSettings();
+            var context = new XamlSchemaContext(
+                settings.ReferenceAssemblies,
+                new XamlSchemaContextSettings {
+                    SupportMarkupExtensionsWithDuplicateArity = true,
+                });
+            var readerSettings = new XamlXmlReaderSettings {
+                ProvideLineInfo = true,
+                CloseInput = settings.CloseInput,
+            };
+            var writerSettings = new XamlObjectWriterSettings {
+                RootObjectInstance = new TElement { DataContext = dataContext },
+            };
+            using (var xamlReader = new XamlXmlReader(stream, context, readerSettings))
+            using (var xamlWriter = new XamlObjectWriter(xamlReader.SchemaContext, writerSettings)) {
+                XamlServices.Transform(xamlReader, xamlWriter, false);
+                return (TElement)xamlWriter.Result;
+            }
+        }
+
+        public static TElement ReadElementFromResource<TElement> (Type type, string resourceName,
+            object dataContext, XamlElementReaderSettings settings = null)
+            where TElement : Element, new()
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (resourceName == null)
+                throw new ArgumentNullException(nameof(resourceName));
+            using (Stream stream = type.Assembly.GetManifestResourceStream(type, resourceName)) {
+                if (stream == null)
+                    throw new FileNotFoundException($"Resource '{resourceName}' not found in assembly and namespace of type '{type.Name}'.");
+                return ReadElementFromStream<TElement>(stream, dataContext, settings);
+            }
+        }
+
+        public static TElement ReadElementFromResource<TElement> (Assembly assembly, string resourceName,
+            object dataContext, XamlElementReaderSettings settings = null)
+            where TElement : Element, new()
+        {
+            if (assembly == null)
+                throw new ArgumentNullException(nameof(assembly));
+            if (resourceName == null)
+                throw new ArgumentNullException(nameof(resourceName));
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName)) {
+                if (stream == null)
+                    throw new FileNotFoundException($"Resource '{resourceName}' not found in assembly '{assembly.GetName().Name}'");
+                return ReadElementFromStream<TElement>(stream, dataContext, settings);
+            }
+        }
+
+        public static Document ReadDocumentFromStream (Stream stream,
+            object dataContext, XamlElementReaderSettings settings = null)
+        {
+            return ReadElementFromStream<Document>(stream, dataContext, settings);
+        }
+
+        public static Document ReadDocumentFromResource (Type type, string resourceName,
+            object dataContext, XamlElementReaderSettings settings = null)
+        {
+            return ReadElementFromResource<Document>(type, resourceName, dataContext, settings);
+        }
+
+        public static Document ReadDocumentFromResource (Assembly assembly, string resourceName,
+            object dataContext, XamlElementReaderSettings settings = null)
+        {
+            return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
 
         public static void RenderDocument (Document document, IRenderTarget target = null)
@@ -74,7 +152,7 @@ namespace Alba.CsConsoleFormat
                 return;
 
             Vector offset = parentOffset + element.ActualOffset;
-            Rect clip = new Rect(/*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
+            Rect clip = new Rect( /*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
                 .Intersect(element.LayoutClip)
                 .Offset(offset)
                 .Intersect(renderRect)
