@@ -194,14 +194,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 .Color(White, Black)
                 .AddChildren(
                     "Hello world!",
-                    Create<List>()
-                        .AddChildren(
-                            data.Items.Select(d => Create<Div>(d.Name))
-                        ),
-                    Create<Div>()
-                        .AddChildren(
-                            data.Items.Select(d => d.Name + " ")
-                        ),
+                    Create<List>(data.Items.Select(d => Create<Div>(d.Name))),
+                    Create<Div>(data.Items.Select(d => d.Name + " ")),
                     Create<Grid>()
                         .AddColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto)
                         .AddChildren(
@@ -209,12 +203,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             Create<Cell>("Name").StrokeCell(cellHeaderStroke),
                             Create<Cell>("Value").StrokeCell(cellHeaderStroke),
                             data.Items.Select(d => new Element[] {
-                                Create<Cell>().AddChildren(d.Id)
-                                    .Color(Yellow).Align(HorizontalAlignment.Right),
-                                Create<Cell>().AddChildren(d.Name)
-                                    .Color(Gray),
-                                Create<Cell>().AddChildren(d.Value)
-                                    .Color(Gray)
+                                Create<Cell>(d.Id).Color(Yellow).Align(HorizontalAlignment.Right),
+                                Create<Cell>(d.Name).Color(Gray),
+                                Create<Cell>(d.Value).Color(Gray),
                             })
                         ),
                     Create<Dock>()
