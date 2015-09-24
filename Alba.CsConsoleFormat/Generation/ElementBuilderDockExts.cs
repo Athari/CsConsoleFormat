@@ -2,11 +2,11 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderDockExts
     {
-        public static ElementBuilder<Dock> CreateDock (this DocumentBuilder @this, bool lastChildFill = true)
+        public static ElementBuilder<T> Config<T> (this ElementBuilder<T> @this, bool lastChildFill)
+            where T : Dock, new()
         {
-            return new ElementBuilder<Dock>(new Dock {
-                LastChildFill = lastChildFill
-            });
+            @this.Element.LastChildFill = lastChildFill;
+            return @this;
         }
 
         public static ElementBuilder<T> DockTo<T> (this ElementBuilder<T> @this, DockTo to)

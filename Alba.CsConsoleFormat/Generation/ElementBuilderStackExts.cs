@@ -2,11 +2,11 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderStackExts
     {
-        public static ElementBuilder<Stack> CreateStack (this DocumentBuilder @this, Orientation orientation = Orientation.Vertical)
+        public static ElementBuilder<T> Orient<T> (this ElementBuilder<T> @this, Orientation orientation)
+            where T : Stack, new()
         {
-            return new ElementBuilder<Stack>(new Stack {
-                Orientation = orientation
-            });
+            @this.Element.Orientation = orientation;
+            return @this;
         }
     }
 }

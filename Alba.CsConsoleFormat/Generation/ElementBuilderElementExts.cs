@@ -7,15 +7,6 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderElementExts
     {
-        public static ElementBuilder<T> Create<T> (this DocumentBuilder @this, string text = null)
-            where T : Element, new()
-        {
-            var element = new T();
-            if (text != null)
-                element.Children.Add(text);
-            return new ElementBuilder<T>(element);
-        }
-
         public static ElementBuilder<T> Name<T> (this ElementBuilder<T> @this, out T element)
             where T : Element, new()
         {

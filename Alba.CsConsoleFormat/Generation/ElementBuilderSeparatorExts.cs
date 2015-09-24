@@ -2,13 +2,13 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderSeparatorExts
     {
-        public static ElementBuilder<Separator> CreateSeparator (this DocumentBuilder @this,
+        public static ElementBuilder<T> Orient<T> (this ElementBuilder<T> @this,
             Orientation orientation = Orientation.Horizontal, LineWidth stroke = LineWidth.Single)
+            where T : Separator, new()
         {
-            return new ElementBuilder<Separator>(new Separator {
-                Orientation = orientation,
-                Stroke = stroke,
-            });
+            @this.Element.Orientation = orientation;
+            @this.Element.Stroke = stroke;
+            return @this;
         }
     }
 }

@@ -2,11 +2,11 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderColumnExts
     {
-        public static ElementBuilder<Column> CreateColumn (this DocumentBuilder @this, GridLength? width = null)
+        public static ElementBuilder<T> Size<T> (this ElementBuilder<T> @this, GridLength width)
+            where T : Column, new()
         {
-            return new ElementBuilder<Column>(new Column {
-                Width = width ?? GridLength.Star(1)
-            });
+            @this.Element.Width = width;
+            return @this;
         }
 
         public static ElementBuilder<T> LimitSize<T> (this ElementBuilder<T> @this, int? minWidth = null, int? maxWidth = null)

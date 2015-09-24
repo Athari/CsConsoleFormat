@@ -2,13 +2,13 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderListExts
     {
-        public static ElementBuilder<List> CreateList (this DocumentBuilder @this,
+        public static ElementBuilder<T> Index<T> (this ElementBuilder<T> @this,
             string indexFormat = List.DefaultIndexFormat, int startIndex = 1)
+            where T : List, new()
         {
-            return new ElementBuilder<List>(new List {
-                IndexFormat = indexFormat,
-                StartIndex = startIndex,
-            });
+            @this.Element.IndexFormat = indexFormat;
+            @this.Element.StartIndex = startIndex;
+            return @this;
         }
     }
 }

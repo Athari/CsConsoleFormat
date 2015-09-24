@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Alba.CsConsoleFormat.Generation;
+using static System.ConsoleColor;
+using static Alba.CsConsoleFormat.Chars;
 
 namespace Alba.CsConsoleFormat.ConsoleTest
 {
@@ -73,7 +75,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             ConsoleRenderer.RenderDocument(xamlDoc);
             ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0.html"), new UTF8Encoding(false)));
 
-            Document builtDoc = BuildDoc(data);
+            Document builtDoc = new ViewBuilder().CreateDocument(data);
             Console.WriteLine("Builder");
             ConsoleRenderer.RenderDocument(builtDoc);
 
@@ -82,32 +84,32 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 //Clip = new Rect(1, 1, 78, 30),
             };
             var rainbow = new[] {
-                ConsoleColor.Black,
-                ConsoleColor.DarkRed, ConsoleColor.DarkYellow, ConsoleColor.DarkGreen, ConsoleColor.DarkCyan, ConsoleColor.DarkBlue, ConsoleColor.DarkMagenta, ConsoleColor.DarkRed,
-                ConsoleColor.Black,
-                ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green, ConsoleColor.Cyan, ConsoleColor.Blue, ConsoleColor.Magenta, ConsoleColor.Red,
+                Black,
+                DarkRed, DarkYellow, DarkGreen, DarkCyan, DarkBlue, DarkMagenta, DarkRed,
+                Black,
+                Red, Yellow, Green, Cyan, Blue, Magenta, Red,
             };
             /*for (int i = 0; i < 16; i++)
                 buffer.FillRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);*/
             for (int i = 0; i < rainbow.Length; i++)
                 buffer.FillBackgroundRectangle(i, i, 80 - i * 2, (rainbow.Length - i) * 2, rainbow[i]);
-            buffer.DrawHorizontalLine(1, 0, 78, ConsoleColor.White);
-            buffer.DrawHorizontalLine(1, 1, 78, ConsoleColor.White, LineWidth.Wide);
-            buffer.DrawHorizontalLine(3, 3, 7, ConsoleColor.White);
-            buffer.DrawVerticalLine(1, 1, 9, ConsoleColor.White);
-            buffer.DrawVerticalLine(2, 2, 4, ConsoleColor.White);
-            buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White, LineWidth.Wide);
-            buffer.DrawVerticalLine(5, 0, 6, ConsoleColor.White);
-            buffer.DrawVerticalLine(6, 0, 6, ConsoleColor.White);
-            buffer.DrawVerticalLine(3, 0, 12, ConsoleColor.White, LineWidth.Wide);
-            buffer.DrawRectangle(0, 0, 80, 32, ConsoleColor.White, LineWidth.Wide);
-            buffer.FillBackgroundVerticalLine(40, 0, 32, ConsoleColor.Yellow);
-            buffer.FillForegroundVerticalLine(41, 0, 32, ConsoleColor.White, Chars.FullBlock);
-            buffer.FillForegroundVerticalLine(42, 0, 32, ConsoleColor.White, Chars.DarkShade);
-            buffer.FillForegroundVerticalLine(43, 0, 32, ConsoleColor.White, Chars.MediumShade);
-            buffer.FillForegroundVerticalLine(44, 0, 32, ConsoleColor.White, Chars.LightShade);
-            buffer.DrawString(15, 15, ConsoleColor.Black, "Hello world!");
-            buffer.DrawString(15, 16, ConsoleColor.White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
+            buffer.DrawHorizontalLine(1, 0, 78, White);
+            buffer.DrawHorizontalLine(1, 1, 78, White, LineWidth.Wide);
+            buffer.DrawHorizontalLine(3, 3, 7, White);
+            buffer.DrawVerticalLine(1, 1, 9, White);
+            buffer.DrawVerticalLine(2, 2, 4, White);
+            buffer.DrawVerticalLine(5, 0, 6, White, LineWidth.Wide);
+            buffer.DrawVerticalLine(5, 0, 6, White);
+            buffer.DrawVerticalLine(6, 0, 6, White);
+            buffer.DrawVerticalLine(3, 0, 12, White, LineWidth.Wide);
+            buffer.DrawRectangle(0, 0, 80, 32, White, LineWidth.Wide);
+            buffer.FillBackgroundVerticalLine(40, 0, 32, Yellow);
+            buffer.FillForegroundVerticalLine(41, 0, 32, White, FullBlock);
+            buffer.FillForegroundVerticalLine(42, 0, 32, White, DarkShade);
+            buffer.FillForegroundVerticalLine(43, 0, 32, White, MediumShade);
+            buffer.FillForegroundVerticalLine(44, 0, 32, White, LightShade);
+            buffer.DrawString(15, 15, Black, "Hello world!");
+            buffer.DrawString(15, 16, White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
 
@@ -151,121 +153,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Console.Write(sb);
             }*/
         }
-
-        private Document BuildDoc (Data data)
-        {
-            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Wide, LineWidth.Single, LineWidth.Wide);
-            var builder = new DocumentBuilder();
-            return builder.Create<Document>()
-                .Color(ConsoleColor.White, ConsoleColor.Black)
-                .AddChildren(
-                    "Hello world!",
-                    builder.CreateList()
-                        .AddChildren(
-                            data.Items.Select(d => builder.Create<Div>(d.Name))
-                        ),
-                    builder.Create<Div>()
-                        .AddChildren(
-                            data.Items.Select(d => d.Name + " ")
-                        ),
-                    builder.Create<Grid>()
-                        .AddColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto)
-                        .AddChildren(
-                            builder.Create<Cell>("Id").StrokeCell(cellHeaderStroke),
-                            builder.Create<Cell>("Name").StrokeCell(cellHeaderStroke),
-                            builder.Create<Cell>("Value").StrokeCell(cellHeaderStroke),
-                            data.Items.Select(d => new Element[] {
-                                builder.Create<Cell>().AddChildren(d.Id)
-                                    .Color(ConsoleColor.Yellow).Align(HorizontalAlignment.Right),
-                                builder.Create<Cell>().AddChildren(d.Name)
-                                    .Color(ConsoleColor.Gray),
-                                builder.Create<Cell>().AddChildren(d.Value)
-                                    .Color(ConsoleColor.Gray)
-                            })
-                        ),
-                    builder.CreateDock()
-                        .Size(width: 80).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
-                        .AddChildren(
-                            builder.Create<Div>()
-                                .DockTo(DockTo.Left).Size(width: 20).Margin(1, 1, 0, 1).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue).WrapText(TextWrapping.CharWrap)
-                                .AddChildren(
-                                    builder.CreateText("Char wrap\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            builder.Create<Div>()
-                                .DockTo(DockTo.Top).Size(height: 10).Margin(1, 1, 1, 0).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            builder.Create<Div>()
-                                .DockTo(DockTo.Right).Size(width: 20).Margin(0, 1, 1, 1).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with zero-width spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.ZeroWidthSpace)
-                                ),
-                            builder.Create<Div>()
-                                .DockTo(DockTo.Bottom).Size(height: 10).Margin(1, 0, 1, 1).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with no-break spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.NoBreakSpace)
-                                ),
-                            builder.Create<Border>()
-                                .Margin(1).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkCyan)
-                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
-                                )
-                        ),
-                    builder.CreateText(""),
-                    builder.Create<Canvas>()
-                        .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(ConsoleColor.Gray, ConsoleColor.Blue)
-                        .AddChildren(
-                            builder.Create<Div>()
-                                .At(left: 1, top: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue).WrapText(TextWrapping.CharWrap)
-                                .AddChildren(
-                                    builder.CreateText("Char wrap\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            builder.Create<Div>()
-                                .At(left: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            builder.Create<Div>()
-                                .At(right: 1, top: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with zero-width spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.ZeroWidthSpace)
-                                ),
-                            builder.Create<Div>()
-                                .At(right: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkBlue)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with no-break spaces\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.NoBreakSpace)
-                                ),
-                            builder.Create<Border>()
-                                .At(left: 21, top: 11).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: ConsoleColor.DarkCyan)
-                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
-                                .AddChildren(
-                                    builder.CreateText("Word wrap with soft hyphens\n\n").Color(ConsoleColor.White),
-                                    Data.Replace(data.LoremIpsum, Chars.SoftHyphen)
-                                )
-                        )
-                );
-        }
     }
 
     public class Data
@@ -296,5 +183,122 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public List<DataItem> SubItems { get; set; }
 
         public override string ToString () => GetType().Name;
+    }
+
+    public class ViewBuilder : DocumentBuilder
+    {
+        public Document CreateDocument (Data data)
+        {
+            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Wide, LineWidth.Single, LineWidth.Wide);
+            return Create<Document>()
+                .Color(White, Black)
+                .AddChildren(
+                    "Hello world!",
+                    Create<List>()
+                        .AddChildren(
+                            data.Items.Select(d => Create<Div>(d.Name))
+                        ),
+                    Create<Div>()
+                        .AddChildren(
+                            data.Items.Select(d => d.Name + " ")
+                        ),
+                    Create<Grid>()
+                        .AddColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto)
+                        .AddChildren(
+                            Create<Cell>("Id").StrokeCell(cellHeaderStroke),
+                            Create<Cell>("Name").StrokeCell(cellHeaderStroke),
+                            Create<Cell>("Value").StrokeCell(cellHeaderStroke),
+                            data.Items.Select(d => new Element[] {
+                                Create<Cell>().AddChildren(d.Id)
+                                    .Color(Yellow).Align(HorizontalAlignment.Right),
+                                Create<Cell>().AddChildren(d.Name)
+                                    .Color(Gray),
+                                Create<Cell>().AddChildren(d.Value)
+                                    .Color(Gray)
+                            })
+                        ),
+                    Create<Dock>()
+                        .Size(width: 80).Align(HorizontalAlignment.Left).Color(Gray, Blue)
+                        .AddChildren(
+                            Create<Div>()
+                                .DockTo(DockTo.Left).Size(width: 20).Margin(1, 1, 0, 1).Padding(1)
+                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap)
+                                .AddChildren(
+                                    CreateText("Char wrap\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            Create<Div>()
+                                .DockTo(DockTo.Top).Size(height: 10).Margin(1, 1, 1, 0).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            Create<Div>()
+                                .DockTo(DockTo.Right).Size(width: 20).Margin(0, 1, 1, 1).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with zero-width spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, ZeroWidthSpace)
+                                ),
+                            Create<Div>()
+                                .DockTo(DockTo.Bottom).Size(height: 10).Margin(1, 0, 1, 1).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with no-break spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, NoBreakSpace)
+                                ),
+                            Create<Border>()
+                                .Margin(1).Padding(1)
+                                .Color(bgColor: DarkCyan)
+                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
+                                .AddChildren(
+                                    CreateText("Word wrap with soft hyphens\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, SoftHyphen)
+                                )
+                        ),
+                    CreateText(),
+                    Create<Canvas>()
+                        .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(Gray, Blue)
+                        .AddChildren(
+                            Create<Div>()
+                                .At(left: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap)
+                                .AddChildren(
+                                    CreateText("Char wrap\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            Create<Div>()
+                                .At(left: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, "")
+                                ),
+                            Create<Div>()
+                                .At(right: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with zero-width spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, ZeroWidthSpace)
+                                ),
+                            Create<Div>()
+                                .At(right: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue)
+                                .AddChildren(
+                                    CreateText("Word wrap with no-break spaces\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, NoBreakSpace)
+                                ),
+                            Create<Border>()
+                                .At(left: 21, top: 11).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkCyan)
+                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
+                                .AddChildren(
+                                    CreateText("Word wrap with soft hyphens\n\n").Color(White),
+                                    Data.Replace(data.LoremIpsum, SoftHyphen)
+                                )
+                        )
+                );
+        }
     }
 }

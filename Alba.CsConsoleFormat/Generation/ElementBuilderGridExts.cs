@@ -5,11 +5,11 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderGridExts
     {
-        public static ElementBuilder<Grid> CreateGrid (this DocumentBuilder @this, bool autoPosition = true)
+        public static ElementBuilder<T> Config<T> (this ElementBuilder<T> @this, bool autoPosition)
+            where T : Grid, new()
         {
-            return new ElementBuilder<Grid>(new Grid {
-                AutoPosition = autoPosition
-            });
+            @this.Element.AutoPosition = autoPosition;
+            return @this;
         }
 
         public static ElementBuilder<T> AddColumns<T> (this ElementBuilder<T> @this, params object[] columns)

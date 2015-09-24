@@ -2,7 +2,7 @@
 
 namespace Alba.CsConsoleFormat.Generation
 {
-    public class ElementBuilder<T> : IElementBuilder
+    public sealed class ElementBuilder<T> : IElementBuilder<T>
         where T : Element, new()
     {
         public T Element { get; }

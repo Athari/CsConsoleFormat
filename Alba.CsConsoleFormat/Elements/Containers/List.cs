@@ -14,22 +14,26 @@ namespace Alba.CsConsoleFormat
 
         public override IEnumerable<Element> GenerateVisualElements ()
         {
-            var builder = new DocumentBuilder();
-            Grid grid = builder.CreateGrid()
-                .StrokeCell(LineThickness.None)
-                .AddColumns(
-                    builder.CreateColumn(GridLength.Auto),
-                    builder.CreateColumn(GridLength.Star(1))
-                )
-                .AddChildren(
-                    Enumerable.Range(0, Children.Count).Select(index => new[] {
-                        builder.Create<Div>(string.Format(IndexFormat, StartIndex + index))
-                            .AlignText(TextAlignment.Right),
-                        Children[index],
-                    })
-                );
-            Children.Replace(new[] { grid });
+            Children.Replace(new[] { new GridBuilder().CreateGrid(this) });
             return base.GenerateVisualElements();
+        }
+
+        private class GridBuilder : DocumentBuilder
+        {
+            public Grid CreateGrid (List list) =>
+                Create<Grid>()
+                    .StrokeCell(LineThickness.None)
+                    .AddColumns(
+                        GridLength.Auto,
+                        GridLength.Star(1)
+                    )
+                    .AddChildren(
+                        Enumerable.Range(0, list.Children.Count).Select(index => new[] {
+                            Create<Div>(string.Format(list.EffectiveCulture, list.IndexFormat, list.StartIndex + index))
+                                .AlignText(TextAlignment.Right),
+                            list.Children[index],
+                        })
+                    );
         }
     }
 }

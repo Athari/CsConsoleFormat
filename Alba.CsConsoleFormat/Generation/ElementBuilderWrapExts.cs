@@ -2,14 +2,19 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderWrapExts
     {
-        public static ElementBuilder<Wrap> CreateWrap (this DocumentBuilder @this,
-            Orientation orientation = Orientation.Horizontal, int? itemWidth = null, int? itemHeight = null)
+        public static ElementBuilder<T> Orient<T> (this ElementBuilder<T> @this, Orientation orientation)
+            where T : Wrap, new()
         {
-            return new ElementBuilder<Wrap>(new Wrap {
-                Orientation = orientation,
-                ItemWidth = itemWidth,
-                ItemHeight = itemHeight,
-            });
+            @this.Element.Orientation = orientation;
+            return @this;
+        }
+
+        public static ElementBuilder<T> SizeItems<T> (this ElementBuilder<T> @this, int? itemWidth = null, int? itemHeight = null)
+            where T : Wrap, new()
+        {
+            @this.Element.ItemWidth = itemWidth;
+            @this.Element.ItemHeight = itemHeight;
+            return @this;
         }
     }
 }

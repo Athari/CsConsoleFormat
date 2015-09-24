@@ -7,4 +7,9 @@ namespace Alba.CsConsoleFormat.Generation
         Element Element { get; }
         Type ElementType { get; }
     }
+
+    public interface IElementBuilder<out T> : IElementBuilder
+    {
+        new T Element { get; }
+    }
 }
