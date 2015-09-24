@@ -28,10 +28,10 @@ namespace Alba.CsConsoleFormat
                         GridLength.Star(1)
                     )
                     .AddChildren(
-                        Enumerable.Range(0, list.Children.Count).Select(index => new[] {
+                        list.Children.Select((child, index) => new[] {
                             Create<Div>(string.Format(list.EffectiveCulture, list.IndexFormat, list.StartIndex + index))
                                 .AlignText(TextAlignment.Right),
-                            list.Children[index],
+                            child,
                         })
                     );
         }

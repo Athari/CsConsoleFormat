@@ -202,7 +202,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             Create<Cell>("Id").StrokeCell(cellHeaderStroke),
                             Create<Cell>("Name").StrokeCell(cellHeaderStroke),
                             Create<Cell>("Value").StrokeCell(cellHeaderStroke),
-                            data.Items.Select(d => new Element[] {
+                            data.Items.Select(d => new[] {
                                 Create<Cell>(d.Id).Color(Yellow).Align(HorizontalAlignment.Right),
                                 Create<Cell>(d.Name).Color(Gray),
                                 Create<Cell>(d.Value).Color(Gray),
@@ -211,85 +211,70 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     Create<Dock>()
                         .Size(width: 80).Align(HorizontalAlignment.Left).Color(Gray, Blue)
                         .AddChildren(
-                            Create<Div>()
+                            Create<Div>(LoremIpsumCharWrap(data))
                                 .DockTo(DockTo.Left).Size(width: 20).Margin(1, 1, 0, 1).Padding(1)
-                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap)
-                                .AddChildren(
-                                    CreateText("Char wrap\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap),
+                            Create<Div>(LoremIpsumWordWrapWithSpaces(data))
                                 .DockTo(DockTo.Top).Size(height: 10).Margin(1, 1, 1, 0).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithZeroWidthSpaces(data))
                                 .DockTo(DockTo.Right).Size(width: 20).Margin(0, 1, 1, 1).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with zero-width spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, ZeroWidthSpace)
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithNoBreakSpaces(data))
                                 .DockTo(DockTo.Bottom).Size(height: 10).Margin(1, 0, 1, 1).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with no-break spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, NoBreakSpace)
-                                ),
-                            Create<Border>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Border>(LoremIpsumWordWrapWithSoftHyphens(data))
                                 .Margin(1).Padding(1)
                                 .Color(bgColor: DarkCyan)
                                 .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
-                                .AddChildren(
-                                    CreateText("Word wrap with soft hyphens\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, SoftHyphen)
-                                )
                         ),
                     CreateText(),
                     Create<Canvas>()
                         .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(Gray, Blue)
                         .AddChildren(
-                            Create<Div>()
+                            Create<Div>(LoremIpsumCharWrap(data))
                                 .At(left: 1, top: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap)
-                                .AddChildren(
-                                    CreateText("Char wrap\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap),
+                            Create<Div>(LoremIpsumWordWrapWithSpaces(data))
                                 .At(left: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, "")
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithZeroWidthSpaces(data))
                                 .At(right: 1, top: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with zero-width spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, ZeroWidthSpace)
-                                ),
-                            Create<Div>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithNoBreakSpaces(data))
                                 .At(right: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
-                                .Color(bgColor: DarkBlue)
-                                .AddChildren(
-                                    CreateText("Word wrap with no-break spaces\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, NoBreakSpace)
-                                ),
-                            Create<Border>()
+                                .Color(bgColor: DarkBlue),
+                            Create<Border>(LoremIpsumWordWrapWithSoftHyphens(data))
                                 .At(left: 21, top: 11).Size(width: 38, height: 20).Padding(1)
                                 .Color(bgColor: DarkCyan)
                                 .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
-                                .AddChildren(
-                                    CreateText("Word wrap with soft hyphens\n\n").Color(White),
-                                    Data.Replace(data.LoremIpsum, SoftHyphen)
-                                )
                         )
                 );
         }
+
+        private object[] LoremIpsumCharWrap (Data data) => new object[] {
+            CreateText("Char wrap\n\n").Color(White),
+            Data.Replace(data.LoremIpsum, ""),
+        };
+
+        private object[] LoremIpsumWordWrapWithSpaces (Data data) => new object[] {
+            CreateText("Word wrap with spaces\n\n").Color(White),
+            Data.Replace(data.LoremIpsum, ""),
+        };
+
+        private object[] LoremIpsumWordWrapWithZeroWidthSpaces (Data data) => new object[] {
+            CreateText("Word wrap with zero-width spaces\n\n").Color(White),
+            Data.Replace(data.LoremIpsum, ZeroWidthSpace),
+        };
+
+        private object[] LoremIpsumWordWrapWithNoBreakSpaces (Data data) => new object[] {
+            CreateText("Word wrap with no-break spaces\n\n").Color(White),
+            Data.Replace(data.LoremIpsum, NoBreakSpace),
+        };
+
+        private object[] LoremIpsumWordWrapWithSoftHyphens (Data data) => new object[] {
+            CreateText("Word wrap with soft hyphens\n\n").Color(White),
+            Data.Replace(data.LoremIpsum, SoftHyphen),
+        };
     }
 }

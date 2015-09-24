@@ -131,7 +131,6 @@
     <Compile Include="Generation\ElementBuilderGridExts.cs" />
     <Compile Include="Generation\ElementBuilderListExts.cs" />
     <Compile Include="Generation\ElementBuilderSeparatorExts.cs" />
-    <Compile Include="Generation\ElementBuilderSpanExts.cs" />
     <Compile Include="Generation\ElementBuilderStackExts.cs" />
     <Compile Include="Generation\ElementBuilderWrapExts.cs" />
     <Compile Include="Generation\IElementBuilder.cs" />
