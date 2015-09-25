@@ -62,34 +62,6 @@ namespace JetBrains.Annotations
     internal sealed class ItemCanBeNullAttribute : Attribute { }
 
     /// <summary>
-    /// Indicates that the marked method builds string by format pattern and (optional) arguments.
-    /// Parameter, which contains format string, should be given in constructor. The format string
-    /// should be in <see cref="string.Format(IFormatProvider,string,object[])"/>-like form
-    /// </summary>
-    /// <example><code>
-    /// [StringFormatMethod("message")]
-    /// public void ShowError(string message, params object[] args) { /* do something */ }
-    /// public void Foo() {
-    ///   ShowError("Failed: {0}"); // Warning: Non-existing argument in format string
-    /// }
-    /// </code></example>
-    [AttributeUsage(
-      AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Delegate)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class StringFormatMethodAttribute : Attribute
-    {
-        /// <param name="formatParameterName">
-        /// Specifies which parameter of an annotated method should be treated as format-string
-        /// </param>
-        public StringFormatMethodAttribute (string formatParameterName)
-        {
-            FormatParameterName = formatParameterName;
-        }
-
-        public string FormatParameterName { get; }
-    }
-
-    /// <summary>
     /// For a parameter that is expected to be one of the limited set of values.
     /// Specify fields of which type should be used as values for this parameter.
     /// </summary>
@@ -104,70 +76,6 @@ namespace JetBrains.Annotations
 
         [NotNull]
         public string Name { get; }
-    }
-
-    /// <summary>
-    /// Indicates that the function argument should be string literal and match one
-    /// of the parameters of the caller function. For example, ReSharper annotates
-    /// the parameter of <see cref="System.ArgumentNullException"/>
-    /// </summary>
-    /// <example><code>
-    /// public void Foo(string param) {
-    ///   if (param == null)
-    ///     throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
-    /// }
-    /// </code></example>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class InvokerParameterNameAttribute : Attribute { }
-
-    /// <summary>
-    /// Indicates that the method is contained in a type that implements
-    /// <c>System.ComponentModel.INotifyPropertyChanged</c> interface and this method
-    /// is used to notify that some property value changed
-    /// </summary>
-    /// <remarks>
-    /// The method should be non-static and conform to one of the supported signatures:
-    /// <list>
-    /// <item><c>NotifyChanged(string)</c></item>
-    /// <item><c>NotifyChanged(params string[])</c></item>
-    /// <item><c>NotifyChanged{T}(Expression{Func{T}})</c></item>
-    /// <item><c>NotifyChanged{T,U}(Expression{Func{T,U}})</c></item>
-    /// <item><c>SetProperty{T}(ref T, T, string)</c></item>
-    /// </list>
-    /// </remarks>
-    /// <example><code>
-    /// public class Foo : INotifyPropertyChanged {
-    ///   public event PropertyChangedEventHandler PropertyChanged;
-    ///   [NotifyPropertyChangedInvocator]
-    ///   protected virtual void NotifyChanged(string propertyName) { ... }
-    ///
-    ///   private string _name;
-    ///   public string Name {
-    ///     get { return _name; }
-    ///     set { _name = value; NotifyChanged("LastName"); /* Warning */ }
-    ///   }
-    /// }
-    /// </code>
-    /// Examples of generated notifications:
-    /// <list>
-    /// <item><c>NotifyChanged("Property")</c></item>
-    /// <item><c>NotifyChanged(() =&gt; Property)</c></item>
-    /// <item><c>NotifyChanged((VM x) =&gt; x.Property)</c></item>
-    /// <item><c>SetProperty(ref myField, value, "Property")</c></item>
-    /// </list>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Method)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
-    {
-        public NotifyPropertyChangedInvocatorAttribute () { }
-        public NotifyPropertyChangedInvocatorAttribute (string parameterName)
-        {
-            ParameterName = parameterName;
-        }
-
-        public string ParameterName { get; }
     }
 
     /// <summary>
@@ -228,76 +136,6 @@ namespace JetBrains.Annotations
 
         public string Contract { get; }
         public bool ForceFullStates { get; }
-    }
-
-    /// <summary>
-    /// Indicates that marked element should be localized or not
-    /// </summary>
-    /// <example><code>
-    /// [LocalizationRequiredAttribute(true)]
-    /// public class Foo {
-    ///   private string str = "my string"; // Warning: Localizable string
-    /// }
-    /// </code></example>
-    [AttributeUsage(AttributeTargets.All)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class LocalizationRequiredAttribute : Attribute
-    {
-        public LocalizationRequiredAttribute () : this(true) { }
-        public LocalizationRequiredAttribute (bool required)
-        {
-            Required = required;
-        }
-
-        public bool Required { get; }
-    }
-
-    /// <summary>
-    /// Indicates that the value of the marked type (or its derivatives)
-    /// cannot be compared using '==' or '!=' operators and <c>Equals()</c>
-    /// should be used instead. However, using '==' or '!=' for comparison
-    /// with <c>null</c> is always permitted.
-    /// </summary>
-    /// <example><code>
-    /// [CannotApplyEqualityOperator]
-    /// class NoEquality { }
-    /// class UsesNoEquality {
-    ///   public void Test() {
-    ///     var ca1 = new NoEquality();
-    ///     var ca2 = new NoEquality();
-    ///     if (ca1 != null) { // OK
-    ///       bool condition = ca1 == ca2; // Warning
-    ///     }
-    ///   }
-    /// }
-    /// </code></example>
-    [AttributeUsage(
-      AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
-
-    /// <summary>
-    /// When applied to a target attribute, specifies a requirement for any type marked
-    /// with the target attribute to implement or inherit specific type or types.
-    /// </summary>
-    /// <example><code>
-    /// [BaseTypeRequired(typeof(IComponent)] // Specify requirement
-    /// public class ComponentAttribute : Attribute { }
-    /// [Component] // ComponentAttribute requires implementing IComponent interface
-    /// public class MyComponent : IComponent { }
-    /// </code></example>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    [BaseTypeRequired(typeof(Attribute))]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class BaseTypeRequiredAttribute : Attribute
-    {
-        public BaseTypeRequiredAttribute ([NotNull] Type baseType)
-        {
-            BaseType = baseType;
-        }
-
-        [NotNull]
-        public Type BaseType { get; }
     }
 
     /// <summary>
@@ -422,49 +260,6 @@ namespace JetBrains.Annotations
     internal sealed class InstantHandleAttribute : Attribute { }
 
     /// <summary>
-    /// Indicates that a method does not make any observable state changes.
-    /// The same as <c>System.Diagnostics.Contracts.PureAttribute</c>
-    /// </summary>
-    /// <example><code>
-    /// [Pure] private int Multiply(int x, int y) { return x * y; }
-    /// public void Foo() {
-    ///   const int a = 2, b = 2;
-    ///   Multiply(a, b); // Waring: Return value of pure method is not used
-    /// }
-    /// </code></example>
-    [AttributeUsage(AttributeTargets.Method)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class PureAttribute : Attribute { }
-
-    /// <summary>
-    /// Indicates how method invocation affects content of the collection
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class CollectionAccessAttribute : Attribute
-    {
-        public CollectionAccessAttribute (CollectionAccessType collectionAccessType)
-        {
-            CollectionAccessType = collectionAccessType;
-        }
-
-        public CollectionAccessType CollectionAccessType { get; }
-    }
-
-    [Flags]
-    internal enum CollectionAccessType
-    {
-        /// <summary>Method does not use or modify content of the collection</summary>
-        None = 0,
-        /// <summary>Method only reads content of the collection but does not modify it</summary>
-        Read = 1,
-        /// <summary>Method can change content of the collection but does not add new elements</summary>
-        ModifyExistingContent = 2,
-        /// <summary>Method can add new elements to the collection</summary>
-        UpdatedContent = ModifyExistingContent | 4
-    }
-
-    /// <summary>
     /// Indicates that the marked method is assertion method, i.e. it halts control flow if
     /// one of the conditions is satisfied. To set the condition, mark one of the parameters with 
     /// <see cref="AssertionConditionAttribute"/> attribute
@@ -507,15 +302,6 @@ namespace JetBrains.Annotations
     }
 
     /// <summary>
-    /// Indicates that the marked method unconditionally terminates control flow execution.
-    /// For example, it could unconditionally throw exception
-    /// </summary>
-    [Obsolete("Use [ContractAnnotation('=> halt')] instead")]
-    [AttributeUsage(AttributeTargets.Method)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class TerminatesProgramAttribute : Attribute { }
-
-    /// <summary>
     /// Indicates that method is pure LINQ method, with postponed enumeration (like Enumerable.Select,
     /// .Where). This annotation allows inference of [InstantHandle] annotation for parameters
     /// of delegate type by analyzing LINQ method chains.
@@ -530,43 +316,4 @@ namespace JetBrains.Annotations
     [AttributeUsage(AttributeTargets.Parameter)]
     [Conditional("JETBRAINS_ANNOTATIONS")]
     internal sealed class NoEnumerationAttribute : Attribute { }
-
-    /// <summary>
-    /// Indicates that parameter is regular expression pattern.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class RegexPatternAttribute : Attribute { }
-
-    /// <summary>
-    /// XAML attribute. Indicates the type that has <c>ItemsSource</c> property and should be
-    /// treated as <c>ItemsControl</c>-derived type, to enable inner  items <c>DataContext</c>
-    /// type resolve.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class XamlItemsControlAttribute : Attribute { }
-
-    /// <summary>
-    /// XAML attibute. Indicates the property of some <c>BindingBase</c>-derived type, that
-    /// is used to bind some item of <c>ItemsControl</c>-derived type. This annotation will
-    /// enable the <c>DataContext</c> type resolve for XAML bindings for such properties.
-    /// </summary>
-    /// <remarks>
-    /// Property should have the tree ancestor of the <c>ItemsControl</c> type or
-    /// marked with the <see cref="XamlItemsControlAttribute"/> attribute.
-    /// </remarks>
-    [AttributeUsage(AttributeTargets.Property)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class XamlItemBindingOfItemsControlAttribute : Attribute { }
-
-    /// <summary>
-    /// Prevents the Member Reordering feature from tossing members of the marked class.
-    /// </summary>
-    /// <remarks>
-    /// The attribute must be mentioned in your member reordering patterns.
-    /// </remarks>
-    [AttributeUsage(AttributeTargets.All)]
-    [Conditional("JETBRAINS_ANNOTATIONS")]
-    internal sealed class NoReorder : Attribute { }
 }
