@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -16,11 +17,8 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class LineThicknessConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
-        {
-            TypeCode type = Type.GetTypeCode(sourceType);
-            return type == TypeCode.String || TypeCode.Int16 <= type && type <= TypeCode.Decimal || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
@@ -30,17 +28,14 @@ namespace Alba.CsConsoleFormat
                 return FromString((string)value);
             else if (value is LineWidth)
                 return new LineThickness((LineWidth)value);
-            else {
-                TypeCode type = Type.GetTypeCode(value.GetType());
-                if (TypeCode.Int16 <= type && type <= TypeCode.Decimal)
-                    return new LineThickness((LineWidth)Convert.ToInt32(value, CultureInfo.InvariantCulture));
-            }
+            else if (IsTypeNumeric(value.GetType()))
+                return new LineThickness(ToEnum<LineWidth>(value));
             return base.ConvertFrom(context, culture, value);
         }
 
         private static LineThickness FromString (string str)
         {
-            string[] parts = str.Split(new[] { ' ', ',' }, 4, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitNumbers(str, 4);
             switch (parts.Length) {
                 case 1:
                     return new LineThickness(GetWidth(parts[0]));
@@ -53,9 +48,6 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private static LineWidth GetWidth (string str)
-        {
-            return (LineWidth)Enum.Parse(typeof(LineWidth), str, true);
-        }
+        private static LineWidth GetWidth (string str) => ParseEnum<LineWidth>(str);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -16,11 +17,8 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class GridLengthConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
-        {
-            TypeCode type = Type.GetTypeCode(sourceType);
-            return type == TypeCode.String || TypeCode.Int16 <= type && type <= TypeCode.Decimal || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
@@ -28,11 +26,8 @@ namespace Alba.CsConsoleFormat
                 throw GetConvertFromException(null);
             else if (value is string)
                 return FromString((string)value);
-            else {
-                TypeCode type = Type.GetTypeCode(value.GetType());
-                if (TypeCode.Int16 <= type && type <= TypeCode.Decimal)
-                    return GridLength.Char(Convert.ToInt32(value, CultureInfo.InvariantCulture));
-            }
+            else if (IsTypeNumeric(value.GetType()))
+                return GridLength.Char(ToInt(value));
             return base.ConvertFrom(context, culture, value);
         }
 
@@ -48,37 +43,32 @@ namespace Alba.CsConsoleFormat
             if (culture == null)
                 culture = CultureInfo.InvariantCulture;
             if (length.IsAuto)
-                return "Auto";
+                return Auto;
             else if (length.IsAbsolute)
                 return length.Value.ToString(culture);
             else if (length.Value == 1)
-                return "*";
+                return Asterisk;
             else
-                return length.Value.ToString(culture) + "*";
+                return length.Value.ToString(culture) + Asterisk;
         }
 
         private static GridLength FromString (string str)
         {
             int value;
             GridUnitType unitType;
-            if (str.ToUpperInvariant() == "AUTO") {
+            if (str.ToUpperInvariant() == AUTO) {
                 unitType = GridUnitType.Auto;
                 value = 0;
             }
-            else if (str.EndsWith("*", StringComparison.Ordinal)) {
+            else if (str.EndsWith(Asterisk, StringComparison.Ordinal)) {
                 unitType = GridUnitType.Star;
-                value = str.Length == 1 ? 1 : GetValue(str.Remove(str.Length - 1));
+                value = str.Length == 1 ? 1 : ParseInt(str.Remove(str.Length - 1));
             }
             else {
                 unitType = GridUnitType.Char;
-                value = GetValue(str);
+                value = ParseInt(str);
             }
             return new GridLength(value, unitType);
-        }
-
-        private static int GetValue (string str)
-        {
-            return int.Parse(str, CultureInfo.InvariantCulture);
         }
     }
 }

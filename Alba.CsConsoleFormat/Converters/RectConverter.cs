@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -14,11 +15,8 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class RectConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
-        {
-            TypeCode type = Type.GetTypeCode(sourceType);
-            return type == TypeCode.String || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
@@ -29,15 +27,10 @@ namespace Alba.CsConsoleFormat
 
         private static Rect FromString (string str)
         {
-            string[] parts = str.Split(new[] { ' ', ',' }, 4, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitNumbers(str, 4);
             if (parts.Length != 4)
                 throw new FormatException($"Invalid Rect format: '{str}'.");
-            return new Rect(GetValue(parts[0]), GetValue(parts[1]), GetValue(parts[2]), GetValue(parts[3]));
-        }
-
-        private static int GetValue (string str)
-        {
-            return int.Parse(str, CultureInfo.InvariantCulture);
+            return new Rect(ParseInt(parts[0]), ParseInt(parts[1]), ParseInt(parts[2]), ParseInt(parts[3]));
         }
     }
 }

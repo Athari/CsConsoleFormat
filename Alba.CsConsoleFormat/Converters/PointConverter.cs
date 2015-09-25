@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
@@ -14,11 +15,8 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class PointConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
-        {
-            TypeCode type = Type.GetTypeCode(sourceType);
-            return type == TypeCode.String || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+            sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
         public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
         {
@@ -29,15 +27,10 @@ namespace Alba.CsConsoleFormat
 
         private static Point FromString (string str)
         {
-            string[] parts = str.Split(new[] { ' ', ',' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = SplitNumbers(str, 2);
             if (parts.Length != 2)
                 throw new FormatException($"Invalid Point format: '{str}'.");
-            return new Point(GetValue(parts[0]), GetValue(parts[1]));
-        }
-
-        private static int GetValue (string str)
-        {
-            return int.Parse(str, CultureInfo.InvariantCulture);
+            return new Point(ParseInt(parts[0]), ParseInt(parts[1]));
         }
     }
 }

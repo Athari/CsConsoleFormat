@@ -47,6 +47,7 @@
     <Compile Include="Converters\RectConverter.cs" />
     <Compile Include="Converters\SizeConverter.cs" />
     <Compile Include="Converters\ThicknessConverter.cs" />
+    <Compile Include="Converters\TypeConverterUtils.cs" />
     <Compile Include="Converters\VectorConverter.cs" />
     <Compile Include="Converters\XmlLanguageConverter.cs" />
     <Compile Include="Core\AttachedProperty.cs" />
