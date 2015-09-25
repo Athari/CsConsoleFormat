@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Alba.CsConsoleFormat.Framework.Sys;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Framework.Collections
 {
     internal static class EnumerableExts
     {
-        public static bool AllEqual<T> (this IEnumerable<T> @this)
+        public static bool AllEqual<T> ([InstantHandle] this IEnumerable<T> @this)
         {
             bool isFirst = true;
             T first = default(T);

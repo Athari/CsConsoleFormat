@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -23,7 +24,7 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BgColorOverride { get; set; }
 
-        public AnsiRenderTarget (Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public AnsiRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {}
 
         public AnsiRenderTarget (TextWriter writer = null) : base(writer)

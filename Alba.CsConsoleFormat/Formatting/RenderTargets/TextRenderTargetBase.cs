@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -11,7 +12,7 @@ namespace Alba.CsConsoleFormat
 
         protected TextWriter Writer { get; }
 
-        protected TextRenderTargetBase (Stream output, Encoding encoding = null, bool leaveOpen = false)
+        protected TextRenderTargetBase ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -46,6 +47,6 @@ namespace Alba.CsConsoleFormat
                 Writer.Dispose();
         }
 
-        protected abstract void RenderOverride (IConsoleBufferSource buffer);
+        protected abstract void RenderOverride ([NotNull] IConsoleBufferSource buffer);
     }
 }

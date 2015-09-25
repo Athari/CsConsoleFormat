@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Generation
 {
@@ -7,8 +8,10 @@ namespace Alba.CsConsoleFormat.Generation
     {
         public T Element { get; }
 
-        public ElementBuilder (T element)
+        public ElementBuilder ([NotNull] T element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
             Element = element;
         }
 

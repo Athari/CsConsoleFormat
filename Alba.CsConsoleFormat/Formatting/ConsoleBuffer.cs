@@ -25,6 +25,7 @@ namespace Alba.CsConsoleFormat
             ResetClip();
         }
 
+        [NotNull]
         public ILineCharRenderer LineCharRenderer
         {
             get { return _lineCharRenderer; }
@@ -218,30 +219,30 @@ namespace Alba.CsConsoleFormat
             Clip = new Rect(0, 0, Width, Size.Infinity);
         }
 
-        public void ApplyForegroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        public void ApplyForegroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap)
         {
             ApplyColorMap(x, y, w, h, colorMap,
                 (ref ConsoleChar c) => c.ForegroundColor = colorMap[(int)c.ForegroundColor]);
         }
 
-        public void ApplyForegroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        public void ApplyForegroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap)
         {
             ApplyForegroundColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap);
         }
 
-        public void ApplyBackgroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        public void ApplyBackgroundColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap)
         {
             ApplyColorMap(x, y, w, h, colorMap,
                 (ref ConsoleChar c) => c.BackgroundColor = colorMap[(int)c.BackgroundColor]);
         }
 
-        public void ApplyBackgroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap)
+        public void ApplyBackgroundColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap)
         {
             ApplyBackgroundColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap);
         }
 
-        public void ApplyColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
-            ApplyColorMapCallback processChar)
+        public void ApplyColorMap (int x, int y, int w, int h, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap,
+            [NotNull] ApplyColorMapCallback processChar)
         {
             if (colorMap == null)
                 throw new ArgumentNullException(nameof(colorMap));
@@ -260,8 +261,8 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void ApplyColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] colorMap,
-            ApplyColorMapCallback processChar)
+        public void ApplyColorMap (Rect rect, [ValueProvider (ValueProviders.ColorMaps), NotNull] ConsoleColor[] colorMap,
+            [NotNull] ApplyColorMapCallback processChar)
         {
             ApplyColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap, processChar);
         }

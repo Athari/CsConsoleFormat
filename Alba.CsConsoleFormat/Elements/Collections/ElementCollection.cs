@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -36,7 +37,7 @@ namespace Alba.CsConsoleFormat
             return AddText(text);
         }
 
-        protected override void InsertItem (int index, T item)
+        protected override void InsertItem (int index, [NotNull] T item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));

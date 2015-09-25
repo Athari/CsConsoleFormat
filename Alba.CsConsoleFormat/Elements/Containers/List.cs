@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Generation;
@@ -9,8 +10,20 @@ namespace Alba.CsConsoleFormat
     {
         internal const string DefaultIndexFormat = "{0}. ";
 
-        public string IndexFormat { get; set; } = DefaultIndexFormat;
+        private string _indexFormat = DefaultIndexFormat;
+
         public int StartIndex { get; set; } = 1;
+
+        public string IndexFormat
+        {
+            get { return _indexFormat; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                _indexFormat = value;
+            }
+        }
 
         public override IEnumerable<Element> GenerateVisualElements ()
         {

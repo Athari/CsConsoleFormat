@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Markup;
+using JetBrains.Annotations;
 
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
@@ -9,6 +10,7 @@ namespace Alba.CsConsoleFormat
     {
         private ElementCollection _itemTemplate;
 
+        [CanBeNull]
         public IEnumerable<object> Items { get; set; }
 
         public ElementCollection ItemTemplate => _itemTemplate ?? (_itemTemplate = new ElementCollection(null));

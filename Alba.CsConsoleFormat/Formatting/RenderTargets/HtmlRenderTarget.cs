@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -19,7 +20,7 @@ namespace Alba.CsConsoleFormat
         public string Font { get; set; }
         public string PageTitle { get; set; }
 
-        public HtmlRenderTarget (Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public HtmlRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {
             Init();
         }

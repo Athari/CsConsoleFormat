@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -223,7 +224,7 @@ namespace Alba.CsConsoleFormat
         }
 
         [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public virtual void Render (ConsoleBuffer buffer)
+        public virtual void Render ([NotNull] ConsoleBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

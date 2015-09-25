@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Xaml;
 using Alba.CsConsoleFormat.Markup;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -15,6 +16,7 @@ namespace Alba.CsConsoleFormat
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
         private IDictionary<AttachableMemberIdentifier, object> _attachedProperties;
 
+        [CanBeNull]
         public object DataContext
         {
             get { return _dataContext; }
@@ -35,8 +37,12 @@ namespace Alba.CsConsoleFormat
                 getter.Key.SetValue(this, getter.Value.GetValue(this));
         }
 
-        public void Bind (PropertyInfo prop, GetExpressionBase getter)
+        public void Bind ([NotNull] PropertyInfo prop, [NotNull] GetExpressionBase getter)
         {
+            if (prop == null)
+                throw new ArgumentNullException(nameof(prop));
+            if (getter == null)
+                throw new ArgumentNullException(nameof(getter));
             if (_getters == null)
                 _getters = new SortedList<PropertyInfo, GetExpressionBase>();
             _getters[prop] = getter;
@@ -105,14 +111,14 @@ namespace Alba.CsConsoleFormat
             _attachedProperties?.CopyTo(array, index);
         }
 
-        public bool HasValue<T> (AttachedProperty<T> property)
+        public bool HasValue<T> ([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
             return _attachedProperties != null && _attachedProperties.ContainsKey(property.Identifier);
         }
 
-        public T GetValue<T> (AttachedProperty<T> property)
+        public T GetValue<T> ([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
@@ -121,7 +127,7 @@ namespace Alba.CsConsoleFormat
                 ? property.DefaultValue : (T)value;
         }
 
-        public void SetValue<T> (AttachedProperty<T> property, T value)
+        public void SetValue<T> ([NotNull] AttachedProperty<T> property, T value)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
@@ -130,7 +136,7 @@ namespace Alba.CsConsoleFormat
             _attachedProperties[property.Identifier] = value;
         }
 
-        public void ResetValue<T> (AttachedProperty<T> property)
+        public void ResetValue<T> ([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));

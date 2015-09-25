@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Markup;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -19,10 +20,13 @@ namespace Alba.CsConsoleFormat
         private ElementCollection _children;
         private IList<Element> _visualChildren;
 
+        [CanBeNull]
         public string Name { get; set; }
 
+        [CanBeNull]
         public XmlLanguage Language { get; set; }
 
+        [CanBeNull]
         public Element Parent { get; internal set; }
 
         [TypeConverter (typeof(ConsoleColorConverter))]
@@ -51,6 +55,7 @@ namespace Alba.CsConsoleFormat
             internal set { _visualChildren = value; }
         }
 
+        [CanBeNull]
         internal BlockElement VisualChild => (BlockElement)_visualChildren?.SingleOrDefault();
 
         protected virtual bool CanHaveChildren => true;
@@ -61,7 +66,7 @@ namespace Alba.CsConsoleFormat
 
         internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
         internal ConsoleColor EffectiveBgColor => Parents.FirstOrDefault(e => e.BgColor != null)?.BgColor ?? DefaultBgColor;
-        internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language.Culture;
+        internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
         [EditorBrowsable (EditorBrowsableState.Advanced)]
         public void GenerateVisualTree ()
@@ -108,8 +113,10 @@ namespace Alba.CsConsoleFormat
             SetVisualChildren(children);
         }
 
-        protected virtual void SetVisualChildren (IList<Element> visualChildren)
+        protected virtual void SetVisualChildren ([NotNull] IList<Element> visualChildren)
         {
+            if (visualChildren == null)
+                throw new ArgumentNullException(nameof(visualChildren));
             if (visualChildren.Count == 1) {
                 VisualChildren = visualChildren;
             }
@@ -129,7 +136,7 @@ namespace Alba.CsConsoleFormat
             yield return this;
         }
 
-        protected override void CloneOverride (BindableObject obj)
+        protected override void CloneOverride ([NotNull] BindableObject obj)
         {
             var source = (Element)obj;
             base.CloneOverride(source);

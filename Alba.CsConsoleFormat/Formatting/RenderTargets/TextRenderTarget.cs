@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
     public class TextRenderTarget : TextRenderTargetBase
     {
-        public TextRenderTarget (Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public TextRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {}
 
         public TextRenderTarget (TextWriter writer = null) : base(writer)

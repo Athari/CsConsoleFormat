@@ -1,7 +1,9 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using JetBrains.Annotations;
+
+namespace Alba.CsConsoleFormat
 {
     public interface IRenderTarget
     {
-        void Render (IConsoleBufferSource buffer);
+        void Render ([NotNull] IConsoleBufferSource buffer);
     }
 }

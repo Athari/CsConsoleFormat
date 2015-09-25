@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using Alba.CsConsoleFormat.Framework.Collections;
+using JetBrains.Annotations;
 using static System.Linq.Enumerable;
 using static System.Math;
 using static Alba.CsConsoleFormat.LineWidthExts;
@@ -40,16 +41,16 @@ namespace Alba.CsConsoleFormat
             set { SetStroke(this, value); }
         }
 
-        public static int GetColumn (BlockElement el) => el.GetValue(ColumnProperty);
-        public static int GetRow (BlockElement el) => el.GetValue(RowProperty);
-        public static int GetColumnSpan (BlockElement el) => el.GetValue(ColumnSpanProperty);
-        public static int GetRowSpan (BlockElement el) => el.GetValue(RowSpanProperty);
-        public static LineThickness GetStroke (BlockElement el) => el.GetValue(StrokeProperty);
-        public static void SetColumn (BlockElement el, int value) => el.SetValue(ColumnProperty, value);
-        public static void SetRow (BlockElement el, int value) => el.SetValue(RowProperty, value);
-        public static void SetColumnSpan (BlockElement el, int value) => el.SetValue(ColumnSpanProperty, value);
-        public static void SetRowSpan (BlockElement el, int value) => el.SetValue(RowSpanProperty, value);
-        public static void SetStroke (BlockElement el, LineThickness value) => el.SetValue(StrokeProperty, value);
+        public static int GetColumn ([NotNull] BlockElement el) => el.GetValue(ColumnProperty);
+        public static int GetRow ([NotNull] BlockElement el) => el.GetValue(RowProperty);
+        public static int GetColumnSpan ([NotNull] BlockElement el) => el.GetValue(ColumnSpanProperty);
+        public static int GetRowSpan ([NotNull] BlockElement el) => el.GetValue(RowSpanProperty);
+        public static LineThickness GetStroke ([NotNull] BlockElement el) => el.GetValue(StrokeProperty);
+        public static void SetColumn ([NotNull] BlockElement el, int value) => el.SetValue(ColumnProperty, value);
+        public static void SetRow ([NotNull] BlockElement el, int value) => el.SetValue(RowProperty, value);
+        public static void SetColumnSpan ([NotNull] BlockElement el, int value) => el.SetValue(ColumnSpanProperty, value);
+        public static void SetRowSpan ([NotNull] BlockElement el, int value) => el.SetValue(RowSpanProperty, value);
+        public static void SetStroke ([NotNull] BlockElement el, LineThickness value) => el.SetValue(StrokeProperty, value);
 
         protected override void SetVisualChildren (IList<Element> visualChildren)
         {
@@ -111,6 +112,8 @@ namespace Alba.CsConsoleFormat
             int ncolumns = Columns.Count, nrows = _cells.Count;
             _columnBorders = ListOfListOf(nrows, ncolumns + 1, LineWidth.None);
             _rowBorders = ListOfListOf(nrows + 1, ncolumns, LineWidth.None);
+            _maxColumnBorders = ListOf(ncolumns + 1, 0);
+            _maxRowBorders = ListOf(nrows + 1, 0);
 
             // Apply table borders (Stroke property of grid).
             LineThickness tableStroke = Stroke;
@@ -140,10 +143,12 @@ namespace Alba.CsConsoleFormat
             }
 
             // Calculate max char widths.
-            _maxColumnBorders = Range(0, ncolumns + 1)
-                .Select(column => Range(0, nrows).Select(row => _columnBorders[row][column]).Max().ToCharWidth())
-                .ToList();
-            _maxRowBorders = _rowBorders.Select(widths => widths.Max().ToCharWidth()).ToList();
+            for (int column = 0; column < ncolumns + 1; column++)
+                for (int row = 0; row < nrows; row++)
+                    _maxColumnBorders[column] = Max(_maxColumnBorders[column], _columnBorders[row][column].ToCharWidth());
+            for (int row = 0; row < nrows + 1; row++)
+                for (int column = 0; column < ncolumns; column++)
+                    _maxRowBorders[row] = Max(_maxRowBorders[row], _rowBorders[row][column].ToCharWidth());
         }
 
         protected override Size MeasureOverride (Size availableSize)
@@ -382,7 +387,7 @@ namespace Alba.CsConsoleFormat
             return list;
         }
 
-        public static List<int> Distribute (List<double> weights, int available)
+        private static List<int> Distribute (List<double> weights, int available)
         {
             double totalWeight = weights.Sum();
             if (Abs(totalWeight) <= double.Epsilon)

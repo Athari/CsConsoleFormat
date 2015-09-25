@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -13,21 +14,21 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int?> BottomProperty = RegisterAttached(() => BottomProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetLeft (BlockElement el) => el.GetValue(LeftProperty);
+        public static int? GetLeft ([NotNull] BlockElement el) => el.GetValue(LeftProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetTop (BlockElement el) => el.GetValue(TopProperty);
+        public static int? GetTop ([NotNull] BlockElement el) => el.GetValue(TopProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetRight (BlockElement el) => el.GetValue(RightProperty);
+        public static int? GetRight ([NotNull] BlockElement el) => el.GetValue(RightProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetBottom (BlockElement el) => el.GetValue(BottomProperty);
+        public static int? GetBottom ([NotNull] BlockElement el) => el.GetValue(BottomProperty);
 
-        public static void SetLeft (BlockElement el, int? value) => el.SetValue(LeftProperty, value);
-        public static void SetTop (BlockElement el, int? value) => el.SetValue(TopProperty, value);
-        public static void SetRight (BlockElement el, int? value) => el.SetValue(RightProperty, value);
-        public static void SetBottom (BlockElement el, int? value) => el.SetValue(BottomProperty, value);
+        public static void SetLeft ([NotNull] BlockElement el, int? value) => el.SetValue(LeftProperty, value);
+        public static void SetTop ([NotNull] BlockElement el, int? value) => el.SetValue(TopProperty, value);
+        public static void SetRight ([NotNull] BlockElement el, int? value) => el.SetValue(RightProperty, value);
+        public static void SetBottom ([NotNull] BlockElement el, int? value) => el.SetValue(BottomProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)

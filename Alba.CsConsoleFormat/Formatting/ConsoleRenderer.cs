@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xaml;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -34,7 +35,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromStream<TElement> (Stream stream,
+        public static TElement ReadElementFromStream<TElement> ([NotNull] Stream stream,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -61,7 +62,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromResource<TElement> (Type type, string resourceName,
+        public static TElement ReadElementFromResource<TElement> ([NotNull] Type type, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -76,7 +77,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromResource<TElement> (Assembly assembly, string resourceName,
+        public static TElement ReadElementFromResource<TElement> ([NotNull] Assembly assembly, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -91,25 +92,25 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static Document ReadDocumentFromStream (Stream stream,
+        public static Document ReadDocumentFromStream ([NotNull] Stream stream,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromStream<Document>(stream, dataContext, settings);
         }
 
-        public static Document ReadDocumentFromResource (Type type, string resourceName,
+        public static Document ReadDocumentFromResource ([NotNull] Type type, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(type, resourceName, dataContext, settings);
         }
 
-        public static Document ReadDocumentFromResource (Assembly assembly, string resourceName,
+        public static Document ReadDocumentFromResource ([NotNull] Assembly assembly, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
 
-        public static void RenderDocument (Document document, IRenderTarget target = null)
+        public static void RenderDocument ([NotNull] Document document, IRenderTarget target = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -121,7 +122,7 @@ namespace Alba.CsConsoleFormat
             target.Render(buffer);
         }
 
-        public static string RenderDocumentToText (Document document, TextRenderTargetBase target)
+        public static string RenderDocumentToText ([NotNull] Document document, [NotNull] TextRenderTargetBase target)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -134,7 +135,7 @@ namespace Alba.CsConsoleFormat
             return target.OutputText;
         }
 
-        public static void RenderDocumentToBuffer (Document document, ConsoleBuffer buffer, Rect renderRect)
+        public static void RenderDocumentToBuffer ([NotNull] Document document, [NotNull] ConsoleBuffer buffer, Rect renderRect)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));

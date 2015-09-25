@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -10,8 +11,8 @@ namespace Alba.CsConsoleFormat
 
         public bool LastChildFill { get; set; } = true;
 
-        public static DockTo GetTo (BlockElement el) => el.GetValue(ToProperty);
-        public static void SetTo (BlockElement el, DockTo value) => el.SetValue(ToProperty, value);
+        public static DockTo GetTo ([NotNull] BlockElement el) => el.GetValue(ToProperty);
+        public static void SetTo ([NotNull] BlockElement el, DockTo value) => el.SetValue(ToProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)

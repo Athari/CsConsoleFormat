@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -17,6 +18,6 @@ namespace Alba.CsConsoleFormat
 
         public static LineWidth Max (LineWidth left, LineWidth right) => (LineWidth)Math.Max((int)left, (int)right);
 
-        public static LineWidth Max (IEnumerable<LineWidth> items) => items.Aggregate(LineWidth.None, Max);
+        public static LineWidth Max ([InstantHandle] IEnumerable<LineWidth> items) => items.Aggregate(LineWidth.None, Max);
     }
 }

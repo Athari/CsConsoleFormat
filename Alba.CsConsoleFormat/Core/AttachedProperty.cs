@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Xaml;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -26,16 +27,20 @@ namespace Alba.CsConsoleFormat
 
         internal static AttachedProperty Get (AttachableMemberIdentifier identifier) => _Properties[identifier];
 
-        public static AttachedProperty<T> Register<TOwner, T> (string name, T defaultValue = default(T))
+        public static AttachedProperty<T> Register<TOwner, T> ([NotNull] string name, T defaultValue = default(T))
         {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
             var identifier = new AttachableMemberIdentifier(typeof(TOwner), name);
             var property = new AttachedProperty<T>(identifier, defaultValue);
             _Properties.Add(identifier, property);
             return property;
         }
 
-        public static AttachedProperty<T> Register<TOwner, T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T))
+        public static AttachedProperty<T> Register<TOwner, T> ([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T))
         {
+            if (nameExpression == null)
+                throw new ArgumentNullException(nameof(nameExpression));
             string name = "";
             var memberExpr = nameExpression.Body as MemberExpression;
             if (memberExpr != null)
