@@ -5,7 +5,12 @@ using Alba.CsConsoleFormat.Markup;
 
 namespace Alba.CsConsoleFormat
 {
-    /// <summary>Converts between <see cref="string"/> and <see cref="XmlLanguage"/>.</summary>
+    /// <summary>
+    /// Converts <see cref="XmlLanguage"/> to and from <see cref="string"/>:
+    /// <list type="bullet">
+    /// <item>"en-us" - <c>new XmlLanguage("en-us")</c></item>
+    /// </list> 
+    /// </summary>
     public class XmlLanguageConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

@@ -5,6 +5,13 @@ using System.Globalization;
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
+    /// <summary>
+    /// Converts <see cref="Point"/> to and from <see cref="string"/>:
+    /// <list type="bullet">
+    /// <item>"1 2" - <c>new Point(1, 2)</c></item>
+    /// </list> 
+    /// Separator can be " " or ",".
+    /// </summary>
     public class PointConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

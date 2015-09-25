@@ -5,6 +5,15 @@ using System.Globalization;
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
+    /// <summary>
+    /// Converts <see cref="GridLength"/> to and from <see cref="string"/> and numeric types:
+    /// <list type="bullet">
+    /// <item>"Auto" - <c>GridLength.Auto</c></item>
+    /// <item>"*" - <c>GridLength.Star(1)</c></item>
+    /// <item>"2*" - <c>GridLength.Star(2)</c></item>
+    /// <item>"3", 3 - <c>GridLength.Char(3)</c></item>
+    /// </list> 
+    /// </summary>
     public class GridLengthConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

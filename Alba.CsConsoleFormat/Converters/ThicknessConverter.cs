@@ -6,8 +6,12 @@ using System.Globalization;
 namespace Alba.CsConsoleFormat
 {
     /// <summary>
-    /// Converts between a sequence of <see cref="string">Strings</see> and <see cref="Thickness"/>:
-    /// "1"/<c>{ 1, 1, 1, 1 }</c>, "1 2"/<c>{ 1, 2, 1, 2 }</c>, "1 2 3 4"/<c>{ 1, 2, 3, 4 }</c> (left, top, right, bottom).
+    /// Converts <see cref="Thickness"/> to and from <see cref="string"/> and numeric types:
+    /// <list type="bullet">
+    /// <item>"1 2 3 4" - <c>new Thickness(1, 2, 3, 4)</c></item>
+    /// <item>"1 2" - <c>new Thickness(1, 2)</c> (<c>new Thickness(1, 2, 1, 2)</c>)</item>
+    /// <item>"1", 1 - <c>new Thickness(1)</c> (<c>new Thickness(1, 1, 1, 1)</c>)</item>
+    /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
     public class ThicknessConverter : TypeConverter
@@ -39,7 +43,7 @@ namespace Alba.CsConsoleFormat
                 case 1:
                     return new Thickness(GetWidth(parts[0]));
                 case 2:
-                    return new Thickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[0]), GetWidth(parts[1]));
+                    return new Thickness(GetWidth(parts[0]), GetWidth(parts[1]));
                 case 4:
                     return new Thickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
                 default:

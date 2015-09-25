@@ -6,8 +6,12 @@ using System.Globalization;
 namespace Alba.CsConsoleFormat
 {
     /// <summary>
-    /// Converts between a sequence of <see cref="string">Strings</see> and <see cref="LineThickness"/>:
-    /// "1"/<c>{ 1, 1, 1, 1 }</c>, "1 2"/<c>{ 1, 2, 1, 2 }</c>, "1 2 3 4"/<c>{ 1, 2, 3, 4 }</c> (left, top, right, bottom).
+    /// Converts <see cref="LineThickness"/> to and from <see cref="string"/> and numeric types:
+    /// <list type="bullet">
+    /// <item>"None Single Wide Single", "0 1 2 0" - <c>new LineThickness(None, Single, Wide, Single)</c></item>
+    /// <item>"Single Wide", "1 2" - <c>new LineThickness(Single, Wide)</c> (<c>new LineThickness(Single, Wide, Single, Wide)</c>)</item>
+    /// <item>"Wide", "2", 2 - <c>new LineThickness(Wide)</c> (<c>new LineThickness(Wide, Wide, Wide, Wide)</c>)</item>
+    /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
     public class LineThicknessConverter : TypeConverter
@@ -41,7 +45,7 @@ namespace Alba.CsConsoleFormat
                 case 1:
                     return new LineThickness(GetWidth(parts[0]));
                 case 2:
-                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[0]), GetWidth(parts[1]));
+                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]));
                 case 4:
                     return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
                 default:

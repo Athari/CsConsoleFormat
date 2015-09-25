@@ -5,6 +5,13 @@ using System.Globalization;
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
+    /// <summary>
+    /// Converts <see cref="Rect"/> to and from <see cref="string"/>:
+    /// <list type="bullet">
+    /// <item>"1 2 3 4" - <c>new Rect(1, 2, 3, 4)</c></item>
+    /// </list> 
+    /// Separator can be " " or ",".
+    /// </summary>
     public class RectConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

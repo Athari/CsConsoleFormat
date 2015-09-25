@@ -4,7 +4,13 @@ using System.Globalization;
 
 namespace Alba.CsConsoleFormat
 {
-    /// <summary>Converts between <see cref="string"/> and <see cref="ConsoleColor"/>: "Black"/<see cref="ConsoleColor.Black"/>, "inherit"/<c>null</c>.</summary>
+    /// <summary>
+    /// Converts <see cref="ConsoleColor"/> to and from <see cref="string"/> and numeric types:
+    /// <list type="bullet">
+    /// <item>"Black", 0 - <c>ConsoleColor.Black</c></item>
+    /// <item>"inherit" - <c>null</c></item>
+    /// </list> 
+    /// </summary>
     public class ConsoleColorConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)

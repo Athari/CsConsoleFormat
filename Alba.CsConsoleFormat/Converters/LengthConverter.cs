@@ -4,7 +4,13 @@ using System.Globalization;
 
 namespace Alba.CsConsoleFormat
 {
-    /// <summary>Converts between <see cref="string"/> and <see cref="int"/>: "2" to 2, "auto" to <c>null</c>).</summary>
+    /// <summary>
+    /// Converts length (represented by nullable <see cref="int"/>) to and from <see cref="string"/>:
+    /// <list type="bullet">
+    /// <item>"2" - <c>2</c></item>
+    /// <item>"auto" - <c>null</c></item>
+    /// </list> 
+    /// </summary>
     public class LengthConverter : TypeConverter
     {
         public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
