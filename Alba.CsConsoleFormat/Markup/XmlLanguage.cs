@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
@@ -9,6 +10,7 @@ namespace Alba.CsConsoleFormat.Markup
     {
         private CultureInfo _culture;
 
+        [CanBeNull]
         public string Name { get; set; }
 
         public XmlLanguage (string name)
@@ -16,7 +18,7 @@ namespace Alba.CsConsoleFormat.Markup
             Name = name;
         }
 
-        public XmlLanguage (CultureInfo culture)
+        public XmlLanguage ([NotNull] CultureInfo culture)
         {
             if (culture == null)
                 throw new ArgumentNullException(nameof(culture));
@@ -24,6 +26,7 @@ namespace Alba.CsConsoleFormat.Markup
             Name = culture.Name;
         }
 
+        [CanBeNull]
         public CultureInfo Culture => Name == null ? null : (_culture ?? (_culture = new CultureInfo(Name)));
     }
 }
