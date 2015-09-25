@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat.Generation
             return @this;
         }
 
-        public static void AddColumn<T> (this ElementBuilder<T> @this, object child)
+        private static void AddColumn<T> (this ElementBuilder<T> @this, object child)
             where T : Grid, new()
         {
             if (child is GridLength) {
@@ -77,6 +77,27 @@ namespace Alba.CsConsoleFormat.Generation
             where T : BlockElement, new()
         {
             Grid.SetStroke(@this.Element, stroke);
+            return @this;
+        }
+
+        public static ElementBuilder<T> StrokeCell<T> (this ElementBuilder<T> @this, LineWidth left, LineWidth top, LineWidth right, LineWidth bottom)
+            where T : BlockElement, new()
+        {
+            Grid.SetStroke(@this.Element, new LineThickness(left, top, right, bottom));
+            return @this;
+        }
+
+        public static ElementBuilder<T> StrokeCell<T> (this ElementBuilder<T> @this, LineWidth vertical, LineWidth horizontal)
+            where T : BlockElement, new()
+        {
+            Grid.SetStroke(@this.Element, new LineThickness(vertical, horizontal));
+            return @this;
+        }
+
+        public static ElementBuilder<T> StrokeCell<T> (this ElementBuilder<T> @this, LineWidth width)
+            where T : BlockElement, new()
+        {
+            Grid.SetStroke(@this.Element, new LineThickness(width));
             return @this;
         }
     }

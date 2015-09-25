@@ -21,6 +21,9 @@ namespace Alba.CsConsoleFormat
             Bottom = bottom;
         }
 
+        public Thickness (int vertical, int horizontal) : this(vertical, horizontal, vertical, horizontal)
+        {}
+
         public Thickness (int width) : this(width, width, width, width)
         {}
 

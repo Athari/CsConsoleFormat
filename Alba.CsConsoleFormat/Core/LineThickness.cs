@@ -21,6 +21,9 @@ namespace Alba.CsConsoleFormat
             Bottom = bottom;
         }
 
+        public LineThickness (LineWidth vertical, LineWidth horizontal) : this(vertical, horizontal, vertical, horizontal)
+        {}
+
         public LineThickness (LineWidth width) : this(width, width, width, width)
         {}
 

@@ -69,6 +69,13 @@ namespace Alba.CsConsoleFormat.Generation
             return @this;
         }
 
+        public static ElementBuilder<T> Margin<T> (this ElementBuilder<T> @this, int vertical, int horizontal)
+            where T : BlockElement, new()
+        {
+            @this.Element.Margin = new Thickness(vertical, horizontal);
+            return @this;
+        }
+
         public static ElementBuilder<T> Margin<T> (this ElementBuilder<T> @this, int width)
             where T : BlockElement, new()
         {

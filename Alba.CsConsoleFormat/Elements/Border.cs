@@ -53,7 +53,7 @@ namespace Alba.CsConsoleFormat
                 // ███oooo██     █████
                 // ███oooo██     █████
                 // ▀▀▀▀▀▀▀▀▀     ▀▀▀▀▀
-                Thickness shadowLineDelta = new Thickness(0, 1, 0, 1);
+                Thickness shadowLineDelta = new Thickness(0, 1);
                 Thickness shadowOffset = Thickness.Max(-Shadow - shadowLineDelta, new Thickness(0));
                 Rect shadowRect = new Rect(RenderSize).Deflate(shadowOffset);
 

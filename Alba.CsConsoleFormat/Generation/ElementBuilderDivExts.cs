@@ -16,6 +16,13 @@ namespace Alba.CsConsoleFormat.Generation
             return @this;
         }
 
+        public static ElementBuilder<T> Padding<T> (this ElementBuilder<T> @this, int vertical, int horizontal)
+            where T : Div, new()
+        {
+            @this.Element.Padding = new Thickness(vertical, horizontal);
+            return @this;
+        }
+
         public static ElementBuilder<T> Padding<T> (this ElementBuilder<T> @this, int width)
             where T : Div, new()
         {

@@ -14,6 +14,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public static void Main ()
         {
+            //for (int i = 0; i < 100; i++)
             new Program().Run();
             Console.WriteLine("Done!");
             if (Debugger.IsAttached)
@@ -78,6 +79,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             Document builtDoc = new ViewBuilder().CreateDocument(data);
             Console.WriteLine("Builder");
             ConsoleRenderer.RenderDocument(builtDoc);
+            ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0a.html"), new UTF8Encoding(false)));
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -189,7 +191,6 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public Document CreateDocument (Data data)
         {
-            var cellHeaderStroke = new LineThickness(LineWidth.Single, LineWidth.Wide, LineWidth.Single, LineWidth.Wide);
             return Create<Document>()
                 .Color(White, Black)
                 .AddChildren(
@@ -199,9 +200,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     Create<Grid>()
                         .AddColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto)
                         .AddChildren(
-                            Create<Cell>("Id").StrokeCell(cellHeaderStroke),
-                            Create<Cell>("Name").StrokeCell(cellHeaderStroke),
-                            Create<Cell>("Value").StrokeCell(cellHeaderStroke),
+                            Create<Cell>("Id").StrokeCell(LineWidth.Single, LineWidth.Wide),
+                            Create<Cell>("Name").StrokeCell(LineWidth.Single, LineWidth.Wide),
+                            Create<Cell>("Value").StrokeCell(LineWidth.Single, LineWidth.Wide),
                             data.Items.Select(d => new[] {
                                 Create<Cell>(d.Id).Color(Yellow).Align(HorizontalAlignment.Right),
                                 Create<Cell>(d.Name).Color(Gray),
