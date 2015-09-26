@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:Alba.CsConsoleFormat.Presentation.Controls;assembly=Alba.CsConsoleFormat.Presentation"
+        xmlns:a="urn:alba:cs-console-format"
+        xmlns:ap="urn:alba:cs-console-format:presentation"
         mc:Ignorable="d"
-        Title="Console View" Height="400" Width="800">
+        Title="Console View" Height="600" Width="800"
+        TextOptions.TextFormattingMode="Display">
     <Control.Resources>
         <!--<Style TargetType="DocumentViewer">
             <Setter Property="Template">
@@ -25,14 +27,20 @@
             </Setter>
         </Style>-->
     </Control.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <DocumentViewer x:Name="dvwFixed" Grid.Column="0" Background="White"/>
-        <FlowDocumentReader x:Name="dvwFlow" Grid.Column="1"/>
-        <controls:ConsoleView x:Name="cvwConsole" Grid.Column="2" ConsoleWidth="20" FontSize="16"/>
-    </Grid>
+    <UniformGrid Columns="2" Rows="2">
+        <DocumentViewer x:Name="dvwFixed" Background="White"/>
+        <FlowDocumentReader x:Name="dvwFlow"/>
+        <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
+                DocumentSource="Sample.xaml"/>
+        <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <a:Document>
+                <a:Div>
+                    <a:Span Text="Hello inline XAML world!" Color="Red"/>
+                </a:Div>
+                <a:Span Text="Foo" Color="Yellow" BgColor="DarkYellow"/>
+                <a:Span Text=" "/>
+                <a:Span Text="Bar" Color="Cyan" BgColor="DarkCyan"/>
+            </a:Document>
+        </ap:ConsoleView>
+    </UniformGrid>
 </Window>

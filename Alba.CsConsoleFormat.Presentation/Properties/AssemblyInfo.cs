@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
 [assembly: AssemblyTitle("Alba.CsConsoleFormat.Presentation")]
 [assembly: AssemblyDescription("")]
@@ -17,3 +18,6 @@ using System.Windows;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: XmlnsPrefix("urn:alba:cs-console-format:presentation", "ap")]
+[assembly: XmlnsDefinition("urn:alba:cs-console-format:presentation", "Alba.CsConsoleFormat.Presentation.Controls")]

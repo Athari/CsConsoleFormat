@@ -1,0 +1,10 @@
+﻿<Document x:Name="doc" xml:lang="en-us"
+        xmlns="urn:alba:cs-console-format"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Div>
+        <Span Text="Hello resource XAML world!" Color="Red"/>
+    </Div>
+    <Span Text="Foo" Color="Yellow" BgColor="DarkYellow"/>
+    <Span Text=" "/>
+    <Span Text="Bar" Color="Cyan" BgColor="DarkCyan"/>
+</Document>

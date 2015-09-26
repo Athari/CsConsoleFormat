@@ -16,44 +16,44 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
 
             var fixedDoc = new FixedDocument();
             ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument(),
+                new ViewBuilder().CreateDocument("fixed"),
                 new FixedDocumentRenderTarget(fixedDoc) { FontSize = 16 },
                 renderRect);
             dvwFixed.Document = fixedDoc;
 
             var flowDoc = new FlowDocument();
             ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument(),
+                new ViewBuilder().CreateDocument("flow"),
                 new FlowDocumentRenderTarget(flowDoc) { FontSize = 16 },
                 renderRect);
             dvwFlow.Document = flowDoc;
 
             ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument(),
+                new ViewBuilder().CreateDocument("fixed XPS"),
                 new XpsDocumentRenderTarget(File.Create(@"../../Tmp/0a.xps")) { FontSize = 16, DocumentType = XpsDocumentType.FixedDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument(),
+                new ViewBuilder().CreateDocument("flow XPS"),
                 new XpsDocumentRenderTarget(File.Create(@"../../Tmp/0b.xps")) { FontSize = 16, DocumentType = XpsDocumentType.FlowDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument(),
+                new ViewBuilder().CreateDocument("RTF"),
                 new RtfDocumentRenderTarget(File.Create(@"../../Tmp/0.rtf")) { FontSize = 16 },
                 renderRect);
 
-            cvwConsole.Document = new ViewBuilder().CreateDocument();
+            //cvwConsole.Document = new ViewBuilder().CreateDocument();
         }
     }
 
     public class ViewBuilder : DocumentBuilder
     {
-        public Document CreateDocument () =>
+        public Document CreateDocument (string world) =>
             Create<Document>()
                 .Color(White, Black)
                 .AddChildren(
-                    Create<Div>("Hello world!").Color(Red),
+                    Create<Div>($"Hello {world} world!").Color(Red),
                     Create<Div>("Hello world!").Color(Red),
                     Create<Div>()
                         .AddChildren(

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Resources;
 using WpfCanvas = System.Windows.Controls.Canvas;
 using WpfSize = System.Windows.Size;
 
 namespace Alba.CsConsoleFormat.Presentation.Controls
 {
+    [ContentProperty ("Document")]
     public class ConsoleView : Control
     {
         private static readonly DependencyPropertyKey ContentPropertyKey = DependencyProperty.RegisterReadOnly(
@@ -14,14 +17,14 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
         public static readonly DependencyProperty ConsoleWidthProperty = DependencyProperty.Register(
             nameof(ConsoleWidth), typeof(int), typeof(ConsoleView), new PropertyMetadata(80, RenderPropertyChanged));
         public static readonly DependencyProperty DocumentProperty = DependencyProperty.Register(
-            nameof(Document), typeof(Document), typeof(ConsoleView), new PropertyMetadata(Document_PropertyChanged));
+            nameof(Document), typeof(Document), typeof(ConsoleView), new PropertyMetadata(RenderPropertyChanged));
         public static readonly DependencyProperty DocumentSourceProperty = DependencyProperty.Register(
-            nameof(DocumentSource), typeof(Uri), typeof(ConsoleView), new PropertyMetadata(DocumentSource_PropertyChanged));
+            nameof(DocumentSource), typeof(Uri), typeof(ConsoleView), new PropertyMetadata(DocumentPropertyChanged));
 
         static ConsoleView ()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(typeof(ConsoleView)));
-            DataContextProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(DataContext_PropertyChanged));
+            DataContextProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(DocumentPropertyChanged));
             FontFamilyProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(RenderPropertyChanged));
             FontSizeProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(RenderPropertyChanged));
             FontStretchProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(RenderPropertyChanged));
@@ -59,22 +62,16 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
             @this.UpdateView();
         }
 
-        private static void Document_PropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void DocumentPropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var @this = (ConsoleView)d;
-            @this.UpdateView();
-        }
-
-        private static void DocumentSource_PropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var @this = (ConsoleView)d;
-            // TODO >>> Get document
-            @this.UpdateView();
-        }
-
-        private static void DataContext_PropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var @this = (ConsoleView)d;
+            if (e.NewValue == null)
+                return;
+            StreamResourceInfo resourceInfo = Application.GetResourceStream(@this.DocumentSource);
+            if (resourceInfo == null)
+                return;
+            using (resourceInfo.Stream)
+                @this.Document = ConsoleRenderer.ReadDocumentFromStream(resourceInfo.Stream, @this.DataContext);
             @this.UpdateView();
         }
 
