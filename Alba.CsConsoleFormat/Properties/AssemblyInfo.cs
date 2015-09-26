@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
 
@@ -22,3 +23,5 @@ using System.Windows.Markup;
 [assembly: XmlnsPrefix("urn:alba:cs-console-format", "a")]
 [assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat")]
 [assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat.Markup")]
+
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]

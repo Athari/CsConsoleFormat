@@ -110,27 +110,29 @@ namespace Alba.CsConsoleFormat
             return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
 
-        public static void RenderDocument ([NotNull] Document document, IRenderTarget target = null)
+        public static void RenderDocument ([NotNull] Document document, IRenderTarget target = null, Rect? renderRect = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
             if (target == null)
                 target = new ConsoleRenderTarget();
-            Rect renderRect = DefaultRenderRect;
-            var buffer = new ConsoleBuffer(renderRect.Size.Width);
-            RenderDocumentToBuffer(document, buffer, renderRect);
+            if (renderRect == null)
+                renderRect = DefaultRenderRect;
+            var buffer = new ConsoleBuffer(renderRect.Value.Size.Width);
+            RenderDocumentToBuffer(document, buffer, renderRect.Value);
             target.Render(buffer);
         }
 
-        public static string RenderDocumentToText ([NotNull] Document document, [NotNull] TextRenderTargetBase target)
+        public static string RenderDocumentToText ([NotNull] Document document, [NotNull] TextRenderTargetBase target, Rect? renderRect = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
-            Rect renderRect = DefaultRenderRect;
-            var buffer = new ConsoleBuffer(renderRect.Size.Width);
-            RenderDocumentToBuffer(document, buffer, renderRect);
+            if (renderRect == null)
+                renderRect = DefaultRenderRect;
+            var buffer = new ConsoleBuffer(renderRect.Value.Size.Width);
+            RenderDocumentToBuffer(document, buffer, renderRect.Value);
             target.Render(buffer);
             return target.OutputText;
         }

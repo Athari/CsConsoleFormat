@@ -1,0 +1,38 @@
+﻿<Window x:Class="Alba.CsConsoleFormat.Sample.Presentation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Alba.CsConsoleFormat.Presentation.Controls;assembly=Alba.CsConsoleFormat.Presentation"
+        mc:Ignorable="d"
+        Title="Console View" Height="400" Width="800">
+    <Control.Resources>
+        <!--<Style TargetType="DocumentViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DocumentViewer">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentControl x:Name="PART_FindToolBarHost" Visibility="Collapsed"/>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto"
+                                        Focusable="False"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    </Control.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DocumentViewer x:Name="dvwFixed" Grid.Column="0" Background="White"/>
+        <FlowDocumentScrollViewer x:Name="dvwFlow" Grid.Column="1"/>
+        <controls:ConsoleView x:Name="cvwConsole" Grid.Column="2" ConsoleWidth="20" FontSize="16"/>
+    </Grid>
+</Window>

@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat
             ColorOverride = null;
             BgColorOverride = null;
             BodyOnly = false;
-            Font = "12pt/100% \"Lucida Console\", Consolas, monospace";
+            Font = "12pt/100% Consolas, \"Lucida Console\", monospace";
             PageTitle = "Console output";
         }
 
