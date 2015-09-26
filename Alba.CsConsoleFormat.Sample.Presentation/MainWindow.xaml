@@ -6,30 +6,11 @@
         xmlns:a="urn:alba:cs-console-format"
         xmlns:ap="urn:alba:cs-console-format:presentation"
         mc:Ignorable="d"
-        Title="Console View" Height="600" Width="800"
+        Title="Console View" Height="600" Width="800" ResizeMode="CanResizeWithGrip"
         TextOptions.TextFormattingMode="Display">
-    <Control.Resources>
-        <!--<Style TargetType="DocumentViewer">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DocumentViewer">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="{TemplateBinding Background}">
-                            <Grid>
-                                <ContentControl x:Name="PART_FindToolBarHost" Visibility="Collapsed"/>
-                                <ScrollViewer x:Name="PART_ContentHost"
-                                        CanContentScroll="True" HorizontalScrollBarVisibility="Auto"
-                                        Focusable="False"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
-    </Control.Resources>
     <UniformGrid Columns="2" Rows="2">
         <DocumentViewer x:Name="dvwFixed" Background="White"/>
-        <FlowDocumentReader x:Name="dvwFlow"/>
+        <FlowDocumentReader x:Name="dvwFlow" ViewingMode="Scroll"/>
         <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
                 DocumentSource="Sample.xaml"/>
         <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
