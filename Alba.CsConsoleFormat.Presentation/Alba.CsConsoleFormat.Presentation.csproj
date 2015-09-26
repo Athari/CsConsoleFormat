@@ -50,6 +50,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RenderTargets\FlowDocumentRenderTarget.cs" />
+    <Compile Include="RenderTargets\RtfDocumentRenderTarget.cs" />
     <Compile Include="RenderTargets\XpsDocumentRenderTarget.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -60,7 +62,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RenderTargets\FixedDocumentRenderTargetBase.cs" />
+    <Compile Include="RenderTargets\DocumentRenderTargetBase.cs" />
     <Compile Include="RenderTargets\FixedDocumentRenderTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

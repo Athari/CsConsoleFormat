@@ -10,7 +10,7 @@ using WpfSize = System.Windows.Size;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public abstract class FixedDocumentRenderTargetBase : IRenderTarget
+    public abstract class DocumentRenderTargetBase : IRenderTarget
     {
         private static readonly Dictionary<ConsoleColor, Brush> ConsoleBrushes = new Dictionary<ConsoleColor, Brush> {
             [ConsoleColor.Black] = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat.Presentation
         public FontStyle FontStyle { get; set; }
         public FontWeight FontWeight { get; set; }
 
-        protected FixedDocumentRenderTargetBase ()
+        protected DocumentRenderTargetBase ()
         {
             Background = Brushes.Black;
             FontFamily = new FontFamily("Consolas");
@@ -73,6 +73,60 @@ namespace Alba.CsConsoleFormat.Presentation
             RenderToCanvas(buffer, linesPanel, charSize);
         }
 
+        protected void RenderToFlowDocument (IConsoleBufferSource buffer, FlowDocument document)
+        {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            var par = new Paragraph {
+                Background = Background,
+                FontFamily = FontFamily,
+                FontSize = FontSize,
+                FontStretch = FontStretch,
+                FontStyle = FontStyle,
+                FontWeight = FontWeight,
+                TextAlignment = System.Windows.TextAlignment.Left,
+            };
+            document.Blocks.Add(par);
+
+            ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
+            ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
+            Run text = null;
+            for (int iy = 0; iy < buffer.Height; iy++) {
+                ConsoleChar[] charsLine = buffer.GetLine(iy);
+                for (int ix = 0; ix < buffer.Width; ix++) {
+                    ConsoleColor foreColor = charsLine[ix].ForegroundColor;
+                    ConsoleColor backColor = charsLine[ix].BackgroundColor;
+                    if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
+                        currentForeColor = foreColor;
+                        currentBackColor = backColor;
+                        AppendRunIfNeeded(ref text, par);
+                        text = new Run {
+                            Foreground = ConsoleBrushes[foreColor],
+                            Background = ConsoleBrushes[backColor],
+                        };
+                    }
+                    char chr = charsLine[ix].Char;
+                    LineChar lineChr = charsLine[ix].LineChar;
+                    if (!lineChr.IsEmpty() && chr == '\0')
+                        chr = buffer.GetLineChar(ix, iy);
+                    text.Text += buffer.SafeChar(chr);
+                }
+                AppendRunIfNeeded(ref text, par);
+                if (iy + 1 < buffer.Height)
+                    par.Inlines.Add(new LineBreak());
+            }
+            AppendRunIfNeeded(ref text, par);
+        }
+
+        private static void AppendRunIfNeeded (ref Run text, Paragraph par)
+        {
+            if (text == null)
+                return;
+            par.Inlines.Add(text);
+            text = null;
+        }
+
         protected static void RenderToCanvas (IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
         {
             ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
@@ -84,10 +138,9 @@ namespace Alba.CsConsoleFormat.Presentation
                     ConsoleColor foreColor = charsLine[ix].ForegroundColor;
                     ConsoleColor backColor = charsLine[ix].BackgroundColor;
                     if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
-                        if (text != null) {
-                            text.Width = text.Text.Length * charSize.Width;
-                            linesPanel.Children.Add(text);
-                        }
+                        currentForeColor = foreColor;
+                        currentBackColor = backColor;
+                        AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
                         text = new TextBlock {
                             Foreground = ConsoleBrushes[foreColor],
                             Background = ConsoleBrushes[backColor],
@@ -95,9 +148,6 @@ namespace Alba.CsConsoleFormat.Presentation
                         };
                         WpfCanvas.SetLeft(text, ix * charSize.Width);
                         WpfCanvas.SetTop(text, iy * charSize.Height);
-
-                        currentForeColor = foreColor;
-                        currentBackColor = backColor;
                     }
                     char chr = charsLine[ix].Char;
                     LineChar lineChr = charsLine[ix].LineChar;
@@ -105,11 +155,18 @@ namespace Alba.CsConsoleFormat.Presentation
                         chr = buffer.GetLineChar(ix, iy);
                     text.Text += buffer.SafeChar(chr);
                 }
+                AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
             }
-            if (text != null) {
-                text.Width = text.Text.Length * charSize.Width;
-                linesPanel.Children.Add(text);
-            }
+            AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
+        }
+
+        private static void AppendTextBlockIfNeeded (ref TextBlock text, WpfCanvas linesPanel, WpfSize charSize)
+        {
+            if (text == null)
+                return;
+            text.Width = text.Text.Length * charSize.Width;
+            linesPanel.Children.Add(text);
+            text = null;
         }
 
         protected WpfCanvas AddDocumentPage (FixedDocument document, IConsoleBufferSource buffer, WpfSize charSize)

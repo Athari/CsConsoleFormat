@@ -4,11 +4,11 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public class FixedDocumentRenderTarget : DocumentRenderTargetBase
+    public class FlowDocumentRenderTarget : DocumentRenderTargetBase
     {
-        public FixedDocument Document { get; }
+        public FlowDocument Document { get; }
 
-        public FixedDocumentRenderTarget ([NotNull] FixedDocument document)
+        public FlowDocumentRenderTarget ([NotNull] FlowDocument document)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public override void Render (IConsoleBufferSource buffer)
         {
-            RenderToFixedDocument(buffer, Document);
+            RenderToFlowDocument(buffer, Document);
         }
     }
 }

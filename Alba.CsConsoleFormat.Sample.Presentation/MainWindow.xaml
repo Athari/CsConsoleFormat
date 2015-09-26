@@ -32,7 +32,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <DocumentViewer x:Name="dvwFixed" Grid.Column="0" Background="White"/>
-        <FlowDocumentScrollViewer x:Name="dvwFlow" Grid.Column="1"/>
+        <FlowDocumentReader x:Name="dvwFlow" Grid.Column="1"/>
         <controls:ConsoleView x:Name="cvwConsole" Grid.Column="2" ConsoleWidth="20" FontSize="16"/>
     </Grid>
 </Window>
