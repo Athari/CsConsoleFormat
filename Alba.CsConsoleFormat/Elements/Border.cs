@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
@@ -10,7 +12,8 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? ShadowColor { get; set; }
 
         [ValueProvider (ValueProviders.ColorMaps)]
-        public ConsoleColor[] ShadowColorMap { get; set; }
+        [SuppressMessage ("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Designed to be assigned one of predefined read-only collections.")]
+        public IList<ConsoleColor> ShadowColorMap { get; set; }
 
         public LineThickness Stroke { get; set; }
 
@@ -39,6 +42,9 @@ namespace Alba.CsConsoleFormat
 
         public override void Render (ConsoleBuffer buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
             Rect renderRectWithoutShadow = new Rect(RenderSize).Deflate(Thickness.Max(Shadow, new Thickness(0)));
 
             //base.Render(buffer);

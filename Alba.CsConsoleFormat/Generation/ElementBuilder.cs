@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Generation
@@ -18,6 +19,7 @@ namespace Alba.CsConsoleFormat.Generation
         Element IElementBuilder.Element => Element;
         Type IElementBuilder.ElementType => typeof(T);
 
-        public static implicit operator T (ElementBuilder<T> @this) => @this.Element;
+        [SuppressMessage ("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates", Justification = "Constructor and Element property are enough.")]
+        public static implicit operator T (ElementBuilder<T> @this) => @this?.Element;
     }
 }

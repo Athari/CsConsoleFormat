@@ -48,6 +48,11 @@ namespace Alba.CsConsoleFormat.Markup
 
         protected override object ConvertMethod (MethodInfo method, object target)
         {
+            if (method == null)
+                throw new ArgumentNullException(nameof(method));
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
             ConverterDelegate func;
             if (!_converterFunctions.Value.TryGetValue(method, out func)) {
                 ParameterInfo[] parameters = method.GetParameters();

@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat.Markup
         protected GetExtensionBase () : this(null)
         {}
 
-        public override sealed object ProvideValue (IServiceProvider provider)
+        public override sealed object ProvideValue (IServiceProvider serviceProvider)
         {
             //var xamlSchemaContextProvider = provider.GetService<IXamlSchemaContextProvider>();
             //var xamlTypeResolver = provider.GetService<IXamlTypeResolver>();
@@ -33,23 +33,23 @@ namespace Alba.CsConsoleFormat.Markup
             //var ambientProvider = provider.GetService<IAmbientProvider>();
 
             if (Element != null) {
-                var nameResolver = provider.GetService<IXamlNameResolver>();
+                var nameResolver = serviceProvider.GetService<IXamlNameResolver>();
                 object element = nameResolver.Resolve(Element);
                 if (element != null)
                     Source = element;
                 else if (nameResolver.IsFixupTokenAvailable)
                     return nameResolver.GetFixupToken(new[] { Element });
                 else {
-                    var lineInfo = provider.GetService<IXamlLineInfo>();
+                    var lineInfo = serviceProvider.GetService<IXamlLineInfo>();
                     throw new InvalidOperationException($"Element '{Element}' not found ({lineInfo.LineNumber}:{lineInfo.LinePosition}).");
                 }
             }
 
-            var targetProvider = provider.GetService<IProvideValueTarget>();
+            var targetProvider = serviceProvider.GetService<IProvideValueTarget>();
             var obj = targetProvider.TargetObject as BindableObject;
             var prop = (PropertyInfo)targetProvider.TargetProperty;
 
-            return ProvideExpression(provider, obj, prop);
+            return ProvideExpression(serviceProvider, obj, prop);
         }
 
         protected abstract object ProvideExpression (IServiceProvider provider, BindableObject obj, PropertyInfo prop);

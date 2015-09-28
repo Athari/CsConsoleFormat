@@ -114,23 +114,23 @@ namespace Alba.CsConsoleFormat
         public bool IntersectsVerticalLine (int x) => X <= x && x < Right;
         public bool IntersectsWith (Rect rect) => Left <= rect.Right && Right >= rect.Left && Top <= rect.Bottom && Bottom >= rect.Top;
 
-        public Rect Deflate (Thickness th, bool throwOnError = false) =>
-            new Rect(Left + th.Left, Top + th.Top, Width - th.Left - th.Right, Height - th.Top - th.Bottom, throwOnError);
+        public Rect Deflate (Thickness by, bool throwOnError = false) =>
+            new Rect(Left + by.Left, Top + by.Top, Width - by.Left - by.Right, Height - by.Top - by.Bottom, throwOnError);
 
         public Rect Deflate (Size size, bool throwOnError = false) =>
             new Rect(Left + size.Width, Top + size.Height, Width - size.Width * 2, Height - size.Height * 2, throwOnError);
 
-        public Rect Inflate (Thickness th, bool throwOnError = false) =>
-            new Rect(Left - th.Left, Top - th.Top, Width + th.Left + th.Right, Height + th.Top + th.Bottom, throwOnError);
+        public Rect Inflate (Thickness by, bool throwOnError = false) =>
+            new Rect(Left - by.Left, Top - by.Top, Width + by.Left + by.Right, Height + by.Top + by.Bottom, throwOnError);
 
-        public Rect Inflate (Size size, bool throwOnError = false) =>
-            new Rect(Left - size.Width, Top - size.Height, Width + size.Width * 2, Height + size.Height * 2, throwOnError);
+        public Rect Inflate (Size by, bool throwOnError = false) =>
+            new Rect(Left - by.Width, Top - by.Height, Width + by.Width * 2, Height + by.Height * 2, throwOnError);
 
         public Rect Intersect (Rect rect) =>
             FromBounds(Math.Max(Left, rect.Left), Math.Max(Top, rect.Top), Math.Min(Right, rect.Right), Math.Min(Bottom, rect.Bottom), false);
 
-        public Rect Offset (Vector offset) =>
-            new Rect(X + offset.X, Y + offset.Y, Width, Height);
+        public Rect Offset (Vector by) =>
+            new Rect(X + by.X, Y + by.Y, Width, Height);
 
         public bool Equals (Rect other) => X == other.X && Y == other.Y && Width == other.Width && Height == other.Height;
         public override bool Equals (object obj) => obj is Rect && Equals((Rect)obj);

@@ -70,6 +70,7 @@
     <Compile Include="Core\ValueProviders.cs" />
     <Compile Include="Core\Vector.cs" />
     <Compile Include="Elements\Base\BindableObject.cs" />
+    <Compile Include="Elements\Base\BindableObjectExts.cs" />
     <Compile Include="Elements\Base\BlockElement.cs" />
     <Compile Include="Elements\Base\ContainerElement.cs" />
     <Compile Include="Elements\Base\Element.cs" />
@@ -147,7 +148,11 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\Analysis\CustomDictionary.xml">
+      <Link>Properties\CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

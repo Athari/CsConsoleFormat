@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Alba.CsConsoleFormat
 {
     [Flags]
+    [SuppressMessage ("Microsoft.Naming", "CA1714:FlagsEnumsShouldHavePluralNames", Justification = "Enumeration represents options of a single character through extension methods.")]
     public enum LineChar
     {
         None = 0,

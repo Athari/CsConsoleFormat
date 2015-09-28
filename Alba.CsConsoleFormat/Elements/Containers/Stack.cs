@@ -4,6 +4,7 @@ using Alba.CsConsoleFormat.Framework.Collections;
 
 namespace Alba.CsConsoleFormat
 {
+    [SuppressMessage ("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "The name is fine, I like it.")]
     public class Stack : ContainerElement
     {
         public Orientation Orientation { get; set; }

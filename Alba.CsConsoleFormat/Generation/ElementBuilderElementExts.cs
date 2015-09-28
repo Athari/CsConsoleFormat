@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Alba.CsConsoleFormat.Markup;
 
@@ -7,6 +8,7 @@ namespace Alba.CsConsoleFormat.Generation
 {
     public static class ElementBuilderElementExts
     {
+        [SuppressMessage ("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This method is for advanced cases.")]
         public static ElementBuilder<T> Name<T> (this ElementBuilder<T> @this, out T element)
             where T : Element, new()
         {

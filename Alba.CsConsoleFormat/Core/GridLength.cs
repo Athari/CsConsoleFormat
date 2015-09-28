@@ -30,5 +30,8 @@ namespace Alba.CsConsoleFormat
         public override int GetHashCode () => Value.GetHashCode() ^ UnitType.GetHashCode();
 
         public override string ToString () => GridLengthConverter.ToString(this);
+
+        public static bool operator == (GridLength left, GridLength right) => left.Equals(right);
+        public static bool operator != (GridLength left, GridLength right) => !left.Equals(right);
     }
 }

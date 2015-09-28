@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
 {
     internal static class DynamicCaller
     {
+        [SuppressMessage ("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used for nameof().")]
         private static readonly Action Delegate = null;
 
         public static TDelegate Call<TDelegate> (string memberName, object context = null, Type[] genericArgs = null)

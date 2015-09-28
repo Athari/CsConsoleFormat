@@ -14,21 +14,21 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int?> BottomProperty = RegisterAttached(() => BottomProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetLeft ([NotNull] BlockElement el) => el.GetValue(LeftProperty);
+        public static int? GetLeft ([NotNull] BlockElement @this) => @this.GetValueSafe(LeftProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetTop ([NotNull] BlockElement el) => el.GetValue(TopProperty);
+        public static int? GetTop ([NotNull] BlockElement @this) => @this.GetValueSafe(TopProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetRight ([NotNull] BlockElement el) => el.GetValue(RightProperty);
+        public static int? GetRight ([NotNull] BlockElement @this) => @this.GetValueSafe(RightProperty);
 
         [TypeConverter (typeof(LengthConverter))]
-        public static int? GetBottom ([NotNull] BlockElement el) => el.GetValue(BottomProperty);
+        public static int? GetBottom ([NotNull] BlockElement @this) => @this.GetValueSafe(BottomProperty);
 
-        public static void SetLeft ([NotNull] BlockElement el, int? value) => el.SetValue(LeftProperty, value);
-        public static void SetTop ([NotNull] BlockElement el, int? value) => el.SetValue(TopProperty, value);
-        public static void SetRight ([NotNull] BlockElement el, int? value) => el.SetValue(RightProperty, value);
-        public static void SetBottom ([NotNull] BlockElement el, int? value) => el.SetValue(BottomProperty, value);
+        public static void SetLeft ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(LeftProperty, value);
+        public static void SetTop ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(TopProperty, value);
+        public static void SetRight ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(RightProperty, value);
+        public static void SetBottom ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)

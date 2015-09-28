@@ -9,15 +9,15 @@ namespace Alba.CsConsoleFormat
         public static readonly ILineCharRenderer Box = new BoxLineCharRenderer();
         public static readonly ILineCharRenderer None = new CharLineCharRenderer('\0');
         public static readonly ILineCharRenderer Simple = new SimpleLineCharRenderer();
-        public static ILineCharRenderer Char (char chr) => new CharLineCharRenderer(chr);
+        public static ILineCharRenderer Char (char c) => new CharLineCharRenderer(c);
 
         private abstract class LineCharRendererBase : ILineCharRenderer
         {
-            public abstract char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom);
+            public abstract char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom);
 
-            protected static Exception GetCharException (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            protected static Exception GetCharException (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
-                return new NotSupportedException($"Line joint not supported: {chr} ({chrLeft} {chrTop} {chrRight} {chrBottom}).");
+                return new NotSupportedException($"Line joint not supported: {charCenter} ({charLeft} {charTop} {charRight} {charBottom}).");
             }
         }
 
@@ -34,52 +34,52 @@ namespace Alba.CsConsoleFormat
             private static readonly char[] MapBottomLeft = { '┐', '╕', '╖', '╗' };
             private static readonly char[] MapBottomRight = { '┌', '╒', '╓', '╔' };
 
-            [SuppressMessage ("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            [SuppressMessage ("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Logic is straightforward, complexity comes from inability to iterate over variables.")]
+            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
-                if (chr.IsEmpty())
+                if (charCenter.IsEmpty())
                     return '\0';
                 // 0 connections
-                if (chrLeft.IsNone() && chrTop.IsNone() && chrRight.IsNone() && chrBottom.IsNone())
-                    return GetSimpleChar(chr, MapSimple);
+                if (charLeft.IsNone() && charTop.IsNone() && charRight.IsNone() && charBottom.IsNone())
+                    return GetSimpleChar(charCenter, MapSimple);
 
-                bool connectLeft = chr.IsHorizontal() && chrLeft.IsHorizontal();
-                bool connectTop = chr.IsVertical() && chrTop.IsVertical();
-                bool connectRight = chr.IsHorizontal() && chrRight.IsHorizontal();
-                bool connectBottom = chr.IsVertical() && chrBottom.IsVertical();
+                bool connectLeft = charCenter.IsHorizontal() && charLeft.IsHorizontal();
+                bool connectTop = charCenter.IsVertical() && charTop.IsVertical();
+                bool connectRight = charCenter.IsHorizontal() && charRight.IsHorizontal();
+                bool connectBottom = charCenter.IsVertical() && charBottom.IsVertical();
                 // 1 connection
                 if ((connectLeft ? 1 : 0) + (connectTop ? 1 : 0) + (connectRight ? 1 : 0) + (connectBottom ? 1 : 0) <= 1)
-                    return GetSimpleChar(chr, MapSimple);
+                    return GetSimpleChar(charCenter, MapSimple);
                 // 4 connections
                 if (connectLeft && connectTop && connectRight && connectBottom)
-                    return GetChar(chr, MapLeftTopRightBottom);
+                    return GetChar(charCenter, MapLeftTopRightBottom);
                 // 3 connections
                 if (connectLeft && connectTop && connectRight)
-                    return GetChar(chr, MapLeftTopRight);
+                    return GetChar(charCenter, MapLeftTopRight);
                 if (connectLeft && connectTop && connectBottom)
-                    return GetChar(chr, MapLeftTopBottom);
+                    return GetChar(charCenter, MapLeftTopBottom);
                 if (connectLeft && connectRight && connectBottom)
-                    return GetChar(chr, MapLeftRightBottom);
+                    return GetChar(charCenter, MapLeftRightBottom);
                 if (connectTop && connectRight && connectBottom)
-                    return GetChar(chr, MapTopRightBottom);
+                    return GetChar(charCenter, MapTopRightBottom);
                 // 2 connections
                 if (connectTop && connectLeft)
-                    return GetChar(chr, MapTopLeft);
+                    return GetChar(charCenter, MapTopLeft);
                 if (connectTop && connectRight)
-                    return GetChar(chr, MapTopRight);
+                    return GetChar(charCenter, MapTopRight);
                 if (connectBottom && connectRight)
-                    return GetChar(chr, MapBottomRight);
+                    return GetChar(charCenter, MapBottomRight);
                 if (connectBottom && connectLeft)
-                    return GetChar(chr, MapBottomLeft);
+                    return GetChar(charCenter, MapBottomLeft);
                 if ((connectLeft && connectRight) || (connectTop && connectBottom))
-                    return GetSimpleChar(chr, MapSimple);
-                throw GetCharException(chr, chrLeft, chrTop, chrRight, chrBottom);
+                    return GetSimpleChar(charCenter, MapSimple);
+                throw GetCharException(charCenter, charLeft, charTop, charRight, charBottom);
             }
 
-            private static char GetSimpleChar (LineChar chr, char[] map)
+            private static char GetSimpleChar (LineChar charCenter, char[] map)
             {
                 Debug.Assert(map.Length == 8);
-                switch (chr) {
+                switch (charCenter) {
                     case LineChar.Horizontal:
                         return map[0];
                     case LineChar.Horizontal | LineChar.HorizontalWide:
@@ -97,53 +97,53 @@ namespace Alba.CsConsoleFormat
                     case LineChar.Horizontal | LineChar.Vertical | LineChar.HorizontalWide | LineChar.VerticalWide:
                         return map[7];
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(chr));
+                        throw new ArgumentOutOfRangeException(nameof(charCenter));
                 }
             }
 
-            private static char GetChar (LineChar chr, char[] map)
+            private static char GetChar (LineChar charCenter, char[] map)
             {
                 Debug.Assert(map.Length == 4);
-                if (!chr.IsHorizontalWide() && !chr.IsVerticalWide())
+                if (!charCenter.IsHorizontalWide() && !charCenter.IsVerticalWide())
                     return map[0];
-                if (chr.IsHorizontalWide() && !chr.IsVerticalWide())
+                if (charCenter.IsHorizontalWide() && !charCenter.IsVerticalWide())
                     return map[1];
-                if (!chr.IsHorizontalWide() && chr.IsVerticalWide())
+                if (!charCenter.IsHorizontalWide() && charCenter.IsVerticalWide())
                     return map[2];
-                if (chr.IsHorizontalWide() && chr.IsVerticalWide())
+                if (charCenter.IsHorizontalWide() && charCenter.IsVerticalWide())
                     return map[3];
-                throw new ArgumentOutOfRangeException(nameof(chr));
+                throw new ArgumentOutOfRangeException(nameof(charCenter));
             }
         }
 
         private class SimpleLineCharRenderer : LineCharRendererBase
         {
-            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
-                if (chr.IsEmpty())
+                if (charCenter.IsEmpty())
                     return '\0';
-                if (chr.IsHorizontal() && chr.IsVertical())
+                if (charCenter.IsHorizontal() && charCenter.IsVertical())
                     return '+';
-                if (chr.IsHorizontal())
-                    return chr.IsHorizontalWide() ? '=' : '-';
-                if (chr.IsVertical())
+                if (charCenter.IsHorizontal())
+                    return charCenter.IsHorizontalWide() ? '=' : '-';
+                if (charCenter.IsVertical())
                     return '|';
-                throw GetCharException(chr, chrLeft, chrTop, chrRight, chrBottom);
+                throw GetCharException(charCenter, charLeft, charTop, charRight, charBottom);
             }
         }
 
         private class CharLineCharRenderer : LineCharRendererBase
         {
-            private readonly char _chr;
+            private readonly char _c;
 
-            public CharLineCharRenderer (char chr)
+            public CharLineCharRenderer (char c)
             {
-                _chr = chr;
+                _c = c;
             }
 
-            public override char GetChar (LineChar chr, LineChar chrLeft, LineChar chrTop, LineChar chrRight, LineChar chrBottom)
+            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
-                return _chr;
+                return _c;
             }
         }
     }

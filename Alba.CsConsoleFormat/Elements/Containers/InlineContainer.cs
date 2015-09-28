@@ -103,7 +103,7 @@ namespace Alba.CsConsoleFormat
                 _wrapPos = -1;
             }
 
-            [UsedImplicitly]
+            [UsedImplicitly, SuppressMessage ("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
             private IEnumerable<object> DebugLines => _lines.Select(l => new {
                 text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
                 len = GetLineLength(l),
@@ -347,7 +347,7 @@ namespace Alba.CsConsoleFormat
                     throw new InvalidOperationException("Push and Pop calls during inline generation must be balanced.");
             }
 
-            [SuppressMessage ("ReSharper", "PossibleInvalidOperationException", Justification = "Value is guaranteed not be not null.")]
+            [SuppressMessage ("ReSharper", "PossibleInvalidOperationException", Justification = "Initial segment is assigned effective values in the constructor which are not null.")]
             private void AddFormattingSegment ()
             {
                 InlineSegment lastSegment = Segments.LastOrDefault();

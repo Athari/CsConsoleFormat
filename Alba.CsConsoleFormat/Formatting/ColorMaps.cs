@@ -1,33 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using static System.ConsoleColor;
 
-// ReSharper disable RedundantExplicitArraySize
 namespace Alba.CsConsoleFormat
 {
-    using C = ConsoleColor;
-
+    [SuppressMessage ("ReSharper", "RedundantExplicitArraySize", Justification = "Provides validation of array size.")]
     public static class ColorMaps
     {
         internal const int ConsoleColorCount = 16;
 
-        public static readonly C[] Dark = new C[ConsoleColorCount] {
-            C.Black, C.DarkBlue, C.DarkGreen, C.DarkCyan, C.DarkRed, C.DarkMagenta, C.DarkYellow, C.DarkGray,
-            C.Black, C.DarkBlue, C.DarkGreen, C.DarkCyan, C.DarkRed, C.DarkMagenta, C.DarkYellow, C.Gray,
-        };
-        public static readonly C[] Darkest = new C[ConsoleColorCount] {
-            C.Black, C.Black, C.Black, C.Black, C.Black, C.Black, C.Black, C.DarkGray,
-            C.Black, C.DarkBlue, C.DarkGreen, C.DarkCyan, C.DarkRed, C.DarkMagenta, C.DarkYellow, C.Gray,
-        };
-        public static readonly C[] Light = new C[ConsoleColorCount] {
-            C.DarkGray, C.Blue, C.Green, C.Cyan, C.Red, C.Magenta, C.Yellow, C.White,
-            C.Gray, C.Blue, C.Green, C.Cyan, C.Red, C.Magenta, C.Yellow, C.White,
-        };
-        public static readonly C[] Lightest = new C[ConsoleColorCount] {
-            C.DarkGray, C.Blue, C.Green, C.Cyan, C.Red, C.Magenta, C.Yellow, C.White,
-            C.Gray, C.White, C.White, C.White, C.White, C.White, C.White, C.White,
-        };
-        public static readonly C[] Invert = new C[ConsoleColorCount] {
-            C.White, C.DarkYellow, C.DarkMagenta, C.DarkRed, C.DarkCyan, C.DarkGreen, C.DarkBlue, C.DarkGray,
-            C.Green, C.Yellow, C.Magenta, C.Red, C.Cyan, C.Green, C.Blue, C.Black,
-        };
+        public static readonly IList<ConsoleColor> Dark = Array.AsReadOnly(new ConsoleColor[ConsoleColorCount] {
+            Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, DarkGray,
+            Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray,
+        });
+        public static readonly IList<ConsoleColor> Darkest = Array.AsReadOnly(new ConsoleColor[ConsoleColorCount] {
+            Black, Black, Black, Black, Black, Black, Black, DarkGray,
+            Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray,
+        });
+        public static readonly IList<ConsoleColor> Light = Array.AsReadOnly(new ConsoleColor[ConsoleColorCount] {
+            DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White,
+            Gray, Blue, Green, Cyan, Red, Magenta, Yellow, White,
+        });
+        public static readonly IList<ConsoleColor> Lightest = Array.AsReadOnly(new ConsoleColor[ConsoleColorCount] {
+            DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White,
+            Gray, White, White, White, White, White, White, White,
+        });
+        public static readonly IList<ConsoleColor> Invert = Array.AsReadOnly(new ConsoleColor[ConsoleColorCount] {
+            White, DarkYellow, DarkMagenta, DarkRed, DarkCyan, DarkGreen, DarkBlue, DarkGray,
+            Green, Yellow, Magenta, Red, Cyan, Green, Blue, Black,
+        });
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Generation
@@ -34,7 +35,7 @@ namespace Alba.CsConsoleFormat.Generation
         }
 
         public static ElementBuilder<T> Shadow<T> (this ElementBuilder<T> @this, Thickness shadow, ConsoleColor? shadowColor = null,
-            [ValueProvider (ValueProviders.ColorMaps)] ConsoleColor[] shadowColorMap = null)
+            [ValueProvider (ValueProviders.ColorMaps)] IList<ConsoleColor> shadowColorMap = null)
             where T : Border, new()
         {
             @this.Element.Shadow = shadow;

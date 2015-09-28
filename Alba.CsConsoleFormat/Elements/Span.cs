@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Alba.CsConsoleFormat
 {
@@ -19,6 +20,9 @@ namespace Alba.CsConsoleFormat
 
         public override void GenerateSequence (IInlineSequence sequence)
         {
+            if (sequence == null)
+                throw new ArgumentNullException(nameof(sequence));
+
             if (Color != null)
                 sequence.PushColor(Color.Value);
             if (BgColor != null)

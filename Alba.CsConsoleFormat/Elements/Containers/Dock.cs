@@ -11,8 +11,8 @@ namespace Alba.CsConsoleFormat
 
         public bool LastChildFill { get; set; } = true;
 
-        public static DockTo GetTo ([NotNull] BlockElement el) => el.GetValue(ToProperty);
-        public static void SetTo ([NotNull] BlockElement el, DockTo value) => el.SetValue(ToProperty, value);
+        public static DockTo GetTo ([NotNull] BlockElement @this) => @this.GetValueSafe(ToProperty);
+        public static void SetTo ([NotNull] BlockElement @this, DockTo value) => @this.SetValueSafe(ToProperty, value);
 
         [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride (Size availableSize)

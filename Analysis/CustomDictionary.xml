@@ -1,0 +1,32 @@
+<Dictionary
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="CustomDictionary.xsd">
+  <Words>
+    <Recognized>
+      <!-- Single character words: X and Y coordinates, C for char. -->
+      <Word>C</Word>
+      <Word>X</Word>
+      <Word>Y</Word>
+      <!-- Element names. -->
+      <Word>Br</Word>
+      <Word>Div</Word>
+      <!-- Method and type names used in exception messages. -->
+      <Word>LineThickness</Word>
+      <Word>MeasureOverride</Word>
+      <Word>StringWriter</Word>
+      <!-- My stupid prefixes and suffixes. -->
+      <Word>Cs</Word>
+      <Word>Bg</Word>
+      <Word>Exts</Word>
+    </Recognized>
+    <DiscreteExceptions>
+      <!-- Actual exceptions. -->
+      <Term>TopLine</Term>
+      <Term>LightShade</Term>
+      <!-- Method and type names used in exception messages. -->
+      <Term>LineThickness</Term>
+      <Term>MeasureOverride</Term>
+      <Term>StringWriter</Term>
+    </DiscreteExceptions>
+  </Words>
+</Dictionary>

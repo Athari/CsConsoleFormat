@@ -41,6 +41,10 @@ namespace Alba.CsConsoleFormat
 
         protected override void RenderOverride (IConsoleBufferSource buffer)
         {
+            ThrowIfDisposed();
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
             ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
             ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
 

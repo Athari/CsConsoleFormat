@@ -108,7 +108,7 @@ namespace Alba.CsConsoleFormat
 
             Size desiredSize = MeasureOverride(constrainedAvailableSize);
             if (desiredSize.IsInfinite)
-                throw new InvalidOperationException("MeasureOverride must return finite size.");
+                throw new InvalidOperationException($"{nameof(MeasureOverride)} must return finite size.");
 
             // Maximize desiredSize with user provided min size.
             desiredSize = Size.Max(desiredSize, mm.MinSize);

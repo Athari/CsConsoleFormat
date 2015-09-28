@@ -19,15 +19,15 @@ namespace Alba.CsConsoleFormat.Markup
         public ResExtension () : this(null)
         {}
 
-        public override object ProvideValue (IServiceProvider provider)
+        public override object ProvideValue (IServiceProvider serviceProvider)
         {
-            var rootObjectProvider = provider.GetService<IRootObjectProvider>();
+            var rootObjectProvider = serviceProvider.GetService<IRootObjectProvider>();
             var doc = (Document)rootObjectProvider.RootObject;
             object value;
             if (doc.Resources.TryGetValue(Key, out value))
                 return value;
 
-            var lineInfo = provider.GetService<IXamlLineInfo>();
+            var lineInfo = serviceProvider.GetService<IXamlLineInfo>();
             throw new InvalidOperationException($"Resource '{Key}' not found ({lineInfo.LineNumber}:{lineInfo.LinePosition}).");
         }
     }

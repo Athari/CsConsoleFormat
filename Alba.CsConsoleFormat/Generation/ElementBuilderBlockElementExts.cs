@@ -34,10 +34,10 @@ namespace Alba.CsConsoleFormat.Generation
             return @this;
         }
 
-        public static ElementBuilder<T> Align<T> (this ElementBuilder<T> @this, VerticalAlignment valign)
+        public static ElementBuilder<T> Align<T> (this ElementBuilder<T> @this, VerticalAlignment vAlign)
             where T : BlockElement, new()
         {
-            @this.Element.VAlign = valign;
+            @this.Element.VAlign = vAlign;
             return @this;
         }
 

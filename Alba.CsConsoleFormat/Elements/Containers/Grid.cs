@@ -41,16 +41,16 @@ namespace Alba.CsConsoleFormat
             set { SetStroke(this, value); }
         }
 
-        public static int GetColumn ([NotNull] BlockElement el) => el.GetValue(ColumnProperty);
-        public static int GetRow ([NotNull] BlockElement el) => el.GetValue(RowProperty);
-        public static int GetColumnSpan ([NotNull] BlockElement el) => el.GetValue(ColumnSpanProperty);
-        public static int GetRowSpan ([NotNull] BlockElement el) => el.GetValue(RowSpanProperty);
-        public static LineThickness GetStroke ([NotNull] BlockElement el) => el.GetValue(StrokeProperty);
-        public static void SetColumn ([NotNull] BlockElement el, int value) => el.SetValue(ColumnProperty, value);
-        public static void SetRow ([NotNull] BlockElement el, int value) => el.SetValue(RowProperty, value);
-        public static void SetColumnSpan ([NotNull] BlockElement el, int value) => el.SetValue(ColumnSpanProperty, value);
-        public static void SetRowSpan ([NotNull] BlockElement el, int value) => el.SetValue(RowSpanProperty, value);
-        public static void SetStroke ([NotNull] BlockElement el, LineThickness value) => el.SetValue(StrokeProperty, value);
+        public static int GetColumn ([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnProperty);
+        public static int GetRow ([NotNull] BlockElement @this) => @this.GetValueSafe(RowProperty);
+        public static int GetColumnSpan ([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnSpanProperty);
+        public static int GetRowSpan ([NotNull] BlockElement @this) => @this.GetValueSafe(RowSpanProperty);
+        public static LineThickness GetStroke ([NotNull] BlockElement @this) => @this.GetValueSafe(StrokeProperty);
+        public static void SetColumn ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnProperty, value);
+        public static void SetRow ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowProperty, value);
+        public static void SetColumnSpan ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnSpanProperty, value);
+        public static void SetRowSpan ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowSpanProperty, value);
+        public static void SetStroke ([NotNull] BlockElement @this, LineThickness value) => @this.SetValueSafe(StrokeProperty, value);
 
         protected override void SetVisualChildren (IList<Element> visualChildren)
         {

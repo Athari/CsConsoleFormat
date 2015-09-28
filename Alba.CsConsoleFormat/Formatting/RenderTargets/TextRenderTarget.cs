@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -14,6 +15,10 @@ namespace Alba.CsConsoleFormat
 
         protected override void RenderOverride (IConsoleBufferSource buffer)
         {
+            ThrowIfDisposed();
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
                 for (int ix = 0; ix < buffer.Width; ix++) {

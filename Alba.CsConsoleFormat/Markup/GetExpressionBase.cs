@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Framework.Reflection;
+using JetBrains.Annotations;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace Alba.CsConsoleFormat.Markup
@@ -53,7 +54,7 @@ namespace Alba.CsConsoleFormat.Markup
             return value;
         }
 
-        protected virtual object ConvertMethod (MethodInfo method, object target)
+        protected virtual object ConvertMethod ([NotNull] MethodInfo method, [NotNull] object target)
         {
             throw new NotSupportedException();
         }
