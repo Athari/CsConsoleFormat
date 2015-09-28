@@ -3,6 +3,9 @@
     xsi:noNamespaceSchemaLocation="CustomDictionary.xsd">
   <Words>
     <Recognized>
+      <!-- Actual new words. -->
+      <Word>Monospace</Word>
+      <Word>XPS</Word>
       <!-- Single character words: X and Y coordinates, C for char. -->
       <Word>C</Word>
       <Word>X</Word>

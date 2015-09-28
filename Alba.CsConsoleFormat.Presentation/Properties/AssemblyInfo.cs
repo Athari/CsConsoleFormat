@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Markup;
@@ -13,6 +14,8 @@ using System.Windows.Markup;
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
+[assembly: Guid("cd3fe971-fd37-49c7-a6fc-fdc3a478cfcd")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 

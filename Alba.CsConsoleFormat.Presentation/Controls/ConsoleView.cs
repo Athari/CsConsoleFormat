@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -21,6 +22,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
         public static readonly DependencyProperty DocumentSourceProperty = DependencyProperty.Register(
             nameof(DocumentSource), typeof(Uri), typeof(ConsoleView), new PropertyMetadata(DocumentPropertyChanged));
 
+        [SuppressMessage ("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Properties must be overriden before the type is used.")]
         static ConsoleView ()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(typeof(ConsoleView)));

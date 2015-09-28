@@ -39,9 +39,10 @@ namespace Alba.CsConsoleFormat.Presentation
 
         private void SaveDocument (IDocumentPaginatorSource document)
         {
-            using (Package package = Package.Open(_output, FileMode.Create, FileAccess.ReadWrite))
-            using (XpsDocument xps = new XpsDocument(package, CompressionOption.Maximum)) {
-                var serializer = new XpsSerializationManager(new XpsPackagingPolicy(xps), false);
+            using (var package = Package.Open(_output, FileMode.Create, FileAccess.ReadWrite))
+            using (var xps = new XpsDocument(package, CompressionOption.Maximum))
+            using (var policy = new XpsPackagingPolicy(xps))
+            using (var serializer = new XpsSerializationManager(policy, false)) {
                 //document.DocumentPaginator.PageSize = new System.Windows.Size(100, 100);
                 serializer.SaveAsXaml(document.DocumentPaginator);
                 serializer.Commit();
