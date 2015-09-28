@@ -269,7 +269,7 @@ namespace Alba.CsConsoleFormat
             ApplyColorMap(rect.X, rect.Y, rect.Width, rect.Width, colorMap, processChar);
         }
 
-        private bool ClipHorizontalLine (int y, ref int x1, ref int x2)
+        internal bool ClipHorizontalLine (int y, ref int x1, ref int x2)
         {
             if (!Clip.IntersectsHorizontalLine(y))
                 return false;
@@ -278,7 +278,7 @@ namespace Alba.CsConsoleFormat
             return true;
         }
 
-        private bool ClipVerticalLine (int x, ref int y1, ref int y2)
+        internal bool ClipVerticalLine (int x, ref int y1, ref int y2)
         {
             if (!Clip.IntersectsVerticalLine(x))
                 return false;
@@ -287,7 +287,7 @@ namespace Alba.CsConsoleFormat
             return true;
         }
 
-        private bool ClipRectangle (ref int x1, ref int y1, ref int x2, ref int y2)
+        internal bool ClipRectangle (ref int x1, ref int y1, ref int x2, ref int y2)
         {
             x1 = Math.Max(x1, Clip.X);
             x2 = Math.Min(x2, Clip.Right);
@@ -296,19 +296,19 @@ namespace Alba.CsConsoleFormat
             return x1 < x2 && y1 < y2;
         }
 
-        private ConsoleBuffer OffsetX (ref int x)
+        internal ConsoleBuffer OffsetX (ref int x)
         {
             x += Offset.X;
             return this;
         }
 
-        private ConsoleBuffer OffsetY (ref int y)
+        internal ConsoleBuffer OffsetY (ref int y)
         {
             y += Offset.Y;
             return this;
         }
 
-        private ConsoleChar[] GetLine (int y)
+        internal ConsoleChar[] GetLine (int y)
         {
             while (_chars.Count <= y)
                 _chars.Add(new ConsoleChar[Width]);

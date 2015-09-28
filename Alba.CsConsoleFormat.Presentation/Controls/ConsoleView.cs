@@ -34,8 +34,8 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
 
         public object Content
         {
-            private get { return GetValue(ContentProperty); }
-            set { SetValue(ContentPropertyKey, value); }
+            get { return GetValue(ContentProperty); }
+            private set { SetValue(ContentPropertyKey, value); }
         }
 
         public int ConsoleWidth
@@ -96,6 +96,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
                 Content = ex.Message;
                 return;
             }
+            target.Canvas.SnapsToDevicePixels = true;
             Content = target.Canvas;
         }
 

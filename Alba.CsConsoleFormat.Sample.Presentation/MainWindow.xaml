@@ -10,14 +10,15 @@
         TextOptions.TextFormattingMode="Display">
     <UniformGrid Columns="2" Rows="2">
         <DocumentViewer x:Name="dvwFixed" Background="White"/>
-        <FlowDocumentReader x:Name="dvwFlow" ViewingMode="Scroll"/>
+        <FlowDocumentReader x:Name="dvwFlow" ViewingMode="Scroll" TextOptions.TextFormattingMode="Ideal"/>
         <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
                 DocumentSource="Sample.xaml"/>
-        <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ap:ConsoleView ConsoleWidth="40" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">
             <a:Document>
                 <a:Div>
                     <a:Span Text="Hello inline XAML world!" Color="Red"/>
                 </a:Div>
+                <a:Image Source="Images/defrag_32.png" BgColor="White" Height="16" Stretch="Fill"/>
                 <a:Span Text="Foo" Color="Yellow" BgColor="DarkYellow"/>
                 <a:Span Text=" "/>
                 <a:Span Text="Bar" Color="Cyan" BgColor="DarkCyan"/>

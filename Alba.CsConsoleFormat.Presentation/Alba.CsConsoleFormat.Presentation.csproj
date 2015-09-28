@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,14 +35,10 @@
   <ItemGroup>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -50,6 +47,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Enums\Stretch.cs" />
+    <Compile Include="Core\Enums\StretchDirection.cs" />
+    <Compile Include="Elements\Image.cs" />
+    <Compile Include="Formatting\ConsoleBufferImageExts.cs" />
     <Compile Include="RenderTargets\FlowDocumentRenderTarget.cs" />
     <Compile Include="RenderTargets\RtfDocumentRenderTarget.cs" />
     <Compile Include="RenderTargets\XpsDocumentRenderTarget.cs" />
@@ -76,6 +77,7 @@
       <Name>Alba.CsConsoleFormat</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,7 +33,9 @@ namespace Alba.CsConsoleFormat
         public static Size Empty => new Size(0, 0);
 
         public bool IsEmpty => Width == 0 || Height == 0;
-        public bool IsInfinite => Width == Infinity || Height == Infinity;
+        public bool IsInfinite => IsHeightInfinite || IsWidthInfinite;
+        public bool IsHeightInfinite => Height == Infinity;
+        public bool IsWidthInfinite => Width == Infinity;
 
         public int Width
         {

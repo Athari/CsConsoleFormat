@@ -19,5 +19,8 @@ using System.Windows.Markup;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
+[assembly: XmlnsPrefix("urn:alba:cs-console-format", "a")]
+[assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat.Presentation")]
+
 [assembly: XmlnsPrefix("urn:alba:cs-console-format:presentation", "ap")]
 [assembly: XmlnsDefinition("urn:alba:cs-console-format:presentation", "Alba.CsConsoleFormat.Presentation.Controls")]
