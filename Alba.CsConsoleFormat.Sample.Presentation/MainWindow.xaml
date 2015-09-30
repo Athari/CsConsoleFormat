@@ -7,10 +7,17 @@
         xmlns:ap="urn:alba:cs-console-format:presentation"
         mc:Ignorable="d"
         Title="Console View" Height="600" Width="800" ResizeMode="CanResizeWithGrip"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Control.Resources>
+        <ap:DocumentConverter x:Key="convFixedDocument" DocumentType="FixedDocument" ConsoleWidth="20" FontSize="16"/>
+        <ap:DocumentConverter x:Key="convFlowDocument" DocumentType="FlowDocument" ConsoleWidth="20" FontSize="16"/>
+    </Control.Resources>
     <UniformGrid Columns="2" Rows="2">
-        <DocumentViewer x:Name="dvwFixed" Background="White"/>
-        <FlowDocumentReader x:Name="dvwFlow" ViewingMode="Scroll" TextOptions.TextFormattingMode="Ideal"/>
+        <DocumentViewer Background="White"
+                Document="{Binding FixedDocument, Converter={StaticResource convFixedDocument}}"/>
+        <FlowDocumentReader ViewingMode="Scroll" TextOptions.TextFormattingMode="Ideal"
+                Document="{Binding FlowDocument, Converter={StaticResource convFlowDocument}}"/>
         <ap:ConsoleView ConsoleWidth="20" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"
                 DocumentSource="Sample.xaml"/>
         <ap:ConsoleView ConsoleWidth="40" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">

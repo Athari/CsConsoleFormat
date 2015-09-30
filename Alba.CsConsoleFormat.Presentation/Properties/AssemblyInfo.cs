@@ -27,3 +27,4 @@ using System.Windows.Markup;
 
 [assembly: XmlnsPrefix("urn:alba:cs-console-format:presentation", "ap")]
 [assembly: XmlnsDefinition("urn:alba:cs-console-format:presentation", "Alba.CsConsoleFormat.Presentation.Controls")]
+[assembly: XmlnsDefinition("urn:alba:cs-console-format:presentation", "Alba.CsConsoleFormat.Presentation.Markup")]

@@ -8,14 +8,14 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public class XpsDocumentRenderTarget : DocumentRenderTargetBase
+    public class XpsRenderTarget : DocumentRenderTargetBase
     {
         private readonly Stream _output;
         private readonly bool _leaveOpen;
 
-        public XpsDocumentType DocumentType { get; set; } = XpsDocumentType.FlowDocument;
+        public PresentationDocumentType DocumentType { get; set; } = PresentationDocumentType.FlowDocument;
 
-        public XpsDocumentRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
+        public XpsRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat.Presentation
         public override void Render (IConsoleBufferSource buffer)
         {
             IDocumentPaginatorSource document;
-            if (DocumentType == XpsDocumentType.FlowDocument) {
+            if (DocumentType == PresentationDocumentType.FlowDocument) {
                 document = new FlowDocument();
                 RenderToFlowDocument(buffer, (FlowDocument)document);
             }

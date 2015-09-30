@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Windows.Documents;
 using Alba.CsConsoleFormat.Generation;
 using Alba.CsConsoleFormat.Presentation;
 using static System.ConsoleColor;
@@ -8,59 +7,47 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
 {
     public partial class MainWindow
     {
+        public Document Document (string world) => new ViewBuilder().CreateDocument(world);
+        public Document FixedDocument => Document("fixed");
+        public Document FlowDocument => Document("flow");
+
         public MainWindow ()
         {
             InitializeComponent();
 
             var renderRect = new Rect(0, 0, 20, Size.Infinity);
 
-            var fixedDoc = new FixedDocument();
-            ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument("fixed"),
-                new FixedDocumentRenderTarget(fixedDoc) { FontSize = 16 },
-                renderRect);
-            dvwFixed.Document = fixedDoc;
-
-            var flowDoc = new FlowDocument();
-            ConsoleRenderer.RenderDocument(
-                new ViewBuilder().CreateDocument("flow"),
-                new FlowDocumentRenderTarget(flowDoc) { FontSize = 16 },
-                renderRect);
-            dvwFlow.Document = flowDoc;
-
             ConsoleRenderer.RenderDocument(
                 new ViewBuilder().CreateDocument("fixed XPS"),
-                new XpsDocumentRenderTarget(File.Create(@"../../Tmp/0a.xps")) { FontSize = 16, DocumentType = XpsDocumentType.FixedDocument },
+                new XpsRenderTarget(File.Create(@"../../Tmp/0a.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FixedDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 new ViewBuilder().CreateDocument("flow XPS"),
-                new XpsDocumentRenderTarget(File.Create(@"../../Tmp/0b.xps")) { FontSize = 16, DocumentType = XpsDocumentType.FlowDocument },
+                new XpsRenderTarget(File.Create(@"../../Tmp/0b.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FlowDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 new ViewBuilder().CreateDocument("RTF"),
-                new RtfDocumentRenderTarget(File.Create(@"../../Tmp/0.rtf")) { FontSize = 16 },
+                new RtfRenderTarget(File.Create(@"../../Tmp/0.rtf")) { FontSize = 16 },
                 renderRect);
-
-            //cvwConsole.Document = new ViewBuilder().CreateDocument();
         }
-    }
 
-    public class ViewBuilder : DocumentBuilder
-    {
-        public Document CreateDocument (string world) =>
-            Create<Document>()
-                .Color(White, Black)
-                .AddChildren(
-                    Create<Div>($"Hello {world} world!").Color(Red),
-                    Create<Div>("Hello world!").Color(Red),
-                    Create<Div>()
-                        .AddChildren(
-                            CreateText("Foo").Color(Yellow, DarkYellow),
-                            " ",
-                            CreateText("Bar").Color(Cyan, DarkCyan)
-                        )
-                );
+        private class ViewBuilder : DocumentBuilder
+        {
+            public Document CreateDocument (string world) =>
+                Create<Document>()
+                    .Color(White, Black)
+                    .AddChildren(
+                        Create<Div>($"Hello {world} world!").Color(Red),
+                        Create<Div>("Hello world!").Color(Red),
+                        Create<Div>()
+                            .AddChildren(
+                                CreateText("Foo").Color(Yellow, DarkYellow),
+                                " ",
+                                CreateText("Bar").Color(Cyan, DarkCyan)
+                            )
+                    );
+        }
     }
 }

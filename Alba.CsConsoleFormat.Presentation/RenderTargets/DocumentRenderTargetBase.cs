@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using static Alba.CsConsoleFormat.Presentation.FontDefaults;
 using WpfCanvas = System.Windows.Controls.Canvas;
 using WpfSize = System.Windows.Size;
 
@@ -31,23 +32,13 @@ namespace Alba.CsConsoleFormat.Presentation
             [ConsoleColor.White] = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
         };
 
-        public Brush Background { get; set; }
+        public Brush Background { get; set; } = DefaultConsoleBackground;
 
-        public FontFamily FontFamily { get; set; }
-        public double FontSize { get; set; }
-        public FontStretch FontStretch { get; set; }
-        public FontStyle FontStyle { get; set; }
-        public FontWeight FontWeight { get; set; }
-
-        protected DocumentRenderTargetBase ()
-        {
-            Background = Brushes.Black;
-            FontFamily = new FontFamily("Consolas");
-            FontSize = 12;
-            FontStretch = FontStretches.Normal;
-            FontStyle = FontStyles.Normal;
-            FontWeight = FontWeights.Normal;
-        }
+        public FontFamily FontFamily { get; set; } = DefaultFontFamily;
+        public double FontSize { get; set; } = DefaultFontSize;
+        public FontStretch FontStretch { get; set; } = DefaultFontStretch;
+        public FontStyle FontStyle { get; set; } = DefaultFontStyle;
+        public FontWeight FontWeight { get; set; } = DefaultFontWeight;
 
         protected WpfSize CharSize
         {

@@ -6,12 +6,12 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public class RtfDocumentRenderTarget : DocumentRenderTargetBase
+    public class RtfRenderTarget : DocumentRenderTargetBase
     {
         private readonly Stream _output;
         private readonly bool _leaveOpen;
 
-        public RtfDocumentRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
+        public RtfRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));

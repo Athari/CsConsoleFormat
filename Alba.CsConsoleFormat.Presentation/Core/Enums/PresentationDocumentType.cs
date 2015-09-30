@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat.Presentation
 {
-    public enum XpsDocumentType
+    public enum PresentationDocumentType
     {
         FixedDocument,
         FlowDocument,

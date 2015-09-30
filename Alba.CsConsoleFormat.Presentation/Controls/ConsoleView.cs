@@ -67,7 +67,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
         private static void DocumentPropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var @this = (ConsoleView)d;
-            if (e.NewValue == null)
+            if (@this.DocumentSource == null)
                 return;
             StreamResourceInfo resourceInfo = Application.GetResourceStream(@this.DocumentSource);
             if (resourceInfo == null)
