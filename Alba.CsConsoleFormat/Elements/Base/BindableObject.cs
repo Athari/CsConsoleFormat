@@ -94,8 +94,7 @@ namespace Alba.CsConsoleFormat
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         void IAttachedPropertyStore.SetProperty (AttachableMemberIdentifier identifier, object value)
         {
-            if (_attachedProperties == null)
-                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+            EnsureAttachedPropertiesCreated();
             _attachedProperties[identifier] = value;
         }
 
@@ -131,8 +130,7 @@ namespace Alba.CsConsoleFormat
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
-            if (_attachedProperties == null)
-                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+            EnsureAttachedPropertiesCreated();
             _attachedProperties[property.Identifier] = value;
         }
 
@@ -141,6 +139,31 @@ namespace Alba.CsConsoleFormat
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
             _attachedProperties?.Remove(property.Identifier);
+        }
+
+        private void EnsureAttachedPropertiesCreated ()
+        {
+            if (_attachedProperties == null)
+                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+        }
+
+        public object this [[NotNull] AttachedProperty property]
+        {
+            get
+            {
+                if (property == null)
+                    throw new ArgumentNullException(nameof(property));
+                object value;
+                return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out value)
+                    ? property.DefaultValueUntyped : value;
+            }
+            set
+            {
+                if (property == null)
+                    throw new ArgumentNullException(nameof(property));
+                EnsureAttachedPropertiesCreated();
+                _attachedProperties[property.Identifier] = value;
+            }
         }
     }
 }

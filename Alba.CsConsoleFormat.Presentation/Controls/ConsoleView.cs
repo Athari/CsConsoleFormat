@@ -92,7 +92,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
                 FontWeight = FontWeight,
             };
             try {
-                ConsoleRenderer.RenderDocument(document, target, new Rect(0, 0, ConsoleWidth, Size.Infinity));
+                ConsoleRenderer.RenderDocument(document, target, new Rect(new Size(ConsoleWidth, Size.Infinity)));
             }
             catch (InvalidOperationException ex) {
                 Content = ex.Message;

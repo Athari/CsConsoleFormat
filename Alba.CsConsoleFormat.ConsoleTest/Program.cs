@@ -81,6 +81,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             ConsoleRenderer.RenderDocument(builtDoc);
             ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0a.html"), new UTF8Encoding(false)));
 
+            Document newedDoc = new ViewBuilder().NewDocument(data);
+            Console.WriteLine("Builder");
+            ConsoleRenderer.RenderDocument(newedDoc);
+            ConsoleRenderer.RenderDocument(newedDoc, new HtmlRenderTarget(File.Create(@"../../Tmp/0b.html"), new UTF8Encoding(false)));
+
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
                 //Clip = new Rect(1, 1, 78, 30),
@@ -251,6 +256,141 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                 .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
                         )
                 );
+        }
+
+        public Document NewDocument (Data data)
+        {
+            List namesList;
+            Grid itemsGrid;
+            var doc = new Document {
+                Color = White,
+                BgColor = Black,
+                Children = {
+                    "Hello world!",
+                    (namesList = new List()),
+                    string.Concat(data.Items.Select(d => d.Name + " ")),
+                    (itemsGrid = new Grid {
+                        Columns = {
+                            new Column { Width = GridLength.Auto },
+                            new Column { Width = GridLength.Auto },
+                            new Column { Width = GridLength.Auto },
+                        },
+                        Children = {
+                            new Cell {
+                                Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
+                                Children = { "Id" }
+                            },
+                            new Cell {
+                                Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
+                                Children = { "Name" }
+                            },
+                            new Cell {
+                                Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
+                                Children = { "Value" }
+                            },
+                        },
+                    }),
+                    new Dock {
+                        Width = 80,
+                        Align = HorizontalAlignment.Left,
+                        Color = Gray,
+                        BgColor = Blue,
+                        Children = {
+                            new Div {
+                                [Dock.ToProperty] = DockTo.Left,
+                                Width = 20,
+                                Margin = new Thickness(1, 1, 0, 1), Padding = new Thickness(1),
+                                Color = Gray, BgColor = DarkBlue, TextWrap = TextWrapping.CharWrap,
+                                Children = {
+                                    new Span { Color = White, Text = "Char wrap\n\n" },
+                                    Data.Replace(data.LoremIpsum, ""),
+                                },
+                            },
+                            new Div {
+                                [Dock.ToProperty] = DockTo.Top,
+                                Height = 10,
+                                Margin = new Thickness(1, 1, 1, 0), Padding = new Thickness(1),
+                                Color = Gray, BgColor = DarkBlue,
+                                Children = {
+                                    new Span { Color = White, Text = "Word wrap with spaces\n\n" },
+                                    Data.Replace(data.LoremIpsum, ""),
+                                },
+                            },
+                            new Div {
+                                [Dock.ToProperty] = DockTo.Right,
+                                Width = 20,
+                                Margin = new Thickness(0, 1, 1, 1), Padding = new Thickness(1),
+                                Color = Gray, BgColor = DarkBlue,
+                                Children = {
+                                    new Span { Color = White, Text = "Word wrap with zero-width spaces\n\n" },
+                                    Data.Replace(data.LoremIpsum, ZeroWidthSpace),
+                                },
+                            },
+                            new Div {
+                                [Dock.ToProperty] = DockTo.Bottom,
+                                Height = 10,
+                                Margin = new Thickness(1, 0, 1, 1), Padding = new Thickness(1),
+                                Color = Gray, BgColor = DarkBlue,
+                                Children = {
+                                    new Span { Color = White, Text = "Word wrap with no-break spaces\n\n" },
+                                    Data.Replace(data.LoremIpsum, NoBreakSpace),
+                                },
+                            },
+                            new Border {
+                                Margin = new Thickness(1), Padding = new Thickness(1),
+                                BgColor = DarkCyan,
+                                Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
+                                Children = {
+                                    new Span { Color = White, Text = "Word wrap with soft hyphens\n\n" },
+                                    Data.Replace(data.LoremIpsum, SoftHyphen),
+                                },
+                            },
+                        },
+                    },
+                    ""
+                },
+            };
+            foreach (DataItem item in data.Items) {
+                namesList.Children.Add(new Div {
+                    Children = { item.Name }
+                });
+            }
+            foreach (DataItem item in data.Items) {
+                itemsGrid.Children.Add(new Cell {
+                    Color = Yellow,
+                    Align = HorizontalAlignment.Right,
+                    Children = { item.Id.ToString() },
+                });
+                itemsGrid.Children.Add(new Cell {
+                    Color = Gray,
+                    Children = { item.Name },
+                });
+                itemsGrid.Children.Add(new Cell {
+                    Color = Gray,
+                    Children = { item.Value },
+                });
+            }
+            return doc;
+            /*      Create<Canvas>()
+                        .Size(width: 80, height: 43).Align(HorizontalAlignment.Left).Color(Gray, Blue)
+                        .AddChildren(
+                            Create<Div>(LoremIpsumCharWrap(data))
+                                .At(left: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue).WrapText(TextWrapping.CharWrap),
+                            Create<Div>(LoremIpsumWordWrapWithSpaces(data))
+                                .At(left: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithZeroWidthSpaces(data))
+                                .At(right: 1, top: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue),
+                            Create<Div>(LoremIpsumWordWrapWithNoBreakSpaces(data))
+                                .At(right: 1, bottom: 1).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkBlue),
+                            Create<Border>(LoremIpsumWordWrapWithSoftHyphens(data))
+                                .At(left: 21, top: 11).Size(width: 38, height: 20).Padding(1)
+                                .Color(bgColor: DarkCyan)
+                                .Shadow(new Thickness(-1, -1, 1, 1)).Stroke(LineThickness.Single)
+                        )*/
         }
 
         private object[] LoremIpsumCharWrap (Data data) => new object[] {
