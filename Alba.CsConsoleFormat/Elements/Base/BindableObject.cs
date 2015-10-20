@@ -34,7 +34,7 @@ namespace Alba.CsConsoleFormat
             if (_getters == null)
                 return;
             foreach (KeyValuePair<PropertyInfo, GetExpressionBase> getter in _getters)
-                getter.Key.SetValue(this, getter.Value.GetValue(this));
+                getter.Key.SetValue(this, getter.Value.GetValue(this), null);
         }
 
         public void Bind ([NotNull] PropertyInfo prop, [NotNull] GetExpressionBase getter)
