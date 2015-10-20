@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using static System.FormattableString;
 
 // ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
@@ -19,7 +20,7 @@ namespace Alba.CsConsoleFormat
         public override bool Equals (object obj) => obj is Point && Equals((Point)obj);
         public override int GetHashCode () => X.GetHashCode() ^ Y.GetHashCode();
 
-        public override string ToString () => $"{X} {Y}";
+        public override string ToString () => Invariant($"{X} {Y}");
 
         public static Point Add (Point left, Vector right) => new Point(left.X + right.X, left.Y + right.Y);
         public static Point Subtract (Point left, Vector right) => new Point(left.X - right.X, left.Y - right.Y);

@@ -29,6 +29,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Presen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.Presentation", "Alba.CsConsoleFormat.Sample.Presentation\Alba.CsConsoleFormat.Sample.Presentation.csproj", "{967BD562-1463-4851-8941-B48BA96B0FD8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{16537D22-E855-4762-8F15-EDABC1D1FB28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Tests", "Alba.CsConsoleFormat.Tests\Alba.CsConsoleFormat.Tests.csproj", "{4184EFCD-D6BA-485E-B693-039D796A1979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Testing", "Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj", "{35DB30E3-3113-43BB-9748-1738D0D76D16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,8 +57,20 @@ Global
 		{967BD562-1463-4851-8941-B48BA96B0FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{967BD562-1463-4851-8941-B48BA96B0FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{967BD562-1463-4851-8941-B48BA96B0FD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4184EFCD-D6BA-485E-B693-039D796A1979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4184EFCD-D6BA-485E-B693-039D796A1979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4184EFCD-D6BA-485E-B693-039D796A1979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4184EFCD-D6BA-485E-B693-039D796A1979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4184EFCD-D6BA-485E-B693-039D796A1979} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
+		{35DB30E3-3113-43BB-9748-1738D0D76D16} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@
 /Tmp
 bin/
 obj/
+packages/
 *.suo
 *.DotSettings.user
 *.csproj.user
