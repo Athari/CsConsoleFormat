@@ -153,7 +153,7 @@ namespace Alba.CsConsoleFormat
         public override string ToString () =>
             $"{GetType().Name}:"
                 + (Name != null ? $" Name={Name}" : "")
-                + (DataContext != null ? $" DC={DataContext}" : " DC=null")
+                + (DataContext != null ? $" DC={DataContext}" : "")
                 + (HasChildren ? $" Children={_children.Count}" : "");
     }
 }

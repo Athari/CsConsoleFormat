@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Alba.CsConsoleFormat.Tests.Core
+namespace Alba.CsConsoleFormat.Tests
 {
     public class PointTests
     {
@@ -10,36 +10,49 @@ namespace Alba.CsConsoleFormat.Tests.Core
         [InlineData (0, 0, 0, 0, 0, 0)]
         [InlineData (2, 3, 5, 6, 7, 9)]
         [InlineData (2, 3, -5, -6, -3, -3)]
-        public void AddVector (int px, int py, int vx, int vy, int rx, int ry)
+        public void Add_Vector (int px, int py, int vx, int vy, int rx, int ry)
         {
-            (new Point(px, py) + new Vector(vx, vy)).Should().Be(new Point(rx, ry));
+            var p = new Point(px, py);
+            var v = new Vector(vx, vy);
+
+            (p + v).Should().Be(new Point(rx, ry));
         }
 
         [Theory]
         [InlineData (0, 0, 0, 0, 0, 0)]
         [InlineData (2, 3, 5, 6, -3, -3)]
         [InlineData (2, 3, -5, -6, 7, 9)]
-        public void SubtractVector (int px, int py, int vx, int vy, int rx, int ry)
+        public void Subtract_Vector (int px, int py, int vx, int vy, int rx, int ry)
         {
-            (new Point(px, py) - new Vector(vx, vy)).Should().Be(new Point(rx, ry));
+            var p = new Point(px, py);
+            var v = new Vector(vx, vy);
+
+            (p - v).Should().Be(new Point(rx, ry));
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 0, true)]
-        [InlineData (1, 2, 1, 2, true)]
-        [InlineData (1, 2, 2, 1, false)]
-        public void Equals (int p1x, int p1y, int p2x, int p2y, bool equals)
+        [InlineData (0, 0, 0, 0)]
+        [InlineData (1, 2, 1, 2)]
+        public void Equals_IsTrue (int p1x, int p1y, int p2x, int p2y)
         {
-            (new Point(p1x, p1y) == new Point(p2x, p2y)).Should().Be(equals);
+            var p1 = new Point(p1x, p1y);
+            var p2 = new Point(p2x, p2y);
+
+            (p1 == p2).Should().BeTrue();
+            (p1 != p2).Should().BeFalse();
+            (p1.GetHashCode() == p2.GetHashCode()).Should().BeTrue();
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 0, false)]
-        [InlineData (1, 2, 1, 2, false)]
-        [InlineData (1, 2, 2, 1, true)]
-        public void NotEquals (int p1x, int p1y, int p2x, int p2y, bool equals)
+        [InlineData (0, 0, 1, 1)]
+        [InlineData (1, 2, 2, 1)]
+        public void Equals_IsFalse (int p1x, int p1y, int p2x, int p2y)
         {
-            (new Point(p1x, p1y) != new Point(p2x, p2y)).Should().Be(equals);
+            var p1 = new Point(p1x, p1y);
+            var p2 = new Point(p2x, p2y);
+
+            (p1 == p2).Should().BeFalse();
+            (p1 != p2).Should().BeTrue();
         }
 
         [Theory, UseCrazyCulture]
@@ -48,7 +61,9 @@ namespace Alba.CsConsoleFormat.Tests.Core
         [InlineData (-101, -2001, "-101 -2001")]
         public void ToString (int px, int py, string str)
         {
-            new Point(px, py).ToString().Should().Be(str);
+            var p = new Point(px, py);
+
+            p.ToString().Should().Be(str);
         }
     }
 }

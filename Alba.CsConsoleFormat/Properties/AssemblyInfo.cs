@@ -25,3 +25,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat.Markup")]
 
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests")]

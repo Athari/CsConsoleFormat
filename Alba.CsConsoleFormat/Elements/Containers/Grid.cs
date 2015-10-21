@@ -153,7 +153,7 @@ namespace Alba.CsConsoleFormat
 
         protected override Size MeasureOverride (Size availableSize)
         {
-            if (Columns.Count == 0)
+            if (Columns.Count == 0 || Children.Count == 0)
                 return new Size(0, 0);
 
             Size borderSize = new Size(_maxColumnBorders.Sum(), _maxRowBorders.Sum());
@@ -177,9 +177,10 @@ namespace Alba.CsConsoleFormat
                 Size maxCellSize = new Size(Min(gridColumn.ActualWidth, availableWidth), Size.Infinity);
                 foreach (Row gridRow in Rows) {
                     BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
-                    if (cell != null && GetColumnSpan(cell) == 1 && GetRowSpan(cell) == 1) {
+                    if (cell != null && GetColumnSpan(cell) == 1) {
                         cell.Measure(maxCellSize);
-                        gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
+                        if (GetRowSpan(cell) == 1)
+                            gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
                     }
                 }
                 availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
@@ -193,10 +194,11 @@ namespace Alba.CsConsoleFormat
                 Size maxCellSize = new Size(availableWidth, Size.Infinity);
                 foreach (Row gridRow in Rows) {
                     BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
-                    if (cell != null && GetColumnSpan(cell) == 1 && GetRowSpan(cell) == 1) {
+                    if (cell != null && GetColumnSpan(cell) == 1) {
                         cell.Measure(maxCellSize);
                         gridColumn.ActualWidth = MinMax(gridColumn.ActualWidth, cell.DesiredSize.Width, gridColumn.MaxWidth);
-                        gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
+                        if (GetRowSpan(cell) == 1)
+                            gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
                     }
                 }
                 availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
@@ -225,9 +227,10 @@ namespace Alba.CsConsoleFormat
                     Size maxCellSize = new Size(gridColumn.ActualWidth, Size.Infinity);
                     foreach (Row gridRow in Rows) {
                         BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
-                        if (cell != null && GetColumnSpan(cell) == 1 && GetRowSpan(cell) == 1) {
+                        if (cell != null && GetColumnSpan(cell) == 1) {
                             cell.Measure(maxCellSize);
-                            gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
+                            if (GetRowSpan(cell) == 1)
+                                gridRow.ActualHeight = Max(gridRow.ActualHeight, cell.DesiredSize.Height);
                         }
                     }
                     availableWidth = Max(availableWidth - gridColumn.ActualWidth, 0);
@@ -264,6 +267,9 @@ namespace Alba.CsConsoleFormat
 
         protected override Size ArrangeOverride (Size finalSize)
         {
+            if (Columns.Count == 0 || Children.Count == 0)
+                return finalSize;
+
             var cellRect = new Rect { Y = _maxRowBorders[0] };
             foreach (Row gridRow in Rows) {
                 cellRect.Height = gridRow.ActualHeight;
