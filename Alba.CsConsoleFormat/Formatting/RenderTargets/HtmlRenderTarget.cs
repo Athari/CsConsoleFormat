@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat
         };
 
         public ConsoleColor? ColorOverride { get; set; }
-        public ConsoleColor? BgColorOverride { get; set; }
+        public ConsoleColor? BackgroundOverride { get; set; }
         public bool BodyOnly { get; set; }
         public string Font { get; set; }
         public string PageTitle { get; set; }
@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat
         private void Init ()
         {
             ColorOverride = null;
-            BgColorOverride = null;
+            BackgroundOverride = null;
             BodyOnly = false;
             Font = "12pt/100% Consolas, \"Lucida Console\", monospace";
             PageTitle = "Console output";
@@ -65,7 +65,7 @@ namespace Alba.CsConsoleFormat
 
                 for (int ix = 0; ix < buffer.Width; ix++) {
                     ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
-                    ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
+                    ConsoleColor backColor = BackgroundOverride ?? charsLine[ix].BackgroundColor;
                     if (foreColor != currentForeColor || backColor != currentBackColor) {
                         Writer.Write($"</span><span style=\"color:#{ColorMap[(int)foreColor]};background:#{ColorMap[(int)backColor]}\">");
                         currentForeColor = foreColor;

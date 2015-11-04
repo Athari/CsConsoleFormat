@@ -48,8 +48,8 @@ namespace Alba.CsConsoleFormat
             Rect renderRectWithoutShadow = new Rect(RenderSize).Deflate(Thickness.Max(Shadow, new Thickness(0)));
 
             //base.Render(buffer);
-            if (BgColor != null)
-                buffer.FillBackgroundRectangle(renderRectWithoutShadow, BgColor.Value);
+            if (Background != null)
+                buffer.FillBackgroundRectangle(renderRectWithoutShadow, Background.Value);
             buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
 
             if (!Shadow.IsEmpty) {

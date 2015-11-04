@@ -4,7 +4,7 @@
     <Div>
         <Span Text="Hello resource XAML world!" Color="Red"/>
     </Div>
-    <Span Text="Foo" Color="Yellow" BgColor="DarkYellow"/>
+    <Span Text="Foo" Color="Yellow" Background="DarkYellow"/>
     <Span Text=" "/>
-    <Span Text="Bar" Color="Cyan" BgColor="DarkCyan"/>
+    <Span Text="Bar" Color="Cyan" Background="DarkCyan"/>
 </Document>

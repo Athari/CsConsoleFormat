@@ -6,7 +6,7 @@ namespace Alba.CsConsoleFormat
     {
         void AppendText (string text);
         void PushColor (ConsoleColor color);
-        void PushBgColor (ConsoleColor bgColor);
+        void PushBackground (ConsoleColor background);
         void PopFormatting ();
     }
 }

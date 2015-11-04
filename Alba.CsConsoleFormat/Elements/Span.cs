@@ -25,8 +25,8 @@ namespace Alba.CsConsoleFormat
 
             if (Color != null)
                 sequence.PushColor(Color.Value);
-            if (BgColor != null)
-                sequence.PushBgColor(BgColor.Value);
+            if (Background != null)
+                sequence.PushBackground(Background.Value);
 
             if (Text != null) {
                 sequence.AppendText(Text);
@@ -36,7 +36,7 @@ namespace Alba.CsConsoleFormat
                     child.GenerateSequence(sequence);
             }
 
-            if (BgColor != null)
+            if (Background != null)
                 sequence.PopFormatting();
             if (Color != null)
                 sequence.PopFormatting();

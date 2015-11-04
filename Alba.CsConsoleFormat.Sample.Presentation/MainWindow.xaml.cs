@@ -33,15 +33,15 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
         }
 
         public Document CreateDocument (string world) =>
-            new Document { Color = White, BgColor = Black }
+            new Document { Color = White, Background = Black }
                 .AddChildren(
                     new Div { Color = Red }.AddChildren($"Hello {world} world!"),
                     new Div { Color = Red }.AddChildren("Hello world!"),
                     new Div()
                         .AddChildren(
-                            new Span("Foo") { Color = Yellow, BgColor = DarkYellow },
+                            new Span("Foo") { Color = Yellow, Background = DarkYellow },
                             " ",
-                            new Span("Bar") { Color = Cyan, BgColor = DarkCyan }
+                            new Span("Bar") { Color = Cyan, Background = DarkCyan }
                         )
                 );
     }

@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat
     public abstract class Element : BindableObject
     {
         private const ConsoleColor DefaultColor = ConsoleColor.White;
-        private const ConsoleColor DefaultBgColor = ConsoleColor.Black;
+        private const ConsoleColor DefaultBackground = ConsoleColor.Black;
 
         private ElementCollection _children;
         private IList<Element> _visualChildren;
@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? Color { get; set; }
 
         [TypeConverter (typeof(ConsoleColorConverter))]
-        public ConsoleColor? BgColor { get; set; }
+        public ConsoleColor? Background { get; set; }
 
         public Visibility Visibility { get; set; }
 
@@ -65,7 +65,7 @@ namespace Alba.CsConsoleFormat
         private IEnumerable<Element> Parents => this.TraverseList(e => e.Parent);
 
         internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
-        internal ConsoleColor EffectiveBgColor => Parents.FirstOrDefault(e => e.BgColor != null)?.BgColor ?? DefaultBgColor;
+        internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
         internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
         [EditorBrowsable (EditorBrowsableState.Advanced)]

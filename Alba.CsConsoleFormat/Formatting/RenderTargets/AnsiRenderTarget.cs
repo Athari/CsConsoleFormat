@@ -14,7 +14,7 @@ namespace Alba.CsConsoleFormat
             //"1;30", "1;34", "1;32", "1;36", "1;31", "1;35", "1;33", "1;37",
             "90", "94", "92", "96", "91", "95", "93", "97",
         };
-        private static readonly List<string> BgColorMap = new List<string> {
+        private static readonly List<string> BackgroundColorMap = new List<string> {
             "40", "44", "42", "46", "41", "45", "43", "47",
             //"25;40", "25;44", "25;42", "25;46", "25;41", "25;45", "25;43", "25;47",
             //"5;40", "5;44", "5;42", "5;46", "5;41", "5;45", "5;43", "5;47",
@@ -22,7 +22,7 @@ namespace Alba.CsConsoleFormat
         };
 
         public ConsoleColor? ColorOverride { get; set; }
-        public ConsoleColor? BgColorOverride { get; set; }
+        public ConsoleColor? BackgroundOverride { get; set; }
 
         public AnsiRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {}
@@ -46,12 +46,12 @@ namespace Alba.CsConsoleFormat
 
                 for (int ix = 0; ix < buffer.Width; ix++) {
                     ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
-                    ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
+                    ConsoleColor backColor = BackgroundOverride ?? charsLine[ix].BackgroundColor;
                     if (foreColor != currentForeColor || backColor != currentBackColor) {
                         Writer.Write("\x1B[");
                         Writer.Write(ColorMap[(int)foreColor]);
                         Writer.Write(";");
-                        Writer.Write(BgColorMap[(int)backColor]);
+                        Writer.Write(BackgroundColorMap[(int)backColor]);
                         Writer.Write("m");
                         currentForeColor = foreColor;
                         currentBackColor = backColor;

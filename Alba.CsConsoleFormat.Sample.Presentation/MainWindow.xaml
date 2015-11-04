@@ -25,10 +25,10 @@
                 <a:Div>
                     <a:Span Text="Hello inline XAML world!" Color="Red"/>
                 </a:Div>
-                <a:Image Source="Images/defrag_32.png" BgColor="White" Height="16" Stretch="Fill"/>
-                <a:Span Text="Foo" Color="Yellow" BgColor="DarkYellow"/>
+                <a:Image Source="Images/defrag_32.png" Background="White" Height="16" Stretch="Fill"/>
+                <a:Span Text="Foo" Color="Yellow" Background="DarkYellow"/>
                 <a:Span Text=" "/>
-                <a:Span Text="Bar" Color="Cyan" BgColor="DarkCyan"/>
+                <a:Span Text="Bar" Color="Cyan" Background="DarkCyan"/>
             </a:Document>
         </ap:ConsoleView>
     </UniformGrid>

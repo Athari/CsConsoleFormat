@@ -47,7 +47,7 @@ namespace Alba.CsConsoleFormat
         public override void Render (ConsoleBuffer buffer)
         {
             base.Render(buffer);
-            ConsoleColor color = EffectiveColor, bgColor = EffectiveBgColor;
+            ConsoleColor color = EffectiveColor, background = EffectiveBackground;
             for (int y = 0; y < _lines.Count; y++) {
                 List<InlineSegment> line = _lines[y];
                 int length = GetLineLength(line);
@@ -64,11 +64,11 @@ namespace Alba.CsConsoleFormat
                 foreach (InlineSegment segment in line) {
                     if (segment.Color != null)
                         color = segment.Color.Value;
-                    if (segment.BgColor != null)
-                        bgColor = segment.BgColor.Value;
+                    if (segment.Background != null)
+                        background = segment.Background.Value;
                     if (segment.TextBuilder != null) {
                         string text = segment.ToString();
-                        buffer.FillBackgroundRectangle(x, y, text.Length, 1, bgColor);
+                        buffer.FillBackgroundRectangle(x, y, text.Length, 1, background);
                         buffer.DrawString(x, y, color, text);
                         x += text.Length;
                     }
@@ -117,7 +117,7 @@ namespace Alba.CsConsoleFormat
                 _lines = new List<List<InlineSegment>> { _curLine };
 
                 foreach (InlineSegment sourceSeg in _container._inlineSequence.Segments) {
-                    if (sourceSeg.Color != null || sourceSeg.BgColor != null) {
+                    if (sourceSeg.Color != null || sourceSeg.Background != null) {
                         _curLine.Add(sourceSeg);
                     }
                     else {
@@ -312,7 +312,7 @@ namespace Alba.CsConsoleFormat
 
             public InlineSequence (InlineContainer container)
             {
-                var initSegment = InlineSegment.CreateFromColors(container.EffectiveColor, container.EffectiveBgColor);
+                var initSegment = InlineSegment.CreateFromColors(container.EffectiveColor, container.EffectiveBackground);
                 _formattingStack.Push(initSegment);
                 Segments = new List<InlineSegment>();
                 AddFormattingSegment();
@@ -329,9 +329,9 @@ namespace Alba.CsConsoleFormat
                 AddFormattingSegment();
             }
 
-            public void PushBgColor (ConsoleColor bgColor)
+            public void PushBackground (ConsoleColor background)
             {
-                _formattingStack.Push(InlineSegment.CreateFromColors(null, bgColor));
+                _formattingStack.Push(InlineSegment.CreateFromColors(null, background));
                 AddFormattingSegment();
             }
 
@@ -356,14 +356,14 @@ namespace Alba.CsConsoleFormat
                     Segments.Add(lastSegment);
                 }
                 lastSegment.Color = _formattingStack.First(s => s.Color != null).Color.Value;
-                lastSegment.BgColor = _formattingStack.First(s => s.BgColor != null).BgColor.Value;
+                lastSegment.Background = _formattingStack.First(s => s.Background != null).Background.Value;
             }
         }
 
         private class InlineSegment
         {
             public ConsoleColor? Color { get; set; }
-            public ConsoleColor? BgColor { get; set; }
+            public ConsoleColor? Background { get; set; }
             public string Text { get; }
             public StringBuilder TextBuilder { get; }
 
@@ -378,8 +378,8 @@ namespace Alba.CsConsoleFormat
             public static InlineSegment CreateEmpty () =>
                 new InlineSegment(null, null);
 
-            public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? bgColor) =>
-                new InlineSegment(null, null) { Color = color, BgColor = bgColor };
+            public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? background) =>
+                new InlineSegment(null, null) { Color = color, Background = background };
 
             public static InlineSegment CreateFromText (string text) =>
                 new InlineSegment(text?.Replace("\r", "") ?? "", null);
@@ -395,7 +395,7 @@ namespace Alba.CsConsoleFormat
                 else if (Text != null)
                     return Text;
                 else
-                    return $"{(Color?.ToString() ?? "null")} {(BgColor?.ToString() ?? "null")}";
+                    return $"{(Color?.ToString() ?? "null")} {(Background?.ToString() ?? "null")}";
             }
         }
 

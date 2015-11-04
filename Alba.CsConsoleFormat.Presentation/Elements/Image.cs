@@ -37,8 +37,8 @@ namespace Alba.CsConsoleFormat.Presentation
         {
             if (Source == null)
                 return;
-            if (BgColor != null)
-                buffer.FillBackgroundRectangle(new Rect(RenderSize), BgColor.Value);
+            if (Background != null)
+                buffer.FillBackgroundRectangle(new Rect(RenderSize), Background.Value);
             buffer.DrawImage(Source, new Rect(RenderSize));
         }
 

@@ -228,8 +228,8 @@ namespace Alba.CsConsoleFormat
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
-            if (BgColor != null)
-                buffer.FillBackgroundRectangle(new Rect(RenderSize), BgColor.Value);
+            if (Background != null)
+                buffer.FillBackgroundRectangle(new Rect(RenderSize), Background.Value);
             buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
         }
 

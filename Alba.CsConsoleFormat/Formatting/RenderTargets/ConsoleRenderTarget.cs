@@ -5,12 +5,12 @@ namespace Alba.CsConsoleFormat
     public class ConsoleRenderTarget : IRenderTarget
     {
         public ConsoleColor? ColorOverride { get; set; }
-        public ConsoleColor? BgColorOverride { get; set; }
+        public ConsoleColor? BackgroundOverride { get; set; }
 
         public ConsoleRenderTarget ()
         {
             ColorOverride = null;
-            BgColorOverride = null;
+            BackgroundOverride = null;
         }
 
         public void Render (IConsoleBufferSource buffer)
@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat
                         ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
                         if (foreColor != currentForeColor)
                             Console.ForegroundColor = currentForeColor = foreColor;
-                        ConsoleColor backColor = BgColorOverride ?? charsLine[ix].BackgroundColor;
+                        ConsoleColor backColor = BackgroundOverride ?? charsLine[ix].BackgroundColor;
                         if (backColor != currentBackColor)
                             Console.BackgroundColor = currentBackColor = backColor;
                         char chr = charsLine[ix].Char;

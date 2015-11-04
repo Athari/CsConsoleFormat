@@ -19,7 +19,6 @@
       <Word>StringWriter</Word>
       <!-- My stupid prefixes and suffixes. -->
       <Word>Cs</Word>
-      <Word>Bg</Word>
       <Word>Exts</Word>
     </Recognized>
     <DiscreteExceptions>
