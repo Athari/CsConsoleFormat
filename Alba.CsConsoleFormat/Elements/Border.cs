@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat
         protected override Size MeasureOverride (Size availableSize)
         {
             BlockElement child = VisualChild;
-            Size borderThickness = (Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))).CollapsedThickness;
+            Size borderThickness = (Stroke.CharThickness + Padding + Thickness.Max(Shadow, 0)).CollapsedThickness;
             if (child != null) {
                 child.Measure(availableSize - borderThickness);
                 return child.DesiredSize + borderThickness;
@@ -36,7 +36,7 @@ namespace Alba.CsConsoleFormat
 
         protected override Size ArrangeOverride (Size finalSize)
         {
-            VisualChild?.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, new Thickness(0))));
+            VisualChild?.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, 0)));
             return finalSize;
         }
 
@@ -45,7 +45,7 @@ namespace Alba.CsConsoleFormat
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 
-            Rect renderRectWithoutShadow = new Rect(RenderSize).Deflate(Thickness.Max(Shadow, new Thickness(0)));
+            Rect renderRectWithoutShadow = new Rect(RenderSize).Deflate(Thickness.Max(Shadow, 0));
 
             //base.Render(buffer);
             if (Background != null)
@@ -60,7 +60,7 @@ namespace Alba.CsConsoleFormat
                 // ███oooo██     █████
                 // ▀▀▀▀▀▀▀▀▀     ▀▀▀▀▀
                 Thickness shadowLineDelta = new Thickness(0, 1);
-                Thickness shadowOffset = Thickness.Max(-Shadow - shadowLineDelta, new Thickness(0));
+                Thickness shadowOffset = Thickness.Max(-Shadow - shadowLineDelta, 0);
                 Rect shadowRect = new Rect(RenderSize).Deflate(shadowOffset);
 
                 if (Shadow.Top != 0)

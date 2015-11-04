@@ -190,7 +190,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public Document CreateDocument (Data data)
         {
-            var thSingleWide = new LineThickness(LineWidth.Single, LineWidth.Wide);
+            var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
             return new Document { Color = White, Background = Black }
                 .AddChildren(
                     "Hello world!",
@@ -209,9 +209,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             GridLength.Auto
                         )
                         .AddChildren(
-                            new Cell { Stroke = thSingleWide }.AddChildren("Id"),
-                            new Cell { Stroke = thSingleWide }.AddChildren("Name"),
-                            new Cell { Stroke = thSingleWide }.AddChildren("Value"),
+                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Id"),
+                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Name"),
+                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Value"),
                             data.Items.Select(d => new[] {
                                 new Cell { Color = Yellow, Align = HorizontalAlignment.Right }.AddChildren(d.Id),
                                 new Cell { Color = Gray }.AddChildren(d.Name),
@@ -220,37 +220,37 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                         ),
                     new Dock { Width = 80, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue }
                         .AddChildren(
-                            new Div { Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = new Thickness(1), Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
+                            new Div { Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
                                 .Set(Dock.ToProperty, DockTo.Left)
                                 .AddChildren(LoremIpsumCharWrap(data)),
-                            new Div { Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1, Background = DarkBlue }
                                 .Set(Dock.ToProperty, DockTo.Top)
                                 .AddChildren(LoremIpsumWordWrapWithSpaces(data)),
-                            new Div { Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1, Background = DarkBlue }
                                 .Set(Dock.ToProperty, DockTo.Right)
                                 .AddChildren(LoremIpsumWordWrapWithZeroWidthSpaces(data)),
-                            new Div { Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1, Background = DarkBlue }
                                 .Set(Dock.ToProperty, DockTo.Bottom)
                                 .AddChildren(LoremIpsumWordWrapWithNoBreakSpaces(data)),
-                            new Border { Margin = new Thickness(1), Padding = new Thickness(1), Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
+                            new Border { Margin = 1, Padding = 1, Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
                                 .AddChildren(LoremIpsumWordWrapWithSoftHyphens(data))
                         ),
                     "",
                     new Canvas { Width = 80, Height = 43, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue }
                         .AddChildren(
-                            new Div { Width = 38, Height = 20, Padding = new Thickness(1), Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
+                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
                                 .Set(Canvas.LeftProperty, 1).Set(Canvas.TopProperty, 1)
                                 .AddChildren(LoremIpsumCharWrap(data)),
-                            new Div { Width = 38, Height = 20, Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
                                 .Set(Canvas.LeftProperty, 1).Set(Canvas.BottomProperty, 1)
                                 .AddChildren(LoremIpsumWordWrapWithSpaces(data)),
-                            new Div { Width = 38, Height = 20, Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
                                 .Set(Canvas.RightProperty, 1).Set(Canvas.TopProperty, 1)
                                 .AddChildren(LoremIpsumWordWrapWithZeroWidthSpaces(data)),
-                            new Div { Width = 38, Height = 20, Padding = new Thickness(1), Background = DarkBlue }
+                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
                                 .Set(Canvas.RightProperty, 1).Set(Canvas.BottomProperty, 1)
                                 .AddChildren(LoremIpsumWordWrapWithNoBreakSpaces(data)),
-                            new Border { Width = 38, Height = 20, Padding = new Thickness(1), Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
+                            new Border { Width = 38, Height = 20, Padding = 1, Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
                                 .Set(Canvas.LeftProperty, 21).Set(Canvas.TopProperty, 11)
                                 .AddChildren(LoremIpsumWordWrapWithSoftHyphens(data))
                         )

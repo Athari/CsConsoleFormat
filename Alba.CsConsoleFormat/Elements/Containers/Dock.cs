@@ -43,7 +43,7 @@ namespace Alba.CsConsoleFormat
         protected override Size ArrangeOverride (Size finalSize)
         {
             int dockedChildrenCount = VisualChildren.Count - (LastChildFill ? 1 : 0);
-            Thickness accumulated = new Thickness(0);
+            Thickness accumulated = 0;
 
             for (int i = 0; i < VisualChildren.Count; ++i) {
                 var child = (BlockElement)VisualChildren[i];

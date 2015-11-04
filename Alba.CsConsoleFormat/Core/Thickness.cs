@@ -60,5 +60,6 @@ namespace Alba.CsConsoleFormat
         public static Thickness operator + (Thickness left, Thickness right) => Add(left, right);
         public static Thickness operator - (Thickness left, Thickness right) => Subtract(left, right);
         public static Thickness operator - (Thickness left) => Negate(left);
+        public static implicit operator Thickness (int width) => new Thickness(width);
     }
 }
