@@ -16,11 +16,12 @@ CsConsoleFormat is a library for formatting text in console based on documents r
 or like this:
 
 ```c#
-Create<Document>(
-    CreateText("Hello").Color(ConsoleColor.Red),
-    "\n",
-    CreateText("world!").Color(ConsoleColor.Yellow),
-);
+new Document()
+    .AddChildren(
+        new Span("Hello") { Color = ConsoleColor.Red },
+        "\n",
+        new Span("world!") { Color = ConsoleColor.Yellow }
+    );
 ```
 
 Why?
@@ -34,12 +35,17 @@ The code quickly becomes an unreadable mess. It's just not fun! In GUI, we have 
 
 Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're three syntaxes, you can use any of them in any combination.
 
-**XAML** (assuming XAML file is stored as an Embedded Resource in the Views folder):
+**XAML** (like WPF):
 
 ```xml
-<Document xmlns="urn:alba:cs-console-format" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Span BgColor="Yellow" Text="Order #"/><Span Text="{Get OrderId}"/><Br/>
-    <Span BgColor="Yellow" Text="Customer: "/><Span Text="{Get Customer.Name}"/>
+<Document xmlns="urn:alba:cs-console-format"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Span Background="Yellow" Text="Order #"/>
+    <Span Text="{Get OrderId}"/>
+    <Br/>
+    <Span Background="Yellow" Text="Customer: "/>
+    <Span Text="{Get Customer.Name}"/>
+
     <Grid Color="Gray">
         <Grid.Columns>
             <Column Width="Auto"/>
@@ -65,87 +71,49 @@ Imagine you have usual Order, OrderItem and Customer classes. Let's create a doc
 ```
 
 ```c#
+// Assuming Order.xaml is stored as an Embedded Resource in the Views folder.
 Document doc = ConsoleRenderer.ReadDocumentFromResource(GetType(), "Views.Order.xaml", Order);
 ConsoleRenderer.RenderDocument(doc);
 ```
 
-**C# with builders** (assuming `using static System.ConsoleColor` and inheriting from `DocumentBuilder`):
+**C#** (like LINQ to XML):
 
 ```c#
-var doc = Create<Document>()
+using static System.ConsoleColor;
+
+var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+
+var doc = new Document()
     .AddChildren(
-        CreateText("Order #").Color(Yellow),
+        new Span("Order #") { Color = Yellow },
         Order.Id,
         "\n",
-        CreateText("Customer: ").Color(Yellow),
+        new Span("Customer: ") { Color = Yellow },
         Order.Customer.Name,
-        Create<Grid>().Color(Gray)
+
+        new Grid { Color = Gray }
             .AddColumns(
-                GridLength.Auto,
-                GridLength.Star(1),
-                GridLength.Auto
+                new Column { Width = GridLength.Auto },
+                new Column { Width = GridLength.Star(1) },
+                new Column { Width = GridLength.Auto }
             )
             .AddChildren(
-                Create<Cell>("Id").StrokeCell(LineWidth.Single, LineWidth.Wide),
-                Create<Cell>("Name").StrokeCell(LineWidth.Single, LineWidth.Wide),
-                Create<Cell>("Count").StrokeCell(LineWidth.Single, LineWidth.Wide),
+                new Cell { Stroke = headerThickness }
+                    .AddChildren("Id"),
+                new Cell { Stroke = headerThickness }
+                    .AddChildren("Name"),
+                new Cell { Stroke = headerThickness }
+                    .AddChildren("Count"),
                 Order.OrderItems.Select(item => new[] {
-                    Create<Cell>(item.Id),
-                    Create<Cell>(item.Name),
-                    Create<Cell>(item.Count).Align(HorizontalAlignment.Right),
+                    new Cell()
+                        .AddChildren(item.Id),
+                    new Cell()
+                        .AddChildren(item.Name),
+                    new Cell { Align = HorizontalAlignment.Right }
+                        .AddChildren(item.Count),
                 })
             )
     );
-
-ConsoleRenderer.RenderDocument(doc);
-```
-
-**Plain C#**:
-
-```c#
-Grid grid;
-var doc = new Document {
-    Children = {
-        new Span("Order #") { Color = Yellow },
-        Order.Id.ToString(),
-        new Span("Customer: ") { Color = Yellow },
-        Order.Customer.Name,
-        (grid = new Grid {
-            Color = Gray,
-            Columns = {
-                new Column { Width = GridLength.Auto },
-                new Column { Width = GridLength.Star(1) },
-                new Column { Width = GridLength.Auto },
-            },
-            Children = {
-                new Cell {
-                    Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
-                    Children = { "Id" },
-                },
-                new Cell {
-                    Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
-                    Children = { "Name" },
-                },
-                new Cell {
-                    Stroke = new LineThickness(LineWidth.Single, LineWidth.Wide),
-                    Children = { "Count" },
-                },
-            }
-        }),
-    }
-};
-foreach (var item in Order.OrderItems) {
-    grid.Children.Add(new Cell {
-        Children = { item.Id.ToString() },
-    });
-    grid.Children.Add(new Cell {
-        Children = { item.Name },
-    });
-    grid.Children.Add(new Cell {
-        Align = HorizontalAlignment.Right,
-        Children = { item.Count.ToString() },
-    });
-}
 
 ConsoleRenderer.RenderDocument(doc);
 ```
@@ -159,8 +127,7 @@ Features
 * **Unicode formatting**: hyphens, soft hyphens, no-break hyphens, spaces, no-break spaces, zero-width spaces.
 * **Multiple syntaxes** (see examples above):
     * **Like WPF**: XAML with one-time bindings, resources, converters, attached properties, loading documents from assembly resources.
-    * **Like XDocument**: C# with builders, setting properties via extension methods, adding of children by collapsing enumerables and converting objects and strings to elements.
-    * **Plain C#**: C# with object and collection initializers, setting attached properties via indexers.
+    * **Like LINQ to XML**: C# with object initializers, setting attached properties via extension methods or indexers, adding children elements by collapsing enumerables and converting objects and strings to elements.
 * **Drawing**: geometric primitives (lines, rectangles) using box-drawing characters, color transformations (dark, light), text.
 * **Internationalization**: cultures are respected on every level and can be customized per-element.
 * **Export** to many formats: ANSI text, unformatted text, HTML; RTF, XPF, WPF FixedDocument, WPF FlowDocument (requires WPF).
@@ -175,17 +142,15 @@ TODO
 Which syntax to choose?
 =======================
 
-**XAML** (like WPF) forces to clearly separate views and models which is good thing. However, it isn't strongly typed, so it's easy to get runtime error. Syntax wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Wide"`).
+**XAML** (like WPF) forces clear separation of views and models which is good thing. However, it isn't strongly typed, so it's easy to get runtime error. Syntax wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Wide"`).
 
 XAML library in Mono is currently very buggy. If you want to build a cross-platform application, using XAML may be problematic. However, if you need to support only Windows and are experienced in WPF, XAML should feel natural.
 
 XAML is only partially supported by Visual Studio + ReSharper: syntax highlighting and code completion work, but almost the whole document is highlighted as containing numerous errors.
 
-**C# with builders** (like XDocument) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6 which supports `using static`, accessing some of the enums can be shortened. The only place with loose typing is adding of children as `params object[]`.
+**C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using `AddChildren(params object[])` extension method (which is optional).
 
-Building documents in the code is fully supported, but currently there's a bug in ReSharper which causes large documents to consume lots of CPU in Visual Studio 2015.
-
-**Plain C#** is the most strictly typed and explicit way of constructing documents. However, due to limitations of collection initialization, often some of the elements have to be named and generated separately.
+Building documents in the code is fully supported, but currently there's a bug in ReSharper 9 which causes large documents to consume lots of CPU in Visual Studio 2015.
 
 License
 =======
