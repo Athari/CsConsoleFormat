@@ -43,7 +43,6 @@ namespace Alba.CsConsoleFormat
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
             RenderOverride(buffer);
-            Dispose();
         }
 
         protected abstract void RenderOverride ([NotNull] IConsoleBufferSource buffer);

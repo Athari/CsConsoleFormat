@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alba.CsConsoleFormat.Testing.FluentAssertions;
 using FluentAssertions;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid();
 
-            new Action(() => MeasureAndArrange(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
         }
 
         [Fact]
@@ -21,7 +22,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid { Children = { new Div() } };
 
-            new Action(() => MeasureAndArrange(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
         }
 
         [Fact]
@@ -29,7 +30,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid { Columns = { new Column() } };
 
-            new Action(() => MeasureAndArrange(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
         }
 
         public static readonly object[][] ColumnConfigsData = {
@@ -162,15 +163,83 @@ namespace Alba.CsConsoleFormat.Tests
             grid.GenerateVisualTree();
             grid.Measure(config.Size);
             grid.Arrange(new Rect(config.Size));
+            grid.Render(new ConsoleBuffer(80));
 
             grid.Columns.Select(c => c.ActualWidth).Should().Equal(config.ExpectedColumnWidths);
         }
 
-        private void MeasureAndArrange (Grid grid)
+        [Fact]
+        public void RenderDefaultBorders ()
+        {
+            var grid = new Grid()
+                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
+                .AddChildren(Enumerable.Range(1, 6).Select(i => new Cell().AddChildren(i)));
+
+            GetRenderedText(grid, 8).Should().BeLines(
+                "╔═╤═╤═╗ ",
+                "║1│2│3║ ",
+                "╟─┼─┼─╢ ",
+                "║4│5│6║ ",
+                "╚═╧═╧═╝ ");
+        }
+
+        [Fact]
+        public void RenderCustomBorders ()
+        {
+            var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+            var grid = new Grid { Stroke = new LineThickness(LineWidth.None) }
+                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
+                .AddChildren(
+                    new Cell { Stroke = headerThickness }.AddChildren(1),
+                    new Cell { Stroke = headerThickness }.AddChildren(2),
+                    new Cell { Stroke = headerThickness }.AddChildren(3),
+                    new Cell().AddChildren(4),
+                    new Cell().AddChildren(5),
+                    new Cell().AddChildren(6)
+                );
+
+            GetRenderedText(grid, 8).Should().BeLines(
+                "╒═╤═╤═╕ ",
+                "│1│2│3│ ",
+                "╞═╪═╪═╡ ",
+                "│4│5│6│ ",
+                "└─┴─┴─┘ ");
+        }
+
+        [Fact]
+        public void RenderManualPosition ()
+        {
+            var grid = new Grid { AutoPosition = false }
+                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
+                .AddChildren(
+                    new Cell { [Grid.ColumnProperty] = 0, [Grid.RowProperty] = 0 }.AddChildren(1),
+                    new Cell { [Grid.ColumnProperty] = 3, [Grid.RowProperty] = 0 }.AddChildren(2),
+                    new Cell { [Grid.ColumnProperty] = 1, [Grid.RowProperty] = 1, [Grid.ColumnSpanProperty] = 3 }.AddChildren(3)
+                );
+
+            GetRenderedText(grid, 8).Should().BeLines(
+                "╔═╤══╤═╗",
+                "║1│  │2║",
+                "╟─┼──┴─╢",
+                "║ │3   ║",
+                "╚═╧════╝");
+        }
+
+        private static void RenderOn1x1 (Grid grid)
         {
             grid.GenerateVisualTree();
             grid.Measure(new Size(1, 1));
             grid.Arrange(new Rect(1, 1, 1, 1));
+            grid.Render(new ConsoleBuffer(1));
+        }
+
+        private static string GetRenderedText (Element element, int consoleWidth)
+        {
+            string text = ConsoleRenderer.RenderDocumentToText(
+                new Document { Children = { element } },
+                new TextRenderTarget(),
+                new Rect(0, 0, consoleWidth, Size.Infinity));
+            return text.Remove(text.Length - 2);
         }
 
         public class GridConfig

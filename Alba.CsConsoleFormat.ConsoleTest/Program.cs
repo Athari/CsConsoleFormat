@@ -116,10 +116,14 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
             //new ConsoleRenderTarget().Render(buffer);
             //new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BackgroundOverride = ConsoleColor.Black }.Render(buffer);
-            new HtmlRenderTarget(File.Create(@"../../Tmp/1.html"), new UTF8Encoding(false)).Render(buffer);
-            new AnsiRenderTarget(new StreamWriter(File.Create(@"../../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" }).Render(buffer);
-            new TextRenderTarget(File.Create(@"../../Tmp/1.txt")).Render(buffer);
-            new TextRenderTarget(File.Create(@"../../Tmp/1.asc"), Encoding.GetEncoding("ibm437")).Render(buffer);
+            using (var file = File.Create(@"../../Tmp/1.html"))
+                new HtmlRenderTarget(file, new UTF8Encoding(false)).Render(buffer);
+            using (var file = new StreamWriter(File.Create(@"../../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" })
+                new AnsiRenderTarget(file).Render(buffer);
+            using (var file = File.Create(@"../../Tmp/1.txt"))
+                new TextRenderTarget(file).Render(buffer);
+            using (var file = File.Create(@"../../Tmp/1.asc"))
+                new TextRenderTarget(file, Encoding.GetEncoding("ibm437")).Render(buffer);
 
             /*var text = new TextRenderTarget();
             text.Render(buffer);
