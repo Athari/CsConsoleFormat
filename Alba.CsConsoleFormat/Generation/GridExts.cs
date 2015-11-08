@@ -6,7 +6,7 @@ namespace Alba.CsConsoleFormat
     public static class GridExts
     {
         public static T AddColumns<T> (this T @this, params object[] columns)
-            where T : Grid, new()
+            where T : Grid
         {
             foreach (object column in columns) {
                 if (column == null)
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat
         }
 
         private static void AddColumn<T> (this T @this, object child)
-            where T : Grid, new()
+            where T : Grid
         {
             if (child is GridLength) {
                 var gridLength = (GridLength)child;

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class GridTests
+    public class GridTests : ElementTestsBase
     {
         [Fact]
         public void NoColumnsNoChildren ()
@@ -223,23 +223,6 @@ namespace Alba.CsConsoleFormat.Tests
                 "╟─┼──┴─╢",
                 "║ │3   ║",
                 "╚═╧════╝");
-        }
-
-        private static void RenderOn1x1 (Grid grid)
-        {
-            grid.GenerateVisualTree();
-            grid.Measure(new Size(1, 1));
-            grid.Arrange(new Rect(1, 1, 1, 1));
-            grid.Render(new ConsoleBuffer(1));
-        }
-
-        private static string GetRenderedText (Element element, int consoleWidth)
-        {
-            string text = ConsoleRenderer.RenderDocumentToText(
-                new Document { Children = { element } },
-                new TextRenderTarget(),
-                new Rect(0, 0, consoleWidth, Size.Infinity));
-            return text.Remove(text.Length - 2);
         }
 
         public class GridConfig

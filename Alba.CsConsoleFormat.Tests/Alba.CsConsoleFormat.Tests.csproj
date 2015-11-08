@@ -70,7 +70,9 @@
   <ItemGroup>
     <Compile Include="Core\PointTests.cs" />
     <Compile Include="Elements\Containers\GridTests.cs" />
+    <Compile Include="Elements\Containers\InlineContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ElementTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

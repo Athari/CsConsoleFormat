@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Alba.CsConsoleFormat.Framework.Text;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
@@ -103,7 +102,7 @@ namespace Alba.CsConsoleFormat
                 _wrapPos = -1;
             }
 
-            [UsedImplicitly, SuppressMessage ("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+            [UsedImplicitly, ExcludeFromCodeCoverage, SuppressMessage ("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
             private IEnumerable<object> DebugLines => _lines.Select(l => new {
                 text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
                 len = GetLineLength(l),
@@ -140,8 +139,10 @@ namespace Alba.CsConsoleFormat
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
                     if (c.IsNewLine)
                         StartNewLine();
-                    else if (!c.IsZeroWidth)
+                    else if (!c.IsZeroWidth && _curLineLength < AvailableWidth) {
                         _curSeg.TextBuilder.Append(c);
+                        _curLineLength++;
+                    }
                 }
                 AppendCurrentSegment();
             }
@@ -153,10 +154,13 @@ namespace Alba.CsConsoleFormat
                     CharInfo c = CharInfo.From(sourceSeg.Text[i]);
                     Debug.Assert(_curLineLength == GetLineLength(_curLine) + _curSeg.TextLength);
                     if (!c.IsZeroWidth && _curLineLength >= AvailableWidth) {
-                        // Proceed as if the current char is '\n', repeat with current char on the next iteration.
+                        // Proceed as if the current char is '\n', repeat with current char on the next iteration
+                        // (unless current char is actually '\n', then it is consumed on wrap).
+                        if (!c.IsNewLine) {
+                            i--;
+                            _curLineLength--;
+                        }
                         c = CharInfo.From('\n');
-                        i--;
-                        _curLineLength--;
                     }
                     if (c.IsNewLine)
                         StartNewLine();
@@ -229,44 +233,32 @@ namespace Alba.CsConsoleFormat
                 string textBeforeWrap, textAfterWrap;
                 SplitWrappedText(wrappedText, out textBeforeWrap, out textAfterWrap);
 
+                // Put textBeforeWrap into wrappedSeg.
                 if (wrappedText != textBeforeWrap) {
                     InlineSegment wrappedSeg = _curLine[_wrapSegmentIndex];
                     wrappedSeg.TextBuilder.Clear();
                     wrappedSeg.TextBuilder.Append(textBeforeWrap);
                 }
 
-                List<InlineSegment> prevLine = _curLine;
+                // Remember extra segments after the wrapped segment to add to the last line later. Total length guaranteed to be short enough.
+                List<InlineSegment> segmentsAfterWrap = _curLine.Skip(_wrapSegmentIndex + 1).ToList();
+                _curLine.RemoveRange(_wrapSegmentIndex + 1, segmentsAfterWrap.Count);
+
+                // Start new line, ignoring current segment (it is being wrapped).
                 _curSeg = null;
                 StartNewLine();
 
-                _curLine.AddRange(prevLine.Skip(_wrapSegmentIndex + 1));
-                _curLineLength = GetLineLength(_curLine);
-                prevLine.RemoveRange(_wrapSegmentIndex + 1, prevLine.Count - _wrapSegmentIndex - 1);
-
+                // Put textAfterWrap on new line.
                 if (textAfterWrap.Length > 0) {
-                    if (_curLineLength + textAfterWrap.Length <= AvailableWidth) {
-                        InlineSegment nextSeg = InlineSegment.CreateWithBuilder(textAfterWrap.Length);
-                        nextSeg.TextBuilder.Append(textAfterWrap);
-                        _curLine.Add(nextSeg);
-                        _curLineLength += textAfterWrap.Length;
-                    }
-                    else {
-                        int lineOffset = _curLineLength;
-                        for (int i = 0; i < textAfterWrap.Length; i += AvailableWidth) {
-                            string nextSegText = textAfterWrap.SubstringSafe(i * AvailableWidth, AvailableWidth - lineOffset);
-                            InlineSegment nextSeg = InlineSegment.CreateWithBuilder(nextSegText.Length);
-                            nextSeg.TextBuilder.Append(nextSegText);
-                            _curLine.Add(nextSeg);
-                            if (nextSegText.Length >= AvailableWidth) {
-                                StartNewLine();
-                                lineOffset = 0;
-                            }
-                            else {
-                                _curLineLength = nextSegText.Length;
-                            }
-                        }
-                    }
+                    Debug.Assert(textAfterWrap.Length <= AvailableWidth);
+                    InlineSegment nextSeg = InlineSegment.CreateWithBuilder(textAfterWrap.Length);
+                    nextSeg.TextBuilder.Append(textAfterWrap);
+                    _curLine.Add(nextSeg);
+                    _curLineLength += textAfterWrap.Length;
                 }
+
+                _curLine.AddRange(segmentsAfterWrap);
+                _curLineLength += GetLineLength(segmentsAfterWrap);
 
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
             }

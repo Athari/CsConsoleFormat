@@ -8,20 +8,20 @@ namespace Alba.CsConsoleFormat
     {
         [SuppressMessage ("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This method is for advanced cases.")]
         public static T Name<T> (this T @this, out T element)
-            where T : Element, new()
+            where T : Element
         {
             element = @this;
             return @this;
         }
 
         public static T AddChildren<T> (this T @this, params object[] children)
-            where T : Element, new()
+            where T : Element
         {
             foreach (object child in children) {
                 if (child == null)
                     continue;
                 var enumerable = child as IEnumerable;
-                if (enumerable != null) {
+                if (enumerable != null && !(enumerable is string)) {
                     foreach (object subchild in enumerable)
                         @this.AddChildren(subchild);
                 }
@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat
         }
 
         private static void AddChild<T> (this T @this, object child)
-            where T : Element, new()
+            where T : Element
         {
             var text = child as string;
             if (text != null) {
