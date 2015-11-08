@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Alba.CsConsoleFormat.Testing.FluentAssertions;
 using FluentAssertions;
 using Xunit;
@@ -8,8 +7,6 @@ namespace Alba.CsConsoleFormat.Tests
 {
     public class WrapTests : ElementTestsBase
     {
-        private char _fillChar = 'a';
-
         [Fact]
         public void NegativeItemWidth ()
         {
@@ -194,29 +191,6 @@ namespace Alba.CsConsoleFormat.Tests
             GetRenderedText(wrap, 4).Should().BeLines(
                 "abcd",
                 "fghi");
-        }
-
-        private Div CreateRectDiv (int width, int height)
-        {
-            var sb = new StringBuilder();
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++)
-                    sb.Append(_fillChar++);
-                sb.AppendLine();
-            }
-            int newLineLength = Environment.NewLine.Length;
-            sb.Remove(sb.Length - newLineLength, newLineLength);
-
-            return new Div {
-                TextWrap = TextWrapping.NoWrap,
-                Width = width,
-                Height = height,
-                Align = HorizontalAlignment.Left,
-                VAlign = VerticalAlignment.Top,
-                Children = {
-                    new Span(sb.ToString())
-                }
-            };
         }
     }
 }
