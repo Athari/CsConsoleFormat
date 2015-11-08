@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Xaml;
@@ -10,7 +9,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public class BindableObject : ISupportInitialize, IAttachedPropertyStore
+    public abstract class BindableObject : IAttachedPropertyStore
     {
         private object _dataContext;
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
@@ -44,7 +43,9 @@ namespace Alba.CsConsoleFormat
             if (getter == null)
                 throw new ArgumentNullException(nameof(getter));
             if (_getters == null)
-                _getters = new SortedList<PropertyInfo, GetExpressionBase>();
+                _getters = new Dictionary<PropertyInfo, GetExpressionBase>();
+            getter.TargetObject = this;
+            getter.TargetType = prop.PropertyType;
             _getters[prop] = getter;
         }
 
@@ -62,22 +63,6 @@ namespace Alba.CsConsoleFormat
         {
             return (BindableObject)MemberwiseClone();
         }
-
-        void ISupportInitialize.BeginInit ()
-        {
-            BeginInit();
-        }
-
-        void ISupportInitialize.EndInit ()
-        {
-            EndInit();
-        }
-
-        protected virtual void BeginInit ()
-        {}
-
-        protected virtual void EndInit ()
-        {}
 
         [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         int IAttachedPropertyStore.PropertyCount => _attachedProperties?.Count ?? 0;

@@ -24,8 +24,8 @@ namespace Alba.CsConsoleFormat.Markup
         public object Source { get; set; }
         public string Path { get; set; }
         public CultureInfo Culture { get; set; }
-        public BindableObject TargetObject { get; set; }
-        public Type TargetType { get; set; }
+        protected internal BindableObject TargetObject { get; set; }
+        protected internal Type TargetType { get; set; }
 
         protected CultureInfo EffectiveCulture =>
             _effectiveCulture ?? (_effectiveCulture = Culture

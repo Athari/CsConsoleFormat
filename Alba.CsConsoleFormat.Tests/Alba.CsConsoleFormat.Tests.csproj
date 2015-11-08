@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\PointTests.cs" />
+    <Compile Include="Elements\Base\BindableObjectTests.cs" />
     <Compile Include="Elements\Containers\GridTests.cs" />
     <Compile Include="Elements\Containers\InlineContainerTests.cs" />
     <Compile Include="Elements\Containers\StackTests.cs" />
@@ -89,6 +90,7 @@
       <Name>Alba.CsConsoleFormat</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
