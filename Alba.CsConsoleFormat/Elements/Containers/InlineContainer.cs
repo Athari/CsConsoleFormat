@@ -380,6 +380,7 @@ namespace Alba.CsConsoleFormat
             public static InlineSegment CreateWithBuilder (int length) =>
                 new InlineSegment(null, new StringBuilder(length));
 
+            [ExcludeFromCodeCoverage]
             public override string ToString ()
             {
                 if (TextBuilder != null)

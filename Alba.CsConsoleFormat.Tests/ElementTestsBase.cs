@@ -2,12 +2,12 @@
 {
     public class ElementTestsBase
     {
-        protected static void RenderOn1x1 (Grid grid)
+        protected static void RenderOn1x1 (BlockElement element)
         {
-            grid.GenerateVisualTree();
-            grid.Measure(new Size(1, 1));
-            grid.Arrange(new Rect(1, 1, 1, 1));
-            grid.Render(new ConsoleBuffer(1));
+            element.GenerateVisualTree();
+            element.Measure(new Size(1, 1));
+            element.Arrange(new Rect(1, 1, 1, 1));
+            element.Render(new ConsoleBuffer(1));
         }
 
         protected static string GetRenderedText (Element element, int consoleWidth)
