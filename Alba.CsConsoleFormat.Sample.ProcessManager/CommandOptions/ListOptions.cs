@@ -1,0 +1,13 @@
+﻿using CommandLine;
+
+namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
+{
+    internal class ListOptions
+    {
+        [Option ('n', "name", HelpText = "If specified, filter by the specified process name.")]
+        public string ProcessName { get; set; }
+
+        [Option ('m', "machine", DefaultValue = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes (Default: .).")]
+        public string MachineName { get; set; }
+    }
+}

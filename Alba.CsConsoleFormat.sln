@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Testing", "Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj", "{35DB30E3-3113-43BB-9748-1738D0D76D16}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC13AEB-C99F-4A75-A5EB-366AF8636C32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.ProcessManager", "Alba.CsConsoleFormat.Sample.ProcessManager\Alba.CsConsoleFormat.Sample.ProcessManager.csproj", "{99A14C98-3634-47FC-8919-975FC3757B57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,12 +69,19 @@ Global
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A14C98-3634-47FC-8919-975FC3757B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A14C98-3634-47FC-8919-975FC3757B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A14C98-3634-47FC-8919-975FC3757B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A14C98-3634-47FC-8919-975FC3757B57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{D5446AC0-E4AD-44B2-AC2D-B1ED24667586} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
+		{967BD562-1463-4851-8941-B48BA96B0FD8} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
 		{4184EFCD-D6BA-485E-B693-039D796A1979} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 		{35DB30E3-3113-43BB-9748-1738D0D76D16} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
+		{99A14C98-3634-47FC-8919-975FC3757B57} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
 	EndGlobalSection
 EndGlobal
