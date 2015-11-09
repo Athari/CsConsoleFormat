@@ -45,5 +45,15 @@ namespace Alba.CsConsoleFormat.Tests
                 }
             };
         }
+
+        protected class Fill : Div
+        {
+            public char Char { get; set; }
+
+            public override void Render (ConsoleBuffer buffer)
+            {
+                buffer.FillForegroundRectangle(new Rect(RenderSize), null, Char);
+            }
+        }
     }
 }
