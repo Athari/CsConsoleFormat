@@ -16,19 +16,19 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void Flower ()
+        public void RenderSpiral ()
         {
             var dock = new Dock()
                 .AddChildren(
-                    new Fill { Char = 'a', Width = 4, Margin = new Thickness(1, 1, 0, 1), Padding = 1 }
+                    new Fill { Char = 'a', Width = 4, Margin = new Thickness(1, 1, 0, 1) }
                         .Set(Dock.ToProperty, DockTo.Left),
-                    new Fill { Char = 'b', Height = 3, Margin = new Thickness(1, 1, 1, 0), Padding = 1 }
+                    new Fill { Char = 'b', Height = 3, Margin = new Thickness(1, 1, 1, 0) }
                         .Set(Dock.ToProperty, DockTo.Top),
-                    new Fill { Char = 'c', Width = 2, Margin = new Thickness(0, 1, 1, 1), Padding = 1 }
+                    new Fill { Char = 'c', Width = 2, Margin = new Thickness(0, 1, 1, 1) }
                         .Set(Dock.ToProperty, DockTo.Right),
-                    new Fill { Char = 'd', Height = 1, Margin = new Thickness(1, 0, 1, 1), Padding = 1 }
+                    new Fill { Char = 'd', Height = 1, Margin = new Thickness(1, 0, 1, 1) }
                         .Set(Dock.ToProperty, DockTo.Bottom),
-                    new Fill { Char = 'e', Margin = 1, Padding = 1 }
+                    new Fill { Char = 'e', Margin = 1, Width = 2, Height = 2 }
                 );
 
             GetRenderedText(dock, 12).Should().BeLines(

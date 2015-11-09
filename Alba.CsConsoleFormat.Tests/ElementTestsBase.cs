@@ -46,7 +46,7 @@ namespace Alba.CsConsoleFormat.Tests
             };
         }
 
-        protected class Fill : Div
+        protected class Fill : BlockElement
         {
             public char Char { get; set; }
 
