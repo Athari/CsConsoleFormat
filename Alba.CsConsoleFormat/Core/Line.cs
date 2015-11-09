@@ -83,7 +83,7 @@ namespace Alba.CsConsoleFormat
         public override bool Equals (object obj) => obj is Line && Equals((Line)obj);
         public override int GetHashCode () => X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();
 
-        public override string ToString () => Invariant($"{X} {Y} {(IsHorizontal ? Width : Height)} {(IsHorizontal ? "Horizontal" : "Vertical")}");
+        public override string ToString () => Invariant($"{X} {Y} {(IsHorizontal ? Width : Height)} {(IsHorizontal ? "Horizontal" : IsVertical ? "Vertical" : "Empty")}");
 
         public static bool operator == (Line left, Line right) => left.Equals(right);
         public static bool operator != (Line left, Line right) => !left.Equals(right);

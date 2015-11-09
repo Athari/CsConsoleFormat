@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\LineTests.cs" />
     <Compile Include="Core\PointTests.cs" />
     <Compile Include="Elements\Base\BindableObjectTests.cs" />
     <Compile Include="Elements\Containers\GridTests.cs" />

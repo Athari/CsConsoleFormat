@@ -22,7 +22,6 @@ namespace Alba.CsConsoleFormat.Tests
 
         [Fact]
         [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
-        [SuppressMessage ("ReSharper", "RedundantAssignment")]
         [SuppressMessage ("ReSharper", "UnusedVariable")]
         public void NullArguments ()
         {
