@@ -71,6 +71,7 @@
     <Compile Include="Core\LineTests.cs" />
     <Compile Include="Core\PointTests.cs" />
     <Compile Include="Elements\Base\BindableObjectTests.cs" />
+    <Compile Include="Elements\BorderTests.cs" />
     <Compile Include="Elements\Containers\GridTests.cs" />
     <Compile Include="Elements\Containers\InlineContainerTests.cs" />
     <Compile Include="Elements\Containers\StackTests.cs" />
