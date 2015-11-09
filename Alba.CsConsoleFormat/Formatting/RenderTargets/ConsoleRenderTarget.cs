@@ -25,17 +25,14 @@ namespace Alba.CsConsoleFormat
                     ConsoleChar[] charsLine = buffer.GetLine(iy);
 
                     for (int ix = 0; ix < buffer.Width; ix++) {
-                        ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
+                        ConsoleChar chr = charsLine[ix];
+                        ConsoleColor foreColor = ColorOverride ?? chr.ForegroundColor;
                         if (foreColor != currentForeColor)
                             Console.ForegroundColor = currentForeColor = foreColor;
-                        ConsoleColor backColor = BackgroundOverride ?? charsLine[ix].BackgroundColor;
+                        ConsoleColor backColor = BackgroundOverride ?? chr.BackgroundColor;
                         if (backColor != currentBackColor)
                             Console.BackgroundColor = currentBackColor = backColor;
-                        char chr = charsLine[ix].Char;
-                        LineChar lineChr = charsLine[ix].LineChar;
-                        if (!lineChr.IsEmpty() && chr == '\0')
-                            chr = buffer.GetLineChar(ix, iy);
-                        Console.Write(buffer.SafeChar(chr));
+                        Console.Write(chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
                     }
                     if (isManualWrap)
                         Console.WriteLine();

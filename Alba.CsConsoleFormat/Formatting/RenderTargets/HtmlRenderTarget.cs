@@ -64,18 +64,16 @@ namespace Alba.CsConsoleFormat
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
 
                 for (int ix = 0; ix < buffer.Width; ix++) {
-                    ConsoleColor foreColor = ColorOverride ?? charsLine[ix].ForegroundColor;
-                    ConsoleColor backColor = BackgroundOverride ?? charsLine[ix].BackgroundColor;
+                    ConsoleChar chr = charsLine[ix];
+                    ConsoleColor foreColor = ColorOverride ?? chr.ForegroundColor;
+                    ConsoleColor backColor = BackgroundOverride ?? chr.BackgroundColor;
                     if (foreColor != currentForeColor || backColor != currentBackColor) {
                         Writer.Write($"</span><span style=\"color:#{ColorMap[(int)foreColor]};background:#{ColorMap[(int)backColor]}\">");
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
                     }
-                    char chr = charsLine[ix].Char;
-                    LineChar lineChr = charsLine[ix].LineChar;
-                    if (!lineChr.IsEmpty() && chr == '\0')
-                        chr = buffer.GetLineChar(ix, iy);
-                    Writer.Write(WebUtility.HtmlEncode(buffer.SafeChar(chr).ToString()));
+                    char c = chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
+                    Writer.Write(WebUtility.HtmlEncode(c.ToString()));
                 }
 
                 Writer.Write("<br/>");

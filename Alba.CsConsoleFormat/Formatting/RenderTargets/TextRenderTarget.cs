@@ -22,11 +22,8 @@ namespace Alba.CsConsoleFormat
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
                 for (int ix = 0; ix < buffer.Width; ix++) {
-                    char chr = charsLine[ix].Char;
-                    LineChar lineChr = charsLine[ix].LineChar;
-                    if (!lineChr.IsEmpty() && chr == '\0')
-                        chr = buffer.GetLineChar(ix, iy);
-                    Writer.Write(buffer.SafeChar(chr));
+                    ConsoleChar chr = charsLine[ix];
+                    Writer.Write(chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
                 }
                 Writer.WriteLine();
             }

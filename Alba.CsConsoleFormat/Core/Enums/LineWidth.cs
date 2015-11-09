@@ -8,8 +8,8 @@ namespace Alba.CsConsoleFormat
     public enum LineWidth
     {
         None = 0,
-        Single = 1,
-        Wide = 2,
+        Single = LineChar.Horizontal,
+        Wide = LineChar.Horizontal | LineChar.HorizontalWide,
     }
 
     internal static class LineWidthExts

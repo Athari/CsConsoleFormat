@@ -78,6 +78,7 @@
     <Compile Include="Elements\Containers\InlineContainerTests.cs" />
     <Compile Include="Elements\Containers\StackTests.cs" />
     <Compile Include="Elements\Containers\WrapTests.cs" />
+    <Compile Include="Formatting\ConsoleBufferTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ElementTestsBase.cs" />
   </ItemGroup>

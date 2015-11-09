@@ -18,6 +18,22 @@ namespace Alba.CsConsoleFormat
             set { _char = value; }
         }
 
+        public bool HasChar => Char != '\0';
+
+        public char PrintableChar
+        {
+            get
+            {
+                if (_char < ' ')
+                    return ' ';
+                if (_char == Chars.NoBreakHyphen || _char == Chars.SoftHyphen)
+                    return '-';
+                if (_char == Chars.NoBreakSpace || _char == Chars.ZeroWidthSpace)
+                    return ' ';
+                return _char;
+            }
+        }
+
         public ConsoleColor ForegroundColor
         {
             get { return (ConsoleColor)GetBits(_colors, 0, 0xF); }
@@ -61,7 +77,7 @@ namespace Alba.CsConsoleFormat
         public override string ToString () =>
             string.Format(CultureInfo.InvariantCulture, "{0}{1} ({2} @ {3})",
                 _char >= ' ' ? _char.ToString() : "#" + (int)_char,
-                (LineChar != LineChar.None ? Invariant($" ({LineWidthHorizontal}x{LineWidthVertical})") : ""),
+                (LineChar != LineChar.None ? Invariant($" ({LineWidthHorizontal} x {LineWidthVertical})") : ""),
                 ForegroundColor,
                 BackgroundColor);
 

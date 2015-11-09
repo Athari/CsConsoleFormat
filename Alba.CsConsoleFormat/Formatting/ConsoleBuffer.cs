@@ -50,8 +50,7 @@ namespace Alba.CsConsoleFormat
             for (int ix = x1; ix < x2; ix++) {
                 if (color != null)
                     charsLine[ix].ForegroundColor = color.Value;
-                // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
-                charsLine[ix].LineWidthHorizontal = lineWidth | LineWidth.Single;
+                charsLine[ix].LineWidthHorizontal = lineWidth;
             }
         }
 
@@ -67,8 +66,7 @@ namespace Alba.CsConsoleFormat
                 ConsoleChar[] charsLine = GetLine(iy);
                 if (color != null)
                     charsLine[x].ForegroundColor = color.Value;
-                // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
-                charsLine[x].LineWidthVertical = lineWidth | LineWidth.Single;
+                charsLine[x].LineWidthVertical = lineWidth;
             }
         }
 
@@ -97,10 +95,7 @@ namespace Alba.CsConsoleFormat
 
         public void DrawRectangle (int x, int y, int width, int height, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)
         {
-            DrawHorizontalLine(x, y, width, color, lineWidth);
-            DrawHorizontalLine(x, y + height - 1, width, color, lineWidth);
-            DrawVerticalLine(x, y, height, color, lineWidth);
-            DrawVerticalLine(x + width - 1, y, height, color, lineWidth);
+            DrawRectangle(x, y, width, height, color, new LineThickness(lineWidth));
         }
 
         public void DrawRectangle (Rect rect, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)
@@ -251,7 +246,7 @@ namespace Alba.CsConsoleFormat
             if (processChar == null)
                 throw new ArgumentNullException(nameof(processChar));
             if (colorMap.Count != ColorMaps.ConsoleColorCount)
-                throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.");
+                throw new ArgumentException("colorMap must contain 16 elements corresponding to each ConsoleColor.", nameof(colorMap));
             OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + width, y1 = y, y2 = y + height;
             if (!ClipRectangle(ref x1, ref y1, ref x2, ref y2))
@@ -342,17 +337,6 @@ namespace Alba.CsConsoleFormat
                 charTop: GetChar(x, y - 1)?.LineChar ?? LineChar.None,
                 charRight: GetChar(x + 1, y)?.LineChar ?? LineChar.None,
                 charBottom: GetChar(x, y + 1)?.LineChar ?? LineChar.None);
-        }
-
-        char IConsoleBufferSource.SafeChar (char c)
-        {
-            if (c < ' ')
-                return ' ';
-            if (c == Chars.NoBreakHyphen || c == Chars.SoftHyphen)
-                return '-';
-            if (c == Chars.NoBreakSpace || c == Chars.ZeroWidthSpace)
-                return ' ';
-            return c;
         }
     }
 }

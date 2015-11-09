@@ -86,8 +86,9 @@ namespace Alba.CsConsoleFormat.Presentation
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
                 for (int ix = 0; ix < buffer.Width; ix++) {
-                    ConsoleColor foreColor = charsLine[ix].ForegroundColor;
-                    ConsoleColor backColor = charsLine[ix].BackgroundColor;
+                    ConsoleChar chr = charsLine[ix];
+                    ConsoleColor foreColor = chr.ForegroundColor;
+                    ConsoleColor backColor = chr.BackgroundColor;
                     if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
@@ -97,11 +98,7 @@ namespace Alba.CsConsoleFormat.Presentation
                             Background = ConsoleBrushes[backColor],
                         };
                     }
-                    char chr = charsLine[ix].Char;
-                    LineChar lineChr = charsLine[ix].LineChar;
-                    if (!lineChr.IsEmpty() && chr == '\0')
-                        chr = buffer.GetLineChar(ix, iy);
-                    text.Text += buffer.SafeChar(chr);
+                    text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
                 AppendRunIfNeeded(ref text, par);
                 if (iy + 1 < buffer.Height)
@@ -126,8 +123,9 @@ namespace Alba.CsConsoleFormat.Presentation
             for (int iy = 0; iy < buffer.Height; iy++) {
                 ConsoleChar[] charsLine = buffer.GetLine(iy);
                 for (int ix = 0; ix < buffer.Width; ix++) {
-                    ConsoleColor foreColor = charsLine[ix].ForegroundColor;
-                    ConsoleColor backColor = charsLine[ix].BackgroundColor;
+                    ConsoleChar chr = charsLine[ix];
+                    ConsoleColor foreColor = chr.ForegroundColor;
+                    ConsoleColor backColor = chr.BackgroundColor;
                     if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
@@ -140,11 +138,7 @@ namespace Alba.CsConsoleFormat.Presentation
                         WpfCanvas.SetLeft(text, ix * charSize.Width);
                         WpfCanvas.SetTop(text, iy * charSize.Height);
                     }
-                    char chr = charsLine[ix].Char;
-                    LineChar lineChr = charsLine[ix].LineChar;
-                    if (!lineChr.IsEmpty() && chr == '\0')
-                        chr = buffer.GetLineChar(ix, iy);
-                    text.Text += buffer.SafeChar(chr);
+                    text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
                 AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
             }
