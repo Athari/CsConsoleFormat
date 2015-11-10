@@ -25,6 +25,7 @@ namespace Alba.CsConsoleFormat
         private List<int> _maxColumnBorders;
 
         public bool AutoPosition { get; set; } = true;
+        public ConsoleColor? StrokeColor { get; set; }
         public ElementCollection<Column> Columns { get; }
         internal ElementCollection<Row> Rows { get; }
 
@@ -191,7 +192,7 @@ namespace Alba.CsConsoleFormat
         {
             foreach (Column gridColumn in Columns.Where(c => c.Width.IsAuto)) {
                 gridColumn.ActualWidth = gridColumn.MinWidth;
-                Size maxCellSize = new Size(availableWidth, Size.Infinity);
+                Size maxCellSize = new Size(Min(availableWidth, gridColumn.MaxWidth), Size.Infinity);
                 foreach (Row gridRow in Rows) {
                     BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
                     if (cell != null && GetColumnSpan(cell) == 1) {
@@ -306,13 +307,14 @@ namespace Alba.CsConsoleFormat
         {
             base.Render(buffer);
             // Draw borders.
+            ConsoleColor strokeColor = StrokeColor ?? EffectiveColor;
             var borderRect = new Rect();
             foreach (Row gridRow in Rows) {
                 borderRect.Height = gridRow.ActualHeight + _maxRowBorders[gridRow.Index] + _maxRowBorders[gridRow.Index + 1];
                 borderRect.X = 0;
                 foreach (Column gridColumn in Columns) {
                     borderRect.Width = gridColumn.ActualWidth + _maxColumnBorders[gridColumn.Index] + _maxColumnBorders[gridColumn.Index + 1];
-                    buffer.DrawRectangle(borderRect, EffectiveColor,
+                    buffer.DrawRectangle(borderRect, strokeColor,
                         new LineThickness(
                             _columnBorders[gridRow.Index][gridColumn.Index],
                             _rowBorders[gridRow.Index][gridColumn.Index],
