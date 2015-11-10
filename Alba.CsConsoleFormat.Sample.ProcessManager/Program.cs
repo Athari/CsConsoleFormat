@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     InvokeHelp(options.Help);
             }
             catch (Exception ex) {
-                ConsoleRenderer.RenderDocument(_view.Error(ex.ToString(), ex.Message));
+                ConsoleRenderer.RenderDocument(_view.Error(ex.Message, ex.ToString()));
             }
             finally {
                 if (Debugger.IsAttached) {
@@ -47,9 +47,12 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeList (ListOptions list)
         {
-            Process[] processes = list.ProcessName != null
+            IEnumerable<Process> processes = list.ProcessName != null
                 ? Process.GetProcessesByName(list.ProcessName, list.MachineName)
                 : Process.GetProcesses(list.MachineName);
+            if (list.WithTitle)
+                processes = processes.Where(p => !string.IsNullOrWhiteSpace(p.MainWindowTitle));
+            processes = processes.OrderByDescending(p => p.StartTime);
             ConsoleRenderer.RenderDocument(_view.ProcessList(processes));
         }
 
@@ -75,8 +78,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             else {
                 var verb = typeof(Options).GetProperties()
                     .Select(p => new { property = p, attr = p.GetCustomAttribute<VerbOptionAttribute>() })
-                    .Where(o => o.attr != null)
-                    .FirstOrDefault(o => o.attr.LongName == help.Verb);
+                    .FirstOrDefault(o => o.attr?.LongName == help.Verb);
                 if (verb == null) {
                     ConsoleRenderer.RenderDocument(_view.Error($"Verb {help.Verb} not supported."));
                     return;

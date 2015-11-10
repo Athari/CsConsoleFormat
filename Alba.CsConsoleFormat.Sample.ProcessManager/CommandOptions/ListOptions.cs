@@ -9,5 +9,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 
         [Option ('m', "machine", DefaultValue = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes (Default: .).")]
         public string MachineName { get; set; }
+
+        [Option ("withtitle", HelpText = "If specified, display only processes with non-empty main window title.")]
+        public bool WithTitle { get; set; }
     }
 }

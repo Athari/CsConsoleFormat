@@ -8,15 +8,20 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal class View
     {
-        public Document Error (string message, string title = null)
+        public Document Error (string message, string extra = null)
         {
             return new Document { Background = Black }
                 .AddChildren(
-                    new Div { Color = Red }.AddChildren("Error:"),
-                    title != null
-                        ? new Div { Color = Red }.AddChildren(title)
+                    new Div { Color = Red }.AddChildren("Error"),
+                    message != null
+                        ? new Div { Color = White }.AddChildren(message)
                         : null,
-                    new Div { Color = White }.AddChildren(message)
+                    extra != null
+                        ? new object[] {
+                            "",
+                            new Div { Color = Gray }.AddChildren(extra)
+                        }
+                        : null
                 );
         }
 
@@ -28,12 +33,13 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         public Document ProcessList (IEnumerable<Process> processes)
         {
-            var strokeHeader = new LineThickness(LineWidth.None, LineWidth.Single);
-            var marginRight = new Thickness(0, 0, 1, 0);
+            var strokeHeader = new LineThickness(LineWidth.None, LineWidth.Wide);
+            var strokeRight = new LineThickness(LineWidth.None, LineWidth.None, LineWidth.Single, LineWidth.None);
+            var strokeBottom = new LineThickness(LineWidth.None, LineWidth.None, LineWidth.None, LineWidth.Wide);
 
-            return new Document { Background = Black, Color = White }
+            return new Document { Background = Black, Color = Gray }
                 .AddChildren(
-                    new Grid { Stroke = LineThickness.None }
+                    new Grid { Stroke = strokeBottom, StrokeColor = DarkGray }
                         .AddColumns(
                             new Column { Width = GridLength.Auto },
                             new Column { Width = GridLength.Auto, MaxWidth = 20 },
@@ -41,23 +47,23 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                             new Column { Width = GridLength.Auto }
                         )
                         .AddChildren(
-                            new Cell { Stroke = strokeHeader }
+                            new Cell { Stroke = strokeHeader, Color = White }
                                 .AddChildren("Id"),
-                            new Cell { Stroke = strokeHeader }
+                            new Cell { Stroke = strokeHeader, Color = White }
                                 .AddChildren("Name"),
-                            new Cell { Stroke = strokeHeader }
+                            new Cell { Stroke = strokeHeader, Color = White }
                                 .AddChildren("Main Window Title"),
-                            new Cell { Stroke = strokeHeader }
+                            new Cell { Stroke = strokeHeader, Color = White }
                                 .AddChildren("Private Memory"),
-                            processes.Select(p => new[] {
-                                new Div { Margin = marginRight }
-                                    .AddChildren(p.Id),
-                                new Div { Margin = marginRight, Color = Yellow, TextWrap = TextWrapping.CharWrap }
-                                    .AddChildren(p.ProcessName),
-                                new Div { Margin = marginRight, MaxHeight = 1 }
-                                    .AddChildren(p.MainWindowTitle),
-                                new Div { Align = HorizontalAlignment.Right }
-                                    .AddChildren(p.PrivateMemorySize64.ToString("n0")),
+                            processes.Select(process => new[] {
+                                new Cell { Stroke = strokeRight }
+                                    .AddChildren(process.Id),
+                                new Cell { Stroke = strokeRight, Color = Yellow, TextWrap = TextWrapping.NoWrap }
+                                    .AddChildren(process.ProcessName),
+                                new Cell { Stroke = strokeRight, Color = White, TextWrap = TextWrapping.NoWrap }
+                                    .AddChildren(process.MainWindowTitle),
+                                new Cell { Stroke = LineThickness.None, Align = HorizontalAlignment.Right }
+                                    .AddChildren(process.PrivateMemorySize64.ToString("n0")),
                             })
                         )
                 );
@@ -72,21 +78,21 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     "",
                     new Grid { Stroke = LineThickness.None }
                         .AddColumns(
-                            new Column { Width = GridLength.Auto },
-                            new Column { Width = GridLength.Star(1) }
+                            GridLength.Auto,
+                            GridLength.Star(1)
                         )
                         .AddChildren(
-                            options.Select(o => new[] {
-                                new Div { Margin = new Thickness(1, 0, 2, 1), Color = Yellow }
-                                    .AddChildren(GetOptionSyntax(o)),
-                                new Div { Color = Gray }
-                                    .AddChildren(o.HelpText),
+                            options.Select(option => new[] {
+                                new Div { Margin = new Thickness(1, 0, 1, 1), Color = Yellow }
+                                    .AddChildren(GetOptionSyntax(option)),
+                                new Div { Margin = new Thickness(1, 0, 1, 1), Color = Gray }
+                                    .AddChildren(option.HelpText),
                             })
                         )
                 );
         }
 
-        private object GetOptionSyntax (BaseOptionAttribute option)
+        private static object GetOptionSyntax (BaseOptionAttribute option)
         {
             if (option is VerbOptionAttribute)
                 return option.LongName;
