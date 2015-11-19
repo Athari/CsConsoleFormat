@@ -8,6 +8,8 @@ echo ~ ProcessManager help list
 ProcessManager help list
 echo ~ ProcessManager help start
 ProcessManager help start
+echo ~ ProcessManager help --all
+ProcessManager help --all
 echo ~ ProcessManager help oops
 ProcessManager help oops
 

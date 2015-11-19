@@ -69,27 +69,44 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp (HelpOptions help)
         {
-            Type optionsType;
-            string instruction;
-            if (help.Verb == null) {
-                optionsType = typeof(Options);
-                instruction = "Syntax: ProcessManager.exe verb [options].\n\nAvailable verbs:";
+            string instruction = "Syntax: ProcessManager.exe verb [options].\n\nAvailable verbs:";
+            Type optionsType = typeof(Options);
+            if (help.All) {
+                var allOptions = GetOptions(optionsType)
+                    .SelectMany(
+                        verb => GetOptions(GetVerbTypeByName(optionsType, verb.LongName)),
+                        (verb, option) => new { verb, option })
+                    .GroupBy(pair => pair.verb, pair => pair.option, new BaseOptionAttributeLongNameEqualityComparer());
+                ConsoleRenderer.RenderDocument(_view.HelpAllOptionsList(allOptions, instruction));
             }
             else {
-                var verb = typeof(Options).GetProperties()
-                    .Select(p => new { property = p, attr = p.GetCustomAttribute<VerbOptionAttribute>() })
-                    .FirstOrDefault(o => o.attr?.LongName == help.Verb);
-                if (verb == null) {
-                    ConsoleRenderer.RenderDocument(_view.Error($"Verb {help.Verb} not supported."));
-                    return;
+                if (help.Verb != null) {
+                    instruction = $"Syntax: ProcessManager.exe {help.Verb} [options].\n\nAvailable options:";
+                    optionsType = GetVerbTypeByName(optionsType, help.Verb);
+                    if (optionsType == null) {
+                        ConsoleRenderer.RenderDocument(_view.Error($"Verb {help.Verb} not supported."));
+                        return;
+                    }
                 }
-                optionsType = verb.property.PropertyType;
-                instruction = $"Syntax: ProcessManager.exe {help.Verb} [options].\n\nAvailable options:";
+                ConsoleRenderer.RenderDocument(_view.HelpOptionsList(GetOptions(optionsType), instruction));
             }
-            IEnumerable<BaseOptionAttribute> options = optionsType.GetProperties()
+        }
+
+        private static Type GetVerbTypeByName (Type optionsType, string verbName) =>
+            optionsType.GetProperties()
+                .Select(property => new { property, attribute = property.GetCustomAttribute<VerbOptionAttribute>() })
+                .FirstOrDefault(o => o.attribute?.LongName == verbName)
+                ?.property.PropertyType;
+
+        private static IEnumerable<BaseOptionAttribute> GetOptions (Type optionsType) =>
+            optionsType.GetProperties()
                 .Select(p => p.GetCustomAttribute<BaseOptionAttribute>())
                 .Where(a => a != null);
-            ConsoleRenderer.RenderDocument(_view.HelpOptionsList(options, instruction));
+
+        private class BaseOptionAttributeLongNameEqualityComparer : IEqualityComparer<BaseOptionAttribute>
+        {
+            public bool Equals (BaseOptionAttribute x, BaseOptionAttribute y) => x.LongName == y.LongName;
+            public int GetHashCode (BaseOptionAttribute obj) => obj.LongName.GetHashCode();
         }
     }
 }

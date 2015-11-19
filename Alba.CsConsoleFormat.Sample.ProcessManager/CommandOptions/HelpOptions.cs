@@ -6,5 +6,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
     {
         [ValueOption (0)]
         public string Verb { get; set; }
+
+        [Option ("all", HelpText = "Display help for all verbs.")]
+        public bool All { get; set; }
     }
 }
