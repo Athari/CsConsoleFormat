@@ -80,6 +80,7 @@
     <Compile Include="Elements\Containers\WrapTests.cs" />
     <Compile Include="Formatting\ConsoleBufferTests.cs" />
     <Compile Include="Formatting\ConsoleRendererTests.cs" />
+    <Compile Include="Formatting\RenderTargets\HtmlRenderTargetTests.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBaseTests.cs" />
     <Compile Include="Framework\Reflection\DynamicCallerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

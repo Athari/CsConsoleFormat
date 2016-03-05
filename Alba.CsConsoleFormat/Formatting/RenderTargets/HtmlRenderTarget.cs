@@ -49,13 +49,17 @@ namespace Alba.CsConsoleFormat
             ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
 
             if (!BodyOnly) {
-                Writer.Write("<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"");
-                Writer.Write(Writer.Encoding.WebName);
-                Writer.Write("\">\n  <title>");
-                Writer.Write(WebUtility.HtmlEncode(PageTitle));
-                Writer.Write("</title>\n  <style>\n    pre { font: ");
-                Writer.Write(Font);
-                Writer.Write(" }\n  </style>\n</head>\n<body>\n");
+                Writer.Write($@"<!DOCTYPE html>
+                    <html>
+                    <head>
+                      <meta charset=""{Writer.Encoding.WebName}"">
+                      <title>{WebUtility.HtmlEncode(PageTitle)}</title>
+                      <style>
+                        pre {{ font: {Font} }}
+                      </style>
+                    </head>
+                    <body>
+                    ".Replace("\n                    ", "\n"));
             }
 
             Writer.Write("<pre><span>");
