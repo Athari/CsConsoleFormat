@@ -8,6 +8,8 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class TextRenderTargetBase : IRenderTarget, IDisposable
     {
+        private static readonly Encoding DefaultEncoding = new UnicodeEncoding(false, false);
+
         private readonly bool _leaveOpen;
 
         protected TextWriter Writer { get; private set; }
@@ -16,7 +18,7 @@ namespace Alba.CsConsoleFormat
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
-            Writer = new StreamWriter(output, encoding ?? Encoding.Unicode);
+            Writer = new StreamWriter(output, encoding ?? DefaultEncoding);
             _leaveOpen = leaveOpen;
         }
 
