@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Alba.CsConsoleFormat
 {
@@ -19,7 +20,13 @@ namespace Alba.CsConsoleFormat
                 throw new ArgumentNullException(nameof(buffer));
             ConsoleColor currentForeColor = Console.ForegroundColor, oldForeColor = currentForeColor;
             ConsoleColor currentBackColor = Console.BackgroundColor, oldBackColor = currentBackColor;
-            bool isManualWrap = buffer.Width < Console.BufferWidth;
+            bool isManualWrap;
+            try {
+                isManualWrap = buffer.Width < Console.BufferWidth;
+            }
+            catch (IOException) {
+                isManualWrap = true;
+            }
             try {
                 for (int iy = 0; iy < buffer.Height; iy++) {
                     ConsoleChar[] charsLine = buffer.GetLine(iy);

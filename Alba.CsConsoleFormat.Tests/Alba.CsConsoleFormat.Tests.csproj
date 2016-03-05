@@ -81,6 +81,7 @@
     <Compile Include="Formatting\ConsoleBufferTests.cs" />
     <Compile Include="Formatting\ConsoleRendererTests.cs" />
     <Compile Include="Formatting\RenderTargets\AnsiRenderTargetTests.cs" />
+    <Compile Include="Formatting\RenderTargets\ConsoleRenderTargetTests.cs" />
     <Compile Include="Formatting\RenderTargets\HtmlRenderTargetTests.cs" />
     <Compile Include="Formatting\RenderTargets\TextRenderTargetBaseTests.cs" />
     <Compile Include="Framework\Reflection\DynamicCallerTests.cs" />
