@@ -33,7 +33,7 @@ The code quickly becomes an unreadable mess. It's just not fun! In GUI, we have 
 
 *CsConsoleFormat to the rescue!*
 
-Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're three syntaxes, you can use any of them in any combination.
+Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're two syntaxes, you can use any of them in any combination.
 
 **XAML** (like WPF):
 
