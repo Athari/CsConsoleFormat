@@ -2,7 +2,7 @@ using CommandLine;
 
 namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
-    internal class Options
+    internal class RootOptions
     {
         [VerbOption ("list", HelpText = "List running processes.")]
         public ListOptions List { get; set; }

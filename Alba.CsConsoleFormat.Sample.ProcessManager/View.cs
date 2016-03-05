@@ -66,7 +66,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                         .AddChildren(options.Select(OptionNameAndHelp))
                 );
 
-        public Document HelpAllOptionsList (IEnumerable<IGrouping<BaseOptionAttribute, BaseOptionAttribute>> verbsWithOptions, string instruction) =>
+        public Document HelpAllOptionsList (ILookup<BaseOptionAttribute, BaseOptionAttribute> verbsWithOptions, string instruction) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(
                     new Span($"{instruction}\n") { Color = White },
@@ -94,16 +94,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
         {
             if (option is VerbOptionAttribute)
                 return option.LongName;
-            else if (option.ShortName != null) {
-                if (option.LongName != null)
-                    return $"--{option.LongName}, -{option.ShortName}";
-                else
-                    return $"-{option.ShortName}";
-            }
-            else if (option.LongName != null)
-                return $"--{option.LongName}";
-            else
-                return "";
+            return option.ShortName == null
+                ? $"--{option.LongName}"
+                : option.LongName == null
+                    ? $"-{option.ShortName}"
+                    : $"--{option.LongName}, -{option.ShortName}";
         }
     }
 }

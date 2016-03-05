@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Security;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
@@ -23,7 +22,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     return;
                 }
 
-                var options = new Options();
+                var options = new RootOptions();
                 if (!Parser.Default.ParseArguments(args, options, (s, o) => { }))
                     Environment.Exit(Parser.DefaultExitCodeFail);
 
@@ -69,44 +68,26 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp (HelpOptions help)
         {
-            string instruction = "Syntax: ProcessManager.exe verb [options].\n\nAvailable verbs:";
-            Type optionsType = typeof(Options);
+            string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {
-                var allOptions = GetOptions(optionsType)
-                    .SelectMany(
-                        verb => GetOptions(GetVerbTypeByName(optionsType, verb.LongName)),
-                        (verb, option) => new { verb, option })
-                    .GroupBy(pair => pair.verb, pair => pair.option, new BaseOptionAttributeLongNameEqualityComparer());
+                var allOptions = CommandLineOptions.GetAllOptions(typeof(RootOptions));
                 ConsoleRenderer.RenderDocument(_view.HelpAllOptionsList(allOptions, instruction));
+                return;
             }
-            else {
-                if (help.Verb != null) {
-                    instruction = $"Syntax: ProcessManager.exe {help.Verb} [options].\n\nAvailable options:";
-                    optionsType = GetVerbTypeByName(optionsType, help.Verb);
-                    if (optionsType == null) {
-                        ConsoleRenderer.RenderDocument(_view.Error($"Verb {help.Verb} not supported."));
-                        return;
-                    }
-                }
-                ConsoleRenderer.RenderDocument(_view.HelpOptionsList(GetOptions(optionsType), instruction));
+
+            Type optionsType = typeof(RootOptions);
+            if (help.Verb != null) {
+                instruction = $"Syntax: ProcessManager.exe {help.Verb} [options]\n\nAvailable {help.Verb} options:";
+                optionsType = CommandLineOptions.GetVerbTypeByName(optionsType, help.Verb);
             }
-        }
 
-        private static Type GetVerbTypeByName (Type optionsType, string verbName) =>
-            optionsType.GetProperties()
-                .Select(property => new { property, attribute = property.GetCustomAttribute<VerbOptionAttribute>() })
-                .FirstOrDefault(o => o.attribute?.LongName == verbName)
-                ?.property.PropertyType;
+            if (optionsType == null) {
+                ConsoleRenderer.RenderDocument(_view.Error($"Verb {help.Verb} not supported."));
+                return;
+            }
 
-        private static IEnumerable<BaseOptionAttribute> GetOptions (Type optionsType) =>
-            optionsType.GetProperties()
-                .Select(p => p.GetCustomAttribute<BaseOptionAttribute>())
-                .Where(a => a != null);
-
-        private class BaseOptionAttributeLongNameEqualityComparer : IEqualityComparer<BaseOptionAttribute>
-        {
-            public bool Equals (BaseOptionAttribute x, BaseOptionAttribute y) => x.LongName == y.LongName;
-            public int GetHashCode (BaseOptionAttribute obj) => obj.LongName.GetHashCode();
+            var options = CommandLineOptions.GetOptions(optionsType);
+            ConsoleRenderer.RenderDocument(_view.HelpOptionsList(options, instruction));
         }
     }
 }
