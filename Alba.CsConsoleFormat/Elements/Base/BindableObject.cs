@@ -57,7 +57,12 @@ namespace Alba.CsConsoleFormat
         }
 
         protected virtual void CloneOverride (BindableObject obj)
-        {}
+        {
+            if (obj._getters != null)
+                _getters = new Dictionary<PropertyInfo, GetExpressionBase>(obj._getters);
+            if (obj._attachedProperties != null)
+                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
+        }
 
         protected virtual BindableObject CreateInstance ()
         {

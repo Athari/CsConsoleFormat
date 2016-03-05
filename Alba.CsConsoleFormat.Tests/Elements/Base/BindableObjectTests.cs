@@ -78,8 +78,20 @@ namespace Alba.CsConsoleFormat.Tests
 
             var clone = (MyBindableObject)obj.Clone();
 
+            clone.Should().NotBeSameAs(obj);
             clone.MyStringValue.Should().Be(obj.MyStringValue);
             clone.MyInt32Value.Should().Be(obj.MyInt32Value);
+        }
+
+        [Fact]
+        public void CloneAttachedProperties ()
+        {
+            var obj = new MyBindableObject { [MyBindableObject.AttachedDecimalProperty] = 10m };
+
+            var clone = (MyBindableObject)obj.Clone();
+            obj[MyBindableObject.AttachedDecimalProperty] = 20m;
+
+            clone[MyBindableObject.AttachedDecimalProperty].Should().Be(10m);
         }
 
         [Fact]
