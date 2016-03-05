@@ -10,15 +10,14 @@ namespace Alba.CsConsoleFormat.Tests
         public void Render ()
         {
             var buffer = new ConsoleBuffer(4);
-            buffer.DrawString(0, 0, ConsoleColor.Red, "r");
-            buffer.DrawString(1, 0, ConsoleColor.Green, "g");
-            buffer.DrawString(2, 0, ConsoleColor.Blue, "b&");
-
             var target = new HtmlRenderTarget {
                 PageTitle = "Hello world & you!",
                 Font = "10pt monospace",
             };
 
+            buffer.DrawString(0, 0, ConsoleColor.Red, "r");
+            buffer.DrawString(1, 0, ConsoleColor.Green, "g");
+            buffer.DrawString(2, 0, ConsoleColor.Blue, "b&");
             target.Render(buffer);
 
             target.OutputText.Should().Contain("<meta charset=\"utf-16\">");
