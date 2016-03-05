@@ -9,8 +9,9 @@ using Alba.CsConsoleFormat.Framework.Text;
 // ReSharper disable BuiltInTypeReferenceStyle
 namespace Alba.CsConsoleFormat.Markup
 {
-    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
-    using ConverterDelegatesCache = Dictionary<MethodInfo, Func<Object, Object, CultureInfo, Object>>;
+    using ConverterDelegatesCache = Dictionary<MethodInfo, ConverterDelegate>;
+
+    public delegate object ConverterDelegate (object value, object param, CultureInfo culture);
 
     public class CallConverterExpression : GetExpressionBase
     {
@@ -34,9 +35,9 @@ namespace Alba.CsConsoleFormat.Markup
 
         protected override object ConvertValue (object value)
         {
-            var func3 = value as ConverterDelegate;
+            var func3 = value as Func<object, object, object, CultureInfo>;
             if (func3 != null)
-                return func3;
+                return (ConverterDelegate)((v, p, c) => func3(v, p, c));
             var func2 = value as Func<object, object, object>;
             if (func2 != null)
                 return (ConverterDelegate)((v, p, c) => func2(v, p));

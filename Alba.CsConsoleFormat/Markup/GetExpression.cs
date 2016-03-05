@@ -1,14 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
 using Alba.CsConsoleFormat.Framework.Text;
 
 // TODO Support more complex getter expressions
 // TODO Support converters properly (see MS.Internal.Data.DefaultValueConverter)
 namespace Alba.CsConsoleFormat.Markup
 {
-    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
-
     public class GetExpression : GetExpressionBase
     {
         public string Format { get; set; }

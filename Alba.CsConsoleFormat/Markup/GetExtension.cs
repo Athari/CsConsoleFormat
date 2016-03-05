@@ -6,8 +6,6 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
-    using ConverterDelegate = Func<Object, Object, CultureInfo, Object>;
-
     [MarkupExtensionReturnType (typeof(object))]
     public class GetExtension : GetExtensionBase
     {
