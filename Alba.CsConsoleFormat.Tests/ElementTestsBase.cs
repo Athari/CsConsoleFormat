@@ -5,6 +5,8 @@ namespace Alba.CsConsoleFormat.Tests
 {
     public class ElementTestsBase
     {
+        protected const string XamlNS = "xmlns='urn:alba:cs-console-format' xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'";
+
         private char _fillChar = 'a';
 
         protected static void RenderOn1x1 (BlockElement element)

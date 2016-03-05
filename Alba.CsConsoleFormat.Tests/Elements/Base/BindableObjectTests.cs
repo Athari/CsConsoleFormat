@@ -23,6 +23,7 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
         [SuppressMessage ("ReSharper", "UnusedVariable")]
+        [SuppressMessage ("ReSharper", "RedundantAssignment")]
         public void NullArguments ()
         {
             var obj = new MyBindableObject();
