@@ -1,4 +1,5 @@
 .vs
+/Docs
 /TestResults
 /Tmp
 bin/
@@ -7,3 +8,4 @@ packages/
 *.suo
 *.DotSettings.user
 *.csproj.user
+PortabilityAnalysis*.html

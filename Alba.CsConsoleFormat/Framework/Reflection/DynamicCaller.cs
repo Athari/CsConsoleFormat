@@ -17,17 +17,15 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
 
         public static TDelegate Call<TDelegate> (string memberName, object context = null, Type[] genericArgs = null)
         {
-            MethodInfo method = GetDelegateMethod<TDelegate>();
-            ParameterInfo[] methodParams = method.GetParameters();
-            CallSite callSite = CallSite.Create(
-                CreateDelegateType(method, methodParams),
-                Binder.InvokeMember(
-                    method.IsVoid() ? CSharpBinderFlags.ResultDiscarded : CSharpBinderFlags.None,
-                    memberName, genericArgs ?? Type.EmptyTypes, Context(context), Args(methodParams.Length, false)));
-            return CreateDelegateInvokeCallSite<TDelegate>(method, methodParams, callSite);
+            return CallInternal<TDelegate>(memberName, false, context, genericArgs);
         }
 
         public static TDelegate CallStatic<TDelegate> (string memberName, object context = null, Type[] genericArgs = null)
+        {
+            return CallInternal<TDelegate>(memberName, true, context, genericArgs);
+        }
+
+        private static TDelegate CallInternal<TDelegate> (string memberName, bool isStaticContext, object context, Type[] genericArgs)
         {
             MethodInfo method = GetDelegateMethod<TDelegate>();
             ParameterInfo[] methodParams = method.GetParameters();
@@ -35,7 +33,7 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
                 CreateDelegateType(method, methodParams),
                 Binder.InvokeMember(
                     method.IsVoid() ? CSharpBinderFlags.ResultDiscarded : CSharpBinderFlags.None,
-                    memberName, genericArgs ?? Type.EmptyTypes, Context(context), Args(methodParams.Length, true)));
+                    memberName, genericArgs ?? Type.EmptyTypes, Context(context), Args(methodParams.Length, isStaticContext)));
             return CreateDelegateInvokeCallSite<TDelegate>(method, methodParams, callSite);
         }
 
