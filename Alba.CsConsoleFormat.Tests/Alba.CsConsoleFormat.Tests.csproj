@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\GridLengthConverterTests.cs" />
     <Compile Include="Core\LineTests.cs" />
     <Compile Include="Core\PointTests.cs" />
     <Compile Include="Elements\Base\BindableObjectTests.cs" />
