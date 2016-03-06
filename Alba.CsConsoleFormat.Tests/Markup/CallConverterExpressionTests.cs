@@ -12,10 +12,10 @@ namespace Alba.CsConsoleFormat.Tests.Markup
         private static readonly Foo Source = new Foo { Prefix = "A", Sub = new Foo { Prefix = "B" } };
 
         [Theory]
-        [InlineData (nameof(Foo.InstanceConvert1), "B-1")]
-        [InlineData (nameof(Foo.InstanceConvert2), "B-1-2")]
-        [InlineData (nameof(Foo.InstanceConvert3), "B-1-2-en")]
-        public void InstanceConvert (string methodName, string result)
+        [InlineData(nameof(Foo.InstanceConvert1), "B-1")]
+        [InlineData(nameof(Foo.InstanceConvert2), "B-1-2")]
+        [InlineData(nameof(Foo.InstanceConvert3), "B-1-2-en")]
+        public void InstanceConvert(string methodName, string result)
         {
             var expr = new CallConverterExpression {
                 Source = Source,
@@ -25,10 +25,10 @@ namespace Alba.CsConsoleFormat.Tests.Markup
         }
 
         [Theory]
-        [InlineData (nameof(Foo.StaticConvert1), "S-1")]
-        [InlineData (nameof(Foo.StaticConvert2), "S-1-2")]
-        [InlineData (nameof(Foo.StaticConvert3), "S-1-2-en")]
-        public void StaticConvert (string methodName, string result)
+        [InlineData(nameof(Foo.StaticConvert1), "S-1")]
+        [InlineData(nameof(Foo.StaticConvert2), "S-1-2")]
+        [InlineData(nameof(Foo.StaticConvert3), "S-1-2-en")]
+        public void StaticConvert(string methodName, string result)
         {
             var expr = new CallConverterExpression {
                 Source = Source,
@@ -38,7 +38,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
         }
 
         [Fact]
-        public void InstanceConvertOverloaded ()
+        public void InstanceConvertOverloaded()
         {
             var expr = new CallConverterExpression {
                 Source = Source,
@@ -49,7 +49,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
         }
 
         [Fact]
-        public void ConvertSource ()
+        public void ConvertSource()
         {
             var expr = new CallConverterExpression {
                 Source = new Func<object, object>(v => Source.InstanceConvert1((int)v)),
@@ -62,16 +62,16 @@ namespace Alba.CsConsoleFormat.Tests.Markup
             public Foo Sub { get; set; }
             public string Prefix { get; set; }
 
-            public string InstanceConvert1 (int value) => $"{Prefix}-{value}";
-            public string InstanceConvert2 (int value, int param) => $"{Prefix}-{value}-{param}";
-            public string InstanceConvert3 (int value, int param, CultureInfo culture) => $"{Prefix}-{value}-{param}-{culture.TwoLetterISOLanguageName}";
+            public string InstanceConvert1(int value) => $"{Prefix}-{value}";
+            public string InstanceConvert2(int value, int param) => $"{Prefix}-{value}-{param}";
+            public string InstanceConvert3(int value, int param, CultureInfo culture) => $"{Prefix}-{value}-{param}-{culture.TwoLetterISOLanguageName}";
 
-            public string InstanceConvertOverloaded (int value, decimal param) => $"{Prefix}-{value}-{param}m";
-            public string InstanceConvertOverloaded (int value, float param) => $"{Prefix}-{value}-{param}f";
+            public string InstanceConvertOverloaded(int value, decimal param) => $"{Prefix}-{value}-{param}m";
+            public string InstanceConvertOverloaded(int value, float param) => $"{Prefix}-{value}-{param}f";
 
-            public static string StaticConvert1 (int value) => $"S-{value}";
-            public static string StaticConvert2 (int value, int param) => $"S-{value}-{param}";
-            public static string StaticConvert3 (int value, int param, CultureInfo culture) => $"S-{value}-{param}-{culture.TwoLetterISOLanguageName}";
+            public static string StaticConvert1(int value) => $"S-{value}";
+            public static string StaticConvert2(int value, int param) => $"S-{value}-{param}";
+            public static string StaticConvert3(int value, int param, CultureInfo culture) => $"S-{value}-{param}-{culture.TwoLetterISOLanguageName}";
         }
     }
 }

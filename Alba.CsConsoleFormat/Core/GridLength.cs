@@ -3,13 +3,13 @@ using System.ComponentModel;
 
 namespace Alba.CsConsoleFormat
 {
-    [TypeConverter (typeof(GridLengthConverter))]
+    [TypeConverter(typeof(GridLengthConverter))]
     public struct GridLength : IEquatable<GridLength>
     {
         public int Value { get; }
         public GridUnitType UnitType { get; }
 
-        public GridLength (int value, GridUnitType unitType)
+        public GridLength(int value, GridUnitType unitType)
         {
             if (value < 0)
                 throw new ArgumentException("Value cannot be negative.", nameof(value));
@@ -18,20 +18,20 @@ namespace Alba.CsConsoleFormat
         }
 
         public static GridLength Auto => new GridLength(0, GridUnitType.Auto);
-        public static GridLength Char (int value) => new GridLength(value, GridUnitType.Char);
-        public static GridLength Star (int value) => new GridLength(value, GridUnitType.Star);
+        public static GridLength Char(int value) => new GridLength(value, GridUnitType.Char);
+        public static GridLength Star(int value) => new GridLength(value, GridUnitType.Star);
 
         public bool IsAbsolute => UnitType == GridUnitType.Char;
         public bool IsAuto => UnitType == GridUnitType.Auto;
         public bool IsStar => UnitType == GridUnitType.Star;
 
-        public bool Equals (GridLength other) => Value == other.Value && UnitType == other.UnitType;
-        public override bool Equals (object obj) => obj is GridLength && Equals((GridLength)obj);
-        public override int GetHashCode () => Value.GetHashCode() ^ UnitType.GetHashCode();
+        public bool Equals(GridLength other) => Value == other.Value && UnitType == other.UnitType;
+        public override bool Equals(object obj) => obj is GridLength && Equals((GridLength)obj);
+        public override int GetHashCode() => Value.GetHashCode() ^ UnitType.GetHashCode();
 
-        public override string ToString () => GridLengthConverter.ToString(this);
+        public override string ToString() => GridLengthConverter.ToString(this);
 
-        public static bool operator == (GridLength left, GridLength right) => left.Equals(right);
-        public static bool operator != (GridLength left, GridLength right) => !left.Equals(right);
+        public static bool operator ==(GridLength left, GridLength right) => left.Equals(right);
+        public static bool operator !=(GridLength left, GridLength right) => !left.Equals(right);
     }
 }

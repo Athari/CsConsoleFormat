@@ -13,25 +13,25 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int?> RightProperty = RegisterAttached(() => RightProperty);
         public static readonly AttachedProperty<int?> BottomProperty = RegisterAttached(() => BottomProperty);
 
-        [TypeConverter (typeof(LengthConverter))]
-        public static int? GetLeft ([NotNull] BlockElement @this) => @this.GetValueSafe(LeftProperty);
+        [TypeConverter(typeof(LengthConverter))]
+        public static int? GetLeft([NotNull] BlockElement @this) => @this.GetValueSafe(LeftProperty);
 
-        [TypeConverter (typeof(LengthConverter))]
-        public static int? GetTop ([NotNull] BlockElement @this) => @this.GetValueSafe(TopProperty);
+        [TypeConverter(typeof(LengthConverter))]
+        public static int? GetTop([NotNull] BlockElement @this) => @this.GetValueSafe(TopProperty);
 
-        [TypeConverter (typeof(LengthConverter))]
-        public static int? GetRight ([NotNull] BlockElement @this) => @this.GetValueSafe(RightProperty);
+        [TypeConverter(typeof(LengthConverter))]
+        public static int? GetRight([NotNull] BlockElement @this) => @this.GetValueSafe(RightProperty);
 
-        [TypeConverter (typeof(LengthConverter))]
-        public static int? GetBottom ([NotNull] BlockElement @this) => @this.GetValueSafe(BottomProperty);
+        [TypeConverter(typeof(LengthConverter))]
+        public static int? GetBottom([NotNull] BlockElement @this) => @this.GetValueSafe(BottomProperty);
 
-        public static void SetLeft ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(LeftProperty, value);
-        public static void SetTop ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(TopProperty, value);
-        public static void SetRight ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(RightProperty, value);
-        public static void SetBottom ([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
+        public static void SetLeft([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(LeftProperty, value);
+        public static void SetTop([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(TopProperty, value);
+        public static void SetRight([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(RightProperty, value);
+        public static void SetBottom([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size MeasureOverride (Size availableSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size MeasureOverride(Size availableSize)
         {
             var childAvailableSize = new Size(Size.Infinity, Size.Infinity);
             foreach (BlockElement child in VisualChildren)
@@ -39,8 +39,8 @@ namespace Alba.CsConsoleFormat
             return new Size(0, 0);
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size ArrangeOverride (Size finalSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size ArrangeOverride(Size finalSize)
         {
             foreach (BlockElement child in VisualChildren) {
                 int x = 0, y = 0;
@@ -68,7 +68,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private static AttachedProperty<T> RegisterAttached<T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+        private static AttachedProperty<T> RegisterAttached<T>(Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
             AttachedProperty.Register<Canvas, T>(nameExpression, defaultValue);
     }
 }

@@ -8,13 +8,13 @@
 
         protected override bool CanHaveChildren => false;
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             int width = Stroke.ToCharWidth();
             return Orientation == Orientation.Vertical ? new Size(width, 0) : new Size(0, width);
         }
 
-        public override void Render (ConsoleBuffer buffer)
+        public override void Render(ConsoleBuffer buffer)
         {
             base.Render(buffer);
             if (Orientation == Orientation.Vertical)

@@ -17,10 +17,10 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class GridLengthConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
 
-        public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
                 throw GetConvertFromException(null);
@@ -31,14 +31,14 @@ namespace Alba.CsConsoleFormat
             return base.ConvertFrom(context, culture, value);
         }
 
-        public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (!(value is GridLength) || destinationType != typeof(string))
                 throw GetConvertToException(value, destinationType);
             return ToString((GridLength)value, culture);
         }
 
-        internal static string ToString (GridLength length, CultureInfo culture = null)
+        internal static string ToString(GridLength length, CultureInfo culture = null)
         {
             if (culture == null)
                 culture = CultureInfo.InvariantCulture;
@@ -52,7 +52,7 @@ namespace Alba.CsConsoleFormat
                 return length.Value.ToString(culture) + Asterisk;
         }
 
-        private static GridLength FromString (string str)
+        private static GridLength FromString(string str)
         {
             int value;
             GridUnitType unitType;

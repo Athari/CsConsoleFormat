@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class BorderTests : ElementTestsBase
     {
         [Fact]
-        public void NoChildren ()
+        public void NoChildren()
         {
             var border = new Border();
 
@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderPadding ()
+        public void RenderPadding()
         {
             var border = new Border {
                 Padding = new Thickness(2, 1),
@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderBorder ()
+        public void RenderBorder()
         {
             var border = new Border {
                 Padding = new Thickness(2, 0, 1, 0),
@@ -45,7 +45,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderOuterShadow ()
+        public void RenderOuterShadow()
         {
             var border = new Border {
                 Padding = new Thickness(1, 0, 0, 1),
@@ -62,7 +62,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderBottomRightShadow ()
+        public void RenderBottomRightShadow()
         {
             var border = new Border {
                 Shadow = new Thickness(-1, -1, 2, 3),
@@ -78,7 +78,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderAllDecorations ()
+        public void RenderAllDecorations()
         {
             var border = new Border {
                 Stroke = new LineThickness(LineWidth.Wide, LineWidth.Single),

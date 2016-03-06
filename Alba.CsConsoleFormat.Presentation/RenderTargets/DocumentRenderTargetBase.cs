@@ -53,9 +53,9 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        public abstract void Render (IConsoleBufferSource buffer);
+        public abstract void Render(IConsoleBufferSource buffer);
 
-        protected void RenderToFixedDocument (IConsoleBufferSource buffer, FixedDocument document)
+        protected void RenderToFixedDocument(IConsoleBufferSource buffer, FixedDocument document)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -64,7 +64,7 @@ namespace Alba.CsConsoleFormat.Presentation
             RenderToCanvas(buffer, linesPanel, charSize);
         }
 
-        protected void RenderToFlowDocument (IConsoleBufferSource buffer, FlowDocument document)
+        protected void RenderToFlowDocument(IConsoleBufferSource buffer, FlowDocument document)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -107,7 +107,7 @@ namespace Alba.CsConsoleFormat.Presentation
             AppendRunIfNeeded(ref text, par);
         }
 
-        private static void AppendRunIfNeeded (ref Run text, Paragraph par)
+        private static void AppendRunIfNeeded(ref Run text, Paragraph par)
         {
             if (text == null)
                 return;
@@ -115,7 +115,7 @@ namespace Alba.CsConsoleFormat.Presentation
             text = null;
         }
 
-        protected static void RenderToCanvas (IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
+        protected static void RenderToCanvas(IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
         {
             ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
             ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
@@ -145,7 +145,7 @@ namespace Alba.CsConsoleFormat.Presentation
             AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
         }
 
-        private static void AppendTextBlockIfNeeded (ref TextBlock text, WpfCanvas linesPanel, WpfSize charSize)
+        private static void AppendTextBlockIfNeeded(ref TextBlock text, WpfCanvas linesPanel, WpfSize charSize)
         {
             if (text == null)
                 return;
@@ -154,7 +154,7 @@ namespace Alba.CsConsoleFormat.Presentation
             text = null;
         }
 
-        protected WpfCanvas AddDocumentPage (FixedDocument document, IConsoleBufferSource buffer, WpfSize charSize)
+        protected WpfCanvas AddDocumentPage(FixedDocument document, IConsoleBufferSource buffer, WpfSize charSize)
         {
             WpfCanvas linesPanel = CreateLinePanel(buffer, charSize);
             document.Pages.Add(
@@ -169,7 +169,7 @@ namespace Alba.CsConsoleFormat.Presentation
             return linesPanel;
         }
 
-        protected WpfCanvas CreateLinePanel (IConsoleBufferSource buffer, WpfSize charSize)
+        protected WpfCanvas CreateLinePanel(IConsoleBufferSource buffer, WpfSize charSize)
         {
             var linesPanel = new WpfCanvas {
                 Width = buffer.Width * charSize.Width,
@@ -184,7 +184,7 @@ namespace Alba.CsConsoleFormat.Presentation
             return linesPanel;
         }
 
-        private WpfSize MeasureString (string text)
+        private WpfSize MeasureString(string text)
         {
             var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
                 new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Transparent);

@@ -2,7 +2,7 @@
 {
     internal static class ValueProviders
     {
-        public const string Chars = "Alba.CsConsoleFormat.Chars";
-        public const string ColorMaps = "Alba.CsConsoleFormat.ColorMaps";
+        public const string Chars = "Alba.CsConsoleFormat." + nameof(Chars);
+        public const string ColorMaps = "Alba.CsConsoleFormat." + nameof(ColorMaps);
     }
 }

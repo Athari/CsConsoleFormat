@@ -4,6 +4,6 @@ namespace Alba.CsConsoleFormat
 {
     public interface IRenderTarget
     {
-        void Render ([NotNull] IConsoleBufferSource buffer);
+        void Render([NotNull] IConsoleBufferSource buffer);
     }
 }

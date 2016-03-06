@@ -20,17 +20,17 @@ namespace Alba.CsConsoleFormat
         public string Font { get; set; }
         public string PageTitle { get; set; }
 
-        public HtmlRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public HtmlRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {
             Init();
         }
 
-        public HtmlRenderTarget (TextWriter writer = null) : base(writer)
+        public HtmlRenderTarget(TextWriter writer = null) : base(writer)
         {
             Init();
         }
 
-        private void Init ()
+        private void Init()
         {
             ColorOverride = null;
             BackgroundOverride = null;
@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat
             PageTitle = "Console output";
         }
 
-        protected override void RenderOverride (IConsoleBufferSource buffer)
+        protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
             if (buffer == null)

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
 {
-    [ContentProperty (nameof(ItemTemplate))]
+    [ContentProperty(nameof(ItemTemplate))]
     public class Repeater : GeneratorElement
     {
         private ElementCollection _itemTemplate;
@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat
 
         public ElementCollection ItemTemplate => _itemTemplate ?? (_itemTemplate = new ElementCollection(null));
 
-        public override IEnumerable<Element> GenerateVisualElements ()
+        public override IEnumerable<Element> GenerateVisualElements()
         {
             if (Items == null || _itemTemplate == null)
                 yield break;
@@ -29,6 +29,6 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override string ToString () => base.ToString() + $" ItemTpl={_itemTemplate?.Count ?? 0}";
+        public override string ToString() => base.ToString() + $" ItemTpl={_itemTemplate?.Count ?? 0}";
     }
 }

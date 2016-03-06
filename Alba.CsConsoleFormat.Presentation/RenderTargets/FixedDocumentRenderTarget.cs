@@ -8,14 +8,14 @@ namespace Alba.CsConsoleFormat.Presentation
     {
         public FixedDocument Document { get; }
 
-        public FixedDocumentRenderTarget ([NotNull] FixedDocument document)
+        public FixedDocumentRenderTarget([NotNull] FixedDocument document)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
             Document = document;
         }
 
-        public override void Render (IConsoleBufferSource buffer)
+        public override void Render(IConsoleBufferSource buffer)
         {
             RenderToFixedDocument(buffer, Document);
         }

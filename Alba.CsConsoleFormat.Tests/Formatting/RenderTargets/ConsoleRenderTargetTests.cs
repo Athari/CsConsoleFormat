@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class ConsoleRenderTargetTests
     {
         [Fact]
-        public void Render ()
+        public void Render()
         {
             var buffer = new ConsoleBuffer(3);
             var target = new ConsoleRenderTarget();

@@ -9,6 +9,6 @@
         public Rect RenderSlotRect { get; set; }
         public Size UnclippedDesiredSize { get; set; }
 
-        public LayoutInfo Clone () => (LayoutInfo)MemberwiseClone();
+        public LayoutInfo Clone() => (LayoutInfo)MemberwiseClone();
     }
 }

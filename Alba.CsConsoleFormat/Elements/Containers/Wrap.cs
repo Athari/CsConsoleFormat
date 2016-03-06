@@ -11,12 +11,12 @@ namespace Alba.CsConsoleFormat
 
         public Orientation Orientation { get; set; }
 
-        public Wrap ()
+        public Wrap()
         {
             Orientation = Orientation.Horizontal;
         }
 
-        [TypeConverter (typeof(LengthConverter))]
+        [TypeConverter(typeof(LengthConverter))]
         public int? ItemWidth
         {
             get { return _itemWidth; }
@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [TypeConverter (typeof(LengthConverter))]
+        [TypeConverter(typeof(LengthConverter))]
         public int? ItemHeight
         {
             get { return _itemHeight; }
@@ -40,8 +40,8 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size MeasureOverride (Size availableSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size MeasureOverride(Size availableSize)
         {
             UVSize curLineSize = new UVSize(Orientation);
             UVSize panelSize = new UVSize(Orientation);
@@ -77,7 +77,7 @@ namespace Alba.CsConsoleFormat
             return new Size(panelSize.Width, panelSize.Height);
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             int firstInLine = 0;
             int accumulatedV = 0;
@@ -116,7 +116,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private void ArrangeLine (int v, int lineV, int start, int end, int? itemU)
+        private void ArrangeLine(int v, int lineV, int start, int end, int? itemU)
         {
             for (int i = start, u = 0, layoutSlotU; i < end; i++, u += layoutSlotU) {
                 var child = (BlockElement)VisualChildren[i];
@@ -130,10 +130,10 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private T GetU<T> (T u, T v) => Orientation == Orientation.Horizontal ? u : v;
-        private T GetV<T> (T u, T v) => Orientation == Orientation.Horizontal ? v : u;
+        private T GetU<T>(T u, T v) => Orientation == Orientation.Horizontal ? u : v;
+        private T GetV<T>(T u, T v) => Orientation == Orientation.Horizontal ? v : u;
 
-        private Size OverrideSize (Size size) => new Size(ItemWidth ?? size.Width, ItemHeight ?? size.Height);
+        private Size OverrideSize(Size size) => new Size(ItemWidth ?? size.Width, ItemHeight ?? size.Height);
 
         private struct UVSize
         {
@@ -142,14 +142,14 @@ namespace Alba.CsConsoleFormat
             public int U;
             public int V;
 
-            public UVSize (Orientation orientation, int width = 0, int height = 0)
+            public UVSize(Orientation orientation, int width = 0, int height = 0)
             {
                 _orientation = orientation;
                 U = _orientation == Orientation.Horizontal ? width : height;
                 V = _orientation == Orientation.Horizontal ? height : width;
             }
 
-            public UVSize (Orientation orientation, Size size) : this(orientation, size.Width, size.Height)
+            public UVSize(Orientation orientation, Size size) : this(orientation, size.Width, size.Height)
             {}
 
             public int Width => _orientation == Orientation.Horizontal ? U : V;

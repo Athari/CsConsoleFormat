@@ -8,20 +8,20 @@ namespace Alba.CsConsoleFormat.Markup
 {
     public abstract class GetExtensionBase : MarkupExtension
     {
-        [ConstructorArgument ("path")]
+        [ConstructorArgument("path")]
         public string Path { get; set; }
         public string Element { get; set; }
         public object Source { get; set; }
 
-        protected GetExtensionBase (string path)
+        protected GetExtensionBase(string path)
         {
             Path = path;
         }
 
-        protected GetExtensionBase () : this(null)
+        protected GetExtensionBase() : this(null)
         {}
 
-        public override sealed object ProvideValue (IServiceProvider serviceProvider)
+        public override sealed object ProvideValue(IServiceProvider serviceProvider)
         {
             //var xamlSchemaContextProvider = provider.GetService<IXamlSchemaContextProvider>();
             //var xamlTypeResolver = provider.GetService<IXamlTypeResolver>();
@@ -52,8 +52,8 @@ namespace Alba.CsConsoleFormat.Markup
             return ProvideExpression(serviceProvider, obj, prop);
         }
 
-        protected abstract object ProvideExpression (IServiceProvider provider, BindableObject obj, PropertyInfo prop);
+        protected abstract object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo prop);
 
-        public override string ToString () => $"{{Get Path={Path}}}";
+        public override string ToString() => $"{{Get Path={Path}}}";
     }
 }

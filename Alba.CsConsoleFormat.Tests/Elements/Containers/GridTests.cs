@@ -10,7 +10,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class GridTests : ElementTestsBase
     {
         [Fact]
-        public void NoColumnsNoChildren ()
+        public void NoColumnsNoChildren()
         {
             var grid = new Grid();
 
@@ -18,7 +18,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoColumnsOneChild ()
+        public void NoColumnsOneChild()
         {
             var grid = new Grid { Children = { new Div() } };
 
@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoChildrenOneColumn ()
+        public void NoChildrenOneColumn()
         {
             var grid = new Grid { Columns = { new Column() } };
 
@@ -146,8 +146,8 @@ namespace Alba.CsConsoleFormat.Tests
         };
 
         [Theory]
-        [MemberData (nameof(ColumnConfigsData))]
-        public void ColumnConfigs (GridConfig config)
+        [MemberData(nameof(ColumnConfigsData))]
+        public void ColumnConfigs(GridConfig config)
         {
             var grid = new Grid { Stroke = config.GridStroke };
             foreach (Column column in config.Columns) {
@@ -169,7 +169,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderDefaultBorders ()
+        public void RenderDefaultBorders()
         {
             var grid = new Grid()
                 .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
@@ -184,7 +184,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderCustomBorders ()
+        public void RenderCustomBorders()
         {
             var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
             var grid = new Grid { Stroke = new LineThickness(LineWidth.None) }
@@ -207,7 +207,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderManualPosition ()
+        public void RenderManualPosition()
         {
             var grid = new Grid { AutoPosition = false }
                 .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
@@ -238,19 +238,19 @@ namespace Alba.CsConsoleFormat.Tests
             public static GridConfig WithoutBorders => new GridConfig { GridStroke = LineThickness.None, CellStroke = LineThickness.None };
             public static GridConfig WithBorders => new GridConfig { GridStroke = LineThickness.Single, CellStroke = LineThickness.Single };
 
-            public GridConfig WithColumns (params GridLength[] columnWidths)
+            public GridConfig WithColumns(params GridLength[] columnWidths)
             {
                 Columns = columnWidths.Select(w => new Column { Width = w }).ToList();
                 return this;
             }
 
-            public GridConfig Within (Size size)
+            public GridConfig Within(Size size)
             {
                 Size = size;
                 return this;
             }
 
-            public GridConfig WithCells (params string[] cellTexts)
+            public GridConfig WithCells(params string[] cellTexts)
             {
                 EnsureCells();
                 foreach (string cellText in cellTexts) {
@@ -262,7 +262,7 @@ namespace Alba.CsConsoleFormat.Tests
                 return this;
             }
 
-            public GridConfig WithCells (params Element[] cells)
+            public GridConfig WithCells(params Element[] cells)
             {
                 EnsureCells();
                 foreach (Element cell in cells)
@@ -270,23 +270,23 @@ namespace Alba.CsConsoleFormat.Tests
                 return this;
             }
 
-            public GridConfig ExpectColumnWidths (params int[] columnWidths)
+            public GridConfig ExpectColumnWidths(params int[] columnWidths)
             {
                 ExpectedColumnWidths = columnWidths.ToList();
                 return this;
             }
 
-            private void EnsureCells ()
+            private void EnsureCells()
             {
                 if (Cells == null)
                     Cells = new List<Element>();
             }
 
-            public override string ToString () => string.Join(", ", Columns.Select(GetColumnWidthString)) + " within " + Size;
+            public override string ToString() => string.Join(", ", Columns.Select(GetColumnWidthString)) + " within " + Size;
 
-            public static implicit operator object[] (GridConfig @this) => new object[] { @this };
+            public static implicit operator object[](GridConfig @this) => new object[] { @this };
 
-            private static string GetColumnWidthString (Column c) =>
+            private static string GetColumnWidthString(Column c) =>
                 c.Width + (c.MinWidth != 0 || c.MaxWidth != Size.Infinity ? $"{c.MinWidth},{(c.MaxWidth == Size.Infinity ? "Inf" : c.MaxWidth + "")}" : "");
         }
     }

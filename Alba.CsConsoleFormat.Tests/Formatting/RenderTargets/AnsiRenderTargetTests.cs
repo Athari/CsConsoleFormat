@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class AnsiRenderTargetTests
     {
         [Fact]
-        public void Render ()
+        public void Render()
         {
             var buffer = new ConsoleBuffer(4);
             var target = new AnsiRenderTarget();
@@ -22,7 +22,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderOverrideColors ()
+        public void RenderOverrideColors()
         {
             var buffer = new ConsoleBuffer(4);
             var target = new AnsiRenderTarget {

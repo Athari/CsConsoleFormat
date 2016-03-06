@@ -24,13 +24,13 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BackgroundOverride { get; set; }
 
-        public AnsiRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public AnsiRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {}
 
-        public AnsiRenderTarget (TextWriter writer = null) : base(writer)
+        public AnsiRenderTarget(TextWriter writer = null) : base(writer)
         {}
 
-        protected override void RenderOverride (IConsoleBufferSource buffer)
+        protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
             if (buffer == null)

@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Testing.FluentAssertions
     [DebuggerNonUserCode]
     public static class StringAssertionsExts
     {
-        public static AndConstraint<StringAssertions> BeLines (this StringAssertions @this, params string[] lines)
+        public static AndConstraint<StringAssertions> BeLines(this StringAssertions @this, params string[] lines)
         {
             string actualText = @this.Subject;
             string expectedText = ConcatLines(lines);
@@ -19,8 +19,8 @@ namespace Alba.CsConsoleFormat.Testing.FluentAssertions
             return new AndConstraint<StringAssertions>(@this);
         }
 
-        private static string ConcatLines (string[] lines) => string.Join(Environment.NewLine, lines);
+        private static string ConcatLines(string[] lines) => string.Join(Environment.NewLine, lines);
 
-        private static string FormatTextForError (string text) => string.Join(Environment.NewLine, text.Replace("\r", "").Split('\n'));
+        private static string FormatTextForError(string text) => string.Join(Environment.NewLine, text.Replace("\r", "").Split('\n'));
     }
 }

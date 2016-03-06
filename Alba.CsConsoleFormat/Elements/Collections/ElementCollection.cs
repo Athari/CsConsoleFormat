@@ -6,19 +6,19 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    [ContentWrapper (typeof(Span))]
+    [ContentWrapper(typeof(Span))]
     //[WhitespaceSignificantCollection]
     public class ElementCollection<T> : Collection<T>, IList
         where T : Element
     {
         private readonly Element _parent;
 
-        public ElementCollection (Element parent)
+        public ElementCollection(Element parent)
         {
             _parent = parent;
         }
 
-        int IList.Add (object value)
+        int IList.Add(object value)
         {
             var text = value as string;
             if (text != null)
@@ -32,12 +32,12 @@ namespace Alba.CsConsoleFormat
                 throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));
         }
 
-        public int Add (string text)
+        public int Add(string text)
         {
             return AddText(text);
         }
 
-        protected override void InsertItem (int index, [NotNull] T item)
+        protected override void InsertItem(int index, [NotNull] T item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -47,7 +47,7 @@ namespace Alba.CsConsoleFormat
             base.InsertItem(index, item);
         }
 
-        private int AddText (string text)
+        private int AddText(string text)
         {
             var el = new Span(text) as T;
             if (el == null)
@@ -55,7 +55,7 @@ namespace Alba.CsConsoleFormat
             return AddElement(el);
         }
 
-        private int AddElement (T el)
+        private int AddElement(T el)
         {
             InsertItem(Count, el);
             return Count - 1;
@@ -64,7 +64,7 @@ namespace Alba.CsConsoleFormat
 
     public class ElementCollection : ElementCollection<Element>
     {
-        public ElementCollection (Element parent) : base(parent)
+        public ElementCollection(Element parent) : base(parent)
         {}
     }
 }

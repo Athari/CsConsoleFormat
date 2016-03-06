@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat.Framework.Collections
 {
     internal static class EnumerableExts
     {
-        public static bool AllEqual<T> ([InstantHandle] this IEnumerable<T> @this)
+        public static bool AllEqual<T>([InstantHandle] this IEnumerable<T> @this)
         {
             bool isFirst = true;
             T first = default(T);
@@ -22,7 +22,7 @@ namespace Alba.CsConsoleFormat.Framework.Collections
             return true;
         }
 
-        public static IEnumerable<T> Concat<T> (this IEnumerable<T> @this, params T[] values)
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params T[] values)
         {
             foreach (T item in @this)
                 yield return item;
@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat.Framework.Collections
                 yield return item;
         }
 
-        public static IEnumerable<T> TraverseList<T> (this T root, Func<T, T> getNext) where T : class
+        public static IEnumerable<T> TraverseList<T>(this T root, Func<T, T> getNext) where T : class
         {
             for (T current = root; current != null; current = getNext(current))
                 yield return current;

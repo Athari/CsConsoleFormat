@@ -11,10 +11,10 @@ namespace Alba.CsConsoleFormat.Tests
     public class TextRenderTargetBaseTests
     {
         [Fact]
-        [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
-        [SuppressMessage ("ReSharper", "RedundantAssignment")]
-        [SuppressMessage ("ReSharper", "ObjectCreationAsStatement")]
-        public void NullArguments ()
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
+        public void NullArguments()
         {
             var output = Stream.Null;
             var buffer = new ConsoleBuffer(80);
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void UseAfterDispose ()
+        public void UseAfterDispose()
         {
             Action<Action<RenderTarget>> UseAfterDispose = use => {
                 var target = new RenderTarget(Stream.Null);
@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DoubleDispose ()
+        public void DoubleDispose()
         {
             var target = new RenderTarget(Stream.Null);
             target.Dispose();
@@ -48,7 +48,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void StreamEncodingASCII ()
+        public void StreamEncodingASCII()
         {
             var stream = new MemoryStream(3);
             var buffer = new ConsoleBuffer(80);
@@ -60,7 +60,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void StreamEncodingDefaultUnicode ()
+        public void StreamEncodingDefaultUnicode()
         {
             var stream = new MemoryStream(6);
             var buffer = new ConsoleBuffer(80);
@@ -72,7 +72,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void StreamLeaveOpen ()
+        public void StreamLeaveOpen()
         {
             var stream = new MemoryStream(3);
             var buffer = new ConsoleBuffer(80);
@@ -84,7 +84,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void OutputTextWithoutStringWriter ()
+        public void OutputTextWithoutStringWriter()
         {
             var target = new RenderTarget(TextWriter.Null);
 
@@ -93,13 +93,13 @@ namespace Alba.CsConsoleFormat.Tests
 
         private class RenderTarget : TextRenderTargetBase
         {
-            public RenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+            public RenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
             {}
 
-            public RenderTarget (TextWriter writer = null) : base(writer)
+            public RenderTarget(TextWriter writer = null) : base(writer)
             {}
 
-            protected override void RenderOverride (IConsoleBufferSource buffer)
+            protected override void RenderOverride(IConsoleBufferSource buffer)
             {
                 Writer.Write("Foo");
             }

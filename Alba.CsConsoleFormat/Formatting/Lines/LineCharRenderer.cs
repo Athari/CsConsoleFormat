@@ -9,13 +9,13 @@ namespace Alba.CsConsoleFormat
         public static readonly ILineCharRenderer Box = new BoxLineCharRenderer();
         public static readonly ILineCharRenderer None = new CharLineCharRenderer('\0');
         public static readonly ILineCharRenderer Simple = new SimpleLineCharRenderer();
-        public static ILineCharRenderer Char (char c) => new CharLineCharRenderer(c);
+        public static ILineCharRenderer Char(char c) => new CharLineCharRenderer(c);
 
         private abstract class LineCharRendererBase : ILineCharRenderer
         {
-            public abstract char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom);
+            public abstract char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom);
 
-            protected static Exception GetCharException (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
+            protected static Exception GetCharException(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
                 return new NotSupportedException($"Line joint not supported: {charCenter} ({charLeft} {charTop} {charRight} {charBottom}).");
             }
@@ -34,8 +34,8 @@ namespace Alba.CsConsoleFormat
             private static readonly char[] MapBottomLeft = { '┐', '╕', '╖', '╗' };
             private static readonly char[] MapBottomRight = { '┌', '╒', '╓', '╔' };
 
-            [SuppressMessage ("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Logic is straightforward, complexity comes from inability to iterate over variables.")]
-            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
+            [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Logic is straightforward, complexity comes from inability to iterate over variables.")]
+            public override char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
                 if (charCenter.IsEmpty())
                     return '\0';
@@ -76,7 +76,7 @@ namespace Alba.CsConsoleFormat
                 throw GetCharException(charCenter, charLeft, charTop, charRight, charBottom);
             }
 
-            private static char GetSimpleChar (LineChar charCenter, char[] map)
+            private static char GetSimpleChar(LineChar charCenter, char[] map)
             {
                 Debug.Assert(map.Length == 8);
                 switch (charCenter) {
@@ -101,7 +101,7 @@ namespace Alba.CsConsoleFormat
                 }
             }
 
-            private static char GetChar (LineChar charCenter, char[] map)
+            private static char GetChar(LineChar charCenter, char[] map)
             {
                 Debug.Assert(map.Length == 4);
                 if (!charCenter.IsHorizontalWide() && !charCenter.IsVerticalWide())
@@ -118,7 +118,7 @@ namespace Alba.CsConsoleFormat
 
         private class SimpleLineCharRenderer : LineCharRendererBase
         {
-            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
+            public override char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
                 if (charCenter.IsEmpty())
                     return '\0';
@@ -136,12 +136,12 @@ namespace Alba.CsConsoleFormat
         {
             private readonly char _c;
 
-            public CharLineCharRenderer (char c)
+            public CharLineCharRenderer(char c)
             {
                 _c = c;
             }
 
-            public override char GetChar (LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
+            public override char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
                 return _c;
             }

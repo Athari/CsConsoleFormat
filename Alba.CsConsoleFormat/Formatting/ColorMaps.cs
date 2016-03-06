@@ -5,7 +5,7 @@ using static System.ConsoleColor;
 
 namespace Alba.CsConsoleFormat
 {
-    [SuppressMessage ("ReSharper", "RedundantExplicitArraySize", Justification = "Provides validation of array size.")]
+    [SuppressMessage("ReSharper", "RedundantExplicitArraySize", Justification = "Provides validation of array size.")]
     public static class ColorMaps
     {
         internal const int ConsoleColorCount = 16;

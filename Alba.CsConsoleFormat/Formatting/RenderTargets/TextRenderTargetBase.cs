@@ -14,7 +14,7 @@ namespace Alba.CsConsoleFormat
 
         protected TextWriter Writer { get; private set; }
 
-        protected TextRenderTargetBase ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false)
+        protected TextRenderTargetBase([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -22,7 +22,7 @@ namespace Alba.CsConsoleFormat
             _leaveOpen = leaveOpen;
         }
 
-        protected TextRenderTargetBase (TextWriter writer = null)
+        protected TextRenderTargetBase(TextWriter writer = null)
         {
             Writer = writer ?? new StringWriter(CultureInfo.InvariantCulture);
         }
@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public void Render (IConsoleBufferSource buffer)
+        public void Render(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
             if (buffer == null)
@@ -47,15 +47,15 @@ namespace Alba.CsConsoleFormat
             RenderOverride(buffer);
         }
 
-        protected abstract void RenderOverride ([NotNull] IConsoleBufferSource buffer);
+        protected abstract void RenderOverride([NotNull] IConsoleBufferSource buffer);
 
-        protected void ThrowIfDisposed ()
+        protected void ThrowIfDisposed()
         {
             if (Writer == null)
                 throw new ObjectDisposedException(null);
         }
 
-        public virtual void Dispose ()
+        public virtual void Dispose()
         {
             if (Writer == null)
                 return;

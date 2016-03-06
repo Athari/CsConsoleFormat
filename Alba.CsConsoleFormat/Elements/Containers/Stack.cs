@@ -4,18 +4,18 @@ using Alba.CsConsoleFormat.Framework.Collections;
 
 namespace Alba.CsConsoleFormat
 {
-    [SuppressMessage ("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "The name is fine, I like it.")]
+    [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "The name is fine, I like it.")]
     public class Stack : ContainerElement
     {
         public Orientation Orientation { get; set; }
 
-        public Stack ()
+        public Stack()
         {
             Orientation = Orientation.Vertical;
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size MeasureOverride (Size availableSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size MeasureOverride(Size availableSize)
         {
             if (Orientation == Orientation.Vertical) {
                 int totalHeight = 0;
@@ -45,8 +45,8 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size ArrangeOverride (Size finalSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size ArrangeOverride(Size finalSize)
         {
             if (Orientation == Orientation.Vertical) {
                 int totalHeight = 0;

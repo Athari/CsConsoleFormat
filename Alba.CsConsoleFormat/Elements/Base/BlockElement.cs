@@ -8,10 +8,10 @@ namespace Alba.CsConsoleFormat
     {
         private LayoutInfo _layoutInfo = new LayoutInfo();
 
-        [TypeConverter (typeof(LengthConverter))]
+        [TypeConverter(typeof(LengthConverter))]
         public int? Width { get; set; }
 
-        [TypeConverter (typeof(LengthConverter))]
+        [TypeConverter(typeof(LengthConverter))]
         public int? Height { get; set; }
 
         public int MinWidth { get; set; }
@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat
 
         public Thickness Margin { get; set; }
 
-        protected BlockElement ()
+        protected BlockElement()
         {
             MinWidth = 0;
             MinHeight = 0;
@@ -45,7 +45,7 @@ namespace Alba.CsConsoleFormat
         public int ActualHeight => RenderSize.Height;
 
         /// <summary>Element position (relative to visual parent).</summary>
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Vector ActualOffset
         {
             get { return _layoutInfo.ActualOffset; }
@@ -53,7 +53,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, constrained by max element size and available size with margins.</summary>
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Size DesiredSize
         {
             get { return _layoutInfo.DesiredSize; }
@@ -68,7 +68,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Render area size.</summary><seealso cref="ActualWidth"/><seealso cref="ActualHeight"/>
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Size RenderSize
         {
             get { return _layoutInfo.RenderSize; }
@@ -76,7 +76,7 @@ namespace Alba.CsConsoleFormat
         }
 
         /// <summary>Area occupied by element, including margins (relative to visual parent).</summary>
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Rect RenderSlotRect
         {
             get { return _layoutInfo.RenderSlotRect; }
@@ -90,8 +90,8 @@ namespace Alba.CsConsoleFormat
             set { _layoutInfo.UnclippedDesiredSize = value; }
         }
 
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public void Measure (Size availableSize)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public void Measure(Size availableSize)
         {
             if (Visibility == Visibility.Collapsed) {
                 UnclippedDesiredSize = Size.Empty;
@@ -128,7 +128,7 @@ namespace Alba.CsConsoleFormat
             DesiredSize = Size.Min(desiredSize + Margin, availableSize);
         }
 
-        protected virtual Size MeasureOverride (Size availableSize)
+        protected virtual Size MeasureOverride(Size availableSize)
         {
             BlockElement child = VisualChild;
             if (child == null)
@@ -137,8 +137,8 @@ namespace Alba.CsConsoleFormat
             return child.DesiredSize;
         }
 
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public void Arrange (Rect finalRect)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public void Arrange(Rect finalRect)
         {
             if (Visibility == Visibility.Collapsed) {
                 RenderSlotRect = Rect.Empty;
@@ -167,18 +167,18 @@ namespace Alba.CsConsoleFormat
             LayoutClip = CalculateLayoutClip();
         }
 
-        protected virtual Size ArrangeOverride (Size finalSize)
+        protected virtual Size ArrangeOverride(Size finalSize)
         {
             VisualChild?.Arrange(new Rect(finalSize));
             return finalSize;
         }
 
-        private Rect CalculateLayoutClip ()
+        private Rect CalculateLayoutClip()
         {
             return new Rect(-CalculateAlignmentOffset(), CalculateClientSize());
         }
 
-        private Vector CalculateAlignmentOffset ()
+        private Vector CalculateAlignmentOffset()
         {
             // Clipped RenderSize differs from RenderSize only what MaxWidth/Height explicitly clip the otherwise good arrangement. 
             // For ex, DS<clientSize but DS>MaxWidth - in this case we should initiate clip at MaxWidth and only show Top-Left portion
@@ -188,12 +188,12 @@ namespace Alba.CsConsoleFormat
             return CalculateAlignmentOffsetCore(CalculateClientSize(), Size.Min(RenderSize, mm.MaxSize));
         }
 
-        private Size CalculateClientSize ()
+        private Size CalculateClientSize()
         {
             return new Size(RenderSlotRect.Width - Margin.Width, RenderSlotRect.Height - Margin.Height, false);
         }
 
-        private Vector CalculateAlignmentOffsetCore (Size clientSize, Size renderSize)
+        private Vector CalculateAlignmentOffsetCore(Size clientSize, Size renderSize)
         {
             Vector offset = new Vector();
 
@@ -223,8 +223,8 @@ namespace Alba.CsConsoleFormat
             return offset;
         }
 
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public virtual void Render ([NotNull] ConsoleBuffer buffer)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public virtual void Render([NotNull] ConsoleBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -233,18 +233,18 @@ namespace Alba.CsConsoleFormat
             buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
         }
 
-        protected override void CloneOverride (BindableObject obj)
+        protected override void CloneOverride(BindableObject obj)
         {
             var source = (BlockElement)obj;
             base.CloneOverride(source);
             _layoutInfo = source._layoutInfo.Clone();
         }
 
-        internal static int MinMax (int value, int min, int max) => Math.Max(Math.Min(value, max), min);
+        internal static int MinMax(int value, int min, int max) => Math.Max(Math.Min(value, max), min);
 
         private struct MinMaxSize
         {
-            public MinMaxSize (int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
+            public MinMaxSize(int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
             {
                 MaxHeight = MinMax(height ?? Size.Infinity, minHeight, maxHeight);
                 MinHeight = MinMax(height ?? 0, minHeight, MaxHeight);

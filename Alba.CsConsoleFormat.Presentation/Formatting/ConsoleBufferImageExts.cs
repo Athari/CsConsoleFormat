@@ -27,7 +27,7 @@ namespace Alba.CsConsoleFormat.Presentation
             [Color.FromRgb(255, 255, 255)] = ConsoleColor.White,
         };
 
-        public static void DrawImage (this ConsoleBuffer @this, ImageSource imageSource, int x, int y, int width, int height)
+        public static void DrawImage(this ConsoleBuffer @this, ImageSource imageSource, int x, int y, int width, int height)
         {
             var bmp = imageSource as BitmapSource;
             if (bmp == null)
@@ -58,14 +58,14 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        private static void SetColor (ref ConsoleChar c, BitmapPalette palette, int colorIndex)
+        private static void SetColor(ref ConsoleChar c, BitmapPalette palette, int colorIndex)
         {
             ConsoleColor color;
             if (ConsolePaletteMap.TryGetValue(palette.Colors[colorIndex], out color))
                 c.BackgroundColor = color;
         }
 
-        public static void DrawImage (this ConsoleBuffer @this, ImageSource imageSource, Rect rect)
+        public static void DrawImage(this ConsoleBuffer @this, ImageSource imageSource, Rect rect)
         {
             @this.DrawImage(imageSource, rect.X, rect.Y, rect.Width, rect.Height);
         }

@@ -8,14 +8,14 @@ namespace Alba.CsConsoleFormat.Presentation
     {
         public FlowDocument Document { get; }
 
-        public FlowDocumentRenderTarget ([NotNull] FlowDocument document)
+        public FlowDocumentRenderTarget([NotNull] FlowDocument document)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
             Document = document;
         }
 
-        public override void Render (IConsoleBufferSource buffer)
+        public override void Render(IConsoleBufferSource buffer)
         {
             RenderToFlowDocument(buffer, Document);
         }

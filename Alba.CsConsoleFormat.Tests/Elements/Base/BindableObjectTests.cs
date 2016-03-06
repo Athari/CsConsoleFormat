@@ -13,7 +13,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class BindableObjectTests
     {
         [Fact]
-        public void EmptyDataContext ()
+        public void EmptyDataContext()
         {
             var obj = new MyBindableObject();
 
@@ -21,10 +21,10 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
-        [SuppressMessage ("ReSharper", "UnusedVariable")]
-        [SuppressMessage ("ReSharper", "RedundantAssignment")]
-        public void NullArguments ()
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "UnusedVariable")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        public void NullArguments()
         {
             var obj = new MyBindableObject();
             var getter = new GetExpression();
@@ -42,7 +42,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void Bind ()
+        public void Bind()
         {
             var obj = new MyBindableObject();
             var data = new Data { StringValue = "str", Int32Value = 42 };
@@ -60,7 +60,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DataContextWithotBind ()
+        public void DataContextWithotBind()
         {
             var obj = new MyBindableObject();
             var data = new Data { StringValue = "str", Int32Value = 42 };
@@ -72,7 +72,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void Clone ()
+        public void Clone()
         {
             var obj = new MyBindableObject { MyStringValue = "str", MyInt32Value = 42 };
 
@@ -84,7 +84,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CloneAttachedProperties ()
+        public void CloneAttachedProperties()
         {
             var obj = new MyBindableObject { [MyBindableObject.AttachedDecimalProperty] = 10m };
 
@@ -95,7 +95,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void UnsetValue ()
+        public void UnsetValue()
         {
             var obj = new MyBindableObject();
 
@@ -103,7 +103,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SetValue ()
+        public void SetValue()
         {
             var obj = new MyBindableObject();
 
@@ -113,7 +113,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SetValueWithIndexer ()
+        public void SetValueWithIndexer()
         {
             var obj = new MyBindableObject();
 
@@ -123,7 +123,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SetValueWithSetProperty ()
+        public void SetValueWithSetProperty()
         {
             var obj = new MyBindableObject();
 
@@ -133,7 +133,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ResetValue ()
+        public void ResetValue()
         {
             var obj = new MyBindableObject();
 
@@ -144,7 +144,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ResetValueWithRemoveProperty ()
+        public void ResetValueWithRemoveProperty()
         {
             var obj = new MyBindableObject();
 
@@ -154,7 +154,7 @@ namespace Alba.CsConsoleFormat.Tests
             AssertDefaultValue(obj, 1m);
         }
 
-        private static void AssertDefaultValue (MyBindableObject obj, decimal expectedValue)
+        private static void AssertDefaultValue(MyBindableObject obj, decimal expectedValue)
         {
             object value;
 
@@ -166,7 +166,7 @@ namespace Alba.CsConsoleFormat.Tests
             value.Should().Be(expectedValue);
         }
 
-        private static void AssertCustomValue (MyBindableObject obj, decimal expectedValue)
+        private static void AssertCustomValue(MyBindableObject obj, decimal expectedValue)
         {
             object value;
             var props = new KeyValuePair<AttachableMemberIdentifier, object>[1];
@@ -181,7 +181,7 @@ namespace Alba.CsConsoleFormat.Tests
             props[0].Should().Be(new KeyValuePair<AttachableMemberIdentifier, object>(MyBindableObject.AttachedDecimalProperty.Identifier, expectedValue));
         }
 
-        [UsedImplicitly (ImplicitUseTargetFlags.WithMembers)]
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         private class MyBindableObject : BindableObject
         {
             public static readonly AttachedProperty<decimal> AttachedDecimalProperty =

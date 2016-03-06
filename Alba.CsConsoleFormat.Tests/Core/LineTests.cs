@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class LineTests
     {
         [Fact]
-        public void CreateNegativeSize ()
+        public void CreateNegativeSize()
         {
             const string width = nameof(width);
             const string height = nameof(height);
@@ -18,14 +18,14 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CreateNegativeSizeNoThrow ()
+        public void CreateNegativeSizeNoThrow()
         {
             Line.Horizontal(1, 2, -10, false).Width.Should().Be(0);
             Line.Vertical(-1, -2, -10, false).Height.Should().Be(0);
         }
 
         [Fact]
-        public void ChangeNegativeSize ()
+        public void ChangeNegativeSize()
         {
             const string value = nameof(value);
 
@@ -37,7 +37,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ChangeDirection ()
+        public void ChangeDirection()
         {
             const string value = nameof(value);
 
@@ -49,7 +49,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void EmptyLine ()
+        public void EmptyLine()
         {
             var line = new Line();
 
@@ -67,7 +67,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void HorizontalLine ()
+        public void HorizontalLine()
         {
             var line = Line.Horizontal(1, 2, 10);
 
@@ -85,7 +85,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void VerticalLine ()
+        public void VerticalLine()
         {
             var line = Line.Vertical(-1, -2, 10);
 
@@ -103,7 +103,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ChangePosition ()
+        public void ChangePosition()
         {
             var line = Line.Horizontal(1, 2, 10);
 
@@ -115,7 +115,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ChangeSize ()
+        public void ChangeSize()
         {
             var line = Line.Vertical(-1, -2, 10);
 
@@ -126,9 +126,9 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 0, 0, 0)]
-        [InlineData (1, 2, 10, 1, 2, 10)]
-        public void EqualsHorizontalIsTrue (int p1x, int p1y, int w1, int p2x, int p2y, int w2)
+        [InlineData(0, 0, 0, 0, 0, 0)]
+        [InlineData(1, 2, 10, 1, 2, 10)]
+        public void EqualsHorizontalIsTrue(int p1x, int p1y, int w1, int p2x, int p2y, int w2)
         {
             var line1 = Line.Horizontal(p1x, p1y, w1);
             var line2 = Line.Horizontal(p2x, p2y, w2);
@@ -140,9 +140,9 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 0, 0, 0)]
-        [InlineData (1, 2, 10, 1, 2, 10)]
-        public void EqualsVerticalIsTrue (int p1x, int p1y, int h1, int p2x, int p2y, int h2)
+        [InlineData(0, 0, 0, 0, 0, 0)]
+        [InlineData(1, 2, 10, 1, 2, 10)]
+        public void EqualsVerticalIsTrue(int p1x, int p1y, int h1, int p2x, int p2y, int h2)
         {
             var line1 = Line.Vertical(p1x, p1y, h1);
             var line2 = Line.Vertical(p2x, p2y, h2);
@@ -154,11 +154,11 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 1, 1, 1)]
-        [InlineData (1, 2, 10, 1, 6, 10)]
-        [InlineData (1, 2, 10, 6, 2, 10)]
-        [InlineData (1, 2, 10, 1, 2, 16)]
-        public void EqualsHorizontalIsFalse (int p1x, int p1y, int w1, int p2x, int p2y, int w2)
+        [InlineData(0, 0, 0, 1, 1, 1)]
+        [InlineData(1, 2, 10, 1, 6, 10)]
+        [InlineData(1, 2, 10, 6, 2, 10)]
+        [InlineData(1, 2, 10, 1, 2, 16)]
+        public void EqualsHorizontalIsFalse(int p1x, int p1y, int w1, int p2x, int p2y, int w2)
         {
             var line1 = Line.Horizontal(p1x, p1y, w1);
             var line2 = Line.Horizontal(p2x, p2y, w2);
@@ -169,11 +169,11 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory]
-        [InlineData (0, 0, 0, 1, 1, 1)]
-        [InlineData (1, 2, 10, 1, 6, 10)]
-        [InlineData (1, 2, 10, 6, 2, 10)]
-        [InlineData (1, 2, 10, 1, 2, 16)]
-        public void EqualsVerticalIsFalse (int p1x, int p1y, int h1, int p2x, int p2y, int h2)
+        [InlineData(0, 0, 0, 1, 1, 1)]
+        [InlineData(1, 2, 10, 1, 6, 10)]
+        [InlineData(1, 2, 10, 6, 2, 10)]
+        [InlineData(1, 2, 10, 1, 2, 16)]
+        public void EqualsVerticalIsFalse(int p1x, int p1y, int h1, int p2x, int p2y, int h2)
         {
             var line1 = Line.Vertical(p1x, p1y, h1);
             var line2 = Line.Vertical(p2x, p2y, h2);
@@ -184,10 +184,10 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory, UseCrazyCulture]
-        [InlineData (0, 0, 0, "0 0 0 Empty")]
-        [InlineData (1, 2, 10, "1 2 10 Horizontal")]
-        [InlineData (-1, -2, 10, "-1 -2 10 Horizontal")]
-        public void ToStringHorizontal (int px, int py, int w, string str)
+        [InlineData(0, 0, 0, "0 0 0 Empty")]
+        [InlineData(1, 2, 10, "1 2 10 Horizontal")]
+        [InlineData(-1, -2, 10, "-1 -2 10 Horizontal")]
+        public void ToStringHorizontal(int px, int py, int w, string str)
         {
             var line = Line.Horizontal(px, py, w);
 
@@ -195,10 +195,10 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Theory, UseCrazyCulture]
-        [InlineData (0, 0, 0, "0 0 0 Empty")]
-        [InlineData (1, 2, 10, "1 2 10 Vertical")]
-        [InlineData (-1, -2, 10, "-1 -2 10 Vertical")]
-        public void ToStringVertical (int px, int py, int h, string str)
+        [InlineData(0, 0, 0, "0 0 0 Empty")]
+        [InlineData(1, 2, 10, "1 2 10 Vertical")]
+        [InlineData(-1, -2, 10, "-1 -2 10 Vertical")]
+        public void ToStringVertical(int px, int py, int h, string str)
         {
             var line = Line.Vertical(px, py, h);
 

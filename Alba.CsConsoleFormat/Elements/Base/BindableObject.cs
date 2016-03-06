@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void UpdateDataContext ()
+        private void UpdateDataContext()
         {
             if (_getters == null)
                 return;
@@ -36,7 +36,7 @@ namespace Alba.CsConsoleFormat
                 getter.Key.SetValue(this, getter.Value.GetValue(this), null);
         }
 
-        public void Bind ([NotNull] PropertyInfo prop, [NotNull] GetExpressionBase getter)
+        public void Bind([NotNull] PropertyInfo prop, [NotNull] GetExpressionBase getter)
         {
             if (prop == null)
                 throw new ArgumentNullException(nameof(prop));
@@ -49,14 +49,14 @@ namespace Alba.CsConsoleFormat
             _getters[prop] = getter;
         }
 
-        public BindableObject Clone ()
+        public BindableObject Clone()
         {
             BindableObject clone = CreateInstance();
             clone.CloneOverride(this);
             return clone;
         }
 
-        protected virtual void CloneOverride (BindableObject obj)
+        protected virtual void CloneOverride(BindableObject obj)
         {
             if (obj._getters != null)
                 _getters = new Dictionary<PropertyInfo, GetExpressionBase>(obj._getters);
@@ -64,16 +64,16 @@ namespace Alba.CsConsoleFormat
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
         }
 
-        protected virtual BindableObject CreateInstance ()
+        protected virtual BindableObject CreateInstance()
         {
             return (BindableObject)MemberwiseClone();
         }
 
-        [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         int IAttachedPropertyStore.PropertyCount => _attachedProperties?.Count ?? 0;
 
-        [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        bool IAttachedPropertyStore.TryGetProperty (AttachableMemberIdentifier identifier, out object value)
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
+        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier identifier, out object value)
         {
             if (_attachedProperties != null && _attachedProperties.TryGetValue(identifier, out value))
                 return true;
@@ -81,33 +81,33 @@ namespace Alba.CsConsoleFormat
             return false;
         }
 
-        [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        void IAttachedPropertyStore.SetProperty (AttachableMemberIdentifier identifier, object value)
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
+        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier identifier, object value)
         {
             EnsureAttachedPropertiesCreated();
             _attachedProperties[identifier] = value;
         }
 
-        [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        bool IAttachedPropertyStore.RemoveProperty (AttachableMemberIdentifier identifier)
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
+        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier identifier)
         {
             return _attachedProperties != null && _attachedProperties.Remove(identifier);
         }
 
-        [SuppressMessage ("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        void IAttachedPropertyStore.CopyPropertiesTo (KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
+        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
         {
             _attachedProperties?.CopyTo(array, index);
         }
 
-        public bool HasValue<T> ([NotNull] AttachedProperty<T> property)
+        public bool HasValue<T>([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
             return _attachedProperties != null && _attachedProperties.ContainsKey(property.Identifier);
         }
 
-        public T GetValue<T> ([NotNull] AttachedProperty<T> property)
+        public T GetValue<T>([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
@@ -116,7 +116,7 @@ namespace Alba.CsConsoleFormat
                 ? property.DefaultValue : (T)value;
         }
 
-        public void SetValue<T> ([NotNull] AttachedProperty<T> property, T value)
+        public void SetValue<T>([NotNull] AttachedProperty<T> property, T value)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
@@ -124,20 +124,20 @@ namespace Alba.CsConsoleFormat
             _attachedProperties[property.Identifier] = value;
         }
 
-        public void ResetValue<T> ([NotNull] AttachedProperty<T> property)
+        public void ResetValue<T>([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
             _attachedProperties?.Remove(property.Identifier);
         }
 
-        private void EnsureAttachedPropertiesCreated ()
+        private void EnsureAttachedPropertiesCreated()
         {
             if (_attachedProperties == null)
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
         }
 
-        public object this [[NotNull] AttachedProperty property]
+        public object this[[NotNull] AttachedProperty property]
         {
             get
             {

@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat
         public bool CloseInput { get; set; }
         public IList<Assembly> ReferenceAssemblies { get; }
 
-        public XamlElementReaderSettings ()
+        public XamlElementReaderSettings()
         {
             ReferenceAssemblies = new List<Assembly> {
                 typeof(Document).Assembly,

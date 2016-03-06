@@ -8,13 +8,13 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BackgroundOverride { get; set; }
 
-        public ConsoleRenderTarget ()
+        public ConsoleRenderTarget()
         {
             ColorOverride = null;
             BackgroundOverride = null;
         }
 
-        public void Render (IConsoleBufferSource buffer)
+        public void Render(IConsoleBufferSource buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

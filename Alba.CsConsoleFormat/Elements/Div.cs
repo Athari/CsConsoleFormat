@@ -4,7 +4,7 @@
     {
         public Thickness Padding { get; set; }
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             BlockElement child = VisualChild;
             Size borderThickness = Padding.CollapsedThickness;
@@ -15,7 +15,7 @@
             return borderThickness;
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             VisualChild?.Arrange(new Rect(finalSize).Deflate(Padding));
             return finalSize;

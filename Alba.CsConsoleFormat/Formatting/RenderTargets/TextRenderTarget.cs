@@ -7,13 +7,13 @@ namespace Alba.CsConsoleFormat
 {
     public class TextRenderTarget : TextRenderTargetBase
     {
-        public TextRenderTarget ([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public TextRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {}
 
-        public TextRenderTarget (TextWriter writer = null) : base(writer)
+        public TextRenderTarget(TextWriter writer = null) : base(writer)
         {}
 
-        protected override void RenderOverride (IConsoleBufferSource buffer)
+        protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
             if (buffer == null)

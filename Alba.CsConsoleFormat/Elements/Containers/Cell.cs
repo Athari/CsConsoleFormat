@@ -2,7 +2,7 @@
 {
     public class Cell : Div
     {
-        public Cell ()
+        public Cell()
         {
             Stroke = LineThickness.Single;
         }
@@ -37,6 +37,6 @@
             set { Grid.SetStroke(this, value); }
         }
 
-        public override string ToString () => base.ToString() + $" Pos=({Column} {Row} {ColumnSpan} {RowSpan})";
+        public override string ToString() => base.ToString() + $" Pos=({Column} {Row} {ColumnSpan} {RowSpan})";
     }
 }

@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class WrapTests : ElementTestsBase
     {
         [Fact]
-        public void NegativeItemWidth ()
+        public void NegativeItemWidth()
         {
             var wrap = new Wrap();
 
@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NegativeItemHeight ()
+        public void NegativeItemHeight()
         {
             var wrap = new Wrap();
 
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoChildren ()
+        public void NoChildren()
         {
             var wrap = new Wrap();
 
@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void EmptyChild ()
+        public void EmptyChild()
         {
             var wrap = new Wrap { Children = { new Div() } };
 
@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FixedSizeExact ()
+        public void FixedSizeExact()
         {
             var wrap = new Wrap {
                 ItemWidth = 3,
@@ -61,7 +61,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FixedSizeSmaller ()
+        public void FixedSizeSmaller()
         {
             var wrap = new Wrap {
                 ItemWidth = 3,
@@ -82,7 +82,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FixedSizeLarger ()
+        public void FixedSizeLarger()
         {
             var wrap = new Wrap {
                 ItemWidth = 2,
@@ -101,7 +101,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void AutoSizeFixed ()
+        public void AutoSizeFixed()
         {
             var wrap = new Wrap {
                 Children = {
@@ -120,7 +120,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void AutoSizeFixedVertical ()
+        public void AutoSizeFixedVertical()
         {
             var wrap = new Wrap {
                 Orientation = Orientation.Vertical,
@@ -141,7 +141,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void AutoSizeMixed ()
+        public void AutoSizeMixed()
         {
             var wrap = new Wrap {
                 Children = {
@@ -159,7 +159,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void AutoSizeMixedVertical ()
+        public void AutoSizeMixedVertical()
         {
             var wrap = new Wrap {
                 Orientation = Orientation.Vertical,
@@ -179,7 +179,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void AutoSizeTooLarge ()
+        public void AutoSizeTooLarge()
         {
             var wrap = new Wrap {
                 Children = {

@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class ElementTests
     {
         [Fact]
-        public void CloneSimple ()
+        public void CloneSimple()
         {
             var el = new MyElement {
                 Name = "Foo",
@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CloneChildren ()
+        public void CloneChildren()
         {
             var el = new MyElement {
                 Children = {
@@ -49,7 +49,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_Empty ()
+        public void GenerateVisualTree_Empty()
         {
             var el = new MyElement();
 
@@ -59,7 +59,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_InlinesAreGroupedIntoInlinesContainer ()
+        public void GenerateVisualTree_InlinesAreGroupedIntoInlinesContainer()
         {
             var el = new MyElement {
                 Children = {
@@ -82,7 +82,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_NesteddInlinesAreGroupedIntoInlinesContainer ()
+        public void GenerateVisualTree_NesteddInlinesAreGroupedIntoInlinesContainer()
         {
             var el = new MyElement {
                 Children = {
@@ -112,7 +112,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_InlinesSeparatedByBlockAreGroupedIntoSeparateInlinesContainers ()
+        public void GenerateVisualTree_InlinesSeparatedByBlockAreGroupedIntoSeparateInlinesContainers()
         {
             var el = new MyElement {
                 Children = {
@@ -151,7 +151,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_BlockAddedAsIs ()
+        public void GenerateVisualTree_BlockAddedAsIs()
         {
             var el = new MyElement {
                 Children = {
@@ -166,7 +166,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_BlocksAreGroupedIntoStack ()
+        public void GenerateVisualTree_BlocksAreGroupedIntoStack()
         {
             var el = new MyElement {
                 Children = {
@@ -189,7 +189,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void GenerateVisualTree_BlocksInContainerAreAddedAsIs ()
+        public void GenerateVisualTree_BlocksInContainerAreAddedAsIs()
         {
             var el = new MyElement {
                 Children = {

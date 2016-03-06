@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public PresentationDocumentType DocumentType { get; set; } = PresentationDocumentType.FlowDocument;
 
-        public XpsRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
+        public XpsRenderTarget([NotNull] Stream output, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat.Presentation
             _leaveOpen = leaveOpen;
         }
 
-        public override void Render (IConsoleBufferSource buffer)
+        public override void Render(IConsoleBufferSource buffer)
         {
             IDocumentPaginatorSource document;
             if (DocumentType == PresentationDocumentType.FlowDocument) {
@@ -37,7 +37,7 @@ namespace Alba.CsConsoleFormat.Presentation
             SaveDocument(document);
         }
 
-        private void SaveDocument (IDocumentPaginatorSource document)
+        private void SaveDocument(IDocumentPaginatorSource document)
         {
             using (var package = Package.Open(_output, FileMode.Create, FileAccess.ReadWrite))
             using (var xps = new XpsDocument(package, CompressionOption.Maximum))

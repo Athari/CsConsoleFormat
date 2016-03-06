@@ -7,18 +7,18 @@ using Alba.CsConsoleFormat.Framework.Sys;
 
 namespace Alba.CsConsoleFormat.Markup
 {
-    [MarkupExtensionReturnType (typeof(ConverterDelegate))]
+    [MarkupExtensionReturnType(typeof(ConverterDelegate))]
     public class CallConverterExtension : GetExtensionBase
     {
         public CultureInfo Culture { get; set; }
 
-        public CallConverterExtension ()
+        public CallConverterExtension()
         {}
 
-        public CallConverterExtension (string path) : base(path)
+        public CallConverterExtension(string path) : base(path)
         {}
 
-        protected override object ProvideExpression (IServiceProvider provider, BindableObject obj, PropertyInfo prop)
+        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo prop)
         {
             var expression = new CallConverterExpression {
                 Source = Source,

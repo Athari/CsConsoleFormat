@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
-    [MarkupExtensionReturnType (typeof(object))]
+    [MarkupExtensionReturnType(typeof(object))]
     public class GetExtension : GetExtensionBase
     {
         public string Format { get; set; }
@@ -14,13 +14,13 @@ namespace Alba.CsConsoleFormat.Markup
         public object Parameter { get; set; }
         public CultureInfo Culture { get; set; }
 
-        public GetExtension ()
+        public GetExtension()
         {}
 
-        public GetExtension (string path) : base(path)
+        public GetExtension(string path) : base(path)
         {}
 
-        protected override object ProvideExpression (IServiceProvider provider, BindableObject obj, [NotNull] PropertyInfo prop)
+        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, [NotNull] PropertyInfo prop)
         {
             if (prop == null)
                 throw new ArgumentNullException(nameof(prop));

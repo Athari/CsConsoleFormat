@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class HtmlRenderTargetTests
     {
         [Fact]
-        public void Render ()
+        public void Render()
         {
             var buffer = new ConsoleBuffer(4);
             var target = new HtmlRenderTarget {

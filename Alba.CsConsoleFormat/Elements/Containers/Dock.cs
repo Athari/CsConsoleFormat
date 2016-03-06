@@ -11,11 +11,11 @@ namespace Alba.CsConsoleFormat
 
         public bool LastChildFill { get; set; } = true;
 
-        public static DockTo GetTo ([NotNull] BlockElement @this) => @this.GetValueSafe(ToProperty);
-        public static void SetTo ([NotNull] BlockElement @this, DockTo value) => @this.SetValueSafe(ToProperty, value);
+        public static DockTo GetTo([NotNull] BlockElement @this) => @this.GetValueSafe(ToProperty);
+        public static void SetTo([NotNull] BlockElement @this, DockTo value) => @this.SetValueSafe(ToProperty, value);
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        protected override Size MeasureOverride (Size availableSize)
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        protected override Size MeasureOverride(Size availableSize)
         {
             Size parentSize = new Size(0, 0);
             Size accumulated = new Size(0, 0);
@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat
             return Size.Max(parentSize, accumulated);
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             int dockedChildrenCount = VisualChildren.Count - (LastChildFill ? 1 : 0);
             Thickness accumulated = 0;
@@ -78,7 +78,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private static AttachedProperty<T> RegisterAttached<T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+        private static AttachedProperty<T> RegisterAttached<T>(Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
             AttachedProperty.Register<Dock, T>(nameExpression, defaultValue);
     }
 }

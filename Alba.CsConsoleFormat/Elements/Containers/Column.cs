@@ -8,7 +8,7 @@
         public int Index { get; internal set; }
         public int ActualWidth { get; internal set; }
 
-        public Column ()
+        public Column()
         {
             Width = GridLength.Star(1);
             MinWidth = 0;
@@ -17,6 +17,6 @@
 
         protected override bool CanHaveChildren => false;
 
-        public override string ToString () => base.ToString() + $" Width={Width}({MinWidth},{ActualWidth},{(MaxWidth == Size.Infinity ? "Inf" : MaxWidth + "")})";
+        public override string ToString() => base.ToString() + $" Width={Width}({MinWidth},{ActualWidth},{(MaxWidth == Size.Infinity ? "Inf" : MaxWidth + "")})";
     }
 }

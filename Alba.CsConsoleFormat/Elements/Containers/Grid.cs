@@ -29,7 +29,7 @@ namespace Alba.CsConsoleFormat
         public ElementCollection<Column> Columns { get; }
         internal ElementCollection<Row> Rows { get; }
 
-        public Grid ()
+        public Grid()
         {
             Columns = new ElementCollection<Column>(this);
             Rows = new ElementCollection<Row>(this);
@@ -42,18 +42,18 @@ namespace Alba.CsConsoleFormat
             set { SetStroke(this, value); }
         }
 
-        public static int GetColumn ([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnProperty);
-        public static int GetRow ([NotNull] BlockElement @this) => @this.GetValueSafe(RowProperty);
-        public static int GetColumnSpan ([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnSpanProperty);
-        public static int GetRowSpan ([NotNull] BlockElement @this) => @this.GetValueSafe(RowSpanProperty);
-        public static LineThickness GetStroke ([NotNull] BlockElement @this) => @this.GetValueSafe(StrokeProperty);
-        public static void SetColumn ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnProperty, value);
-        public static void SetRow ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowProperty, value);
-        public static void SetColumnSpan ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnSpanProperty, value);
-        public static void SetRowSpan ([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowSpanProperty, value);
-        public static void SetStroke ([NotNull] BlockElement @this, LineThickness value) => @this.SetValueSafe(StrokeProperty, value);
+        public static int GetColumn([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnProperty);
+        public static int GetRow([NotNull] BlockElement @this) => @this.GetValueSafe(RowProperty);
+        public static int GetColumnSpan([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnSpanProperty);
+        public static int GetRowSpan([NotNull] BlockElement @this) => @this.GetValueSafe(RowSpanProperty);
+        public static LineThickness GetStroke([NotNull] BlockElement @this) => @this.GetValueSafe(StrokeProperty);
+        public static void SetColumn([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnProperty, value);
+        public static void SetRow([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowProperty, value);
+        public static void SetColumnSpan([NotNull] BlockElement @this, int value) => @this.SetValueSafe(ColumnSpanProperty, value);
+        public static void SetRowSpan([NotNull] BlockElement @this, int value) => @this.SetValueSafe(RowSpanProperty, value);
+        public static void SetStroke([NotNull] BlockElement @this, LineThickness value) => @this.SetValueSafe(StrokeProperty, value);
 
-        protected override void SetVisualChildren (IList<Element> visualChildren)
+        protected override void SetVisualChildren(IList<Element> visualChildren)
         {
             base.SetVisualChildren(visualChildren);
             if (Columns.Count == 0)
@@ -63,8 +63,8 @@ namespace Alba.CsConsoleFormat
             CalculateBorders();
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        private void CalculateCellPositions ()
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        private void CalculateCellPositions()
         {
             _cells = new List<List<BlockElement>>();
             int autoColumn = 0, autoRow = 0;
@@ -91,15 +91,15 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void PrepareColumnsAndRows ()
+        private void PrepareColumnsAndRows()
         {
             for (int column = 0; column < Columns.Count; column++)
                 Columns[column].Index = column;
             Rows.AddRange(Range(0, _cells.Count).Select(row => new Row { Index = row }));
         }
 
-        [SuppressMessage ("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
-        private void CalculateBorders ()
+        [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
+        private void CalculateBorders()
         {
             // columns: 5  rows: 2  column borders: 2x6  row borders: 3x5
             // pos: 1x2 3x1
@@ -152,7 +152,7 @@ namespace Alba.CsConsoleFormat
                     _maxRowBorders[row] = Max(_maxRowBorders[row], _rowBorders[row][column].ToCharWidth());
         }
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             if (Columns.Count == 0 || Children.Count == 0)
                 return new Size(0, 0);
@@ -171,7 +171,7 @@ namespace Alba.CsConsoleFormat
                 Rows.Sum(c => c.ActualHeight) + borderSize.Height);
         }
 
-        private void MeasureAbsoluteColumns (ref int availableWidth)
+        private void MeasureAbsoluteColumns(ref int availableWidth)
         {
             foreach (Column gridColumn in Columns.Where(c => c.Width.IsAbsolute)) {
                 gridColumn.ActualWidth = MinMax(gridColumn.Width.Value, gridColumn.MinWidth, gridColumn.MaxWidth);
@@ -188,7 +188,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void MeasureAutoColumns (ref int availableWidth)
+        private void MeasureAutoColumns(ref int availableWidth)
         {
             foreach (Column gridColumn in Columns.Where(c => c.Width.IsAuto)) {
                 gridColumn.ActualWidth = gridColumn.MinWidth;
@@ -206,7 +206,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void MeasureStarColumns (ref int availableWidth)
+        private void MeasureStarColumns(ref int availableWidth)
         {
             List<Column> starColumns = Columns.Where(c => c.Width.IsStar).ToList();
             if (starColumns.Count > 0) {
@@ -239,7 +239,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void MeasureSpannedCells ()
+        private void MeasureSpannedCells()
         {
             foreach (BlockElement cell in VisualChildren.Cast<BlockElement>().OrderBy(GetCellMeasurePriority)) {
                 int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
@@ -266,7 +266,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             if (Columns.Count == 0 || Children.Count == 0)
                 return finalSize;
@@ -285,7 +285,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private void ArrangeCell (Row gridRow, Column gridColumn, Rect cellRect)
+        private void ArrangeCell(Row gridRow, Column gridColumn, Rect cellRect)
         {
             BlockElement cell = _cells[gridRow.Index][gridColumn.Index];
             if (cell == null)
@@ -303,7 +303,7 @@ namespace Alba.CsConsoleFormat
             cell.Arrange(cellRect);
         }
 
-        public override void Render (ConsoleBuffer buffer)
+        public override void Render(ConsoleBuffer buffer)
         {
             base.Render(buffer);
             // Draw borders.
@@ -326,7 +326,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private bool IsAnyCellAtSpan (int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
+        private bool IsAnyCellAtSpan(int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
         {
             for (int column = 0; column < cellColumnSpan; column++)
                 for (int row = 0; row < cellRowSpan; row++)
@@ -335,26 +335,26 @@ namespace Alba.CsConsoleFormat
             return false;
         }
 
-        private BlockElement GetCellAtPosition (int cellColumn, int cellRow)
+        private BlockElement GetCellAtPosition(int cellColumn, int cellRow)
         {
             return cellRow < _cells.Count ? _cells[cellRow][cellColumn] : null;
         }
 
-        private void AddCellToSpan (BlockElement cell, int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
+        private void AddCellToSpan(BlockElement cell, int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
         {
             for (int column = 0; column < cellColumnSpan; column++)
                 for (int row = 0; row < cellRowSpan; row++)
                     AddCellToPosition(cell, cellColumn + column, cellRow + row);
         }
 
-        private void AddCellToPosition (BlockElement cell, int cellColumn, int cellRow)
+        private void AddCellToPosition(BlockElement cell, int cellColumn, int cellRow)
         {
             while (cellRow >= _cells.Count)
                 _cells.Add(ListOf<BlockElement>(Columns.Count));
             _cells[cellRow][cellColumn] = cell;
         }
 
-        private Size GetSpannedCellSize (int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
+        private Size GetSpannedCellSize(int cellColumn, int cellRow, int cellColumnSpan, int cellRowSpan)
         {
             return new Size(
                 Columns.Skip(cellColumn).Take(cellColumnSpan).Sum(c => c.ActualWidth)
@@ -363,7 +363,7 @@ namespace Alba.CsConsoleFormat
                     + _maxRowBorders.Skip(cellRow + 1).Take(cellRowSpan - 1).Sum());
         }
 
-        private static int GetCellMeasurePriority (BlockElement cell)
+        private static int GetCellMeasurePriority(BlockElement cell)
         {
             int cellColumnSpan = GetColumnSpan(cell), cellRowSpan = GetRowSpan(cell);
             if (cellColumnSpan == 1 && cellRowSpan == 1)
@@ -374,12 +374,12 @@ namespace Alba.CsConsoleFormat
                 return 2;
         }
 
-        private static void MergeBorderWidth (List<List<LineWidth>> borders, int row, int column, LineWidth width)
+        private static void MergeBorderWidth(List<List<LineWidth>> borders, int row, int column, LineWidth width)
         {
             borders[row][column] = Max(borders[row][column], width);
         }
 
-        private static List<T> ListOf<T> (int count, T value = default(T))
+        private static List<T> ListOf<T>(int count, T value = default(T))
         {
             var list = new List<T>(count);
             for (int i = 0; i < count; i++)
@@ -387,7 +387,7 @@ namespace Alba.CsConsoleFormat
             return list;
         }
 
-        private static List<List<T>> ListOfListOf<T> (int rows, int columns, T value = default(T))
+        private static List<List<T>> ListOfListOf<T>(int rows, int columns, T value = default(T))
         {
             var list = new List<List<T>>(rows);
             for (int i = 0; i < rows; i++)
@@ -395,7 +395,7 @@ namespace Alba.CsConsoleFormat
             return list;
         }
 
-        private static List<int> Distribute (List<double> weights, int available)
+        private static List<int> Distribute(List<double> weights, int available)
         {
             double totalWeight = weights.Sum();
             if (Abs(totalWeight) <= double.Epsilon)
@@ -422,7 +422,7 @@ namespace Alba.CsConsoleFormat
             return values.Select(v => v.Result).ToList();
         }
 
-        private static AttachedProperty<T> RegisterAttached<T> (Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+        private static AttachedProperty<T> RegisterAttached<T>(Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
             AttachedProperty.Register<Grid, T>(nameExpression, defaultValue);
 
         private struct DistributedValue
@@ -430,13 +430,13 @@ namespace Alba.CsConsoleFormat
             public int Result;
             public double Error;
 
-            public DistributedValue (double actual)
+            public DistributedValue(double actual)
             {
                 Result = (int)Floor(actual);
                 Error = actual - Result;
             }
 
-            public void Increment ()
+            public void Increment()
             {
                 Result++;
                 Error--;

@@ -7,18 +7,18 @@ namespace Alba.CsConsoleFormat
     {
         public string Text { get; set; }
 
-        public Span (string text)
+        public Span(string text)
         {
             Text = text;
         }
 
-        public Span () : this(null)
+        public Span() : this(null)
         {}
 
         public override string GeneratedText =>
             Text ?? string.Concat(VisualChildren.Cast<InlineElement>().Select(c => c.GeneratedText));
 
-        public override void GenerateSequence (IInlineSequence sequence)
+        public override void GenerateSequence(IInlineSequence sequence)
         {
             if (sequence == null)
                 throw new ArgumentNullException(nameof(sequence));
@@ -42,6 +42,6 @@ namespace Alba.CsConsoleFormat
                 sequence.PopFormatting();
         }
 
-        public override string ToString () => base.ToString() + $" Text=\"{Text}\"";
+        public override string ToString() => base.ToString() + $" Text=\"{Text}\"";
     }
 }

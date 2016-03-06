@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
-    [TypeConverter (typeof(XmlLanguageConverter))]
+    [TypeConverter(typeof(XmlLanguageConverter))]
     public class XmlLanguage
     {
         private CultureInfo _culture;
@@ -13,12 +13,12 @@ namespace Alba.CsConsoleFormat.Markup
         [CanBeNull]
         public string Name { get; set; }
 
-        public XmlLanguage (string name)
+        public XmlLanguage(string name)
         {
             Name = name;
         }
 
-        public XmlLanguage ([NotNull] CultureInfo culture)
+        public XmlLanguage([NotNull] CultureInfo culture)
         {
             if (culture == null)
                 throw new ArgumentNullException(nameof(culture));

@@ -13,7 +13,7 @@ namespace Alba.CsConsoleFormat
         private InlineSequence _inlineSequence;
         private List<List<InlineSegment>> _lines;
 
-        public InlineContainer (BlockElement source)
+        public InlineContainer(BlockElement source)
         {
             DataContext = source.DataContext;
             Align = HorizontalAlignment.Left;
@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat
             Parent = source;
         }
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             if (availableSize.Width == 0)
                 return new Size(0, 0);
@@ -38,12 +38,12 @@ namespace Alba.CsConsoleFormat
             return new Size(_lines.Select(GetLineLength).Max(), _lines.Count);
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             return finalSize;
         }
 
-        public override void Render (ConsoleBuffer buffer)
+        public override void Render(ConsoleBuffer buffer)
         {
             base.Render(buffer);
             ConsoleColor color = EffectiveColor, background = EffectiveBackground;
@@ -75,7 +75,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private static int GetLineLength (List<InlineSegment> line)
+        private static int GetLineLength(List<InlineSegment> line)
         {
             return line.Sum(s => s.TextLength);
         }
@@ -95,14 +95,14 @@ namespace Alba.CsConsoleFormat
             private CharInfo _wrapChar;
             private int _wrapSegmentIndex;
 
-            public LineWrapper (InlineContainer container, Size availableSize)
+            public LineWrapper(InlineContainer container, Size availableSize)
             {
                 _container = container;
                 _availableSize = availableSize;
                 _wrapPos = -1;
             }
 
-            [UsedImplicitly, ExcludeFromCodeCoverage, SuppressMessage ("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+            [UsedImplicitly, ExcludeFromCodeCoverage, SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
             private IEnumerable<object> DebugLines => _lines.Select(l => new {
                 text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
                 len = GetLineLength(l),
@@ -110,7 +110,7 @@ namespace Alba.CsConsoleFormat
 
             private int AvailableWidth => _availableSize.Width;
 
-            public List<List<InlineSegment>> WrapSegments ()
+            public List<List<InlineSegment>> WrapSegments()
             {
                 _curLine = new List<InlineSegment>();
                 _lines = new List<List<InlineSegment>> { _curLine };
@@ -132,7 +132,7 @@ namespace Alba.CsConsoleFormat
                 return _lines;
             }
 
-            private void AppendTextSegmentNoWrap (InlineSegment sourceSeg)
+            private void AppendTextSegmentNoWrap(InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
@@ -147,7 +147,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void AppendTextSegmentCharWrap (InlineSegment sourceSeg)
+            private void AppendTextSegmentCharWrap(InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
@@ -172,7 +172,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void AppendTextSegmentWordWrap (InlineSegment sourceSeg)
+            private void AppendTextSegmentWordWrap(InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 _segPos = 0;
@@ -213,7 +213,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void StartNewLine ()
+            private void StartNewLine()
             {
                 if (_curSeg != null && _curSeg.TextLength > 0) {
                     _curLine.Add(_curSeg);
@@ -226,7 +226,7 @@ namespace Alba.CsConsoleFormat
                 _segPos = 0;
             }
 
-            private void WrapLine ()
+            private void WrapLine()
             {
                 // TODO MemPerf: Avoid calling StringBuilder.ToString (pass string builder instead of string to SplitWrappedText, remove text from it).
                 string wrappedText = _curLine[_wrapSegmentIndex].ToString();
@@ -263,7 +263,7 @@ namespace Alba.CsConsoleFormat
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
             }
 
-            private void SplitWrappedText (string wrappedText, out string textBeforeWrap, out string textAfterWrap)
+            private void SplitWrappedText(string wrappedText, out string textBeforeWrap, out string textAfterWrap)
             {
                 if (_wrapChar.IsSpace) {
                     // "aaa bb" => "aaa" + "bb"
@@ -289,7 +289,7 @@ namespace Alba.CsConsoleFormat
                     throw new InvalidOperationException();
             }
 
-            private void AppendCurrentSegment ()
+            private void AppendCurrentSegment()
             {
                 if (_curSeg.TextLength > 0)
                     _curLine.Add(_curSeg);
@@ -302,7 +302,7 @@ namespace Alba.CsConsoleFormat
 
             public List<InlineSegment> Segments { get; }
 
-            public InlineSequence (InlineContainer container)
+            public InlineSequence(InlineContainer container)
             {
                 var initSegment = InlineSegment.CreateFromColors(container.EffectiveColor, container.EffectiveBackground);
                 _formattingStack.Push(initSegment);
@@ -310,37 +310,37 @@ namespace Alba.CsConsoleFormat
                 AddFormattingSegment();
             }
 
-            public void AppendText (string text)
+            public void AppendText(string text)
             {
                 Segments.Add(InlineSegment.CreateFromText(text));
             }
 
-            public void PushColor (ConsoleColor color)
+            public void PushColor(ConsoleColor color)
             {
                 _formattingStack.Push(InlineSegment.CreateFromColors(color, null));
                 AddFormattingSegment();
             }
 
-            public void PushBackground (ConsoleColor background)
+            public void PushBackground(ConsoleColor background)
             {
                 _formattingStack.Push(InlineSegment.CreateFromColors(null, background));
                 AddFormattingSegment();
             }
 
-            public void PopFormatting ()
+            public void PopFormatting()
             {
                 _formattingStack.Pop();
                 AddFormattingSegment();
             }
 
-            public void ValidateStackSize ()
+            public void ValidateStackSize()
             {
                 if (_formattingStack.Count != 1)
                     throw new InvalidOperationException("Push and Pop calls during inline generation must be balanced.");
             }
 
-            [SuppressMessage ("ReSharper", "PossibleInvalidOperationException", Justification = "Initial segment is assigned effective values in the constructor which are not null.")]
-            private void AddFormattingSegment ()
+            [SuppressMessage("ReSharper", "PossibleInvalidOperationException", Justification = "Initial segment is assigned effective values in the constructor which are not null.")]
+            private void AddFormattingSegment()
             {
                 InlineSegment lastSegment = Segments.LastOrDefault();
                 if (lastSegment == null || lastSegment.Text != null) {
@@ -359,7 +359,7 @@ namespace Alba.CsConsoleFormat
             public string Text { get; }
             public StringBuilder TextBuilder { get; }
 
-            private InlineSegment (string text, StringBuilder textBuilder)
+            private InlineSegment(string text, StringBuilder textBuilder)
             {
                 Text = text;
                 TextBuilder = textBuilder;
@@ -367,21 +367,21 @@ namespace Alba.CsConsoleFormat
 
             public int TextLength => TextBuilder?.Length ?? Text?.Length ?? 0;
 
-            public static InlineSegment CreateEmpty () =>
+            public static InlineSegment CreateEmpty() =>
                 new InlineSegment(null, null);
 
-            public static InlineSegment CreateFromColors (ConsoleColor? color, ConsoleColor? background) =>
+            public static InlineSegment CreateFromColors(ConsoleColor? color, ConsoleColor? background) =>
                 new InlineSegment(null, null) { Color = color, Background = background };
 
-            public static InlineSegment CreateFromText (string text) =>
+            public static InlineSegment CreateFromText(string text) =>
                 new InlineSegment(text?.Replace("\r", "") ?? "", null);
 
             // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).
-            public static InlineSegment CreateWithBuilder (int length) =>
+            public static InlineSegment CreateWithBuilder(int length) =>
                 new InlineSegment(null, new StringBuilder(length));
 
             [ExcludeFromCodeCoverage]
-            public override string ToString ()
+            public override string ToString()
             {
                 if (TextBuilder != null)
                     return TextBuilder.ToString();
@@ -396,7 +396,7 @@ namespace Alba.CsConsoleFormat
         {
             private readonly char _c;
 
-            private CharInfo (char c)
+            private CharInfo(char c)
             {
                 _c = c;
             }
@@ -410,11 +410,11 @@ namespace Alba.CsConsoleFormat
             public bool IsZeroWidth => _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace;
             public bool IsZeroWidthSpace => _c == Chars.ZeroWidthSpace;
 
-            public static CharInfo From (char c) => new CharInfo(c);
+            public static CharInfo From(char c) => new CharInfo(c);
 
-            public static implicit operator char (CharInfo self) => self._c;
+            public static implicit operator char(CharInfo self) => self._c;
 
-            public override string ToString () => _c.ToString();
+            public override string ToString() => _c.ToString();
         }
     }
 }

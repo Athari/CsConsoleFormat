@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 {
     internal class Program
     {
-        public static void Main ()
+        public static void Main()
         {
             //for (int i = 0; i < 100; i++)
             new Program().Run();
@@ -20,7 +20,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Console.ReadLine();
         }
 
-        private void Run ()
+        private void Run()
         {
             /*Size consoleSize = Size.Min(ConsoleRenderer.ConsoleLargestWindowSize, new Size((25 + 1) * 7 + 1, 60));
             try {
@@ -171,13 +171,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
 
-        public static string Replace (string value, string to) => value.Replace("|", to);
-        public static string Replace (string value, char to) => value.Replace('|', to);
-        public static IEnumerable<string> ReplaceSplit (string value, string to) => Split(Replace(value, to));
-        public static IEnumerable<string> ReplaceSplit (string value, char to) => Split(Replace(value, to));
-        private static IEnumerable<string> Split (string value) => value.Select(c => c.ToString());
+        public static string Replace(string value, string to) => value.Replace("|", to);
+        public static string Replace(string value, char to) => value.Replace('|', to);
+        public static IEnumerable<string> ReplaceSplit(string value, string to) => Split(Replace(value, to));
+        public static IEnumerable<string> ReplaceSplit(string value, char to) => Split(Replace(value, to));
+        private static IEnumerable<string> Split(string value) => value.Select(c => c.ToString());
 
-        public override string ToString () => GetType().Name;
+        public override string ToString() => GetType().Name;
     }
 
     public class DataItem
@@ -187,12 +187,12 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public string Value { get; set; }
         public List<DataItem> SubItems { get; set; }
 
-        public override string ToString () => GetType().Name;
+        public override string ToString() => GetType().Name;
     }
 
     public class ViewBuilder
     {
-        public Document CreateDocument (Data data)
+        public Document CreateDocument(Data data)
         {
             var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
             return new Document { Color = White, Background = Black }
@@ -261,27 +261,27 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 );
         }
 
-        private object[] LoremIpsumCharWrap (Data data) => new object[] {
+        private object[] LoremIpsumCharWrap(Data data) => new object[] {
             new Span("Char wrap\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ""),
         };
 
-        private object[] LoremIpsumWordWrapWithSpaces (Data data) => new object[] {
+        private object[] LoremIpsumWordWrapWithSpaces(Data data) => new object[] {
             new Span("Word wrap with spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ""),
         };
 
-        private object[] LoremIpsumWordWrapWithZeroWidthSpaces (Data data) => new object[] {
+        private object[] LoremIpsumWordWrapWithZeroWidthSpaces(Data data) => new object[] {
             new Span("Word wrap with zero-width spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ZeroWidthSpace),
         };
 
-        private object[] LoremIpsumWordWrapWithNoBreakSpaces (Data data) => new object[] {
+        private object[] LoremIpsumWordWrapWithNoBreakSpaces(Data data) => new object[] {
             new Span("Word wrap with no-break spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, NoBreakSpace),
         };
 
-        private object[] LoremIpsumWordWrapWithSoftHyphens (Data data) => new object[] {
+        private object[] LoremIpsumWordWrapWithSoftHyphens(Data data) => new object[] {
             new Span("Word wrap with soft hyphens\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, SoftHyphen),
         };

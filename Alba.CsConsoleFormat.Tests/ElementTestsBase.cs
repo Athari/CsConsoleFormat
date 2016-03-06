@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Tests
 
         private char _fillChar = 'a';
 
-        protected static void RenderOn1x1 (BlockElement element)
+        protected static void RenderOn1x1(BlockElement element)
         {
             element.GenerateVisualTree();
             element.Measure(new Size(1, 1));
@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.Tests
             element.Render(new ConsoleBuffer(1));
         }
 
-        protected static string GetRenderedText (Element element, int consoleWidth)
+        protected static string GetRenderedText(Element element, int consoleWidth)
         {
             var doc = element as Document ?? new Document { Children = { element } };
             string text = ConsoleRenderer.RenderDocumentToText(doc, new TextRenderTarget(),
@@ -25,7 +25,7 @@ namespace Alba.CsConsoleFormat.Tests
             return text.Length > 0 ? text.Remove(text.Length - 2) : text;
         }
 
-        protected Div CreateRectDiv (int width, int height)
+        protected Div CreateRectDiv(int width, int height)
         {
             var sb = new StringBuilder();
             for (int y = 0; y < height; y++) {
@@ -52,7 +52,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             public char Char { get; set; }
 
-            public override void Render (ConsoleBuffer buffer)
+            public override void Render(ConsoleBuffer buffer)
             {
                 buffer.FillForegroundRectangle(new Rect(RenderSize), null, Char);
             }

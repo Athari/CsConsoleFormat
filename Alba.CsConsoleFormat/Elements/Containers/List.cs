@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override IEnumerable<Element> GenerateVisualElements ()
+        public override IEnumerable<Element> GenerateVisualElements()
         {
             Children.Replace(new[] {
                 new Grid { Stroke = LineThickness.None }

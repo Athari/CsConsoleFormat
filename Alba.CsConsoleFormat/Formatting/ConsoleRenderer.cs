@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromStream<TElement> ([NotNull] Stream stream,
+        public static TElement ReadElementFromStream<TElement>([NotNull] Stream stream,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -62,7 +62,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromResource<TElement> ([NotNull] Type type, [NotNull] string resourceName,
+        public static TElement ReadElementFromResource<TElement>([NotNull] Type type, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -77,7 +77,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static TElement ReadElementFromResource<TElement> ([NotNull] Assembly assembly, [NotNull] string resourceName,
+        public static TElement ReadElementFromResource<TElement>([NotNull] Assembly assembly, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
@@ -92,25 +92,25 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static Document ReadDocumentFromStream ([NotNull] Stream stream,
+        public static Document ReadDocumentFromStream([NotNull] Stream stream,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromStream<Document>(stream, dataContext, settings);
         }
 
-        public static Document ReadDocumentFromResource ([NotNull] Type type, [NotNull] string resourceName,
+        public static Document ReadDocumentFromResource([NotNull] Type type, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(type, resourceName, dataContext, settings);
         }
 
-        public static Document ReadDocumentFromResource ([NotNull] Assembly assembly, [NotNull] string resourceName,
+        public static Document ReadDocumentFromResource([NotNull] Assembly assembly, [NotNull] string resourceName,
             object dataContext, XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
 
-        public static void RenderDocument ([NotNull] Document document, IRenderTarget target = null, Rect? renderRect = null)
+        public static void RenderDocument([NotNull] Document document, IRenderTarget target = null, Rect? renderRect = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -123,7 +123,7 @@ namespace Alba.CsConsoleFormat
             target.Render(buffer);
         }
 
-        public static string RenderDocumentToText ([NotNull] Document document, [NotNull] TextRenderTargetBase target, Rect? renderRect = null)
+        public static string RenderDocumentToText([NotNull] Document document, [NotNull] TextRenderTargetBase target, Rect? renderRect = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -137,7 +137,7 @@ namespace Alba.CsConsoleFormat
             return target.OutputText;
         }
 
-        public static void RenderDocumentToBuffer ([NotNull] Document document, [NotNull] ConsoleBuffer buffer, Rect renderRect)
+        public static void RenderDocumentToBuffer([NotNull] Document document, [NotNull] ConsoleBuffer buffer, Rect renderRect)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -149,7 +149,7 @@ namespace Alba.CsConsoleFormat
             RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip, renderRect);
         }
 
-        private static void RenderElement (BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
+        private static void RenderElement(BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
         {
             if (element.Visibility != Visibility.Visible || element.RenderSize.IsEmpty)
                 return;

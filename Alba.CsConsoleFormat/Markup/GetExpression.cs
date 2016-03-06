@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Markup
         public ConverterDelegate Converter { get; set; }
         public object Parameter { get; set; }
 
-        protected override object GetValueFromSource (object source)
+        protected override object GetValueFromSource(object source)
         {
             if (source == null)
                 return null;
@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat.Markup
             return TraversePathToProperty(source);
         }
 
-        protected override object ConvertValue (object value)
+        protected override object ConvertValue(object value)
         {
             if (Converter != null)
                 value = Converter(value, Parameter, EffectiveCulture);
@@ -56,10 +56,10 @@ namespace Alba.CsConsoleFormat.Markup
             public IContainer Container => null;
             public object Instance => null;
             public PropertyDescriptor PropertyDescriptor => null;
-            public object GetService (Type serviceType) => null;
-            public bool OnComponentChanging () => false;
+            public object GetService(Type serviceType) => null;
+            public bool OnComponentChanging() => false;
 
-            public void OnComponentChanged ()
+            public void OnComponentChanged()
             {}
         }
     }

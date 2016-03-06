@@ -17,10 +17,10 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class LineThicknessConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
 
-        public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
                 throw GetConvertFromException(null);
@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat
             return base.ConvertFrom(context, culture, value);
         }
 
-        private static LineThickness FromString (string str)
+        private static LineThickness FromString(string str)
         {
             string[] parts = SplitNumbers(str, 4);
             switch (parts.Length) {
@@ -48,7 +48,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private static LineWidth FixWidth (LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;
-        private static LineWidth GetWidth (string str) => FixWidth(ParseEnum<LineWidth>(str));
+        private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;
+        private static LineWidth GetWidth(string str) => FixWidth(ParseEnum<LineWidth>(str));
     }
 }

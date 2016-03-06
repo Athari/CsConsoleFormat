@@ -7,7 +7,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class InlineContainerTests : ElementTestsBase
     {
         [Fact]
-        public void Empty ()
+        public void Empty()
         {
             var doc = new Document().AddChildren();
 
@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrap ()
+        public void NoWrap()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap }
                 .AddChildren("a bc def");
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrapMultiLine ()
+        public void NoWrapMultiLine()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap }
                 .AddChildren("a bc def\nghij klmno");
@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrapAlignCenter ()
+        public void NoWrapAlignCenter()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
                 .AddChildren("a\nbc\ndef\nghij\nklmno");
@@ -49,7 +49,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrapAlignRight ()
+        public void NoWrapAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a\nbc\ndef\nghij\nklmno");
@@ -63,7 +63,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CharWrap ()
+        public void CharWrap()
         {
             var doc = new Document { TextWrap = TextWrapping.CharWrap }
                 .AddChildren("a bc def ghij");
@@ -76,7 +76,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CharWrapExact ()
+        public void CharWrapExact()
         {
             var doc = new Document { TextWrap = TextWrapping.CharWrap }
                 .AddChildren("a bc def ghij123");
@@ -89,7 +89,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CharWrapMultiLine ()
+        public void CharWrapMultiLine()
         {
             var doc = new Document { TextWrap = TextWrapping.CharWrap }
                 .AddChildren("a bc def\nghij klmno");
@@ -102,7 +102,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void CharWrapMultiLineExact ()
+        public void CharWrapMultiLineExact()
         {
             var doc = new Document { TextWrap = TextWrapping.CharWrap }
                 .AddChildren("a bc def\nghij");
@@ -114,7 +114,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapSingleLine ()
+        public void WordWrapSingleLine()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("abc");
@@ -123,7 +123,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithSpaces ()
+        public void WordWrapWithSpaces()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("a bc def ghijk lmnopq");
@@ -137,7 +137,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithSpacesAlignRight ()
+        public void WordWrapWithSpacesAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a bc def ghijk lmnopq");
@@ -151,7 +151,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapMultipleUnwrappable ()
+        public void WordWrapMultipleUnwrappable()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("a bcdefg hijklm");
@@ -165,7 +165,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithHyphens ()
+        public void WordWrapWithHyphens()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("a-bc-def-ghijk-lmnopq");
@@ -180,7 +180,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithHyphensAlignRight ()
+        public void WordWrapWithHyphensAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a-bc-def-ghijk-lmnopq");
@@ -195,7 +195,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithSoftHyphens ()
+        public void WordWrapWithSoftHyphens()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen));
@@ -210,7 +210,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithSoftHyphensAlignRight ()
+        public void WordWrapWithSoftHyphensAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen));
@@ -225,7 +225,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapSplitToChars ()
+        public void WordWrapSplitToChars()
         {
             // Tests wrapping of extra segments.
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
@@ -237,7 +237,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithZeroWidthSpaces ()
+        public void WordWrapWithZeroWidthSpaces()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap }
                 .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace));
@@ -252,7 +252,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void WordWrapWithZeroWidthSpacesAlignRight ()
+        public void WordWrapWithZeroWidthSpacesAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace));

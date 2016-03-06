@@ -9,7 +9,7 @@ using WpfSize = System.Windows.Size;
 
 namespace Alba.CsConsoleFormat.Presentation.Controls
 {
-    [ContentProperty ("Document")]
+    [ContentProperty("Document")]
     public class ConsoleView : Control
     {
         private static readonly DependencyPropertyKey ContentPropertyKey = DependencyProperty.RegisterReadOnly(
@@ -22,8 +22,8 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
         public static readonly DependencyProperty DocumentSourceProperty = DependencyProperty.Register(
             nameof(DocumentSource), typeof(Uri), typeof(ConsoleView), new PropertyMetadata(DocumentPropertyChanged));
 
-        [SuppressMessage ("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Properties must be overriden before the type is used.")]
-        static ConsoleView ()
+        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Properties must be overriden before the type is used.")]
+        static ConsoleView()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(typeof(ConsoleView)));
             DataContextProperty.OverrideMetadata(typeof(ConsoleView), new FrameworkPropertyMetadata(DocumentPropertyChanged));
@@ -58,13 +58,13 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
             set { SetValue(DocumentSourceProperty, value); }
         }
 
-        private static void RenderPropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void RenderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var @this = (ConsoleView)d;
             @this.UpdateView();
         }
 
-        private static void DocumentPropertyChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void DocumentPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var @this = (ConsoleView)d;
             if (@this.DocumentSource == null)
@@ -77,7 +77,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
             @this.UpdateView();
         }
 
-        private void UpdateView ()
+        private void UpdateView()
         {
             Document document = Document;
             if (document == null) {
@@ -106,7 +106,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
         {
             public WpfCanvas Canvas { get; private set; }
 
-            public override void Render (IConsoleBufferSource buffer)
+            public override void Render(IConsoleBufferSource buffer)
             {
                 WpfSize charSize = CharSize;
                 Canvas = CreateLinePanel(buffer, charSize);

@@ -10,8 +10,8 @@ namespace Alba.CsConsoleFormat.Tests
     public class ConsoleBufferTests : ElementTestsBase
     {
         [Fact]
-        [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
-        public void InvalidArguments ()
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        public void InvalidArguments()
         {
             var buffer = new ConsoleBuffer(42);
             IList<ConsoleColor> colorMap = ColorMaps.Dark;
@@ -29,7 +29,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void Create ()
+        public void Create()
         {
             var buffer = new ConsoleBuffer(42);
 
@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DrawHorizontalLine ()
+        public void DrawHorizontalLine()
         {
             var buffer = new ConsoleBuffer(5);
 
@@ -60,7 +60,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DrawVerticalLine ()
+        public void DrawVerticalLine()
         {
             var buffer = new ConsoleBuffer(4);
 
@@ -81,7 +81,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DrawLine ()
+        public void DrawLine()
         {
             var buffer = new ConsoleBuffer(3);
 
@@ -99,7 +99,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DrawRectangle ()
+        public void DrawRectangle()
         {
             var buffer = new ConsoleBuffer(3);
 
@@ -116,7 +116,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void DrawRectangleSimple ()
+        public void DrawRectangleSimple()
         {
             var buffer = new ConsoleBuffer(3);
 
@@ -133,7 +133,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillForegroundHorizontalLine ()
+        public void FillForegroundHorizontalLine()
         {
             var buffer = new ConsoleBuffer(5);
 
@@ -153,7 +153,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillForegroundVerticalLine ()
+        public void FillForegroundVerticalLine()
         {
             var buffer = new ConsoleBuffer(4);
 
@@ -174,7 +174,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillForegroundLine ()
+        public void FillForegroundLine()
         {
             var buffer = new ConsoleBuffer(3);
 
@@ -191,7 +191,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillBackgroundHorizontalLine ()
+        public void FillBackgroundHorizontalLine()
         {
             var buffer = new ConsoleBuffer(5);
 
@@ -211,7 +211,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillBackgroundVerticalLine ()
+        public void FillBackgroundVerticalLine()
         {
             var buffer = new ConsoleBuffer(4);
 
@@ -232,7 +232,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void FillBackgroundLine ()
+        public void FillBackgroundLine()
         {
             var buffer = new ConsoleBuffer(3);
 
@@ -249,7 +249,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ApplyColorMap ()
+        public void ApplyColorMap()
         {
             var buffer = new ConsoleBuffer(2);
 

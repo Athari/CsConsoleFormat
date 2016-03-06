@@ -11,14 +11,14 @@ namespace Alba.CsConsoleFormat.Markup
 {
     using ConverterDelegatesCache = Dictionary<MethodInfo, ConverterDelegate>;
 
-    public delegate object ConverterDelegate (object value, object param, CultureInfo culture);
+    public delegate object ConverterDelegate(object value, object param, CultureInfo culture);
 
     public class CallConverterExpression : GetExpressionBase
     {
         private static readonly ThreadLocal<ConverterDelegatesCache> _converterFunctions =
             new ThreadLocal<ConverterDelegatesCache>(() => new ConverterDelegatesCache());
 
-        protected override object GetValueFromSource (object source)
+        protected override object GetValueFromSource(object source)
         {
             if (source == null)
                 throw new InvalidOperationException("Source cannot be null.");
@@ -27,13 +27,13 @@ namespace Alba.CsConsoleFormat.Markup
             return TraversePathToMethod(source);
         }
 
-        protected override object TryGetCachedMethod (MethodInfo method)
+        protected override object TryGetCachedMethod(MethodInfo method)
         {
             ConverterDelegate func;
             return _converterFunctions.Value.TryGetValue(method, out func) ? func : null;
         }
 
-        protected override object ConvertValue (object value)
+        protected override object ConvertValue(object value)
         {
             var func3 = value as Func<object, object, object, CultureInfo>;
             if (func3 != null)
@@ -47,7 +47,7 @@ namespace Alba.CsConsoleFormat.Markup
             throw new InvalidOperationException("Cannot cast value to converter delegate.");
         }
 
-        protected override object ConvertMethod (MethodInfo method, object target)
+        protected override object ConvertMethod(MethodInfo method, object target)
         {
             if (method == null)
                 throw new ArgumentNullException(nameof(method));

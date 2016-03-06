@@ -6,7 +6,7 @@ namespace Alba.CsConsoleFormat
     {
         public Dictionary<string, object> Resources { get; } = new Dictionary<string, object>();
 
-        public Document ()
+        public Document()
         {
             VAlign = VerticalAlignment.Top;
         }

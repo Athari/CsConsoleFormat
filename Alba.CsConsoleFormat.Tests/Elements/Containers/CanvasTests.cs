@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class CanvasTests : ElementTestsBase
     {
         [Fact]
-        public void NoChildren ()
+        public void NoChildren()
         {
             var canvas = new Canvas();
 
@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderPyramid ()
+        public void RenderPyramid()
         {
             var canvas = new Canvas { Width = 11, Height = 7 }
                 .AddChildren(

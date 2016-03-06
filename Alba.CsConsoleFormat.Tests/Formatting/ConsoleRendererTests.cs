@@ -11,11 +11,11 @@ namespace Alba.CsConsoleFormat.Tests
     public class ConsoleRendererTests : ElementTestsBase
     {
         [Fact]
-        [SuppressMessage ("ReSharper", "AssignNullToNotNullAttribute")]
-        [SuppressMessage ("ReSharper", "UnusedVariable")]
-        [SuppressMessage ("ReSharper", "RedundantAssignment")]
-        [SuppressMessage ("ReSharper", "ImplicitlyCapturedClosure")]
-        public void NullArguments ()
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "UnusedVariable")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("ReSharper", "ImplicitlyCapturedClosure")]
+        public void NullArguments()
         {
             var type = GetType();
             var assembly = type.Assembly;
@@ -60,105 +60,105 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ReadElementFromStream ()
+        public void ReadElementFromStream()
         {
             Span span = ConsoleRenderer.ReadElementFromStream<Span>(StringToStream($"<Span {XamlNS} Text='Foo'/>"), null);
             span.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadElementFromStreamWithContext ()
+        public void ReadElementFromStreamWithContext()
         {
             Span span = ConsoleRenderer.ReadElementFromStream<Span>(StringToStream($"<Span {XamlNS} Text='{{Get Length}}'/>"), "abc");
             span.Text.Should().Be("3");
         }
 
         [Fact]
-        public void ReadElementFromResource ()
+        public void ReadElementFromResource()
         {
             Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.Span}", null);
             span.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadElementFromResourceError ()
+        public void ReadElementFromResourceError()
         {
             new Action(() => ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, "Oops", null))
                 .ShouldThrow<FileNotFoundException>().WithMessage("*Oops*not found*");
         }
 
         [Fact]
-        public void ReadElementFromResourceWithContext ()
+        public void ReadElementFromResourceWithContext()
         {
             Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.SpanWithContext}", "abc");
             span.Text.Should().Be("3");
         }
 
         [Fact]
-        public void ReadElementFromResourceByType ()
+        public void ReadElementFromResourceByType()
         {
             Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res), Res.Span, null);
             span.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadElementFromResourceByTypeError ()
+        public void ReadElementFromResourceByTypeError()
         {
             new Action(() => ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res), "Oops", null))
                 .ShouldThrow<FileNotFoundException>().WithMessage("*Oops*not found*");
         }
 
         [Fact]
-        public void ReadElementFromResourceByTypeWithContext ()
+        public void ReadElementFromResourceByTypeWithContext()
         {
             Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res), Res.SpanWithContext, "abc");
             span.Text.Should().Be("3");
         }
 
         [Fact]
-        public void ReadDocumentFromStream ()
+        public void ReadDocumentFromStream()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromStream(StringToStream($"<Document {XamlNS}><Span Text='Foo'/></Document>"), null);
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadDocumentFromStreamWithContext ()
+        public void ReadDocumentFromStreamWithContext()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromStream(StringToStream($"<Document {XamlNS}><Span Text='{{Get Length}}'/></Document>"), "abc");
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("3");
         }
 
         [Fact]
-        public void ReadDocumentFromResource ()
+        public void ReadDocumentFromResource()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.DocumentSpan}", null);
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadDocumentFromResourceWithContext ()
+        public void ReadDocumentFromResourceWithContext()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.DocumentSpanWithContext}", "abc");
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("3");
         }
 
         [Fact]
-        public void ReadDocumentFromResourceByType ()
+        public void ReadDocumentFromResourceByType()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res), Res.DocumentSpan, null);
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("Foo");
         }
 
         [Fact]
-        public void ReadDocumentFromResourceByTypeWithContext ()
+        public void ReadDocumentFromResourceByTypeWithContext()
         {
             Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res), Res.DocumentSpanWithContext, "abc");
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("3");
         }
 
         [Fact]
-        public void RenderDocumentToString ()
+        public void RenderDocumentToString()
         {
             var doc = new Document { Children = { new Span("Foo") } };
             var target = new TextRenderTarget();
@@ -167,7 +167,7 @@ namespace Alba.CsConsoleFormat.Tests
             target.OutputText.Should().Be($"Foo{Environment.NewLine}");
         }
 
-        private Stream StringToStream (string value)
+        private Stream StringToStream(string value)
         {
             var stream = new MemoryStream(value.Length);
             var writer = new StreamWriter(stream) { AutoFlush = true };

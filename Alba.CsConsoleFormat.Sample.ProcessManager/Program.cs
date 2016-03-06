@@ -12,9 +12,9 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
     {
         private readonly View _view = new View();
 
-        private static void Main (string[] args) => new Program().Run(args);
+        private static void Main(string[] args) => new Program().Run(args);
 
-        private void Run (string[] args)
+        private void Run(string[] args)
         {
             try {
                 if (args.Length == 0) {
@@ -44,7 +44,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             }
         }
 
-        private void InvokeList (ListOptions list)
+        private void InvokeList(ListOptions list)
         {
             IEnumerable<Process> processes = list.ProcessName != null
                 ? Process.GetProcessesByName(list.ProcessName, list.MachineName)
@@ -55,7 +55,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             ConsoleRenderer.RenderDocument(_view.ProcessList(processes));
         }
 
-        private void InvokeStart (StartOptions start)
+        private void InvokeStart(StartOptions start)
         {
             var password = new SecureString();
             if (start.Password != null) {
@@ -66,7 +66,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             Process.Start(start.FileName, start.Arguments, start.UserName, password, start.Domain);
         }
 
-        private void InvokeHelp (HelpOptions help)
+        private void InvokeHelp(HelpOptions help)
         {
             string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {

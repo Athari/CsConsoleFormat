@@ -6,15 +6,15 @@ namespace Alba.CsConsoleFormat
 {
     public static class ElementExts
     {
-        [SuppressMessage ("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This method is for advanced cases.")]
-        public static T Name<T> (this T @this, out T element)
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This method is for advanced cases.")]
+        public static T Name<T>(this T @this, out T element)
             where T : Element
         {
             element = @this;
             return @this;
         }
 
-        public static T AddChildren<T> (this T @this, params object[] children)
+        public static T AddChildren<T>(this T @this, params object[] children)
             where T : Element
         {
             foreach (object child in children) {
@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat
             return @this;
         }
 
-        private static void AddChild<T> (this T @this, object child)
+        private static void AddChild<T>(this T @this, object child)
             where T : Element
         {
             var text = child as string;
@@ -53,7 +53,7 @@ namespace Alba.CsConsoleFormat
             @this.Children.Add(child.ToString());
         }
 
-        public static T Set<T, TValue> (this T @this, AttachedProperty<TValue> property, TValue value)
+        public static T Set<T, TValue>(this T @this, AttachedProperty<TValue> property, TValue value)
             where T : Element, new()
         {
             @this.SetValue(property, value);

@@ -6,11 +6,11 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
 {
     public partial class MainWindow
     {
-        public Document Document (string world) => CreateDocument(world);
+        public Document Document(string world) => CreateDocument(world);
         public Document FixedDocument => Document("fixed");
         public Document FlowDocument => Document("flow");
 
-        public MainWindow ()
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
                 renderRect);
         }
 
-        public Document CreateDocument (string world) =>
+        public Document CreateDocument(string world) =>
             new Document { Color = White, Background = Black }
                 .AddChildren(
                     new Div { Color = Red }.AddChildren($"Hello {world} world!"),

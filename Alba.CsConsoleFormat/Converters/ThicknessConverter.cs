@@ -17,10 +17,10 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class ThicknessConverter : TypeConverter
     {
-        public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType) =>
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
 
-        public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
                 throw GetConvertFromException(null);
@@ -31,7 +31,7 @@ namespace Alba.CsConsoleFormat
             return base.ConvertFrom(context, culture, value);
         }
 
-        private static Thickness FromString (string str)
+        private static Thickness FromString(string str)
         {
             string[] parts = SplitNumbers(str, 4);
             switch (parts.Length) {

@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class DockTests : ElementTestsBase
     {
         [Fact]
-        public void NoChildren ()
+        public void NoChildren()
         {
             var dock = new Dock();
 
@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void RenderSpiral ()
+        public void RenderSpiral()
         {
             var dock = new Dock()
                 .AddChildren(

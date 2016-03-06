@@ -32,7 +32,7 @@ namespace Alba.CsConsoleFormat.Markup
                 ?? (TargetObject as Element)?.EffectiveCulture
                     ?? Thread.CurrentThread.CurrentCulture);
 
-        public object GetValue (object targetObject = null)
+        public object GetValue(object targetObject = null)
         {
             object source = Source;
             if (source == null) {
@@ -47,24 +47,24 @@ namespace Alba.CsConsoleFormat.Markup
             return GetValueFromSource(source);
         }
 
-        protected abstract object GetValueFromSource (object source);
+        protected abstract object GetValueFromSource(object source);
 
-        protected virtual object ConvertValue (object value)
+        protected virtual object ConvertValue(object value)
         {
             return value;
         }
 
-        protected virtual object ConvertMethod ([NotNull] MethodInfo method, [NotNull] object target)
+        protected virtual object ConvertMethod([NotNull] MethodInfo method, [NotNull] object target)
         {
             throw new NotSupportedException();
         }
 
-        protected virtual object TryGetCachedMethod (MethodInfo method)
+        protected virtual object TryGetCachedMethod(MethodInfo method)
         {
             return null;
         }
 
-        internal static object Get (object value, string memberName)
+        internal static object Get(object value, string memberName)
         {
             GetterDelegate func;
             if (!_getterFunctions.Value.TryGetValue(memberName, out func)) {
@@ -79,7 +79,7 @@ namespace Alba.CsConsoleFormat.Markup
             }
         }
 
-        internal object TraversePathToMethod (object source)
+        internal object TraversePathToMethod(object source)
         {
             string[] memberNames = Path.Split('.');
             string memberName;
@@ -119,7 +119,7 @@ namespace Alba.CsConsoleFormat.Markup
             }
         }
 
-        internal object TraversePathToProperty (object source)
+        internal object TraversePathToProperty(object source)
         {
             object value = source;
             foreach (string memberName in Path.Split('.')) {

@@ -9,20 +9,20 @@ namespace Alba.CsConsoleFormat.Tests
         private readonly GridLengthConverter _converter = new GridLengthConverter();
 
         [Fact]
-        public void ConvertFromInvalidSource ()
+        public void ConvertFromInvalidSource()
         {
             new Action(() => _converter.ConvertFrom(null)).ShouldThrow<NotSupportedException>();
             new Action(() => _converter.ConvertFrom(new object())).ShouldThrow<NotSupportedException>();
         }
 
         [Fact]
-        public void ConvertFromInvalidSourceFormat ()
+        public void ConvertFromInvalidSourceFormat()
         {
             new Action(() => _converter.ConvertFrom("&")).ShouldThrow<FormatException>();
         }
 
         [Fact]
-        public void ConvertFromString ()
+        public void ConvertFromString()
         {
             _converter.ConvertFrom("Auto").Should().Be(GridLength.Auto);
             _converter.ConvertFrom("AutO").Should().Be(GridLength.Auto);
@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ConvertFromNumber ()
+        public void ConvertFromNumber()
         {
             _converter.ConvertFrom(2).Should().Be(GridLength.Char(2));
             _converter.ConvertFrom(2m).Should().Be(GridLength.Char(2));
@@ -43,19 +43,19 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void ConvertToInvalidDestination ()
+        public void ConvertToInvalidDestination()
         {
             new Action(() => _converter.ConvertTo(GridLength.Auto, typeof(Guid))).ShouldThrow<NotSupportedException>();
         }
 
         [Fact]
-        public void ConvertToInvalidSource ()
+        public void ConvertToInvalidSource()
         {
             new Action(() => _converter.ConvertTo("Auto", typeof(string))).ShouldThrow<NotSupportedException>();
         }
 
         [Fact]
-        public void ConvertToString ()
+        public void ConvertToString()
         {
             _converter.ConvertToString(GridLength.Auto).Should().Be("Auto");
             _converter.ConvertToString(GridLength.Char(1)).Should().Be("1");

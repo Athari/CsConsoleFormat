@@ -8,8 +8,8 @@ using static Alba.CsConsoleFormat.Presentation.FontDefaults;
 
 namespace Alba.CsConsoleFormat.Presentation.Markup
 {
-    [ValueConversion (typeof(Document), typeof(FixedDocument))]
-    [ValueConversion (typeof(Document), typeof(FlowDocument))]
+    [ValueConversion(typeof(Document), typeof(FixedDocument))]
+    [ValueConversion(typeof(Document), typeof(FlowDocument))]
     public class DocumentConverter : IValueConverter
     {
         public PresentationDocumentType DocumentType { get; set; } = PresentationDocumentType.FixedDocument;
@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat.Presentation.Markup
         public FontStyle FontStyle { get; set; } = DefaultFontStyle;
         public FontWeight FontWeight { get; set; } = DefaultFontWeight;
 
-        public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var document = value as Document;
             if (document == null)
@@ -54,7 +54,7 @@ namespace Alba.CsConsoleFormat.Presentation.Markup
             return content;
         }
 
-        public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }

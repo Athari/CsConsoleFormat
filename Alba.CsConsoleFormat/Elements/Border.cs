@@ -11,19 +11,19 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleColor? ShadowColor { get; set; }
 
-        [ValueProvider (ValueProviders.ColorMaps)]
-        [SuppressMessage ("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Designed to be assigned one of predefined read-only collections.")]
+        [ValueProvider(ValueProviders.ColorMaps)]
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Designed to be assigned one of predefined read-only collections.")]
         public IList<ConsoleColor> ShadowColorMap { get; set; }
 
         public LineThickness Stroke { get; set; }
 
-        public Border ()
+        public Border()
         {
             Stroke = LineThickness.None;
             ShadowColorMap = ColorMaps.Darkest;
         }
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             BlockElement child = VisualChild;
             Size borderThickness = (Stroke.CharThickness + Padding + Thickness.Max(Shadow, 0)).CollapsedThickness;
@@ -34,13 +34,13 @@ namespace Alba.CsConsoleFormat
             return borderThickness;
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             VisualChild?.Arrange(new Rect(finalSize).Deflate(Stroke.CharThickness + Padding + Thickness.Max(Shadow, 0)));
             return finalSize;
         }
 
-        public override void Render (ConsoleBuffer buffer)
+        public override void Render(ConsoleBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

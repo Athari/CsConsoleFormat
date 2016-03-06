@@ -4,19 +4,19 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
     internal class StartOptions
     {
-        [ValueOption (0)]
+        [ValueOption(0)]
         public string FileName { get; set; }
 
-        [Option ('a', "args", HelpText = "Command-line arguments to pass when starting the process.")]
+        [Option('a', "args", HelpText = "Command-line arguments to pass when starting the process.")]
         public string Arguments { get; set; }
 
-        [Option ('d', "domain", HelpText = "The domain to use when starting the process.")]
+        [Option('d', "domain", HelpText = "The domain to use when starting the process.")]
         public string Domain { get; set; }
 
-        [Option ('u', "user", HelpText = "The user name to use when starting the process.")]
+        [Option('u', "user", HelpText = "The user name to use when starting the process.")]
         public string UserName { get; set; }
 
-        [Option ('p', "password", HelpText = "The password to use when starting the process.")]
+        [Option('p', "password", HelpText = "The password to use when starting the process.")]
         public string Password { get; set; }
     }
 }

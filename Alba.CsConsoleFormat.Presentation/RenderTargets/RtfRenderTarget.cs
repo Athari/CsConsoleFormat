@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat.Presentation
         private readonly Stream _output;
         private readonly bool _leaveOpen;
 
-        public RtfRenderTarget ([NotNull] Stream output, bool leaveOpen = false)
+        public RtfRenderTarget([NotNull] Stream output, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -19,7 +19,7 @@ namespace Alba.CsConsoleFormat.Presentation
             _leaveOpen = leaveOpen;
         }
 
-        public override void Render (IConsoleBufferSource buffer)
+        public override void Render(IConsoleBufferSource buffer)
         {
             var document = new FlowDocument();
             RenderToFlowDocument(buffer, document);

@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat.Tests
     public class StackTests : ElementTestsBase
     {
         [Fact]
-        public void NoChildren ()
+        public void NoChildren()
         {
             var stack = new Stack();
 
@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void EmptyChild ()
+        public void EmptyChild()
         {
             var stack = new Stack { Children = { new Div() } };
 
@@ -24,7 +24,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SizeMixed ()
+        public void SizeMixed()
         {
             var stack = new Stack {
                 Children = {
@@ -46,7 +46,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SizeMixedHorizontal ()
+        public void SizeMixedHorizontal()
         {
             var stack = new Stack {
                 Orientation = Orientation.Horizontal,

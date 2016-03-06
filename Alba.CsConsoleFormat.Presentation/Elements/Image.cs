@@ -13,17 +13,17 @@ namespace Alba.CsConsoleFormat.Presentation
         public Stretch Stretch { get; set; } = Stretch.Uniform;
         public StretchDirection StretchDirection { get; set; } = StretchDirection.DownOnly;
 
-        protected override Size MeasureOverride (Size availableSize)
+        protected override Size MeasureOverride(Size availableSize)
         {
             return MeasureInternal(availableSize);
         }
 
-        protected override Size ArrangeOverride (Size finalSize)
+        protected override Size ArrangeOverride(Size finalSize)
         {
             return MeasureInternal(finalSize);
         }
 
-        private Size MeasureInternal (Size inputSize)
+        private Size MeasureInternal(Size inputSize)
         {
             if (Source == null)
                 return new Size(0, 0);
@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat.Presentation
             return new Size(Round(imageSize.Width * scaleFactor.Width), Round(imageSize.Height * scaleFactor.Height));
         }
 
-        public override void Render (ConsoleBuffer buffer)
+        public override void Render(ConsoleBuffer buffer)
         {
             if (Source == null)
                 return;
@@ -42,7 +42,7 @@ namespace Alba.CsConsoleFormat.Presentation
             buffer.DrawImage(Source, new Rect(RenderSize));
         }
 
-        private static WpfSize ComputeScaleFactor (Size availableSize, Size contentSize, Stretch stretch, StretchDirection stretchDirection)
+        private static WpfSize ComputeScaleFactor(Size availableSize, Size contentSize, Stretch stretch, StretchDirection stretchDirection)
         {
             bool isWidthInfinite = availableSize.IsWidthInfinite;
             bool isHeightInfinite = availableSize.IsHeightInfinite;
@@ -75,6 +75,6 @@ namespace Alba.CsConsoleFormat.Presentation
             return new WpfSize(scaleX, scaleY);
         }
 
-        private static int Round (double value) => (int)Math.Round(value, MidpointRounding.AwayFromZero);
+        private static int Round(double value) => (int)Math.Round(value, MidpointRounding.AwayFromZero);
     }
 }

@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    [RuntimeNameProperty (nameof(Name)), ContentProperty (nameof(Children)), XmlLangProperty (nameof(Language)), UsableDuringInitialization (true)]
+    [RuntimeNameProperty(nameof(Name)), ContentProperty(nameof(Children)), XmlLangProperty(nameof(Language)), UsableDuringInitialization(true)]
     public abstract class Element : BindableObject
     {
         private const ConsoleColor DefaultColor = ConsoleColor.White;
@@ -29,10 +29,10 @@ namespace Alba.CsConsoleFormat
         [CanBeNull]
         public Element Parent { get; internal set; }
 
-        [TypeConverter (typeof(ConsoleColorConverter))]
+        [TypeConverter(typeof(ConsoleColorConverter))]
         public ConsoleColor? Color { get; set; }
 
-        [TypeConverter (typeof(ConsoleColorConverter))]
+        [TypeConverter(typeof(ConsoleColorConverter))]
         public ConsoleColor? Background { get; set; }
 
         public Visibility Visibility { get; set; }
@@ -48,7 +48,7 @@ namespace Alba.CsConsoleFormat
         }
 
         // TODO Change type of Element.VisualChildren to IList<BlockElement>
-        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         protected internal IList<Element> VisualChildren
         {
             get { return _visualChildren ?? (_visualChildren = new List<Element>()); }
@@ -68,8 +68,8 @@ namespace Alba.CsConsoleFormat
         internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
         internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public void GenerateVisualTree ()
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public void GenerateVisualTree()
         {
             if (!HasChildren)
                 return;
@@ -113,7 +113,7 @@ namespace Alba.CsConsoleFormat
             SetVisualChildren(children);
         }
 
-        protected virtual void SetVisualChildren ([NotNull] IList<Element> visualChildren)
+        protected virtual void SetVisualChildren([NotNull] IList<Element> visualChildren)
         {
             if (visualChildren == null)
                 throw new ArgumentNullException(nameof(visualChildren));
@@ -130,13 +130,13 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        [EditorBrowsable (EditorBrowsableState.Advanced)]
-        public virtual IEnumerable<Element> GenerateVisualElements ()
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public virtual IEnumerable<Element> GenerateVisualElements()
         {
             yield return this;
         }
 
-        protected override void CloneOverride ([NotNull] BindableObject obj)
+        protected override void CloneOverride([NotNull] BindableObject obj)
         {
             var source = (Element)obj;
             base.CloneOverride(source);
@@ -150,7 +150,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override string ToString () =>
+        public override string ToString() =>
             $"{GetType().Name}:"
                 + (Name != null ? $" Name={Name}" : "")
                 + (DataContext != null ? $" DC={DataContext}" : "")
