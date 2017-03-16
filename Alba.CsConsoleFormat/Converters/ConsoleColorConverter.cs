@@ -14,23 +14,43 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class ConsoleColorConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => IsTypeStringOrNumeric(sourceType);
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType) || sourceType == typeof(ConsoleColor);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value == null)
-                throw GetConvertFromException(null);
-            var str = value as string;
-            if (str == null)
-                return ToEnum<ConsoleColor>(value);
-            str = str.ToUpperInvariant();
-            return str == INHERIT ? (ConsoleColor?)null : ParseEnum<ConsoleColor>(str);
+            switch (value) {
+                case ConsoleColor color:
+                    return color;
+                case object number when number.IsTypeNumeric():
+                    return NumberToEnum<ConsoleColor>(number);
+                case string inherit when inherit.ToUpperInvariant() == INHERIT:
+                    return null;
+                case string str:
+                    return StringToEnum<ConsoleColor>(str);
+                default:
+                    return base.ConvertFrom(context, culture, value);
+            }
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string))
-                return value != null ? Convert.ToString(value, culture) : Inherit;
+            if (destinationType == typeof(string)) {
+                switch (value) {
+                    case null:
+                        return Inherit;
+                    case ConsoleColor color:
+                        return color.ToString();
+                }
+            }
+            else if (IsTypeNumeric(destinationType)) {
+                switch (value) {
+                    case null:
+                        return null;
+                    case ConsoleColor color:
+                        return Convert.ChangeType(color, destinationType);
+                }
+            }
             throw GetConvertToException(value, destinationType);
         }
     }

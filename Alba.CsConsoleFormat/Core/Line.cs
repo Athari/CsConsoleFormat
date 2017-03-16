@@ -45,7 +45,7 @@ namespace Alba.CsConsoleFormat
 
         public int Width
         {
-            get { return _width; }
+            get => _width;
             set
             {
                 if (value < 0)
@@ -58,7 +58,7 @@ namespace Alba.CsConsoleFormat
 
         public int Height
         {
-            get { return _height; }
+            get => _height;
             set
             {
                 if (value < 0)
@@ -71,7 +71,7 @@ namespace Alba.CsConsoleFormat
 
         public Point Position
         {
-            get { return new Point(X, Y); }
+            get => new Point(X, Y);
             set
             {
                 X = value.X;

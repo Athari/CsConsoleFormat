@@ -17,9 +17,7 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public XpsRenderTarget([NotNull] Stream output, bool leaveOpen = false)
         {
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            _output = output;
+            _output = output ?? throw new ArgumentNullException(nameof(output));
             _leaveOpen = leaveOpen;
         }
 

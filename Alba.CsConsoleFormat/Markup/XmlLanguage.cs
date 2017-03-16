@@ -20,9 +20,7 @@ namespace Alba.CsConsoleFormat.Markup
 
         public XmlLanguage([NotNull] CultureInfo culture)
         {
-            if (culture == null)
-                throw new ArgumentNullException(nameof(culture));
-            _culture = culture;
+            _culture = culture ?? throw new ArgumentNullException(nameof(culture));
             Name = culture.Name;
         }
 

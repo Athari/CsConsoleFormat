@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Alba.CsConsoleFormat.ConsoleTest")]
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
 [assembly: Guid("14cf2c22-cc55-49b0-9f41-7e3f0cf24751")]
 
 [assembly: AssemblyVersion("1.0.0.0")]

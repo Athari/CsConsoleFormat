@@ -230,8 +230,7 @@ namespace Alba.CsConsoleFormat
             {
                 // TODO MemPerf: Avoid calling StringBuilder.ToString (pass string builder instead of string to SplitWrappedText, remove text from it).
                 string wrappedText = _curLine[_wrapSegmentIndex].ToString();
-                string textBeforeWrap, textAfterWrap;
-                SplitWrappedText(wrappedText, out textBeforeWrap, out textAfterWrap);
+                SplitWrappedText(wrappedText, out string textBeforeWrap, out string textAfterWrap);
 
                 // Put textBeforeWrap into wrappedSeg.
                 if (wrappedText != textBeforeWrap) {

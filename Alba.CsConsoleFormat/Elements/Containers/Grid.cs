@@ -38,8 +38,8 @@ namespace Alba.CsConsoleFormat
 
         public LineThickness Stroke
         {
-            get { return GetStroke(this); }
-            set { SetStroke(this, value); }
+            get => GetStroke(this);
+            set => SetStroke(this, value);
         }
 
         public static int GetColumn([NotNull] BlockElement @this) => @this.GetValueSafe(ColumnProperty);

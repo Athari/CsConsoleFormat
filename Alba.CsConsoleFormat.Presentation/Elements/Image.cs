@@ -35,6 +35,8 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public override void Render(ConsoleBuffer buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
             if (Source == null)
                 return;
             if (Background != null)

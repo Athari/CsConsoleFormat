@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat.Markup
         protected GetExtensionBase() : this(null)
         {}
 
-        public override sealed object ProvideValue(IServiceProvider serviceProvider)
+        public sealed override object ProvideValue(IServiceProvider serviceProvider)
         {
             //var xamlSchemaContextProvider = provider.GetService<IXamlSchemaContextProvider>();
             //var xamlTypeResolver = provider.GetService<IXamlTypeResolver>();

@@ -15,13 +15,8 @@ namespace Alba.CsConsoleFormat
 
         public string IndexFormat
         {
-            get { return _indexFormat; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-                _indexFormat = value;
-            }
+            get => _indexFormat;
+            set => _indexFormat = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public override IEnumerable<Element> GenerateVisualElements()

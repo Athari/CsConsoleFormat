@@ -14,8 +14,8 @@ namespace Alba.CsConsoleFormat
 
         public char Char
         {
-            get { return _char; }
-            set { _char = value; }
+            get => _char;
+            set => _char = value;
         }
 
         public bool HasChar => Char != '\0';
@@ -36,32 +36,32 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleColor ForegroundColor
         {
-            get { return (ConsoleColor)GetBits(_colors, 0, 0xF); }
-            set { SetBits(ref _colors, (byte)value, 0, 0xF); }
+            get => (ConsoleColor)GetBits(_colors, 0, 0xF);
+            set => SetBits(ref _colors, (byte)value, 0, 0xF);
         }
 
         public ConsoleColor BackgroundColor
         {
-            get { return (ConsoleColor)GetBits(_colors, 4, 0xF); }
-            set { SetBits(ref _colors, (byte)value, 4, 0xF); }
+            get => (ConsoleColor)GetBits(_colors, 4, 0xF);
+            set => SetBits(ref _colors, (byte)value, 4, 0xF);
         }
 
         public LineChar LineChar
         {
-            get { return (LineChar)GetBits(_state, 0, 0xF); }
-            set { SetBits(ref _state, (byte)value, 0, 0xF); }
+            get => (LineChar)GetBits(_state, 0, 0xF);
+            set => SetBits(ref _state, (byte)value, 0, 0xF);
         }
 
         public LineWidth LineWidthHorizontal
         {
-            get { return (LineWidth)GetBits(_state, 0, 0x3); }
-            set { SetBits(ref _state, (byte)value, 0, 0x3); }
+            get => (LineWidth)GetBits(_state, 0, 0x3);
+            set => SetBits(ref _state, (byte)value, 0, 0x3);
         }
 
         public LineWidth LineWidthVertical
         {
-            get { return (LineWidth)GetBits(_state, 2, 0x3); }
-            set { SetBits(ref _state, (byte)value, 2, 0x3); }
+            get => (LineWidth)GetBits(_state, 2, 0x3);
+            set => SetBits(ref _state, (byte)value, 2, 0x3);
         }
 
         private static byte GetBits(byte data, int offset, byte mask)

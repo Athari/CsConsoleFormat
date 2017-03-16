@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -30,14 +31,14 @@ namespace Alba.CsConsoleFormat.Markup
         protected CultureInfo EffectiveCulture =>
             _effectiveCulture ?? (_effectiveCulture = Culture
                 ?? (TargetObject as Element)?.EffectiveCulture
-                    ?? Thread.CurrentThread.CurrentCulture);
+                ?? Thread.CurrentThread.CurrentCulture);
 
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "'Value' is a conventional name for binding results.")]
         public object GetValue(object targetObject = null)
         {
             object source = Source;
             if (source == null) {
-                var targetElement = targetObject as BindableObject;
-                if (targetElement != null)
+                if (targetObject is BindableObject targetElement)
                     source = targetElement.DataContext;
                 else if (targetObject != null)
                     source = targetObject;
@@ -66,8 +67,7 @@ namespace Alba.CsConsoleFormat.Markup
 
         internal static object Get(object value, string memberName)
         {
-            GetterDelegate func;
-            if (!_getterFunctions.Value.TryGetValue(memberName, out func)) {
+            if (!_getterFunctions.Value.TryGetValue(memberName, out GetterDelegate func)) {
                 func = DynamicCaller.Get<object, object>(memberName);
                 _getterFunctions.Value.Add(memberName, func);
             }

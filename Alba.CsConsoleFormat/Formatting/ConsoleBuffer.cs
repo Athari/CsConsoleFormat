@@ -29,13 +29,8 @@ namespace Alba.CsConsoleFormat
         [NotNull]
         public ILineCharRenderer LineCharRenderer
         {
-            get { return _lineCharRenderer; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-                _lineCharRenderer = value;
-            }
+            get => _lineCharRenderer;
+            set => _lineCharRenderer = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         public void DrawHorizontalLine(int x, int y, int width, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
@@ -27,11 +28,11 @@ namespace Alba.CsConsoleFormat.Presentation
             [Color.FromRgb(255, 255, 255)] = ConsoleColor.White,
         };
 
-        public static void DrawImage(this ConsoleBuffer @this, ImageSource imageSource, int x, int y, int width, int height)
+        public static void DrawImage([NotNull] this ConsoleBuffer @this, ImageSource imageSource, int x, int y, int width, int height)
         {
-            var bmp = imageSource as BitmapSource;
-            if (bmp == null)
-                throw new ArgumentException("Only rendering of bitmap source is supported.");
+            if (@this == null)
+                throw new ArgumentNullException(nameof(@this));
+            var bmp = imageSource as BitmapSource ?? throw new ArgumentException("Only rendering of bitmap source is supported.");
 
             @this.OffsetX(ref x).OffsetY(ref y);
             int x1 = x, x2 = x + width, y1 = y, y2 = y + height;
@@ -60,8 +61,7 @@ namespace Alba.CsConsoleFormat.Presentation
 
         private static void SetColor(ref ConsoleChar c, BitmapPalette palette, int colorIndex)
         {
-            ConsoleColor color;
-            if (ConsolePaletteMap.TryGetValue(palette.Colors[colorIndex], out color))
+            if (ConsolePaletteMap.TryGetValue(palette.Colors[colorIndex], out ConsoleColor color))
                 c.BackgroundColor = color;
         }
 

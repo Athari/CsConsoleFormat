@@ -32,8 +32,7 @@ namespace Alba.CsConsoleFormat
             get
             {
                 ThrowIfDisposed();
-                var stringWriter = Writer as StringWriter;
-                if (stringWriter == null)
+                if (!(Writer is StringWriter stringWriter))
                     throw new InvalidOperationException($"Cannot get output text, output is not {nameof(StringWriter)}.");
                 return stringWriter.ToString();
             }

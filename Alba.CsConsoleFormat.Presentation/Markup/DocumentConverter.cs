@@ -25,8 +25,7 @@ namespace Alba.CsConsoleFormat.Presentation.Markup
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var document = value as Document;
-            if (document == null)
+            if (!(value is Document document))
                 return null;
 
             FrameworkContentElement content;

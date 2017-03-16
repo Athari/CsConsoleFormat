@@ -23,8 +23,7 @@ namespace Alba.CsConsoleFormat.Markup
         {
             var rootObjectProvider = serviceProvider.GetService<IRootObjectProvider>();
             var doc = (Document)rootObjectProvider.RootObject;
-            object value;
-            if (doc.Resources.TryGetValue(Key, out value))
+            if (doc.Resources.TryGetValue(Key, out object value))
                 return value;
 
             var lineInfo = serviceProvider.GetService<IXamlLineInfo>();

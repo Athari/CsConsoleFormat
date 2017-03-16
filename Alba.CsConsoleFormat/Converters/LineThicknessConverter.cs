@@ -29,7 +29,7 @@ namespace Alba.CsConsoleFormat
             else if (value is LineWidth)
                 return new LineThickness((LineWidth)value);
             else if (IsTypeNumeric(value.GetType()))
-                return new LineThickness(FixWidth(ToEnum<LineWidth>(value)));
+                return new LineThickness(FixWidth(NumberToEnum<LineWidth>(value)));
             return base.ConvertFrom(context, culture, value);
         }
 
@@ -49,6 +49,6 @@ namespace Alba.CsConsoleFormat
         }
 
         private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;
-        private static LineWidth GetWidth(string str) => FixWidth(ParseEnum<LineWidth>(str));
+        private static LineWidth GetWidth(string str) => FixWidth(StringToEnum<LineWidth>(str));
     }
 }

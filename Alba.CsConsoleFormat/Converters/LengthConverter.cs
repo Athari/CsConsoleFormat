@@ -14,23 +14,33 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class LengthConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => IsTypeStringOrNumeric(sourceType);
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
+            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value == null)
-                throw GetConvertFromException(null);
-            var str = value as string;
-            if (str == null)
-                return ToInt(value);
-            str = str.ToUpperInvariant();
-            return str == AUTO ? (object)null : ToInt(str);
+            switch (value) {
+                case object number when number.IsTypeNumeric():
+                    return ToInt(number);
+                case string auto when auto.ToUpperInvariant() == AUTO:
+                    return null;
+                case string str:
+                    return ToInt(str);
+                default:
+                    return base.ConvertFrom(context, culture, value);
+            }
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string))
-                return value != null ? Convert.ToString(value, culture) : Auto;
+            if (destinationType == typeof(string)) {
+                switch (value) {
+                    case null:
+                        return Auto;
+                    case int length:
+                        return length.ToString();
+                }
+            }
             throw GetConvertToException(value, destinationType);
         }
     }

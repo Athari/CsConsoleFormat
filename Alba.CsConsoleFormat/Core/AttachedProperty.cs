@@ -42,8 +42,7 @@ namespace Alba.CsConsoleFormat
             if (nameExpression == null)
                 throw new ArgumentNullException(nameof(nameExpression));
             string name = "";
-            var memberExpr = nameExpression.Body as MemberExpression;
-            if (memberExpr != null)
+            if (nameExpression.Body is MemberExpression memberExpr)
                 name = memberExpr.Member.Name;
             if (name.EndsWith(PropertySuffix, StringComparison.Ordinal))
                 name = name.Substring(0, name.Length - PropertySuffix.Length);

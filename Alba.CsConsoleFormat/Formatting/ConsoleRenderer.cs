@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat
 
         public static Point ConsoleCursorPosition
         {
-            get { return new Point(Console.CursorLeft, Console.CursorTop); }
+            get => new Point(Console.CursorLeft, Console.CursorTop);
             set
             {
                 Console.CursorLeft = value.X;
@@ -27,7 +27,7 @@ namespace Alba.CsConsoleFormat
 
         public static Rect ConsoleWindowRect
         {
-            get { return new Rect(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight); }
+            get => new Rect(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight);
             set
             {
                 Console.SetWindowPosition(value.Left, value.Top);

@@ -10,9 +10,7 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public FixedDocumentRenderTarget([NotNull] FixedDocument document)
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-            Document = document;
+            Document = document ?? throw new ArgumentNullException(nameof(document));
         }
 
         public override void Render(IConsoleBufferSource buffer)

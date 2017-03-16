@@ -36,26 +36,26 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
 
         public object Content
         {
-            get { return GetValue(ContentProperty); }
-            private set { SetValue(ContentPropertyKey, value); }
+            get => GetValue(ContentProperty);
+            private set => SetValue(ContentPropertyKey, value);
         }
 
         public int ConsoleWidth
         {
-            get { return (int)GetValue(ConsoleWidthProperty); }
-            set { SetValue(ConsoleWidthProperty, value); }
+            get => (int)GetValue(ConsoleWidthProperty);
+            set => SetValue(ConsoleWidthProperty, value);
         }
 
         public Document Document
         {
-            get { return (Document)GetValue(DocumentProperty); }
-            set { SetValue(DocumentProperty, value); }
+            get => (Document)GetValue(DocumentProperty);
+            set => SetValue(DocumentProperty, value);
         }
 
         public Uri DocumentSource
         {
-            get { return (Uri)GetValue(DocumentSourceProperty); }
-            set { SetValue(DocumentSourceProperty, value); }
+            get => (Uri)GetValue(DocumentSourceProperty);
+            set => SetValue(DocumentSourceProperty, value);
         }
 
         private static void RenderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

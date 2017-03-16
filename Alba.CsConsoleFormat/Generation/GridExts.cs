@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -8,42 +9,44 @@ namespace Alba.CsConsoleFormat
         public static T AddColumns<T>(this T @this, params object[] columns)
             where T : Grid
         {
-            foreach (object column in columns) {
-                if (column == null)
-                    continue;
-                var enumerable = column as IEnumerable;
-                if (enumerable != null) {
-                    foreach (object subchild in enumerable)
-                        @this.AddColumns(subchild);
-                }
-                else {
-                    @this.AddColumn(column);
+            foreach (object column in columns ?? throw new ArgumentNullException(nameof(columns))) {
+                switch (column) {
+                    case null:
+                        continue;
+                    case IEnumerable enumerable:
+                        foreach (object subchild in enumerable)
+                            @this.AddColumns(subchild);
+                        break;
+                    default:
+                        @this.AddColumn(column);
+                        break;
                 }
             }
             return @this;
         }
 
-        private static void AddColumn<T>(this T @this, object child)
+        private static void AddColumn<T>(this T @this, [NotNull] object column)
             where T : Grid
         {
-            if (child is GridLength) {
-                var gridLength = (GridLength)child;
-                @this.Columns.Add(new Column { Width = gridLength });
-                return;
+            switch (column) {
+                case GridLength length:
+                    @this.Columns.Add(new Column { Width = length });
+                    break;
+                case Column columnElement:
+                    @this.Columns.Add(columnElement);
+                    break;
+                default: {
+                    int width;
+                    try {
+                        width = Convert.ToInt32(column);
+                    }
+                    catch (Exception e) when (e is FormatException || e is InvalidCastException || e is OverflowException) {
+                        throw new ArgumentException($"Value of type '{column.GetType().Name}' cannot be converted to column.");
+                    }
+                    @this.Columns.Add(new Column { Width = GridLength.Char(width) });
+                    break;
+                }
             }
-            var column = child as Column;
-            if (column != null) {
-                @this.Columns.Add(column);
-                return;
-            }
-            int width;
-            try {
-                width = Convert.ToInt32(child);
-            }
-            catch (Exception e) when (e is FormatException || e is InvalidCastException || e is OverflowException) {
-                throw new ArgumentException($"Value of type '{child.GetType().Name}' cannot be converted to column.");
-            }
-            @this.Columns.Add(new Column { Width = GridLength.Char(width) });
         }
     }
 }

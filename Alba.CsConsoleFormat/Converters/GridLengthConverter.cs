@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Reflection;
+using static System.FormattableString;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
@@ -17,58 +20,61 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class GridLengthConverter : TypeConverter
     {
+        private static readonly Lazy<ConstructorInfo> GridLengthConstructor = new Lazy<ConstructorInfo>(() =>
+            typeof(GridLength).GetConstructor(new[] { typeof(int), typeof(GridUnitType) }));
+
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
+            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType) || sourceType == typeof(GridLength);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value == null)
-                throw GetConvertFromException(null);
-            else if (value is string)
-                return FromString((string)value);
-            else if (IsTypeNumeric(value.GetType()))
-                return GridLength.Char(ToInt(value));
-            return base.ConvertFrom(context, culture, value);
+            switch (value) {
+                case GridLength _:
+                    return value;
+                case string str:
+                    return FromString(str);
+                case object number when number.IsTypeNumeric():
+                    return GridLength.Char(ToInt(value));
+                default:
+                    return base.ConvertFrom(context, culture, value);
+            }
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (!(value is GridLength) || destinationType != typeof(string))
+            if (!(value is GridLength length))
                 throw GetConvertToException(value, destinationType);
-            return ToString((GridLength)value, culture);
+
+            if (destinationType == typeof(string))
+                return ToString(length);
+            else if (destinationType == typeof(InstanceDescriptor))
+                return new InstanceDescriptor(GridLengthConstructor.Value, new object[] { length.Value, length.UnitType }, true);
+            else
+                return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        internal static string ToString(GridLength length, CultureInfo culture = null)
+        internal static string ToString(GridLength length)
         {
-            if (culture == null)
-                culture = CultureInfo.InvariantCulture;
-            if (length.IsAuto)
-                return Auto;
-            else if (length.IsAbsolute)
-                return length.Value.ToString(culture);
-            else if (length.Value == 1)
-                return Asterisk;
-            else
-                return length.Value.ToString(culture) + Asterisk;
+            switch (length.UnitType) {
+                case GridUnitType.Auto:
+                    return Auto;
+                case GridUnitType.Char:
+                    return Invariant($"{length.Value}");
+                case GridUnitType.Star:
+                    return length.Value > 1 ? Invariant($"{length.Value}{Asterisk}") : Asterisk;
+                default:
+                    throw new InvalidOperationException();
+            }
         }
 
         private static GridLength FromString(string str)
         {
-            int value;
-            GridUnitType unitType;
-            if (str.ToUpperInvariant() == AUTO) {
-                unitType = GridUnitType.Auto;
-                value = 0;
-            }
-            else if (str.EndsWith(Asterisk, StringComparison.Ordinal)) {
-                unitType = GridUnitType.Star;
-                value = str.Length == 1 ? 1 : ParseInt(str.Remove(str.Length - 1));
-            }
-            else {
-                unitType = GridUnitType.Char;
-                value = ParseInt(str);
-            }
-            return new GridLength(value, unitType);
+            if (str.ToUpperInvariant() == AUTO)
+                return new GridLength(0, GridUnitType.Auto);
+            else if (str.EndsWith(Asterisk, StringComparison.Ordinal))
+                return new GridLength(str.Length > 1 ? ParseInt(str.Remove(str.Length - 1)) : 1, GridUnitType.Star);
+            else
+                return new GridLength(ParseInt(str), GridUnitType.Char);
         }
     }
 }

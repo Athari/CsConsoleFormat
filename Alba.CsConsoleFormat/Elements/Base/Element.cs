@@ -51,8 +51,8 @@ namespace Alba.CsConsoleFormat
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         protected internal IList<Element> VisualChildren
         {
-            get { return _visualChildren ?? (_visualChildren = new List<Element>()); }
-            internal set { _visualChildren = value; }
+            get => _visualChildren ?? (_visualChildren = new List<Element>());
+            internal set => _visualChildren = value;
         }
 
         [CanBeNull]
@@ -76,9 +76,8 @@ namespace Alba.CsConsoleFormat
             var children = new List<Element>();
             InlineContainer inlines = null;
             foreach (Element el in _children.SelectMany(c => c.GenerateVisualElements())) {
-                var inlineEl = el as InlineElement;
                 // Add inline child.
-                if (inlineEl != null) {
+                if (el is InlineElement inlineEl) {
                     // Add inline child to inline element.
                     if (this is InlineElement) {
                         VisualChildren.Add(inlineEl);

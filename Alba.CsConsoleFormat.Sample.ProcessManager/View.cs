@@ -6,12 +6,12 @@ using static System.ConsoleColor;
 
 namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
-    internal class View
+    internal static class View
     {
         private static readonly LineThickness StrokeHeader = new LineThickness(LineWidth.None, LineWidth.Wide);
         private static readonly LineThickness StrokeRight = new LineThickness(LineWidth.None, LineWidth.None, LineWidth.Single, LineWidth.None);
 
-        public Document Error(string message, string extra = null) =>
+        public static Document Error(string message, string extra = null) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(
                     new Span("Error\n") { Color = Red },
@@ -19,11 +19,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     extra != null ? $"\n\n{extra}" : null
                 );
 
-        public Document Info(string message) =>
+        public static Document Info(string message) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(message);
 
-        public Document ProcessList(IEnumerable<Process> processes) =>
+        public static Document ProcessList(IEnumerable<Process> processes) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(
                     new Grid { Stroke = StrokeHeader, StrokeColor = DarkGray }
@@ -55,7 +55,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                         )
                 );
 
-        public Document HelpOptionsList(IEnumerable<BaseOptionAttribute> options, string instruction) =>
+        public static Document HelpOptionsList(IEnumerable<BaseOptionAttribute> options, string instruction) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(
                     new Div { Color = White }
@@ -66,7 +66,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                         .AddChildren(options.Select(OptionNameAndHelp))
                 );
 
-        public Document HelpAllOptionsList(ILookup<BaseOptionAttribute, BaseOptionAttribute> verbsWithOptions, string instruction) =>
+        public static Document HelpAllOptionsList(ILookup<BaseOptionAttribute, BaseOptionAttribute> verbsWithOptions, string instruction) =>
             new Document { Background = Black, Color = Gray }
                 .AddChildren(
                     new Span($"{instruction}\n") { Color = White },
@@ -83,7 +83,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                         )
                 );
 
-        private static object[] OptionNameAndHelp(BaseOptionAttribute option) => new[] {
+        private static object[] OptionNameAndHelp(BaseOptionAttribute option) => new object[] {
             new Div { Margin = new Thickness(1, 0, 1, 1), Color = Yellow, MinWidth = 14 }
                 .AddChildren(GetOptionSyntax(option)),
             new Div { Margin = new Thickness(1, 0, 1, 1) }

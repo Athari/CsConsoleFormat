@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using JetBrains.Annotations;
 using static Alba.CsConsoleFormat.Presentation.FontDefaults;
 using WpfCanvas = System.Windows.Controls.Canvas;
 using WpfSize = System.Windows.Size;
@@ -64,10 +65,12 @@ namespace Alba.CsConsoleFormat.Presentation
             RenderToCanvas(buffer, linesPanel, charSize);
         }
 
-        protected void RenderToFlowDocument(IConsoleBufferSource buffer, FlowDocument document)
+        protected void RenderToFlowDocument(IConsoleBufferSource buffer, [NotNull] FlowDocument document)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
 
             var par = new Paragraph {
                 Background = Background,
@@ -115,8 +118,10 @@ namespace Alba.CsConsoleFormat.Presentation
             text = null;
         }
 
-        protected static void RenderToCanvas(IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
+        protected static void RenderToCanvas([NotNull] IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
             ConsoleColor currentForeColor = (ConsoleColor)int.MaxValue;
             ConsoleColor currentBackColor = (ConsoleColor)int.MaxValue;
             TextBlock text = null;
@@ -154,8 +159,12 @@ namespace Alba.CsConsoleFormat.Presentation
             text = null;
         }
 
-        protected WpfCanvas AddDocumentPage(FixedDocument document, IConsoleBufferSource buffer, WpfSize charSize)
+        protected WpfCanvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
             WpfCanvas linesPanel = CreateLinePanel(buffer, charSize);
             document.Pages.Add(
                 new PageContent {
@@ -169,8 +178,10 @@ namespace Alba.CsConsoleFormat.Presentation
             return linesPanel;
         }
 
-        protected WpfCanvas CreateLinePanel(IConsoleBufferSource buffer, WpfSize charSize)
+        protected WpfCanvas CreateLinePanel([NotNull] IConsoleBufferSource buffer, WpfSize charSize)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
             var linesPanel = new WpfCanvas {
                 Width = buffer.Width * charSize.Width,
                 Height = buffer.Height * charSize.Height,

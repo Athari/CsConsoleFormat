@@ -20,16 +20,17 @@ namespace Alba.CsConsoleFormat
 
         int IList.Add(object value)
         {
-            var text = value as string;
-            if (text != null)
-                return AddText(text);
-            var el = value as T;
-            if (el != null)
-                return AddElement(el);
-            if (typeof(T).IsAssignableFrom(typeof(Span)))
-                throw new ArgumentException($"Only {typeof(T).Name} and string can be added.", nameof(value));
-            else
-                throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));
+            switch (value) {
+                case string text:
+                    return AddText(text);
+                case T el:
+                    return AddElement(el);
+                default:
+                    if (typeof(T).IsAssignableFrom(typeof(Span)))
+                        throw new ArgumentException($"Only {typeof(T).Name} and string can be added.", nameof(value));
+                    else
+                        throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));
+            }
         }
 
         public int Add(string text)

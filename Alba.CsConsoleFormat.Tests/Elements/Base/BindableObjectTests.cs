@@ -38,7 +38,9 @@ namespace Alba.CsConsoleFormat.Tests
             new Action(() => obj.ResetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.SetValue(null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj[null] = 1).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => { var a = obj[null]; }).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => {
+                var a = obj[null];
+            }).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
         }
 
         [Fact]
@@ -156,26 +158,23 @@ namespace Alba.CsConsoleFormat.Tests
 
         private static void AssertDefaultValue(MyBindableObject obj, decimal expectedValue)
         {
-            object value;
-
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeFalse();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
             obj[MyBindableObject.AttachedDecimalProperty].Should().Be(expectedValue);
             obj.As<IAttachedPropertyStore>().PropertyCount.Should().Be(0);
-            obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out value);
+            obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out object value);
             value.Should().Be(expectedValue);
         }
 
         private static void AssertCustomValue(MyBindableObject obj, decimal expectedValue)
         {
-            object value;
             var props = new KeyValuePair<AttachableMemberIdentifier, object>[1];
 
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeTrue();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
             obj[MyBindableObject.AttachedDecimalProperty].Should().Be(expectedValue);
             obj.As<IAttachedPropertyStore>().PropertyCount.Should().Be(1);
-            obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out value);
+            obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out object value);
             value.Should().Be(expectedValue);
             obj.As<IAttachedPropertyStore>().CopyPropertiesTo(props, 0);
             props[0].Should().Be(new KeyValuePair<AttachableMemberIdentifier, object>(MyBindableObject.AttachedDecimalProperty.Identifier, expectedValue));

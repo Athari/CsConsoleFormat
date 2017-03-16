@@ -48,46 +48,46 @@ namespace Alba.CsConsoleFormat
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Vector ActualOffset
         {
-            get { return _layoutInfo.ActualOffset; }
-            private set { _layoutInfo.ActualOffset = value; }
+            get => _layoutInfo.ActualOffset;
+            private set => _layoutInfo.ActualOffset = value;
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, constrained by max element size and available size with margins.</summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Size DesiredSize
         {
-            get { return _layoutInfo.DesiredSize; }
-            private set { _layoutInfo.DesiredSize = value; }
+            get => _layoutInfo.DesiredSize;
+            private set => _layoutInfo.DesiredSize = value;
         }
 
         /// <summary>Render area constraint (relative to visual parent).</summary>
         internal Rect LayoutClip
         {
-            get { return _layoutInfo.LayoutClip; }
-            private set { _layoutInfo.LayoutClip = value; }
+            get => _layoutInfo.LayoutClip;
+            private set => _layoutInfo.LayoutClip = value;
         }
 
         /// <summary>Render area size.</summary><seealso cref="ActualWidth"/><seealso cref="ActualHeight"/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Size RenderSize
         {
-            get { return _layoutInfo.RenderSize; }
-            private set { _layoutInfo.RenderSize = value; }
+            get => _layoutInfo.RenderSize;
+            private set => _layoutInfo.RenderSize = value;
         }
 
         /// <summary>Area occupied by element, including margins (relative to visual parent).</summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public Rect RenderSlotRect
         {
-            get { return _layoutInfo.RenderSlotRect; }
-            private set { _layoutInfo.RenderSlotRect = value; }
+            get => _layoutInfo.RenderSlotRect;
+            private set => _layoutInfo.RenderSlotRect = value;
         }
 
         /// <summary>Element size returned by <see cref="Measure"/>, expanded by min element size.</summary><seealso cref="DesiredSize"/>
         private Size UnclippedDesiredSize
         {
-            get { return _layoutInfo.UnclippedDesiredSize; }
-            set { _layoutInfo.UnclippedDesiredSize = value; }
+            get => _layoutInfo.UnclippedDesiredSize;
+            set => _layoutInfo.UnclippedDesiredSize = value;
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]

@@ -18,7 +18,7 @@ namespace Alba.CsConsoleFormat
         [CanBeNull]
         public object DataContext
         {
-            get { return _dataContext; }
+            get => _dataContext;
             set
             {
                 if (_dataContext == value)
@@ -56,8 +56,10 @@ namespace Alba.CsConsoleFormat
             return clone;
         }
 
-        protected virtual void CloneOverride(BindableObject obj)
+        protected virtual void CloneOverride([NotNull] BindableObject obj)
         {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
             if (obj._getters != null)
                 _getters = new Dictionary<PropertyInfo, GetExpressionBase>(obj._getters);
             if (obj._attachedProperties != null)
@@ -111,8 +113,7 @@ namespace Alba.CsConsoleFormat
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
-            object value;
-            return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out value)
+            return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out object value)
                 ? property.DefaultValue : (T)value;
         }
 
@@ -137,15 +138,16 @@ namespace Alba.CsConsoleFormat
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Justification = "It is .NET Framework interface.")]
         public object this[[NotNull] AttachedProperty property]
         {
             get
             {
                 if (property == null)
                     throw new ArgumentNullException(nameof(property));
-                object value;
-                return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out value)
-                    ? property.DefaultValueUntyped : value;
+                return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out object value)
+                    ? property.DefaultValueUntyped
+                    : value;
             }
             set
             {

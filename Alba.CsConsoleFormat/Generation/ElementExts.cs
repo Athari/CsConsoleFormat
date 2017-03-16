@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -17,46 +18,45 @@ namespace Alba.CsConsoleFormat
         public static T AddChildren<T>(this T @this, params object[] children)
             where T : Element
         {
-            foreach (object child in children) {
-                if (child == null)
-                    continue;
-                var enumerable = child as IEnumerable;
-                if (enumerable != null && !(enumerable is string)) {
-                    foreach (object subchild in enumerable)
-                        @this.AddChildren(subchild);
-                }
-                else {
-                    @this.AddChild(child);
+            foreach (object child in children ?? throw new ArgumentNullException(nameof(children))) {
+                switch (child) {
+                    case null:
+                        continue;
+                    case IEnumerable enumerable when !(enumerable is string):
+                        foreach (object subchild in enumerable)
+                            @this.AddChildren(subchild);
+                        break;
+                    default:
+                        @this.AddChild(child);
+                        break;
                 }
             }
             return @this;
         }
 
-        private static void AddChild<T>(this T @this, object child)
+        private static void AddChild<T>(this T @this, [NotNull] object child)
             where T : Element
         {
-            var text = child as string;
-            if (text != null) {
-                @this.Children.Add(text);
-                return;
+            switch (child) {
+                case string text:
+                    @this.Children.Add(text);
+                    break;
+                case Element element:
+                    @this.Children.Add(element);
+                    break;
+                case IFormattable formattable:
+                    @this.Children.Add(formattable.ToString(null, @this.EffectiveCulture));
+                    break;
+                default:
+                    @this.Children.Add(child.ToString());
+                    break;
             }
-            var element = child as Element;
-            if (element != null) {
-                @this.Children.Add(element);
-                return;
-            }
-            var formattable = child as IFormattable;
-            if (formattable != null) {
-                @this.Children.Add(formattable.ToString(null, @this.EffectiveCulture));
-                return;
-            }
-            @this.Children.Add(child.ToString());
         }
 
         public static T Set<T, TValue>(this T @this, AttachedProperty<TValue> property, TValue value)
             where T : Element, new()
         {
-            @this.SetValue(property, value);
+            (@this ?? throw new ArgumentNullException(nameof(@this))).SetValue(property, value);
             return @this;
         }
     }

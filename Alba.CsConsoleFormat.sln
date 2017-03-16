@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}"
 	ProjectSection(SolutionItems) = preProject
 		Analysis\AlbaLibrary.ruleset = Analysis\AlbaLibrary.ruleset
+		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
 		Build\Common.targets = Build\Common.targets
 		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
 	EndProjectSection

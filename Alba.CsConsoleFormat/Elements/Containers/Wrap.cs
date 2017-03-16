@@ -19,7 +19,7 @@ namespace Alba.CsConsoleFormat
         [TypeConverter(typeof(LengthConverter))]
         public int? ItemWidth
         {
-            get { return _itemWidth; }
+            get => _itemWidth;
             set
             {
                 if (value < 0)
@@ -31,7 +31,7 @@ namespace Alba.CsConsoleFormat
         [TypeConverter(typeof(LengthConverter))]
         public int? ItemHeight
         {
-            get { return _itemHeight; }
+            get => _itemHeight;
             set
             {
                 if (value < 0)

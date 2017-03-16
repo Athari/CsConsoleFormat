@@ -26,16 +26,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void UseAfterDispose()
         {
-            Action<Action<RenderTarget>> UseAfterDispose = use => {
+            void AfterDispose(Action<RenderTarget> use)
+            {
                 var target = new RenderTarget(Stream.Null);
                 target.Dispose();
                 new Action(() => use(target)).ShouldThrow<ObjectDisposedException>();
-            };
+            }
 
             var buffer = new ConsoleBuffer(80);
 
-            UseAfterDispose(t => t.Render(buffer));
-            UseAfterDispose(t => t.OutputText.As<string>());
+            AfterDispose(t => t.Render(buffer));
+            AfterDispose(t => t.OutputText.As<string>());
         }
 
         [Fact]

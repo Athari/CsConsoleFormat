@@ -30,12 +30,8 @@ namespace System
 
                 internal ConcreteFormattableString(string format, object[] arguments)
                 {
-                    if (format == null)
-                        throw new ArgumentNullException(nameof(format));
-                    if (arguments == null)
-                        throw new ArgumentNullException(nameof(arguments));
-                    _format = format;
-                    _arguments = arguments;
+                    _format = format ?? throw new ArgumentNullException(nameof(format));
+                    _arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
                 }
 
                 public override string Format => _format;

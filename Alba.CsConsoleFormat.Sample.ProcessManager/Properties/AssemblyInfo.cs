@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Alba.CsConsoleFormat.Sample.ProcessManager")]
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
+[assembly: CLSCompliant(true)]
 [assembly: Guid("99a14c98-3634-47fc-8919-975fc3757b57")]
 
 [assembly: AssemblyVersion("1.0.0.0")]

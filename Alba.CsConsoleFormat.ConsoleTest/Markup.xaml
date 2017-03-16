@@ -124,7 +124,7 @@
     <Grid Color="Gray" Background="Blue">
         <Grid.Columns>
             <Column Width="3*"/>
-            <Column Width="12"/>
+            <Column Width="13"/>
             <Column Width="2*"/>
         </Grid.Columns>
         <Cell Padding="1" Background="DarkBlue" TextWrap="CharWrap">

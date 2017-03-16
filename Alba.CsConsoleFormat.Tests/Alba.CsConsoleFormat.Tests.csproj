@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ConsoleColorConverterTests.cs" />
     <Compile Include="Converters\GridLengthConverterTests.cs" />
     <Compile Include="Converters\ThicknessConverterTests.cs" />
     <Compile Include="Converters\LineThicknessConverterTests.cs" />

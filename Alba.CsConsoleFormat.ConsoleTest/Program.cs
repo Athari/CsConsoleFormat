@@ -34,6 +34,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Console.WriteLine(bufferRect);
                 Console.WriteLine(e.Message);
             }*/
+            Console.WindowWidth = 80;
+            Console.BufferWidth = 80;
             Console.OutputEncoding = Encoding.UTF8;
             Console.Title = Path.GetFileNameWithoutExtension(Console.Title);
 
@@ -261,27 +263,27 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 );
         }
 
-        private object[] LoremIpsumCharWrap(Data data) => new object[] {
+        private static object[] LoremIpsumCharWrap(Data data) => new object[] {
             new Span("Char wrap\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ""),
         };
 
-        private object[] LoremIpsumWordWrapWithSpaces(Data data) => new object[] {
+        private static object[] LoremIpsumWordWrapWithSpaces(Data data) => new object[] {
             new Span("Word wrap with spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ""),
         };
 
-        private object[] LoremIpsumWordWrapWithZeroWidthSpaces(Data data) => new object[] {
+        private static object[] LoremIpsumWordWrapWithZeroWidthSpaces(Data data) => new object[] {
             new Span("Word wrap with zero-width spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, ZeroWidthSpace),
         };
 
-        private object[] LoremIpsumWordWrapWithNoBreakSpaces(Data data) => new object[] {
+        private static object[] LoremIpsumWordWrapWithNoBreakSpaces(Data data) => new object[] {
             new Span("Word wrap with no-break spaces\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, NoBreakSpace),
         };
 
-        private object[] LoremIpsumWordWrapWithSoftHyphens(Data data) => new object[] {
+        private static object[] LoremIpsumWordWrapWithSoftHyphens(Data data) => new object[] {
             new Span("Word wrap with soft hyphens\n\n") { Color = White },
             Data.Replace(data.LoremIpsum, SoftHyphen),
         };

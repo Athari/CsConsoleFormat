@@ -4,15 +4,17 @@
   <Words>
     <Recognized>
       <!-- Actual new words. -->
-      <Word>Monospace</Word>
+      <Word>monospace</Word>
       <Word>XPS</Word>
+      <Word>lorem</Word>
+      <Word>ipsum</Word>
       <!-- Single character words: X and Y coordinates, C for char. -->
-      <Word>C</Word>
-      <Word>X</Word>
-      <Word>Y</Word>
+      <Word>c</Word>
+      <Word>x</Word>
+      <Word>y</Word>
       <!-- Element names. -->
-      <Word>Br</Word>
-      <Word>Div</Word>
+      <Word>br</Word>
+      <Word>div</Word>
       <!-- Method and type names used in exception messages. -->
       <Word>LineThickness</Word>
       <Word>MeasureOverride</Word>
@@ -31,4 +33,9 @@
       <Term>StringWriter</Term>
     </DiscreteExceptions>
   </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>Cs</Acronym>
+    </CasingExceptions>
+  </Acronyms>
 </Dictionary>
