@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.Design.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using Xunit;
 
@@ -9,10 +11,36 @@ namespace Alba.CsConsoleFormat.Tests
         private readonly LineThicknessConverter _converter = new LineThicknessConverter();
 
         [Fact]
+        public void CanConvertFrom()
+        {
+            _converter.CanConvertFrom(null, typeof(int)).Should().BeTrue();
+            _converter.CanConvertFrom(null, typeof(string)).Should().BeTrue();
+            _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
+
+            _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(object)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(LineThickness)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(LineThicknessConverter)).Should().BeFalse();
+        }
+
+        [Fact]
+        public void CanConvertTo()
+        {
+            _converter.CanConvertTo(null, typeof(string)).Should().BeTrue();
+            _converter.CanConvertTo(null, typeof(InstanceDescriptor)).Should().BeTrue();
+
+            _converter.CanConvertTo(null, typeof(int)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(void)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(object)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(LineThickness)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(LineThicknessConverter)).Should().BeFalse();
+        }
+
+        [Fact]
         public void ConvertFromInvalidSource()
         {
-            new Action(() => _converter.ConvertFrom(null)).ShouldThrow<NotSupportedException>();
-            new Action(() => _converter.ConvertFrom(new object())).ShouldThrow<NotSupportedException>();
+            new Action(() => _converter.ConvertFrom(null)).ShouldThrow<NotSupportedException>().WithMessage("*null*");
+            new Action(() => _converter.ConvertFrom(new object())).ShouldThrow<NotSupportedException>().WithMessage($"*{typeof(object)}*");
         }
 
         [Fact]
@@ -59,10 +87,26 @@ namespace Alba.CsConsoleFormat.Tests
             new Action(() => _converter.ConvertTo(LineThickness.None, typeof(Guid))).ShouldThrow<NotSupportedException>();
         }
 
+        [Fact, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        public void ConvertToInvalidSource()
+        {
+            new Action(() => _converter.ConvertTo(1337, typeof(string))).ShouldThrow<NotSupportedException>();
+            new Action(() => _converter.ConvertTo(null, typeof(string))).ShouldThrow<NotSupportedException>();
+        }
+
         [Fact]
         public void ConvertToString()
         {
-            _converter.ConvertToString(new LineThickness(LineWidth.None, LineWidth.Single, LineWidth.Wide, LineWidth.None)).Should().Be("None Single Wide None");
+            _converter.ConvertToString(new LineThickness(LineWidth.None, LineWidth.Single, LineWidth.Wide, LineWidth.None))
+                .Should().Be("None Single Wide None");
+        }
+
+        [Fact]
+        public void ConvertToInstanceDescriptor()
+        {
+            _converter.ConvertTo(LineThickness.Wide, typeof(InstanceDescriptor))
+                .As<InstanceDescriptor>().Invoke()
+                .Should().Be(LineThickness.Wide);
         }
     }
 }

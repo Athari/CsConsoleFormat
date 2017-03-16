@@ -15,13 +15,14 @@ namespace Alba.CsConsoleFormat
     public class ConsoleColorConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType) || sourceType == typeof(ConsoleColor);
+            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            base.CanConvertTo(context, destinationType) || IsTypeNumeric(destinationType);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             switch (value) {
-                case ConsoleColor color:
-                    return color;
                 case object number when number.IsTypeNumeric():
                     return NumberToEnum<ConsoleColor>(number);
                 case string inherit when inherit.ToUpperInvariant() == INHERIT:

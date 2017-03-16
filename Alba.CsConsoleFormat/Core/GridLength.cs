@@ -6,6 +6,8 @@ namespace Alba.CsConsoleFormat
     [TypeConverter(typeof(GridLengthConverter))]
     public struct GridLength : IEquatable<GridLength>
     {
+        private static readonly GridLengthConverter _Converter = new GridLengthConverter();
+
         public int Value { get; }
         public GridUnitType UnitType { get; }
 
@@ -29,7 +31,7 @@ namespace Alba.CsConsoleFormat
         public override bool Equals(object obj) => obj is GridLength && Equals((GridLength)obj);
         public override int GetHashCode() => Value.GetHashCode() ^ UnitType.GetHashCode();
 
-        public override string ToString() => GridLengthConverter.ToString(this);
+        public override string ToString() => _Converter.ConvertToString(this) ?? "";
 
         public static bool operator ==(GridLength left, GridLength right) => left.Equals(right);
         public static bool operator !=(GridLength left, GridLength right) => !left.Equals(right);

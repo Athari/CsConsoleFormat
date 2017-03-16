@@ -26,5 +26,7 @@ namespace Alba.CsConsoleFormat.Markup
 
         [CanBeNull]
         public CultureInfo Culture => Name == null ? null : (_culture ?? (_culture = new CultureInfo(Name)));
+
+        public override string ToString() => Name ?? _culture?.Name ?? "";
     }
 }

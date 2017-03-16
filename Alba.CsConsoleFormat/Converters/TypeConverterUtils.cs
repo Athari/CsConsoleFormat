@@ -14,13 +14,13 @@ namespace Alba.CsConsoleFormat
         public static bool IsTypeStringOrNumeric(Type type)
         {
             TypeCode code = Type.GetTypeCode(type);
-            return code == TypeCode.String || TypeCode.Int16 <= code && code <= TypeCode.Decimal;
+            return code == TypeCode.String || TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
         }
 
         public static bool IsTypeNumeric(Type type)
         {
             TypeCode code = Type.GetTypeCode(type);
-            return TypeCode.Int16 <= code && code <= TypeCode.Decimal;
+            return TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
         }
 
         public static bool IsTypeStringOrNumeric(this object value) => value != null && IsTypeStringOrNumeric(value.GetType());

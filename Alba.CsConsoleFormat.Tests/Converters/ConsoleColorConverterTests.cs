@@ -16,12 +16,26 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.CanConvertFrom(null, typeof(int)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(decimal)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(string)).Should().BeTrue();
-            _converter.CanConvertFrom(null, typeof(ConsoleColor)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
 
             _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(object)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(ConsoleColor)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(ConsoleColorConverter)).Should().BeFalse();
+        }
+
+        [Fact]
+        public void CanConvertTo()
+        {
+            _converter.CanConvertTo(null, typeof(int)).Should().BeTrue();
+            _converter.CanConvertTo(null, typeof(decimal)).Should().BeTrue();
+            _converter.CanConvertTo(null, typeof(string)).Should().BeTrue();
+
+            _converter.CanConvertTo(null, typeof(void)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(object)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(ConsoleColor)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(InstanceDescriptor)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(ConsoleColorConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -60,13 +74,6 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.ConvertFrom(1m).Should().Be(ConsoleColor.DarkBlue);
             _converter.ConvertFrom(2).Should().Be(ConsoleColor.DarkGreen);
             _converter.ConvertFrom(3L).Should().Be(ConsoleColor.DarkCyan);
-        }
-
-        [Fact]
-        public void ConvertFromConsoleColor()
-        {
-            _converter.ConvertFrom(ConsoleColor.Black).Should().Be(ConsoleColor.Black);
-            _converter.ConvertFrom(ConsoleColor.DarkBlue).Should().Be(ConsoleColor.DarkBlue);
         }
 
         [Fact]

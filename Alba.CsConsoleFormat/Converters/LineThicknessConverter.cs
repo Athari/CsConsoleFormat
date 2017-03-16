@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Reflection;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
-// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
     /// <summary>
@@ -17,35 +18,57 @@ namespace Alba.CsConsoleFormat
     /// </summary>
     public class LineThicknessConverter : TypeConverter
     {
+        private static readonly Lazy<ConstructorInfo> LineThicknessConstructor = new Lazy<ConstructorInfo>(() =>
+            typeof(LineThickness).GetConstructor(new[] { typeof(LineWidth), typeof(LineWidth), typeof(LineWidth), typeof(LineWidth) }));
+
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType);
+            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            base.CanConvertTo(context, destinationType) || destinationType == typeof(InstanceDescriptor);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value == null)
-                throw GetConvertFromException(null);
-            else if (value is string)
-                return FromString((string)value);
-            else if (value is LineWidth)
-                return new LineThickness((LineWidth)value);
-            else if (IsTypeNumeric(value.GetType()))
-                return new LineThickness(FixWidth(NumberToEnum<LineWidth>(value)));
-            return base.ConvertFrom(context, culture, value);
+            switch (value) {
+                case string str:
+                    return FromString(str);
+                case LineWidth width:
+                    return new LineThickness(width);
+                case object number when number.IsTypeNumeric():
+                    return new LineThickness(FixWidth(NumberToEnum<LineWidth>(number)));
+                default:
+                    return base.ConvertFrom(context, culture, value);
+            }
+
+            LineThickness FromString(string str)
+            {
+                string[] parts = SplitNumbers(str, 4);
+                switch (parts.Length) {
+                    case 1:
+                        return new LineThickness(GetWidth(parts[0]));
+                    case 2:
+                        return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]));
+                    case 4:
+                        return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
+                    default:
+                        throw new FormatException($"Invalid {nameof(LineThickness)} format: '{str}'.");
+                }
+            }
         }
 
-        private static LineThickness FromString(string str)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            string[] parts = SplitNumbers(str, 4);
-            switch (parts.Length) {
-                case 1:
-                    return new LineThickness(GetWidth(parts[0]));
-                case 2:
-                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]));
-                case 4:
-                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
-                default:
-                    throw new FormatException($"Invalid {nameof(LineThickness)} format: '{str}'.");
-            }
+            if (!(value is LineThickness thickness))
+                throw GetConvertToException(value, destinationType);
+
+            if (destinationType == typeof(string))
+                return thickness.ToString();
+            else if (destinationType == typeof(InstanceDescriptor))
+                return new InstanceDescriptor(LineThicknessConstructor.Value, new object[] {
+                    thickness.Left, thickness.Top, thickness.Right, thickness.Bottom
+                }, true);
+            else
+                return base.ConvertTo(context, culture, value, destinationType);
         }
 
         private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;

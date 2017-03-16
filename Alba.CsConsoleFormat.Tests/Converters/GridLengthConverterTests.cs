@@ -14,12 +14,23 @@ namespace Alba.CsConsoleFormat.Tests
         {
             _converter.CanConvertFrom(null, typeof(int)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(string)).Should().BeTrue();
-            _converter.CanConvertFrom(null, typeof(GridLength)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
 
             _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(object)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(ConsoleColorConverter)).Should().BeFalse();
+        }
+
+        [Fact]
+        public void CanConvertTo()
+        {
+            _converter.CanConvertTo(null, typeof(string)).Should().BeTrue();
+            _converter.CanConvertTo(null, typeof(InstanceDescriptor)).Should().BeTrue();
+
+            _converter.CanConvertTo(null, typeof(int)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(void)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(object)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(ConsoleColorConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -56,13 +67,6 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.ConvertFrom(2).Should().Be(GridLength.Char(2));
             _converter.ConvertFrom(2m).Should().Be(GridLength.Char(2));
             _converter.ConvertFrom(2L).Should().Be(GridLength.Char(2));
-        }
-
-        [Fact]
-        public void ConvertFromGridLength()
-        {
-            _converter.ConvertFrom(GridLength.Auto).Should().Be(GridLength.Auto);
-            _converter.ConvertFrom(GridLength.Star(2)).Should().Be(GridLength.Star(2));
         }
 
         [Fact]

@@ -6,7 +6,6 @@ using System.Reflection;
 using static System.FormattableString;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
-// ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
 namespace Alba.CsConsoleFormat
 {
     /// <summary>
@@ -24,19 +23,30 @@ namespace Alba.CsConsoleFormat
             typeof(GridLength).GetConstructor(new[] { typeof(int), typeof(GridUnitType) }));
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            IsTypeStringOrNumeric(sourceType) || base.CanConvertFrom(context, sourceType) || sourceType == typeof(GridLength);
+            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
+            base.CanConvertTo(context, destinationType) || destinationType == typeof(InstanceDescriptor);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             switch (value) {
-                case GridLength _:
-                    return value;
                 case string str:
                     return FromString(str);
                 case object number when number.IsTypeNumeric():
-                    return GridLength.Char(ToInt(value));
+                    return GridLength.Char(ToInt(number));
                 default:
                     return base.ConvertFrom(context, culture, value);
+            }
+
+            GridLength FromString(string str)
+            {
+                if (str.ToUpperInvariant() == AUTO)
+                    return new GridLength(0, GridUnitType.Auto);
+                else if (str.EndsWith(Asterisk, StringComparison.Ordinal))
+                    return new GridLength(str.Length > 1 ? ParseInt(str.Remove(str.Length - 1)) : 1, GridUnitType.Star);
+                else
+                    return new GridLength(ParseInt(str), GridUnitType.Char);
             }
         }
 
@@ -46,35 +56,25 @@ namespace Alba.CsConsoleFormat
                 throw GetConvertToException(value, destinationType);
 
             if (destinationType == typeof(string))
-                return ToString(length);
+                return ToString();
             else if (destinationType == typeof(InstanceDescriptor))
                 return new InstanceDescriptor(GridLengthConstructor.Value, new object[] { length.Value, length.UnitType }, true);
             else
                 return base.ConvertTo(context, culture, value, destinationType);
-        }
 
-        internal static string ToString(GridLength length)
-        {
-            switch (length.UnitType) {
-                case GridUnitType.Auto:
-                    return Auto;
-                case GridUnitType.Char:
-                    return Invariant($"{length.Value}");
-                case GridUnitType.Star:
-                    return length.Value > 1 ? Invariant($"{length.Value}{Asterisk}") : Asterisk;
-                default:
-                    throw new InvalidOperationException();
+            string ToString()
+            {
+                switch (length.UnitType) {
+                    case GridUnitType.Auto:
+                        return Auto;
+                    case GridUnitType.Char:
+                        return Invariant($"{length.Value}");
+                    case GridUnitType.Star:
+                        return length.Value > 1 ? Invariant($"{length.Value}{Asterisk}") : Asterisk;
+                    default:
+                        throw new InvalidOperationException();
+                }
             }
-        }
-
-        private static GridLength FromString(string str)
-        {
-            if (str.ToUpperInvariant() == AUTO)
-                return new GridLength(0, GridUnitType.Auto);
-            else if (str.EndsWith(Asterisk, StringComparison.Ordinal))
-                return new GridLength(str.Length > 1 ? ParseInt(str.Remove(str.Length - 1)) : 1, GridUnitType.Star);
-            else
-                return new GridLength(ParseInt(str), GridUnitType.Char);
         }
     }
 }

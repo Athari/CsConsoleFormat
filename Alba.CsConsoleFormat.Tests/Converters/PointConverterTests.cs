@@ -6,21 +6,21 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class ThicknessConverterTests
+    public class PointConverterTests
     {
-        private readonly ThicknessConverter _converter = new ThicknessConverter();
+        private readonly PointConverter _converter = new PointConverter();
 
         [Fact]
         public void CanConvertFrom()
         {
-            _converter.CanConvertFrom(null, typeof(int)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(string)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
 
+            _converter.CanConvertFrom(null, typeof(int)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(object)).Should().BeFalse();
-            _converter.CanConvertFrom(null, typeof(Thickness)).Should().BeFalse();
-            _converter.CanConvertFrom(null, typeof(ThicknessConverter)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(Point)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(PointConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.CanConvertTo(null, typeof(int)).Should().BeFalse();
             _converter.CanConvertTo(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertTo(null, typeof(object)).Should().BeFalse();
-            _converter.CanConvertTo(null, typeof(Thickness)).Should().BeFalse();
-            _converter.CanConvertTo(null, typeof(ThicknessConverter)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(Point)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(PointConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -53,28 +53,14 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ConvertFromString()
         {
-            _converter.ConvertFrom("0").Should().Be(new Thickness(0));
-            _converter.ConvertFrom("2").Should().Be(new Thickness(2));
-
-            _converter.ConvertFrom("0 1").Should().Be(new Thickness(0, 1));
-            _converter.ConvertFrom("2 3").Should().Be(new Thickness(2, 3));
-
-            _converter.ConvertFrom("1 2 3 4").Should().Be(new Thickness(1, 2, 3, 4));
-        }
-
-        [Fact]
-        public void ConvertFromNumber()
-        {
-            _converter.ConvertFrom(0).Should().Be(new Thickness(0));
-            _converter.ConvertFrom(0m).Should().Be(new Thickness(0));
-            _converter.ConvertFrom(1).Should().Be(new Thickness(1));
-            _converter.ConvertFrom(2L).Should().Be(new Thickness(2));
+            _converter.ConvertFrom("0 1").Should().Be(new Point(0, 1));
+            _converter.ConvertFrom("2 3").Should().Be(new Point(2, 3));
         }
 
         [Fact]
         public void ConvertToInvalidDestination()
         {
-            new Action(() => _converter.ConvertTo(new Thickness(), typeof(Guid))).ShouldThrow<NotSupportedException>();
+            new Action(() => _converter.ConvertTo(new Point(), typeof(int))).ShouldThrow<NotSupportedException>();
         }
 
         [Fact, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
@@ -87,15 +73,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ConvertToString()
         {
-            _converter.ConvertToString(new Thickness(1, 2, 3, 4)).Should().Be("1 2 3 4");
+            _converter.ConvertToString(new Point(2, 3)).Should().Be("2 3");
+            _converter.ConvertToString(new Point(-4, -5)).Should().Be("-4 -5");
         }
 
         [Fact]
         public void ConvertToInstanceDescriptor()
         {
-            _converter.ConvertTo(new Thickness(4, 3), typeof(InstanceDescriptor))
+            _converter.ConvertTo(new Point(6, 2), typeof(InstanceDescriptor))
                 .As<InstanceDescriptor>().Invoke()
-                .Should().Be(new Thickness(4, 3));
+                .Should().Be(new Point(6, 2));
         }
     }
 }
