@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Reflection;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
@@ -16,55 +15,40 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
-    public class ThicknessConverter : TypeConverter
+    public class ThicknessConverter : SequenceTypeConverter<Thickness>
     {
         private static readonly Lazy<ConstructorInfo> ThicknessConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(Thickness).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) }));
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
-
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
-            base.CanConvertTo(context, destinationType) || destinationType == typeof(InstanceDescriptor);
+            base.CanConvertFrom(context, sourceType) || IsTypeNumeric(sourceType);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             switch (value) {
-                case string str:
-                    return FromString(str);
                 case object number when number.IsTypeNumeric():
                     return new Thickness(ToInt(number));
                 default:
                     return base.ConvertFrom(context, culture, value);
             }
+        }
 
-            Thickness FromString(string str)
-            {
-                string[] parts = SplitNumbers(str, 4);
-                switch (parts.Length) {
-                    case 1:
-                        return new Thickness(ParseInt(parts[0]));
-                    case 2:
-                        return new Thickness(ParseInt(parts[0]), ParseInt(parts[1]));
-                    case 4:
-                        return new Thickness(ParseInt(parts[0]), ParseInt(parts[1]), ParseInt(parts[2]), ParseInt(parts[3]));
-                    default:
-                        throw new FormatException($"Invalid Thickness format: '{str}'.");
-                }
+        protected override Thickness FromString(string str)
+        {
+            string[] parts = SplitNumbers(str, 4);
+            switch (parts.Length) {
+                case 1:
+                    return new Thickness(ParseInt(parts[0]));
+                case 2:
+                    return new Thickness(ParseInt(parts[0]), ParseInt(parts[1]));
+                case 4:
+                    return new Thickness(ParseInt(parts[0]), ParseInt(parts[1]), ParseInt(parts[2]), ParseInt(parts[3]));
+                default:
+                    throw new FormatException($"Invalid Thickness format: '{str}'.");
             }
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (!(value is Thickness th))
-                throw GetConvertToException(value, destinationType);
-
-            if (destinationType == typeof(string))
-                return th.ToString();
-            else if (destinationType == typeof(InstanceDescriptor))
-                return new InstanceDescriptor(ThicknessConstructor.Value, new object[] { th.Left, th.Top, th.Right, th.Bottom }, true);
-            else
-                return base.ConvertTo(context, culture, value, destinationType);
-        }
+        protected override ConstructorInfo InstanceConstructor => ThicknessConstructor.Value;
+        protected override object[] InstanceConstructorArgs(Thickness o) => new object[] { o.Left, o.Top, o.Right, o.Bottom };
     }
 }

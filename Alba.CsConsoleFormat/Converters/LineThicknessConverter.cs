@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Reflection;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
@@ -16,22 +15,17 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
-    public class LineThicknessConverter : TypeConverter
+    public class LineThicknessConverter : SequenceTypeConverter<LineThickness>
     {
         private static readonly Lazy<ConstructorInfo> LineThicknessConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(LineThickness).GetConstructor(new[] { typeof(LineWidth), typeof(LineWidth), typeof(LineWidth), typeof(LineWidth) }));
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
-            base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
-
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) =>
-            base.CanConvertTo(context, destinationType) || destinationType == typeof(InstanceDescriptor);
+            base.CanConvertFrom(context, sourceType) || IsTypeNumeric(sourceType) || sourceType == typeof(LineWidth);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             switch (value) {
-                case string str:
-                    return FromString(str);
                 case LineWidth width:
                     return new LineThickness(width);
                 case object number when number.IsTypeNumeric():
@@ -39,37 +33,25 @@ namespace Alba.CsConsoleFormat
                 default:
                     return base.ConvertFrom(context, culture, value);
             }
+        }
 
-            LineThickness FromString(string str)
-            {
-                string[] parts = SplitNumbers(str, 4);
-                switch (parts.Length) {
-                    case 1:
-                        return new LineThickness(GetWidth(parts[0]));
-                    case 2:
-                        return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]));
-                    case 4:
-                        return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
-                    default:
-                        throw new FormatException($"Invalid {nameof(LineThickness)} format: '{str}'.");
-                }
+        protected override LineThickness FromString(string str)
+        {
+            string[] parts = SplitNumbers(str, 4);
+            switch (parts.Length) {
+                case 1:
+                    return new LineThickness(GetWidth(parts[0]));
+                case 2:
+                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]));
+                case 4:
+                    return new LineThickness(GetWidth(parts[0]), GetWidth(parts[1]), GetWidth(parts[2]), GetWidth(parts[3]));
+                default:
+                    throw new FormatException($"Invalid {nameof(LineThickness)} format: '{str}'.");
             }
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (!(value is LineThickness thickness))
-                throw GetConvertToException(value, destinationType);
-
-            if (destinationType == typeof(string))
-                return thickness.ToString();
-            else if (destinationType == typeof(InstanceDescriptor))
-                return new InstanceDescriptor(LineThicknessConstructor.Value, new object[] {
-                    thickness.Left, thickness.Top, thickness.Right, thickness.Bottom
-                }, true);
-            else
-                return base.ConvertTo(context, culture, value, destinationType);
-        }
+        protected override ConstructorInfo InstanceConstructor => LineThicknessConstructor.Value;
+        protected override object[] InstanceConstructorArgs(LineThickness o) => new object[] { o.Left, o.Top, o.Right, o.Bottom };
 
         private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;
         private static LineWidth GetWidth(string str) => FixWidth(StringToEnum<LineWidth>(str));

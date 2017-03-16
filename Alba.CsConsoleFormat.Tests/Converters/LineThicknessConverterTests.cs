@@ -15,6 +15,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             _converter.CanConvertFrom(null, typeof(int)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(string)).Should().BeTrue();
+            _converter.CanConvertFrom(null, typeof(LineWidth)).Should().BeTrue();
             _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
 
             _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
@@ -72,13 +73,18 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ConvertFromNumber()
         {
-            _converter.ConvertFrom(LineWidth.None).Should().Be(LineThickness.None);
-            _converter.ConvertFrom(LineWidth.Single).Should().Be(LineThickness.Single);
-            _converter.ConvertFrom(LineWidth.Wide).Should().Be(LineThickness.Wide);
             _converter.ConvertFrom(0).Should().Be(LineThickness.None);
             _converter.ConvertFrom(0m).Should().Be(LineThickness.None);
             _converter.ConvertFrom(1).Should().Be(LineThickness.Single);
             _converter.ConvertFrom(2L).Should().Be(LineThickness.Wide);
+        }
+
+        [Fact]
+        public void ConvertFromLineWidth()
+        {
+            _converter.ConvertFrom(LineWidth.None).Should().Be(LineThickness.None);
+            _converter.ConvertFrom(LineWidth.Single).Should().Be(LineThickness.Single);
+            _converter.ConvertFrom(LineWidth.Wide).Should().Be(LineThickness.Wide);
         }
 
         [Fact]

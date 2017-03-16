@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\Base\SequenceTypeConverter.cs" />
     <Compile Include="Converters\ConsoleColorConverter.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\LengthConverter.cs" />
