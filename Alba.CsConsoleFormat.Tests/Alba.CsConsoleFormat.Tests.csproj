@@ -72,6 +72,7 @@
     <Compile Include="Converters\GridLengthConverterTests.cs" />
     <Compile Include="Converters\PointConverterTests.cs" />
     <Compile Include="Converters\RectConverterTests.cs" />
+    <Compile Include="Converters\SizeConverterTests.cs" />
     <Compile Include="Converters\ThicknessConverterTests.cs" />
     <Compile Include="Converters\LineThicknessConverterTests.cs" />
     <Compile Include="Core\LineTests.cs" />

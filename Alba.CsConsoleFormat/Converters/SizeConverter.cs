@@ -21,7 +21,12 @@ namespace Alba.CsConsoleFormat
             string[] parts = SplitNumbers(str, 2);
             if (parts.Length != 2)
                 throw new FormatException($"Invalid Size format: '{0}'.");
-            return new Size(ParseInt(parts[0]), ParseInt(parts[1]));
+            try {
+                return new Size(ParseInt(parts[0]), ParseInt(parts[1]));
+            }
+            catch (ArgumentException ex) {
+                throw new FormatException($"Invalid Size format: '{0}'. {ex.Message}", ex);
+            }
         }
 
         protected override ConstructorInfo InstanceConstructor => SizeConstructor.Value;

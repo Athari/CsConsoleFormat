@@ -21,7 +21,12 @@ namespace Alba.CsConsoleFormat
             string[] parts = SplitNumbers(str, 4);
             if (parts.Length != 4)
                 throw new FormatException($"Invalid Rect format: '{str}'.");
-            return new Rect(ParseInt(parts[0]), ParseInt(parts[1]), ParseInt(parts[2]), ParseInt(parts[3]));
+            try {
+                return new Rect(ParseInt(parts[0]), ParseInt(parts[1]), ParseInt(parts[2]), ParseInt(parts[3]));
+            }
+            catch (ArgumentException ex) {
+                throw new FormatException($"Invalid Rect format: '{0}'. {ex.Message}", ex);
+            }
         }
 
         protected override ConstructorInfo InstanceConstructor => RectConstructor.Value;

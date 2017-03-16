@@ -6,9 +6,9 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class RectConverterTests
+    public class SizeConverterTests
     {
-        private readonly RectConverter _converter = new RectConverter();
+        private readonly SizeConverter _converter = new SizeConverter();
 
         [Fact]
         public void CanConvertFrom()
@@ -19,8 +19,8 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.CanConvertFrom(null, typeof(int)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertFrom(null, typeof(object)).Should().BeFalse();
-            _converter.CanConvertFrom(null, typeof(Rect)).Should().BeFalse();
-            _converter.CanConvertFrom(null, typeof(RectConverter)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(Size)).Should().BeFalse();
+            _converter.CanConvertFrom(null, typeof(SizeConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.CanConvertTo(null, typeof(int)).Should().BeFalse();
             _converter.CanConvertTo(null, typeof(void)).Should().BeFalse();
             _converter.CanConvertTo(null, typeof(object)).Should().BeFalse();
-            _converter.CanConvertTo(null, typeof(Rect)).Should().BeFalse();
-            _converter.CanConvertTo(null, typeof(RectConverter)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(Size)).Should().BeFalse();
+            _converter.CanConvertTo(null, typeof(SizeConverter)).Should().BeFalse();
         }
 
         [Fact]
@@ -47,21 +47,22 @@ namespace Alba.CsConsoleFormat.Tests
         public void ConvertFromInvalidSourceFormat()
         {
             new Action(() => _converter.ConvertFrom("&")).ShouldThrow<FormatException>();
+            new Action(() => _converter.ConvertFrom("0")).ShouldThrow<FormatException>();
             new Action(() => _converter.ConvertFrom("0 0 0")).ShouldThrow<FormatException>();
-            new Action(() => _converter.ConvertFrom("0 0 0 -1")).ShouldThrow<FormatException>().WithMessage("*height*");
+            new Action(() => _converter.ConvertFrom("-1 1")).ShouldThrow<FormatException>().WithMessage("*width*");
         }
 
         [Fact]
         public void ConvertFromString()
         {
-            _converter.ConvertFrom("0 1, 2 3").Should().Be(new Rect(0, 1, 2, 3));
-            _converter.ConvertFrom("2, 3 5, 1").Should().Be(new Rect(2, 3, 5, 1));
+            _converter.ConvertFrom("0 1").Should().Be(new Size(0, 1));
+            _converter.ConvertFrom("2 3").Should().Be(new Size(2, 3));
         }
 
         [Fact]
         public void ConvertToInvalidDestination()
         {
-            new Action(() => _converter.ConvertTo(new Rect(), typeof(int))).ShouldThrow<NotSupportedException>();
+            new Action(() => _converter.ConvertTo(new Size(), typeof(int))).ShouldThrow<NotSupportedException>();
         }
 
         [Fact, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
@@ -74,16 +75,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ConvertToString()
         {
-            _converter.ConvertToString(new Rect(2, 3, 1, 1)).Should().Be("2 3 1 1");
-            _converter.ConvertToString(new Rect(-4, -5, 2, 3)).Should().Be("-4 -5 2 3");
+            _converter.ConvertToString(new Size(2, 3)).Should().Be("2 3");
+            _converter.ConvertToString(new Size(-4, -5, false)).Should().Be("0 0");
         }
 
         [Fact]
         public void ConvertToInstanceDescriptor()
         {
-            _converter.ConvertTo(new Rect(1, 2, 7, 6), typeof(InstanceDescriptor))
+            _converter.ConvertTo(new Size(6, 2), typeof(InstanceDescriptor))
                 .As<InstanceDescriptor>().Invoke()
-                .Should().Be(new Rect(1, 2, 7, 6));
+                .Should().Be(new Size(6, 2));
         }
     }
 }
