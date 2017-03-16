@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using JetBrains.Annotations;
 
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat.Markup
 {
     [TypeConverter(typeof(XmlLanguageConverter))]
@@ -28,5 +29,7 @@ namespace Alba.CsConsoleFormat.Markup
         public CultureInfo Culture => Name == null ? null : (_culture ?? (_culture = new CultureInfo(Name)));
 
         public override string ToString() => Name ?? _culture?.Name ?? "";
+        public override bool Equals(object obj) => obj is XmlLanguage lng && lng.Name == Name;
+        public override int GetHashCode() => Name?.GetHashCode() ?? 0;
     }
 }
