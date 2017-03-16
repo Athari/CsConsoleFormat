@@ -75,6 +75,7 @@
     <Compile Include="Converters\SizeConverterTests.cs" />
     <Compile Include="Converters\ThicknessConverterTests.cs" />
     <Compile Include="Converters\LineThicknessConverterTests.cs" />
+    <Compile Include="Converters\VectorConverterTests.cs" />
     <Compile Include="Core\LineTests.cs" />
     <Compile Include="Core\PointTests.cs" />
     <Compile Include="Elements\Base\BindableObjectTests.cs" />
