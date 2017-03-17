@@ -25,6 +25,14 @@ namespace Alba.CsConsoleFormat.Tests
             return text.Length > 0 ? text.Remove(text.Length - 2) : text;
         }
 
+        protected static string GetRenderedText(ConsoleBuffer buffer)
+        {
+            var target = new TextRenderTarget();
+            target.Render(buffer);
+            string text = target.OutputText;
+            return text.Length > 0 ? text.Remove(text.Length - 2) : text;
+        }
+
         protected Div CreateRectDiv(int width, int height)
         {
             var sb = new StringBuilder();

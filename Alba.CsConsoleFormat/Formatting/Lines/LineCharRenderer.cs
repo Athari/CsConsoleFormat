@@ -143,7 +143,7 @@ namespace Alba.CsConsoleFormat
 
             public override char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
-                return _c;
+                return charCenter.IsEmpty() ? '\0' : _c;
             }
         }
     }
