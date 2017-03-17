@@ -89,6 +89,7 @@
     <Compile Include="Elements\Containers\InlineContainerTests.cs" />
     <Compile Include="Elements\Containers\StackTests.cs" />
     <Compile Include="Elements\Containers\WrapTests.cs" />
+    <Compile Include="Elements\RepeaterTests.cs" />
     <Compile Include="Formatting\ConsoleBufferTests.cs" />
     <Compile Include="Formatting\ConsoleRendererTests.cs" />
     <Compile Include="Formatting\Lines\LineCharRendererTests.cs" />

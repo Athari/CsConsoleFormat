@@ -57,7 +57,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new DataItem { Id = 12, Name = "Name 1.2", Value = "Value 1.2" },
                         }
                     },
-                    new DataItem { Id = 2, Name = "Name 2", Value = "Value 2" },
+                    new DataItem {
+                        Id = 2, Name = "Name 2", Value = "Value 2",
+                        SubItems = new List<DataItem> {
+                            new DataItem { Id = 21, Name = "Name 2.1", Value = "Value 2.1" },
+                            new DataItem { Id = 22, Name = "Name 2.2", Value = "Value 2.2" },
+                        }
+                    },
                 }
             };
 

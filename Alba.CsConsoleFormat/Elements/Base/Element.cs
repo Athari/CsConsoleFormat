@@ -68,6 +68,15 @@ namespace Alba.CsConsoleFormat
         internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
         internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
+        protected override void UpdateDataContext()
+        {
+            base.UpdateDataContext();
+            if (_children == null)
+                return;
+            foreach (Element child in _children.Where(c => c.DataContext == null))
+                child.DataContext = DataContext;
+        }
+
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void GenerateVisualTree()
         {
@@ -135,12 +144,12 @@ namespace Alba.CsConsoleFormat
             yield return this;
         }
 
-        protected override void CloneOverride([NotNull] BindableObject obj)
+        protected override void CloneOverride(BindableObject obj)
         {
             var source = (Element)obj;
             base.CloneOverride(source);
             if (HasChildren) {
-                _children = new ElementCollection(source);
+                _children = new ElementCollection(this);
                 foreach (Element child in source._children) {
                     var childClone = (Element)child.Clone();
                     childClone.DataContext = null;
@@ -151,8 +160,8 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString() =>
             $"{GetType().Name}:"
-                + (Name != null ? $" Name={Name}" : "")
-                + (DataContext != null ? $" DC={DataContext}" : "")
-                + (HasChildren ? $" Children={_children.Count}" : "");
+            + (Name != null ? $" Name={Name}" : "")
+            + (DataContext != null ? $" DC={DataContext}" : "")
+            + (HasChildren ? $" Children={_children.Count}" : "");
     }
 }

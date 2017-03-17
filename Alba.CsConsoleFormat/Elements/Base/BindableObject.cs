@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private void UpdateDataContext()
+        protected virtual void UpdateDataContext()
         {
             if (_getters == null)
                 return;
@@ -114,7 +114,8 @@ namespace Alba.CsConsoleFormat
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
             return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out object value)
-                ? property.DefaultValue : (T)value;
+                ? property.DefaultValue
+                : (T)value;
         }
 
         public void SetValue<T>([NotNull] AttachedProperty<T> property, T value)

@@ -240,4 +240,13 @@
             <Span Text="{Get Date, Format=D}" Color="Green" xml:lang="it"/>-->
         </Div>
     </Border>
+    <Repeater Items="{Get Items}">
+        <Div>
+            <Span Color="Yellow" Text="{Get Name, Format='{}{0}: '}"/>
+            <Repeater Items="{Get SubItems}">
+                <Span Color="White" Text="{Get Name, Format='#{0}'}"/>
+                <Span Color="DarkGray" Text=", "/>
+            </Repeater>
+        </Div>
+    </Repeater>
 </Document>
