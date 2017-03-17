@@ -36,32 +36,32 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleColor ForegroundColor
         {
-            get => (ConsoleColor)GetBits(_colors, 0, 0xF);
-            set => SetBits(ref _colors, (byte)value, 0, 0xF);
+            get => (ConsoleColor)GetBits(_colors, 0, 0b1111);
+            set => SetBits(ref _colors, (byte)value, 0, 0b1111);
         }
 
         public ConsoleColor BackgroundColor
         {
-            get => (ConsoleColor)GetBits(_colors, 4, 0xF);
-            set => SetBits(ref _colors, (byte)value, 4, 0xF);
+            get => (ConsoleColor)GetBits(_colors, 4, 0b1111);
+            set => SetBits(ref _colors, (byte)value, 4, 0b1111);
         }
 
         public LineChar LineChar
         {
-            get => (LineChar)GetBits(_state, 0, 0xF);
-            set => SetBits(ref _state, (byte)value, 0, 0xF);
+            get => (LineChar)GetBits(_state, 0, 0b1111);
+            set => SetBits(ref _state, (byte)value, 0, 0b1111);
         }
 
         public LineWidth LineWidthHorizontal
         {
-            get => (LineWidth)GetBits(_state, 0, 0x3);
-            set => SetBits(ref _state, (byte)value, 0, 0x3);
+            get => (LineWidth)GetBits(_state, 0, 0b11);
+            set => SetBits(ref _state, (byte)value, 0, 0b11);
         }
 
         public LineWidth LineWidthVertical
         {
-            get => (LineWidth)GetBits(_state, 2, 0x3);
-            set => SetBits(ref _state, (byte)value, 2, 0x3);
+            get => (LineWidth)GetBits(_state, 2, 0b11);
+            set => SetBits(ref _state, (byte)value, 2, 0b11);
         }
 
         private static byte GetBits(byte data, int offset, byte mask)

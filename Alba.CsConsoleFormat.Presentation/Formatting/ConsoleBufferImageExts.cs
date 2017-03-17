@@ -54,7 +54,7 @@ namespace Alba.CsConsoleFormat.Presentation
                 for (int ix = x1, px = 0; ix < x2; ix++, px++) {
                     int byteIndex = stride * py + px / 2;
                     int bitOffset = px % 2 == 0 ? 4 : 0;
-                    SetColor(ref charsLine[ix], bmp.Palette, (bytes[byteIndex] >> bitOffset) & 0xF);
+                    SetColor(ref charsLine[ix], bmp.Palette, (bytes[byteIndex] >> bitOffset) & 0b1111);
                 }
             }
         }

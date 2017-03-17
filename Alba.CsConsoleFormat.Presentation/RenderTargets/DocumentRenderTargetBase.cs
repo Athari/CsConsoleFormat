@@ -51,6 +51,13 @@ namespace Alba.CsConsoleFormat.Presentation
                 charSize.Width = Math.Ceiling(charSize.Width);
                 charSize.Height = Math.Ceiling(charSize.Height);
                 return charSize;
+
+                WpfSize MeasureString(string text)
+                {
+                    var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Transparent);
+                    return new WpfSize(formattedText.Width, formattedText.Height);
+                }
             }
         }
 
@@ -95,7 +102,7 @@ namespace Alba.CsConsoleFormat.Presentation
                     if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
-                        AppendRunIfNeeded(ref text, par);
+                        AppendRunIfNeeded();
                         text = new Run {
                             Foreground = ConsoleBrushes[foreColor],
                             Background = ConsoleBrushes[backColor],
@@ -103,19 +110,19 @@ namespace Alba.CsConsoleFormat.Presentation
                     }
                     text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
-                AppendRunIfNeeded(ref text, par);
+                AppendRunIfNeeded();
                 if (iy + 1 < buffer.Height)
                     par.Inlines.Add(new LineBreak());
             }
-            AppendRunIfNeeded(ref text, par);
-        }
+            AppendRunIfNeeded();
 
-        private static void AppendRunIfNeeded(ref Run text, Paragraph par)
-        {
-            if (text == null)
-                return;
-            par.Inlines.Add(text);
-            text = null;
+            void AppendRunIfNeeded()
+            {
+                if (text == null)
+                    return;
+                par.Inlines.Add(text);
+                text = null;
+            }
         }
 
         protected static void RenderToCanvas([NotNull] IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
@@ -134,7 +141,7 @@ namespace Alba.CsConsoleFormat.Presentation
                     if (text == null || foreColor != currentForeColor || backColor != currentBackColor) {
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
-                        AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
+                        AppendTextBlockIfNeeded();
                         text = new TextBlock {
                             Foreground = ConsoleBrushes[foreColor],
                             Background = ConsoleBrushes[backColor],
@@ -145,18 +152,18 @@ namespace Alba.CsConsoleFormat.Presentation
                     }
                     text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
-                AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
+                AppendTextBlockIfNeeded();
             }
-            AppendTextBlockIfNeeded(ref text, linesPanel, charSize);
-        }
+            AppendTextBlockIfNeeded();
 
-        private static void AppendTextBlockIfNeeded(ref TextBlock text, WpfCanvas linesPanel, WpfSize charSize)
-        {
-            if (text == null)
-                return;
-            text.Width = text.Text.Length * charSize.Width;
-            linesPanel.Children.Add(text);
-            text = null;
+            void AppendTextBlockIfNeeded()
+            {
+                if (text == null)
+                    return;
+                text.Width = text.Text.Length * charSize.Width;
+                linesPanel.Children.Add(text);
+                text = null;
+            }
         }
 
         protected WpfCanvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
@@ -193,13 +200,6 @@ namespace Alba.CsConsoleFormat.Presentation
             TextBlock.SetFontStyle(linesPanel, FontStyle);
             TextBlock.SetFontWeight(linesPanel, FontWeight);
             return linesPanel;
-        }
-
-        private WpfSize MeasureString(string text)
-        {
-            var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                new Typeface(FontFamily, FontStyle, FontWeight, FontStretch), FontSize, Brushes.Transparent);
-            return new WpfSize(formattedText.Width, formattedText.Height);
         }
     }
 }
