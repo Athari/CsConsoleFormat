@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
-    public class SizeConverter : SequenceTypeConverter<Size>
+    public sealed class SizeConverter : SequenceTypeConverter<Size>
     {
         private static readonly Lazy<ConstructorInfo> SizeConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(Size).GetConstructor(new[] { typeof(int), typeof(int), typeof(bool) }));

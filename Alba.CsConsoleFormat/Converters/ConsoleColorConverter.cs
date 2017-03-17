@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"inherit" - <c>null</c></item>
     /// </list> 
     /// </summary>
-    public class ConsoleColorConverter : TypeConverter
+    public sealed class ConsoleColorConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);

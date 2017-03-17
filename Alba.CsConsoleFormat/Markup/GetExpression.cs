@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Markup
     public class GetExpression : GetExpressionBase
     {
         public string Format { get; set; }
-        public ConverterDelegate Converter { get; set; }
+        public ConverterFunc Converter { get; set; }
         public object Parameter { get; set; }
 
         protected override object GetValueFromSource(object source)

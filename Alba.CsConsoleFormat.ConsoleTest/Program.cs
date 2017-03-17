@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Console.ReadLine();
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Render targets close streams.")]
         private void Run()
         {
             /*Size consoleSize = Size.Min(ConsoleRenderer.ConsoleLargestWindowSize, new Size((25 + 1) * 7 + 1, 60));

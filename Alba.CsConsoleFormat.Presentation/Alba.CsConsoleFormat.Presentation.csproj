@@ -54,6 +54,7 @@
     <Compile Include="Core\FontDefaults.cs" />
     <Compile Include="Elements\Image.cs" />
     <Compile Include="Formatting\ConsoleBufferImageExts.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Markup\DocumentConverter.cs" />
     <Compile Include="RenderTargets\FlowDocumentRenderTarget.cs" />
     <Compile Include="RenderTargets\RtfRenderTarget.cs" />

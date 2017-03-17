@@ -13,6 +13,5 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public static int DefaultConsoleWidth => 80;
         public static Brush DefaultConsoleBackground => Brushes.Black;
-        public static Brush DefaultConsoleForeground => Brushes.White;
     }
 }

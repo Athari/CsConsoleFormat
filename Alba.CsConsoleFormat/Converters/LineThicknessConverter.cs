@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
-    public class LineThicknessConverter : SequenceTypeConverter<LineThickness>
+    public sealed class LineThicknessConverter : SequenceTypeConverter<LineThickness>
     {
         private static readonly Lazy<ConstructorInfo> LineThicknessConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(LineThickness).GetConstructor(new[] { typeof(LineWidth), typeof(LineWidth), typeof(LineWidth), typeof(LineWidth) }));

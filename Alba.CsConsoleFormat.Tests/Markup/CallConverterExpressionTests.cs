@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
                 Source = Source,
                 Path = $"{nameof(Foo.Sub)}.{methodName}",
             };
-            expr.GetValue(Source).As<ConverterDelegate>().Invoke(1, 2, Culture).Should().Be(result);
+            expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2, Culture).Should().Be(result);
         }
 
         [Theory]
@@ -34,7 +34,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
                 Source = Source,
                 Path = $"{nameof(Foo.Sub)}.{methodName}",
             };
-            expr.GetValue(Source).As<ConverterDelegate>().Invoke(1, 2, Culture).Should().Be(result);
+            expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2, Culture).Should().Be(result);
         }
 
         [Fact]
@@ -44,8 +44,8 @@ namespace Alba.CsConsoleFormat.Tests.Markup
                 Source = Source,
                 Path = $"{nameof(Foo.Sub)}.{nameof(Foo.InstanceConvertOverloaded)}",
             };
-            expr.GetValue(Source).As<ConverterDelegate>().Invoke(1, 2m, Culture).Should().Be("B-1-2m");
-            expr.GetValue(Source).As<ConverterDelegate>().Invoke(1, 2f, Culture).Should().Be("B-1-2f");
+            expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2m, Culture).Should().Be("B-1-2m");
+            expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2f, Culture).Should().Be("B-1-2f");
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
             var expr = new CallConverterExpression {
                 Source = new Func<object, object>(v => Source.InstanceConvert1((int)v)),
             };
-            expr.GetValue(Source).As<ConverterDelegate>().Invoke(1, 2, Culture).Should().Be("A-1");
+            expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2, Culture).Should().Be("A-1");
         }
 
         public class Foo

@@ -10,7 +10,7 @@ namespace Alba.CsConsoleFormat.Markup
     public class GetExtension : GetExtensionBase
     {
         public string Format { get; set; }
-        public ConverterDelegate Converter { get; set; }
+        public ConverterFunc Converter { get; set; }
         public object Parameter { get; set; }
         public CultureInfo Culture { get; set; }
 

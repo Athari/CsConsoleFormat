@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
-    public class VectorConverter : SequenceTypeConverter<Vector>
+    public sealed class VectorConverter : SequenceTypeConverter<Vector>
     {
         private static readonly Lazy<ConstructorInfo> VectorConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(Vector).GetConstructor(new[] { typeof(int), typeof(int) }));

@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"3", 3 - <c>GridLength.Char(3)</c></item>
     /// </list> 
     /// </summary>
-    public class GridLengthConverter : TypeConverter
+    public sealed class GridLengthConverter : TypeConverter
     {
         private static readonly Lazy<ConstructorInfo> GridLengthConstructor = new Lazy<ConstructorInfo>(() =>
             typeof(GridLength).GetConstructor(new[] { typeof(int), typeof(GridUnitType) }));

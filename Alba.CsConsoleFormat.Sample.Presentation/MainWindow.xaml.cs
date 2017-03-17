@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Alba.CsConsoleFormat.Presentation;
 using static System.ConsoleColor;
 
@@ -10,6 +11,7 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
         public Document FixedDocument => Document("fixed");
         public Document FlowDocument => Document("flow");
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Render targets close streams.")]
         public MainWindow()
         {
             InitializeComponent();

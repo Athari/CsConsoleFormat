@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -39,7 +41,11 @@ namespace Alba.CsConsoleFormat
         }
 
         protected abstract ConstructorInfo InstanceConstructor { get; }
-        protected abstract object[] InstanceConstructorArgs(T o);
-        protected abstract T FromString(string str);
+
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        protected abstract object[] InstanceConstructorArgs([NotNull] T o);
+
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        protected abstract T FromString([NotNull] string str);
     }
 }

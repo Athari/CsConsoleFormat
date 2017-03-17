@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"auto" - <c>null</c></item>
     /// </list> 
     /// </summary>
-    public class LengthConverter : TypeConverter
+    public sealed class LengthConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
