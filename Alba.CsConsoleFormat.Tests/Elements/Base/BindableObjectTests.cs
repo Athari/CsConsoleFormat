@@ -22,25 +22,20 @@ namespace Alba.CsConsoleFormat.Tests
 
         [Fact]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-        [SuppressMessage("ReSharper", "UnusedVariable")]
-        [SuppressMessage("ReSharper", "RedundantAssignment")]
         public void NullArguments()
         {
             var obj = new MyBindableObject();
             var getter = new GetExpression();
-            var prop = obj.GetType().GetProperty(nameof(MyBindableObject.MyStringValue));
-            var property = MyBindableObject.AttachedDecimalProperty;
+            var property = obj.GetType().GetProperty(nameof(MyBindableObject.MyStringValue));
 
-            new Action(() => obj.Bind(null, getter)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(prop));
-            new Action(() => obj.Bind(prop, null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(getter));
+            new Action(() => obj.Bind(null, getter)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj.Bind(property, null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(getter));
             new Action(() => obj.HasValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.GetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.ResetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.SetValue(null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj[null] = 1).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => {
-                var a = obj[null];
-            }).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj[null].As<int>() ).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
         }
 
         [Fact]

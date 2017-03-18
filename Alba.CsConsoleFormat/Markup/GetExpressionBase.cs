@@ -50,27 +50,17 @@ namespace Alba.CsConsoleFormat.Markup
 
         protected abstract object GetValueFromSource(object source);
 
-        protected virtual object ConvertValue(object value)
-        {
-            return value;
-        }
+        protected virtual object ConvertValue(object value) => value;
 
-        protected virtual object ConvertMethod([NotNull] MethodInfo method, [NotNull] object target)
-        {
-            throw new NotSupportedException();
-        }
+        protected virtual object ConvertMethod([NotNull] MethodInfo method, [NotNull] object target) => throw new NotSupportedException();
 
-        protected virtual object TryGetCachedMethod(MethodInfo method)
-        {
-            return null;
-        }
+        protected virtual object TryGetCachedMethod(MethodInfo method) => null;
 
         internal static object Get(object value, string memberName)
         {
-            if (!_getterFunctions.Value.TryGetValue(memberName, out GetterDelegate func)) {
-                func = DynamicCaller.Get<object, object>(memberName);
-                _getterFunctions.Value.Add(memberName, func);
-            }
+            if (!_getterFunctions.Value.TryGetValue(memberName, out GetterDelegate func))
+                _getterFunctions.Value.Add(memberName, func = DynamicCaller.Get<object, object>(memberName));
+
             try {
                 return func(value);
             }

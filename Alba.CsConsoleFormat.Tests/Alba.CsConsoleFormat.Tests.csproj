@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BindableObjectTestsExts.cs" />
     <Compile Include="Converters\ConsoleColorConverterTests.cs" />
     <Compile Include="Converters\GridLengthConverterTests.cs" />
     <Compile Include="Converters\LengthConverterTests.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Framework\Reflection\DynamicCallerTests.cs" />
     <Compile Include="Markup\CallConverterExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ElementTestsBase.cs" />
+    <Compile Include="Base\ElementTestsBase.cs" />
     <Compile Include="Resources\Res.cs" />
   </ItemGroup>
   <ItemGroup>

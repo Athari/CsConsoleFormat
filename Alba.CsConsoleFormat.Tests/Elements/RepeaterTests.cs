@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using Alba.CsConsoleFormat.Markup;
 using Alba.CsConsoleFormat.Testing.FluentAssertions;
 using FluentAssertions;
 using Xunit;
@@ -9,9 +7,6 @@ namespace Alba.CsConsoleFormat.Tests
 {
     public class RepeaterTests : ElementTestsBase
     {
-        private static PropertyInfo SpanTextProperty => typeof(Span).GetProperty(nameof(Span.Text));
-        private static PropertyInfo RepeaterItemsProperty => typeof(Repeater).GetProperty(nameof(Repeater.Items));
-
         [Fact]
         public void NoChildren()
         {
@@ -41,10 +36,9 @@ namespace Alba.CsConsoleFormat.Tests
             var repeater = new Repeater {
                 Items = new object[] { 1, 2, 3 },
                 ItemTemplate = {
-                    new Span().Name(out Span span)
+                    new Span().Bind(o => o.Text, (int i) => $"{i}")
                 }
             };
-            span.Bind(SpanTextProperty, new GetExpression());
 
             GetRenderedText(repeater, 4).Should().BeLines(
                 "123 ");
@@ -61,19 +55,16 @@ namespace Alba.CsConsoleFormat.Tests
                 ItemTemplate = {
                     new Div()
                         .AddChildren(
-                            new Span().Name(out Span spanHeader),
+                            new Span().Bind(o => o.Text, (object[] items) => $"{items.Length}: "),
                             new Repeater {
                                 ItemTemplate = {
-                                    new Span().Name(out Span spanItem),
+                                    new Span().Bind(o => o.Text, (int i) => $"#{i}"),
                                     new Span(", "),
                                 }
-                            }.Name(out Repeater innerRepeater)
+                            }.Bind(o => o.Items, (object[] items) => items)
                         )
                 }
             };
-            innerRepeater.Bind(RepeaterItemsProperty, new GetExpression());
-            spanHeader.Bind(SpanTextProperty, new GetExpression { Path = nameof(Array.Length), Format = "{0}: " });
-            spanItem.Bind(SpanTextProperty, new GetExpression { Format = "#{0}" });
 
             GetRenderedText(repeater, 11).Should().BeLines(
                 "2: #1, #2, ",

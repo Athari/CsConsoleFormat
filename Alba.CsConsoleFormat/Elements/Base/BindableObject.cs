@@ -36,17 +36,17 @@ namespace Alba.CsConsoleFormat
                 getter.Key.SetValue(this, getter.Value.GetValue(this), null);
         }
 
-        public void Bind([NotNull] PropertyInfo prop, [NotNull] GetExpressionBase getter)
+        public void Bind([NotNull] PropertyInfo property, [NotNull] GetExpressionBase getter)
         {
-            if (prop == null)
-                throw new ArgumentNullException(nameof(prop));
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
             if (getter == null)
                 throw new ArgumentNullException(nameof(getter));
             if (_getters == null)
                 _getters = new Dictionary<PropertyInfo, GetExpressionBase>();
             getter.TargetObject = this;
-            getter.TargetType = prop.PropertyType;
-            _getters[prop] = getter;
+            getter.TargetType = property.PropertyType;
+            _getters[property] = getter;
         }
 
         public BindableObject Clone()
