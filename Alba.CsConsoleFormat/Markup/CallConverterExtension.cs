@@ -18,7 +18,7 @@ namespace Alba.CsConsoleFormat.Markup
         public CallConverterExtension(string path) : base(path)
         {}
 
-        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo prop)
+        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo property)
         {
             var expression = new CallConverterExpression {
                 Source = Source,

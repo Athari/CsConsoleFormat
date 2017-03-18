@@ -163,7 +163,7 @@ namespace Alba.CsConsoleFormat.Tests
 
         private static void AssertCustomValue(MyBindableObject obj, decimal expectedValue)
         {
-            var props = new KeyValuePair<AttachableMemberIdentifier, object>[1];
+            var properties = new KeyValuePair<AttachableMemberIdentifier, object>[1];
 
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeTrue();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
@@ -171,8 +171,8 @@ namespace Alba.CsConsoleFormat.Tests
             obj.As<IAttachedPropertyStore>().PropertyCount.Should().Be(1);
             obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out object value);
             value.Should().Be(expectedValue);
-            obj.As<IAttachedPropertyStore>().CopyPropertiesTo(props, 0);
-            props[0].Should().Be(new KeyValuePair<AttachableMemberIdentifier, object>(MyBindableObject.AttachedDecimalProperty.Identifier, expectedValue));
+            obj.As<IAttachedPropertyStore>().CopyPropertiesTo(properties, 0);
+            properties[0].Should().Be(new KeyValuePair<AttachableMemberIdentifier, object>(MyBindableObject.AttachedDecimalProperty.Identifier, expectedValue));
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]

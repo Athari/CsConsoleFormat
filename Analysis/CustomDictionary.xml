@@ -32,6 +32,9 @@
       <Term>MeasureOverride</Term>
       <Term>StringWriter</Term>
     </DiscreteExceptions>
+    <Deprecated>
+      <Term PreferredAlternate="property">prop</Term>
+    </Deprecated>
   </Words>
   <Acronyms>
     <CasingExceptions>

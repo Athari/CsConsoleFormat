@@ -20,10 +20,10 @@ namespace Alba.CsConsoleFormat.Markup
         public GetExtension(string path) : base(path)
         {}
 
-        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, [NotNull] PropertyInfo prop)
+        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, [NotNull] PropertyInfo property)
         {
-            if (prop == null)
-                throw new ArgumentNullException(nameof(prop));
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
 
             var expression = new GetExpression {
                 Source = Source,
@@ -33,9 +33,9 @@ namespace Alba.CsConsoleFormat.Markup
                 Culture = Culture,
                 Parameter = Parameter,
                 TargetObject = obj,
-                TargetType = prop.PropertyType,
+                TargetType = property.PropertyType,
             };
-            obj?.Bind(prop, expression);
+            obj?.Bind(property, expression);
             return expression.GetValue();
         }
     }

@@ -47,12 +47,12 @@ namespace Alba.CsConsoleFormat.Markup
 
             var targetProvider = serviceProvider.GetService<IProvideValueTarget>();
             var obj = targetProvider.TargetObject as BindableObject;
-            var prop = (PropertyInfo)targetProvider.TargetProperty;
+            var property = (PropertyInfo)targetProvider.TargetProperty;
 
-            return ProvideExpression(serviceProvider, obj, prop);
+            return ProvideExpression(serviceProvider, obj, property);
         }
 
-        protected abstract object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo prop);
+        protected abstract object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo property);
 
         public override string ToString() => $"{{Get Path={Path}}}";
     }
