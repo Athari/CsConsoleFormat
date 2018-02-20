@@ -1,159 +1,57 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project>
+
+  <!-- Shared -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
-    <AssemblyName>Alba.CsConsoleFormat</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <OutputPath>$(SolutionDir)Bin\$(Configuration)</OutputPath>
+    <BaseIntermediateOutputPath>$(SolutionDir)Obj\$(AssemblyName)</BaseIntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- Common -->
+  <PropertyGroup>
+    <TargetFrameworks>net40;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
+
     <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
+
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Converters\Base\SequenceTypeConverter.cs" />
-    <Compile Include="Converters\ConsoleColorConverter.cs" />
-    <Compile Include="Converters\GridLengthConverter.cs" />
-    <Compile Include="Converters\LengthConverter.cs" />
-    <Compile Include="Converters\LineThicknessConverter.cs" />
-    <Compile Include="Converters\PointConverter.cs" />
-    <Compile Include="Converters\RectConverter.cs" />
-    <Compile Include="Converters\SizeConverter.cs" />
-    <Compile Include="Converters\ThicknessConverter.cs" />
-    <Compile Include="Converters\Base\TypeConverterUtils.cs" />
-    <Compile Include="Converters\VectorConverter.cs" />
-    <Compile Include="Converters\XmlLanguageConverter.cs" />
-    <Compile Include="Core\AttachedProperty.cs" />
-    <Compile Include="Core\Enums\DockTo.cs" />
-    <Compile Include="Core\Enums\HorizontalAlignment.cs" />
-    <Compile Include="Core\Enums\LineWidth.cs" />
-    <Compile Include="Core\Enums\Orientation.cs" />
-    <Compile Include="Core\Enums\TextAlignment.cs" />
-    <Compile Include="Core\Enums\TextWrapping.cs" />
-    <Compile Include="Core\Enums\VerticalAlignment.cs" />
-    <Compile Include="Core\Enums\Visibility.cs" />
-    <Compile Include="Core\GridLength.cs" />
-    <Compile Include="Core\Enums\GridUnitType.cs" />
-    <Compile Include="Core\LayoutInfo.cs" />
-    <Compile Include="Core\Line.cs" />
-    <Compile Include="Core\LineThickness.cs" />
-    <Compile Include="Core\Point.cs" />
-    <Compile Include="Core\Rect.cs" />
-    <Compile Include="Core\Size.cs" />
-    <Compile Include="Core\Thickness.cs" />
-    <Compile Include="Core\ValueProviders.cs" />
-    <Compile Include="Core\Vector.cs" />
-    <Compile Include="Elements\Base\BindableObject.cs" />
-    <Compile Include="Elements\Base\BindableObjectExts.cs" />
-    <Compile Include="Elements\Base\BlockElement.cs" />
-    <Compile Include="Elements\Base\ContainerElement.cs" />
-    <Compile Include="Elements\Base\Element.cs" />
-    <Compile Include="Elements\Base\GeneratorElement.cs" />
-    <Compile Include="Elements\Base\InlineElement.cs" />
-    <Compile Include="Elements\Border.cs" />
-    <Compile Include="Elements\Br.cs" />
-    <Compile Include="Elements\Collections\ElementCollection.cs" />
-    <Compile Include="Elements\Containers\Canvas.cs" />
-    <Compile Include="Elements\Containers\Cell.cs" />
-    <Compile Include="Elements\Containers\Column.cs" />
-    <Compile Include="Elements\Containers\Dock.cs" />
-    <Compile Include="Elements\Containers\Grid.cs" />
-    <Compile Include="Elements\Containers\IInlineSequence.cs" />
-    <Compile Include="Elements\Containers\InlineContainer.cs" />
-    <Compile Include="Elements\Containers\List.cs" />
-    <Compile Include="Elements\Containers\Row.cs" />
-    <Compile Include="Elements\Containers\Stack.cs" />
-    <Compile Include="Elements\Containers\Wrap.cs" />
-    <Compile Include="Elements\Div.cs" />
-    <Compile Include="Elements\Document.cs" />
-    <Compile Include="Elements\Separator.cs" />
-    <Compile Include="Elements\Repeater.cs" />
-    <Compile Include="Elements\Span.cs" />
-    <Compile Include="Formatting\Chars.cs" />
-    <Compile Include="Formatting\ColorMaps.cs" />
-    <Compile Include="Formatting\ConsoleBuffer.cs" />
-    <Compile Include="Formatting\ConsoleChar.cs" />
-    <Compile Include="Formatting\ConsoleRenderer.cs" />
-    <Compile Include="Formatting\RenderTargets\AnsiRenderTarget.cs" />
-    <Compile Include="Formatting\RenderTargets\ConsoleRenderTarget.cs" />
-    <Compile Include="Formatting\RenderTargets\HtmlRenderTarget.cs" />
-    <Compile Include="Formatting\RenderTargets\IRenderTarget.cs" />
-    <Compile Include="Formatting\IConsoleBufferSource.cs" />
-    <Compile Include="Formatting\Lines\ILineCharRenderer.cs" />
-    <Compile Include="Formatting\Lines\LineChar.cs" />
-    <Compile Include="Formatting\Lines\LineCharRenderer.cs" />
-    <Compile Include="Formatting\RenderTargets\TextRenderTargetBase.cs" />
-    <Compile Include="Formatting\RenderTargets\TextRenderTarget.cs" />
-    <Compile Include="Formatting\XamlElementReaderSettings.cs" />
-    <Compile Include="Framework\Collections\CollectionExts.cs" />
-    <Compile Include="Framework\Collections\EnumerableExts.cs" />
-    <Compile Include="Framework\Compatibility\FormattableString.cs" />
-    <Compile Include="Framework\JetBrains\JetBrainsAnnotations.cs" />
-    <Compile Include="Framework\Reflection\DynamicCaller.cs" />
-    <Compile Include="Framework\Reflection\MethodInfoExts.cs" />
-    <Compile Include="Framework\Sys\ObjectExts.cs" />
-    <Compile Include="Framework\Sys\ServiceProviderExts.cs" />
-    <Compile Include="Framework\Text\StringExts.cs" />
-    <Compile Include="Generation\ElementExts.cs" />
-    <Compile Include="Generation\GridExts.cs" />
-    <Compile Include="Markup\CallConverterExpression.cs" />
-    <Compile Include="Markup\CallConverterExtension.cs" />
-    <Compile Include="Markup\GetExpression.cs" />
-    <Compile Include="Markup\GetExpressionBase.cs" />
-    <Compile Include="Markup\GetExtension.cs" />
-    <Compile Include="Markup\GetExtensionBase.cs" />
-    <Compile Include="Markup\ResExtension.cs" />
-    <Compile Include="Markup\XmlLanguage.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
+
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\Analysis\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET Standard 2.0 -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD;NETSTANDARD20</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Include="**/*.cs" Exclude="Markup/*; Converters/**/*; Framework/Compatibility/*" />
+  </ItemGroup>
+
+  <!-- .NET Framework 4.0 -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
+    <DefineConstants>$(DefineConstants);NETFULL;NET40</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Compile Include="**/*.cs" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
 </Project>

@@ -5,6 +5,7 @@
 bin/
 obj/
 packages/
+*.bak
 *.suo
 *.DotSettings.user
 *.csproj.user

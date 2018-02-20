@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
 EndProject
@@ -84,5 +84,8 @@ Global
 		{4184EFCD-D6BA-485E-B693-039D796A1979} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 		{35DB30E3-3113-43BB-9748-1738D0D76D16} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 		{99A14C98-3634-47FC-8919-975FC3757B57} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4304DB63-2FFC-4F63-B1B8-926E64D576FD}
 	EndGlobalSection
 EndGlobal
