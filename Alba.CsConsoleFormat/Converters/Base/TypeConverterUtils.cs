@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -11,29 +14,48 @@ namespace Alba.CsConsoleFormat
         public const string Inherit = nameof(Inherit);
         public const string INHERIT = nameof(INHERIT);
 
-        public static bool IsTypeStringOrNumeric(Type type)
+        [Pure]
+        public static bool IsTypeStringOrNumeric([CanBeNull] Type type)
         {
             TypeCode code = Type.GetTypeCode(type);
-            return code == TypeCode.String || TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
+            return type != null && (code == TypeCode.String || TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum);
         }
 
-        public static bool IsTypeNumeric(Type type)
+        [Pure]
+        public static bool IsTypeNumeric([CanBeNull] Type type)
         {
             TypeCode code = Type.GetTypeCode(type);
-            return TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
+            return type != null && TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
         }
 
-        public static bool IsTypeStringOrNumeric(this object value) => value != null && IsTypeStringOrNumeric(value.GetType());
-        public static bool IsTypeNumeric(this object value) => value != null && IsTypeNumeric(value.GetType());
+        [Pure]
+        [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "API consistency.")]
+        public static bool IsTypeStringOrNumeric([CanBeNull] this object value) =>
+            value != null && IsTypeStringOrNumeric(value.GetType());
 
-        public static T StringToEnum<T>(string str)
+        [Pure]
+        public static bool IsTypeNumeric([CanBeNull] this object value) =>
+            value != null && IsTypeNumeric(value.GetType());
+
+        [Pure]
+        public static T StringToEnum<T>([CanBeNull] string str)
             where T : struct =>
             Enum.TryParse(str, true, out T value) ? value : throw new FormatException($"'{str}' is not a valid {typeof(T).Name} value.");
 
-        public static T NumberToEnum<T>(object obj) => (T)(object)Convert.ToInt32(obj, CultureInfo.InvariantCulture);
-        public static int ParseInt(string str) => int.Parse(str, CultureInfo.InvariantCulture);
-        public static int ToInt(object obj) => Convert.ToInt32(obj, CultureInfo.InvariantCulture);
+        [Pure]
+        public static T NumberToEnum<T>([NotNull] object number) =>
+            (T)(object)Convert.ToInt32(number ?? throw new ArgumentNullException(nameof(number)), CultureInfo.InvariantCulture);
 
-        public static string[] SplitNumbers(string str, int count) => str.Split(new[] { ' ', ',' }, count, StringSplitOptions.RemoveEmptyEntries);
+        [Pure]
+        public static int ParseInt([NotNull] string str) =>
+            int.Parse(str ?? throw new ArgumentNullException(nameof(str)), CultureInfo.InvariantCulture);
+
+        [Pure]
+        public static int ToInt([NotNull] object obj) =>
+            Convert.ToInt32(obj ?? throw new ArgumentNullException(nameof(obj)), CultureInfo.InvariantCulture);
+
+        [Pure]
+        public static string[] SplitNumbers([NotNull] string str, int count) =>
+            (str ?? throw new ArgumentNullException(nameof(str))).Split(new[] { ' ', ',' }, count, StringSplitOptions.RemoveEmptyEntries);
     }
 }

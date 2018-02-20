@@ -17,7 +17,10 @@ namespace Alba.CsConsoleFormat
         private const ConsoleColor DefaultColor = ConsoleColor.White;
         private const ConsoleColor DefaultBackground = ConsoleColor.Black;
 
+        [CanBeNull, ItemNotNull]
         private ElementCollection _children;
+
+        [CanBeNull, ItemNotNull]
         private IList<Element> _visualChildren;
 
         [CanBeNull]
@@ -37,17 +40,19 @@ namespace Alba.CsConsoleFormat
 
         public Visibility Visibility { get; set; }
 
+        [ItemNotNull]
         public ElementCollection Children
         {
             get
             {
                 if (!CanHaveChildren)
-                    throw new NotSupportedException($"Element '{(GetType().Name)}' cannot contain children.");
+                    throw new NotSupportedException($"Element '{GetType().Name}' cannot contain children.");
                 return _children ?? (_children = new ElementCollection(this));
             }
         }
 
         // TODO Change type of Element.VisualChildren to IList<BlockElement>
+        [NotNull, ItemNotNull]
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         protected internal IList<Element> VisualChildren
         {
@@ -59,8 +64,6 @@ namespace Alba.CsConsoleFormat
         internal BlockElement VisualChild => (BlockElement)_visualChildren?.SingleOrDefault();
 
         protected virtual bool CanHaveChildren => true;
-
-        private bool HasChildren => _children != null && _children.Count > 0;
 
         private IEnumerable<Element> Parents => this.TraverseList(e => e.Parent);
 
@@ -80,7 +83,7 @@ namespace Alba.CsConsoleFormat
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void GenerateVisualTree()
         {
-            if (!HasChildren)
+            if (!(_children?.Count > 0))
                 return;
             var children = new List<Element>();
             InlineContainer inlines = null;
@@ -121,7 +124,7 @@ namespace Alba.CsConsoleFormat
             SetVisualChildren(children);
         }
 
-        protected virtual void SetVisualChildren([NotNull] IList<Element> visualChildren)
+        protected virtual void SetVisualChildren([NotNull, ItemNotNull] IList<Element> visualChildren)
         {
             if (visualChildren == null)
                 throw new ArgumentNullException(nameof(visualChildren));
@@ -148,7 +151,7 @@ namespace Alba.CsConsoleFormat
         {
             var source = (Element)obj;
             base.CloneOverride(source);
-            if (HasChildren) {
+            if (source._children?.Count > 0) {
                 _children = new ElementCollection(this);
                 foreach (Element child in source._children) {
                     var childClone = (Element)child.Clone();
@@ -160,8 +163,8 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString() =>
             $"{GetType().Name}:"
-            + (Name != null ? $" Name={Name}" : "")
-            + (DataContext != null ? $" DC={DataContext}" : "")
-            + (HasChildren ? $" Children={_children.Count}" : "");
+          + (Name != null ? $" Name={Name}" : "")
+          + (DataContext != null ? $" DC={DataContext}" : "")
+          + (_children?.Count > 0 ? $" Children={_children.Count}" : "");
     }
 }

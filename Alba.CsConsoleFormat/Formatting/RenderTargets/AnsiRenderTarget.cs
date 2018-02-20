@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using JetBrains.Annotations;
@@ -24,15 +25,16 @@ namespace Alba.CsConsoleFormat
         public ConsoleColor? ColorOverride { get; set; }
         public ConsoleColor? BackgroundOverride { get; set; }
 
-        public AnsiRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
-        {}
+        public AnsiRenderTarget([NotNull] Stream output, [CanBeNull] Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        { }
 
-        public AnsiRenderTarget(TextWriter writer = null) : base(writer)
-        {}
+        public AnsiRenderTarget([CanBeNull] TextWriter writer = null) : base(writer)
+        { }
 
         protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
+            Debug.Assert(Writer != null);
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 

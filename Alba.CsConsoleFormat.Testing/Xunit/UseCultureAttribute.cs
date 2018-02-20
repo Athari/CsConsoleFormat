@@ -2,10 +2,12 @@
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using JetBrains.Annotations;
 using Xunit.Sdk;
 
 namespace Alba.CsConsoleFormat.Testing.Xunit
 {
+    [PublicAPI]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class UseCultureAttribute : BeforeAfterTestAttribute
     {
@@ -15,7 +17,7 @@ namespace Alba.CsConsoleFormat.Testing.Xunit
         private CultureInfo _originalUICulture;
 
         public UseCultureAttribute(string culture) : this(culture, culture)
-        {}
+        { }
 
         public UseCultureAttribute(string culture, string uiCulture)
         {

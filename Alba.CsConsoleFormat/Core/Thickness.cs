@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using static System.FormattableString;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
     [TypeConverter(typeof(ThicknessConverter))]
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode", Justification = "XAML requires writable members.")]
     public struct Thickness : IEquatable<Thickness>
     {
         public int Left { get; set; }
@@ -22,10 +24,10 @@ namespace Alba.CsConsoleFormat
         }
 
         public Thickness(int vertical, int horizontal) : this(vertical, horizontal, vertical, horizontal)
-        {}
+        { }
 
         public Thickness(int width) : this(width, width, width, width)
-        {}
+        { }
 
         public bool IsEmpty => Left == 0 && Top == 0 && Right == 0 && Bottom == 0;
 
@@ -40,18 +42,23 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString() => Invariant($"{Left} {Top} {Right} {Bottom}");
 
+        [Pure]
         public static Thickness Max(Thickness left, Thickness right) =>
             new Thickness(Math.Max(left.Left, right.Left), Math.Max(left.Top, right.Top), Math.Max(left.Right, right.Right), Math.Max(left.Bottom, right.Bottom));
 
+        [Pure]
         public static Thickness Min(Thickness left, Thickness right) =>
             new Thickness(Math.Min(left.Left, right.Left), Math.Min(left.Top, right.Top), Math.Min(left.Right, right.Right), Math.Min(left.Bottom, right.Bottom));
 
+        [Pure]
         public static Thickness Add(Thickness left, Thickness right) =>
             new Thickness(left.Left + right.Left, left.Top + right.Top, left.Right + right.Right, left.Bottom + right.Bottom);
 
+        [Pure]
         public static Thickness Subtract(Thickness left, Thickness right) =>
             new Thickness(left.Left - right.Left, left.Top - right.Top, left.Right - right.Right, left.Bottom - right.Bottom);
 
+        [Pure]
         public static Thickness Negate(Thickness left) =>
             new Thickness(-left.Left, -left.Top, -left.Right, -left.Bottom);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -20,12 +21,12 @@ namespace Alba.CsConsoleFormat
         public string Font { get; set; }
         public string PageTitle { get; set; }
 
-        public HtmlRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        public HtmlRenderTarget([NotNull] Stream output, [CanBeNull] Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
         {
             Init();
         }
 
-        public HtmlRenderTarget(TextWriter writer = null) : base(writer)
+        public HtmlRenderTarget([CanBeNull] TextWriter writer = null) : base(writer)
         {
             Init();
         }
@@ -42,6 +43,7 @@ namespace Alba.CsConsoleFormat
         protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
+            Debug.Assert(Writer != null);
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 

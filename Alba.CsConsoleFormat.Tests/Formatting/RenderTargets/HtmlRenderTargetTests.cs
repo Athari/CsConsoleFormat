@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class HtmlRenderTargetTests
+    public sealed class HtmlRenderTargetTests
     {
         [Fact]
         public void Render()

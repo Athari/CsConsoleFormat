@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using Microsoft.CSharp.RuntimeBinder;
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
@@ -15,18 +16,23 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used for nameof().")]
         private static readonly Action Delegate = null;
 
-        public static TDelegate Call<TDelegate>(string memberName, object context = null, Type[] genericArgs = null)
+        public static TDelegate Call<TDelegate>([NotNull] string memberName,
+            [CanBeNull] object context = null, [CanBeNull] Type[] genericArgs = null)
         {
             return CallInternal<TDelegate>(memberName, false, context, genericArgs);
         }
 
-        public static TDelegate CallStatic<TDelegate>(string memberName, object context = null, Type[] genericArgs = null)
+        public static TDelegate CallStatic<TDelegate>([NotNull] string memberName,
+            [CanBeNull] object context = null, [CanBeNull] Type[] genericArgs = null)
         {
             return CallInternal<TDelegate>(memberName, true, context, genericArgs);
         }
 
-        private static TDelegate CallInternal<TDelegate>(string memberName, bool isStaticContext, object context, Type[] genericArgs)
+        private static TDelegate CallInternal<TDelegate>([NotNull] string memberName,
+            bool isStaticContext, [CanBeNull] object context, [CanBeNull] Type[] genericArgs)
         {
+            if (memberName == null)
+                throw new ArgumentNullException(nameof(memberName));
             MethodInfo method = GetDelegateMethod<TDelegate>();
             ParameterInfo[] methodParams = method.GetParameters();
             CallSite callSite = CallSite.Create(
@@ -37,21 +43,24 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
             return CreateDelegateInvokeCallSite<TDelegate>(method, methodParams, callSite);
         }
 
-        public static Func<TObject, TProperty> Get<TObject, TProperty>(string memberName, object context = null)
+        public static Func<TObject, TProperty> Get<TObject, TProperty>([NotNull] string memberName, [CanBeNull] object context = null)
         {
             var callSite = CallSite<Func<CallSite, TObject, object>>.Create(
                 Binder.GetMember(CSharpBinderFlags.None, memberName, Context(context), new[] { Arg }));
             return obj => (TProperty)callSite.Target(callSite, obj);
         }
 
-        public static Action<TObject, TProperty> Set<TObject, TProperty>(string memberName, object context = null)
+        public static Action<TObject, TProperty> Set<TObject, TProperty>([NotNull] string memberName, [CanBeNull] object context = null)
         {
+            if (memberName == null)
+                throw new ArgumentNullException(nameof(memberName));
             var callSite = CallSite<Action<CallSite, TObject, TProperty>>.Create(
                 Binder.SetMember(CSharpBinderFlags.ResultDiscarded, memberName, Context(context), new[] { Arg, Arg }));
             return (obj, value) => callSite.Target(callSite, obj, value);
         }
 
-        private static Type CreateDelegateType(MethodInfo method, ParameterInfo[] methodParams)
+        [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Private use.")]
+        private static Type CreateDelegateType([NotNull] MethodInfo method, [NotNull] ParameterInfo[] methodParams)
         {
             var delegateParams = new Type[methodParams.Length + 2];
             delegateParams[0] = typeof(CallSite);
@@ -61,13 +70,15 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
             return Expression.GetDelegateType(delegateParams);
         }
 
-        private static TDelegate CreateDelegateInvokeCallSite<TDelegate>(MethodInfo method, ParameterInfo[] methodParams, CallSite callSite)
+        [SuppressMessage("ReSharper", "ParameterTypeCanBeEnumerable.Local", Justification = "Private use.")]
+        private static TDelegate CreateDelegateInvokeCallSite<TDelegate>([NotNull] MethodInfo method,
+            [NotNull] ParameterInfo[] methodParams, [NotNull] CallSite callSite)
         {
             List<ParameterExpression> exprParams = methodParams.Select(p => Expression.Parameter(p.ParameterType)).ToList();
             Expression exprInvokeCallSiteTarget = Expression.Invoke(
                 Expression.Field(Expression.Constant(callSite), nameof(Delegate.Target)),
                 Enumerable.Repeat((Expression)Expression.Constant(callSite), 1).Concat(exprParams)
-                );
+            );
             Expression<TDelegate> call = Expression.Lambda<TDelegate>(
                 method.IsVoid() || method.ReturnType == typeof(object)
                     ? exprInvokeCallSiteTarget
@@ -90,10 +101,10 @@ namespace Alba.CsConsoleFormat.Framework.Reflection
         private static CSharpArgumentInfo Arg =>
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null);
 
-        private static Type Context(object context) =>
+        private static Type Context([CanBeNull] object context) =>
             context is Type ? (Type)context : context?.GetType() ?? typeof(object);
 
         private static MethodInfo GetDelegateMethod<TDelegate>() =>
-            typeof(TDelegate).GetMethod(nameof(Delegate.Invoke));
+            typeof(TDelegate).GetMethod(nameof(Delegate.Invoke)) ?? throw new InvalidOperationException();
     }
 }

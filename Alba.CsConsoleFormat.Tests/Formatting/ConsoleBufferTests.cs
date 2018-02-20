@@ -7,10 +7,11 @@ using static System.ConsoleColor;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class ConsoleBufferTests : ElementTestsBase
+    public sealed class ConsoleBufferTests : ElementTestsBase
     {
         [Fact]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "ConvertToLocalFunction")]
         public void InvalidArguments()
         {
             var buffer = new ConsoleBuffer(42);

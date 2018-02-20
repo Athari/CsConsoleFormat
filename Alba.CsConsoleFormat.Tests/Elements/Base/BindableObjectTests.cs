@@ -10,7 +10,7 @@ using Xunit;
 // ReSharper disable UseObjectOrCollectionInitializer
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class BindableObjectTests
+    public sealed class BindableObjectTests
     {
         [Fact]
         public void EmptyDataContext()
@@ -30,15 +30,16 @@ namespace Alba.CsConsoleFormat.Tests
 
             new Action(() => obj.Bind(null, getter)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.Bind(property, null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(getter));
-            new Action(() => obj.HasValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj.GetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => _ = obj.HasValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => _ = obj.GetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.ResetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj.SetValue(null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
             new Action(() => obj[null] = 1).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj[null].As<int>() ).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj[null].As<int>()).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
         }
 
         [Fact]
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute", Justification = "Reflection is guaranteed to succeed due to nameof.")]
         public void Bind()
         {
             var obj = new MyBindableObject();
@@ -89,6 +90,18 @@ namespace Alba.CsConsoleFormat.Tests
             obj[MyBindableObject.AttachedDecimalProperty] = 20m;
 
             clone[MyBindableObject.AttachedDecimalProperty].Should().Be(10m);
+        }
+
+        [Fact]
+        public void CloneWithCreateInstance()
+        {
+            var obj = new MyCloneableObject("MyValue");
+
+            var clone = (MyCloneableObject)obj.Clone();
+
+            obj.IsCloned.Should().BeFalse();
+            clone.Value.Should().Be("MyValueCloned");
+            clone.IsCloned.Should().BeTrue();
         }
 
         [Fact]
@@ -151,7 +164,8 @@ namespace Alba.CsConsoleFormat.Tests
             AssertDefaultValue(obj, 1m);
         }
 
-        private static void AssertDefaultValue(MyBindableObject obj, decimal expectedValue)
+        [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
+        private static void AssertDefaultValue([NotNull] MyBindableObject obj, decimal expectedValue)
         {
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeFalse();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
@@ -161,7 +175,8 @@ namespace Alba.CsConsoleFormat.Tests
             value.Should().Be(expectedValue);
         }
 
-        private static void AssertCustomValue(MyBindableObject obj, decimal expectedValue)
+        [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
+        private static void AssertCustomValue([NotNull] MyBindableObject obj, decimal expectedValue)
         {
             var properties = new KeyValuePair<AttachableMemberIdentifier, object>[1];
 
@@ -176,7 +191,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-        private class MyBindableObject : BindableObject
+        private sealed class MyBindableObject : BindableObject
         {
             public static readonly AttachedProperty<decimal> AttachedDecimalProperty =
                 AttachedProperty.Register<MyBindableObject, decimal>(nameof(AttachedDecimalProperty), 1m);
@@ -185,7 +200,26 @@ namespace Alba.CsConsoleFormat.Tests
             public int MyInt32Value { get; set; }
         }
 
-        public class Data
+        [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+        private sealed class MyCloneableObject : BindableObject
+        {
+            public string Value { get; set; }
+            public bool IsCloned { get; }
+
+            private MyCloneableObject(string value, bool isCloned)
+            {
+                Value = value;
+                IsCloned = isCloned;
+            }
+
+            public MyCloneableObject(string value) : this(value, false)
+            { }
+
+            protected override BindableObject CreateInstance() => new MyCloneableObject(Value + "Cloned", true);
+        }
+
+        [UsedImplicitly]
+        public sealed class Data
         {
             public string StringValue { get; set; }
             public int Int32Value { get; set; }

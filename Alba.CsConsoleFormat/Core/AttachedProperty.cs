@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Xaml;
 using JetBrains.Annotations;
@@ -14,30 +15,38 @@ namespace Alba.CsConsoleFormat
             new Dictionary<AttachableMemberIdentifier, AttachedProperty>();
 
         internal AttachableMemberIdentifier Identifier { get; }
+
+        [CanBeNull]
         internal object DefaultValueUntyped { get; }
 
-        internal AttachedProperty(AttachableMemberIdentifier identifier, object defaultValue)
+        internal AttachedProperty([NotNull] AttachableMemberIdentifier identifier, object defaultValue)
         {
-            Identifier = identifier;
+            Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             DefaultValueUntyped = defaultValue;
         }
 
         public string Name => Identifier.MemberName;
         public Type OwnerType => Identifier.DeclaringType;
 
-        internal static AttachedProperty Get(AttachableMemberIdentifier identifier) => _Properties[identifier];
+        [Pure]
+        internal static AttachedProperty Get([NotNull] AttachableMemberIdentifier identifier) =>
+            _Properties[identifier ?? throw new ArgumentNullException(nameof(identifier))];
 
-        public static AttachedProperty<T> Register<TOwner, T>([NotNull] string name, T defaultValue = default(T))
+        [MustUseReturnValue]
+        public static AttachedProperty<T> Register<TOwner, T>([NotNull] string name, T defaultValue = default)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             var identifier = new AttachableMemberIdentifier(typeof(TOwner), name);
             var property = new AttachedProperty<T>(identifier, defaultValue);
+            if (_Properties.ContainsKey(identifier))
+                throw new ArgumentException($"Property '{name}' already registered for type '{typeof(TOwner).Name}'.");
             _Properties.Add(identifier, property);
             return property;
         }
 
-        public static AttachedProperty<T> Register<TOwner, T>([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T))
+        [MustUseReturnValue]
+        public static AttachedProperty<T> Register<TOwner, T>([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default)
         {
             if (nameExpression == null)
                 throw new ArgumentNullException(nameof(nameExpression));
@@ -50,11 +59,12 @@ namespace Alba.CsConsoleFormat
         }
     }
 
-    public class AttachedProperty<T> : AttachedProperty
+    public sealed class AttachedProperty<T> : AttachedProperty
     {
+        [CanBeNull]
         public T DefaultValue => (T)DefaultValueUntyped;
 
-        internal AttachedProperty(AttachableMemberIdentifier identifier, T defaultValue) : base(identifier, defaultValue)
-        {}
+        internal AttachedProperty([NotNull] AttachableMemberIdentifier identifier, T defaultValue) : base(identifier, defaultValue)
+        { }
     }
 }

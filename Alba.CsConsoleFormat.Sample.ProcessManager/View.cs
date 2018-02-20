@@ -4,6 +4,8 @@ using System.Linq;
 using CommandLine;
 using static System.ConsoleColor;
 
+// ReSharper disable AnnotateCanBeNullParameter
+// ReSharper disable AnnotateNotNullParameter
 namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal static class View

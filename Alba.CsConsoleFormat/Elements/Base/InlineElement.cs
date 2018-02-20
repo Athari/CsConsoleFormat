@@ -5,7 +5,8 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class InlineElement : Element
     {
-        [EditorBrowsable(EditorBrowsableState.Advanced), NotNull]
+        [NotNull]
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
         public abstract string GeneratedText { get; }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]

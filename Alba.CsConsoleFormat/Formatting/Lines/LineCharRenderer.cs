@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -21,7 +22,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class BoxLineCharRenderer : LineCharRendererBase
+        private sealed class BoxLineCharRenderer : LineCharRendererBase
         {
             private static readonly char[] MapSimple = { '─', '═', '│', '║', '┼', '╪', '╫', '╬' };
             private static readonly char[] MapLeftTopRightBottom = { '┼', '╪', '╫', '╬' };
@@ -76,7 +77,8 @@ namespace Alba.CsConsoleFormat
                 throw GetCharException(charCenter, charLeft, charTop, charRight, charBottom);
             }
 
-            private static char GetSimpleChar(LineChar charCenter, char[] map)
+            [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
+            private static char GetSimpleChar(LineChar charCenter, [NotNull] char[] map)
             {
                 Debug.Assert(map.Length == 8);
                 switch (charCenter) {
@@ -101,7 +103,8 @@ namespace Alba.CsConsoleFormat
                 }
             }
 
-            private static char GetChar(LineChar charCenter, char[] map)
+            [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
+            private static char GetChar(LineChar charCenter, [NotNull] char[] map)
             {
                 Debug.Assert(map.Length == 4);
                 if (!charCenter.IsHorizontalWide() && !charCenter.IsVerticalWide())
@@ -116,7 +119,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class SimpleLineCharRenderer : LineCharRendererBase
+        private sealed class SimpleLineCharRenderer : LineCharRendererBase
         {
             public override char GetChar(LineChar charCenter, LineChar charLeft, LineChar charTop, LineChar charRight, LineChar charBottom)
             {
@@ -132,7 +135,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class CharLineCharRenderer : LineCharRendererBase
+        private sealed class CharLineCharRenderer : LineCharRendererBase
         {
             private readonly char _c;
 

@@ -5,16 +5,24 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class LineTests
+    public sealed class LineTests
     {
+        [Fact]
+        public void CreateProperties()
+        {
+            var line = new Line { X = 1, Y = 2, Width = 10 };
+            line.X.Should().Be(1);
+            line.Y.Should().Be(2);
+        }
+
         [Fact]
         public void CreateNegativeSize()
         {
             const string width = nameof(width);
             const string height = nameof(height);
 
-            new Action(() => Line.Horizontal(1, 2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(width);
-            new Action(() => Line.Vertical(-1, -2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(height);
+            new Action(() => _ = Line.Horizontal(1, 2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(width);
+            new Action(() => _ = Line.Vertical(-1, -2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(height);
         }
 
         [Fact]

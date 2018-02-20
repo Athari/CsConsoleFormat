@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class ElementTests
+    public sealed class ElementTests
     {
         [Fact]
         public void CloneSimple()
@@ -215,7 +215,7 @@ namespace Alba.CsConsoleFormat.Tests
             }
         }
 
-        private class MyElement : BlockElement
-        {}
+        private sealed class MyElement : BlockElement
+        { }
     }
 }

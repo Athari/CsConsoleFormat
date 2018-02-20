@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Markup;
 using JetBrains.Annotations;
 
@@ -11,6 +12,7 @@ namespace Alba.CsConsoleFormat
     public class ElementCollection<T> : Collection<T>, IList
         where T : Element
     {
+        [CanBeNull]
         private readonly Element _parent;
 
         public ElementCollection(Element parent)
@@ -38,6 +40,7 @@ namespace Alba.CsConsoleFormat
             return AddText(text);
         }
 
+        [SuppressMessage("ReSharper", "AnnotationRedundancyInHierarchy", Justification = "Base Collection is not supposed to contain only non-null items.")]
         protected override void InsertItem(int index, [NotNull] T item)
         {
             if (item == null)
@@ -50,13 +53,12 @@ namespace Alba.CsConsoleFormat
 
         private int AddText(string text)
         {
-            var el = new Span(text) as T;
-            if (el == null)
+            if (!(new Span(text) is T el))
                 throw new ArgumentException("Text cannot be added.");
             return AddElement(el);
         }
 
-        private int AddElement(T el)
+        private int AddElement([NotNull] T el)
         {
             InsertItem(Count, el);
             return Count - 1;
@@ -66,6 +68,6 @@ namespace Alba.CsConsoleFormat
     public class ElementCollection : ElementCollection<Element>
     {
         public ElementCollection(Element parent) : base(parent)
-        {}
+        { }
     }
 }

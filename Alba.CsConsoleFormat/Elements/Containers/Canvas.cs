@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
@@ -13,21 +14,24 @@ namespace Alba.CsConsoleFormat
         public static readonly AttachedProperty<int?> RightProperty = RegisterAttached(() => RightProperty);
         public static readonly AttachedProperty<int?> BottomProperty = RegisterAttached(() => BottomProperty);
 
-        [TypeConverter(typeof(LengthConverter))]
+        [Pure, TypeConverter(typeof(LengthConverter))]
         public static int? GetLeft([NotNull] BlockElement @this) => @this.GetValueSafe(LeftProperty);
 
-        [TypeConverter(typeof(LengthConverter))]
+        [Pure, TypeConverter(typeof(LengthConverter))]
         public static int? GetTop([NotNull] BlockElement @this) => @this.GetValueSafe(TopProperty);
 
-        [TypeConverter(typeof(LengthConverter))]
+        [Pure, TypeConverter(typeof(LengthConverter))]
         public static int? GetRight([NotNull] BlockElement @this) => @this.GetValueSafe(RightProperty);
 
-        [TypeConverter(typeof(LengthConverter))]
+        [Pure, TypeConverter(typeof(LengthConverter))]
         public static int? GetBottom([NotNull] BlockElement @this) => @this.GetValueSafe(BottomProperty);
 
         public static void SetLeft([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(LeftProperty, value);
+
         public static void SetTop([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(TopProperty, value);
+
         public static void SetRight([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(RightProperty, value);
+
         public static void SetBottom([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
 
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
@@ -68,7 +72,8 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private static AttachedProperty<T> RegisterAttached<T>(Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+        [MustUseReturnValue]
+        private static AttachedProperty<T> RegisterAttached<T>([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default) =>
             AttachedProperty.Register<Canvas, T>(nameExpression, defaultValue);
     }
 }

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class PointTests
+    public sealed class PointTests
     {
         [Theory]
         [InlineData(0, 0, 0, 0, 0, 0)]

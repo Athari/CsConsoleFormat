@@ -41,6 +41,9 @@ namespace Alba.CsConsoleFormat.Presentation
         public FontStyle FontStyle { get; set; } = DefaultFontStyle;
         public FontWeight FontWeight { get; set; } = DefaultFontWeight;
 
+        internal DocumentRenderTargetBase()
+        { }
+
         protected WpfSize CharSize
         {
             get
@@ -63,7 +66,8 @@ namespace Alba.CsConsoleFormat.Presentation
 
         public abstract void Render(IConsoleBufferSource buffer);
 
-        protected void RenderToFixedDocument(IConsoleBufferSource buffer, FixedDocument document)
+        // TODO Change 'protected' to 'private protected' in DocumentRenderTargetBase when R# starts supporting it.
+        protected void RenderToFixedDocument([NotNull] IConsoleBufferSource buffer, [NotNull] FixedDocument document)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -72,7 +76,7 @@ namespace Alba.CsConsoleFormat.Presentation
             RenderToCanvas(buffer, linesPanel, charSize);
         }
 
-        protected void RenderToFlowDocument(IConsoleBufferSource buffer, [NotNull] FlowDocument document)
+        protected void RenderToFlowDocument([NotNull] IConsoleBufferSource buffer, [NotNull] FlowDocument document)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -166,7 +170,7 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        protected WpfCanvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
+        private WpfCanvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));

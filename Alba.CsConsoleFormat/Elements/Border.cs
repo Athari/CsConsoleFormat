@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat
 
         public ConsoleColor? ShadowColor { get; set; }
 
-        [ValueProvider(ValueProviders.ColorMaps)]
+        [CanBeNull, ValueProvider(ValueProviders.ColorMaps)]
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Designed to be assigned one of predefined read-only collections.")]
         public IList<ConsoleColor> ShadowColorMap { get; set; }
 

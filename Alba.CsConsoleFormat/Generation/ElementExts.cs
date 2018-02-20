@@ -8,17 +8,21 @@ namespace Alba.CsConsoleFormat
     public static class ElementExts
     {
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This method is for advanced cases.")]
-        public static T Name<T>(this T @this, out T element)
+        public static T Name<T>([NotNull] this T @this, [NotNull] out T element)
             where T : Element
         {
-            element = @this;
+            element = @this ?? throw new ArgumentNullException(nameof(@this));
             return @this;
         }
 
-        public static T AddChildren<T>(this T @this, params object[] children)
+        public static T AddChildren<T>([NotNull] this T @this, [NotNull, ItemCanBeNull] params object[] children)
             where T : Element
         {
-            foreach (object child in children ?? throw new ArgumentNullException(nameof(children))) {
+            if (@this == null)
+                throw new ArgumentNullException(nameof(@this));
+            if (children == null)
+                throw new ArgumentNullException(nameof(children));
+            foreach (object child in children) {
                 switch (child) {
                     case null:
                         continue;
@@ -34,7 +38,7 @@ namespace Alba.CsConsoleFormat
             return @this;
         }
 
-        private static void AddChild<T>(this T @this, [NotNull] object child)
+        private static void AddChild<T>([NotNull] this T @this, [NotNull] object child)
             where T : Element
         {
             switch (child) {
@@ -53,7 +57,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public static T Set<T, TValue>(this T @this, AttachedProperty<TValue> property, TValue value)
+        public static T Set<T, TValue>([NotNull] this T @this, [NotNull] AttachedProperty<TValue> property, TValue value)
             where T : Element, new()
         {
             (@this ?? throw new ArgumentNullException(nameof(@this))).SetValue(property, value);

@@ -6,10 +6,14 @@ namespace Alba.CsConsoleFormat
 {
     public static class GridExts
     {
-        public static T AddColumns<T>(this T @this, params object[] columns)
+        public static T AddColumns<T>([NotNull] this T @this, [NotNull, ItemCanBeNull] params object[] columns)
             where T : Grid
         {
-            foreach (object column in columns ?? throw new ArgumentNullException(nameof(columns))) {
+            if (@this == null) 
+                throw new ArgumentNullException(nameof(@this));
+            if (columns == null) 
+                throw new ArgumentNullException(nameof(columns));
+            foreach (object column in columns) {
                 switch (column) {
                     case null:
                         continue;
@@ -25,7 +29,7 @@ namespace Alba.CsConsoleFormat
             return @this;
         }
 
-        private static void AddColumn<T>(this T @this, [NotNull] object column)
+        private static void AddColumn<T>([NotNull] this T @this, [NotNull] object column)
             where T : Grid
         {
             switch (column) {

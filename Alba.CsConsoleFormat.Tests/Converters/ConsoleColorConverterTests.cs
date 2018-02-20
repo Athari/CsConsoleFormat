@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class ConsoleColorConverterTests
+    public sealed class ConsoleColorConverterTests
     {
         private readonly ConsoleColorConverter _converter = new ConsoleColorConverter();
 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using static System.FormattableString;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 // TODO Make sure separate Rect.Empty values is actually needed, also check other core values
 namespace Alba.CsConsoleFormat
 {
     [TypeConverter(typeof(RectConverter))]
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode", Justification = "XAML requires writable members.")]
     public struct Rect : IEquatable<Rect>
     {
         private int _width;
@@ -36,10 +38,10 @@ namespace Alba.CsConsoleFormat
         }
 
         public Rect(Vector position, Size size) : this(position.X, position.Y, size.Width, size.Height)
-        {}
+        { }
 
         public Rect(Point position, Size size) : this(position.X, position.Y, size.Width, size.Height)
-        {}
+        { }
 
         public Rect(Size size)
         {
@@ -48,6 +50,7 @@ namespace Alba.CsConsoleFormat
             _height = size.Height;
         }
 
+        [Pure]
         public static Rect FromBounds(int left, int top, int right, int bottom, bool throwOnError = true) =>
             new Rect(left, top, right - left, bottom - top, throwOnError);
 
@@ -108,28 +111,42 @@ namespace Alba.CsConsoleFormat
         public Line RightLine => Line.Vertical(Right - 1, Y, Height);
         public Line BottomLine => Line.Horizontal(X, Bottom - 1, Width);
 
+        [Pure]
         public bool Contains(Point point) => X <= point.X && point.X < Right && Y <= point.Y && point.Y < Bottom;
+
+        [Pure]
         public bool Contains(int x, int y) => Contains(new Point(x, y));
 
+        [Pure]
         public bool IntersectsHorizontalLine(int y) => Y <= y && y < Bottom;
+
+        [Pure]
         public bool IntersectsVerticalLine(int x) => X <= x && x < Right;
+
+        [Pure]
         public bool IntersectsWith(Rect rect) => Left <= rect.Right && Right >= rect.Left && Top <= rect.Bottom && Bottom >= rect.Top;
 
+        [Pure]
         public Rect Deflate(Thickness by, bool throwOnError = false) =>
             new Rect(Left + by.Left, Top + by.Top, Width - by.Left - by.Right, Height - by.Top - by.Bottom, throwOnError);
 
+        [Pure]
         public Rect Deflate(Size size, bool throwOnError = false) =>
             new Rect(Left + size.Width, Top + size.Height, Width - size.Width * 2, Height - size.Height * 2, throwOnError);
 
+        [Pure]
         public Rect Inflate(Thickness by, bool throwOnError = false) =>
             new Rect(Left - by.Left, Top - by.Top, Width + by.Left + by.Right, Height + by.Top + by.Bottom, throwOnError);
 
+        [Pure]
         public Rect Inflate(Size by, bool throwOnError = false) =>
             new Rect(Left - by.Width, Top - by.Height, Width + by.Width * 2, Height + by.Height * 2, throwOnError);
 
+        [Pure]
         public Rect Intersect(Rect rect) =>
             FromBounds(Math.Max(Left, rect.Left), Math.Max(Top, rect.Top), Math.Min(Right, rect.Right), Math.Min(Bottom, rect.Bottom), false);
 
+        [Pure]
         public Rect Offset(Vector by) =>
             new Rect(X + by.X, Y + by.Y, Width, Height);
 

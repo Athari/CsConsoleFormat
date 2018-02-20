@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Alba.CsConsoleFormat
 {
-    public class XamlElementReaderSettings
+    public sealed class XamlElementReaderSettings
     {
         public bool CloseInput { get; set; }
         public IList<Assembly> ReferenceAssemblies { get; }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using static System.FormattableString;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
     [TypeConverter(typeof(LineThicknessConverter))]
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode", Justification = "XAML requires writable members.")]
     public struct LineThickness : IEquatable<LineThickness>
     {
         public LineWidth Left { get; set; }
@@ -22,10 +23,10 @@ namespace Alba.CsConsoleFormat
         }
 
         public LineThickness(LineWidth vertical, LineWidth horizontal) : this(vertical, horizontal, vertical, horizontal)
-        {}
+        { }
 
         public LineThickness(LineWidth width) : this(width, width, width, width)
-        {}
+        { }
 
         public static LineThickness None => new LineThickness(LineWidth.None);
         public static LineThickness Single => new LineThickness(LineWidth.Single);

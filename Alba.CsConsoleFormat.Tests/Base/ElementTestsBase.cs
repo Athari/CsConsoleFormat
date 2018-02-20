@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Tests
 {
@@ -9,24 +11,30 @@ namespace Alba.CsConsoleFormat.Tests
 
         private char _fillChar = 'a';
 
-        protected static void RenderOn1x1(BlockElement element)
+        protected static void RenderOn1x1([NotNull] BlockElement element)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
             element.GenerateVisualTree();
             element.Measure(new Size(1, 1));
             element.Arrange(new Rect(1, 1, 1, 1));
             element.Render(new ConsoleBuffer(1));
         }
 
-        protected static string GetRenderedText(Element element, int consoleWidth)
+        protected static string GetRenderedText([NotNull] Element element, int consoleWidth)
         {
+            if (element == null)
+                throw new ArgumentNullException(nameof(element));
             var doc = element as Document ?? new Document { Children = { element } };
             string text = ConsoleRenderer.RenderDocumentToText(doc, new TextRenderTarget(),
                 new Rect(0, 0, consoleWidth, Size.Infinity));
             return text.Length > 0 ? text.Remove(text.Length - 2) : text;
         }
 
-        protected static string GetRenderedText(ConsoleBuffer buffer)
+        protected static string GetRenderedText([NotNull] ConsoleBuffer buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
             var target = new TextRenderTarget();
             target.Render(buffer);
             string text = target.OutputText;
@@ -56,8 +64,9 @@ namespace Alba.CsConsoleFormat.Tests
             };
         }
 
-        protected class Fill : BlockElement
+        protected sealed class Fill : BlockElement
         {
+            [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Write-only properties are not okay.")]
             public char Char { get; set; }
 
             public override void Render(ConsoleBuffer buffer)

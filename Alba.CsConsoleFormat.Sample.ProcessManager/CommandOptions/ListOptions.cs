@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CommandLine;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal class ListOptions
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    internal sealed class ListOptions
     {
         [Option('n', "name", HelpText = "If specified, filter by the specified process name.")]
         public string ProcessName { get; set; }

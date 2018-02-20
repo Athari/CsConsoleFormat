@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using static System.FormattableString;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode", Justification = "XAML requires writable members.")]
     public struct Line : IEquatable<Line>
     {
         private int _width;
@@ -32,8 +34,13 @@ namespace Alba.CsConsoleFormat
             _height = height;
         }
 
-        public static Line Horizontal(int x, int y, int width, bool throwOnError = true) => new Line(x, y, width, 0, throwOnError);
-        public static Line Vertical(int x, int y, int height, bool throwOnError = true) => new Line(x, y, 0, height, throwOnError);
+        [Pure]
+        public static Line Horizontal(int x, int y, int width, bool throwOnError = true) =>
+            new Line(x, y, width, 0, throwOnError);
+
+        [Pure]
+        public static Line Vertical(int x, int y, int height, bool throwOnError = true) =>
+            new Line(x, y, 0, height, throwOnError);
 
         public bool IsHorizontal => Width != 0;
         public bool IsVertical => Height != 0;
@@ -83,7 +90,8 @@ namespace Alba.CsConsoleFormat
         public override bool Equals(object obj) => obj is Line && Equals((Line)obj);
         public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode() ^ Width.GetHashCode() ^ Height.GetHashCode();
 
-        public override string ToString() => Invariant($"{X} {Y} {(IsHorizontal ? Width : Height)} {(IsHorizontal ? "Horizontal" : IsVertical ? "Vertical" : "Empty")}");
+        public override string ToString() =>
+            Invariant($"{X} {Y} {(IsHorizontal ? Width : Height)} {(IsHorizontal ? "Horizontal" : IsVertical ? "Vertical" : "Empty")}");
 
         public static bool operator ==(Line left, Line right) => left.Equals(right);
         public static bool operator !=(Line left, Line right) => !left.Equals(right);

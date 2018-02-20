@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
 
@@ -11,7 +12,9 @@ namespace Alba.CsConsoleFormat
 
         public bool LastChildFill { get; set; } = true;
 
+        [Pure]
         public static DockTo GetTo([NotNull] BlockElement @this) => @this.GetValueSafe(ToProperty);
+
         public static void SetTo([NotNull] BlockElement @this, DockTo value) => @this.SetValueSafe(ToProperty, value);
 
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
@@ -78,7 +81,8 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        private static AttachedProperty<T> RegisterAttached<T>(Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default(T)) =>
+        [MustUseReturnValue]
+        private static AttachedProperty<T> RegisterAttached<T>([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default) =>
             AttachedProperty.Register<Dock, T>(nameExpression, defaultValue);
     }
 }

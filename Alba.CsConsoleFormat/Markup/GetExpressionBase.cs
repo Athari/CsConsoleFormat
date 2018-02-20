@@ -22,19 +22,29 @@ namespace Alba.CsConsoleFormat.Markup
 
         private CultureInfo _effectiveCulture;
 
+        [CanBeNull]
         public object Source { get; set; }
+
+        [CanBeNull]
         public string Path { get; set; }
+
+        [CanBeNull]
         public CultureInfo Culture { get; set; }
+
+        [CanBeNull]
         protected internal BindableObject TargetObject { get; set; }
+
+        [CanBeNull]
         protected internal Type TargetType { get; set; }
 
         protected CultureInfo EffectiveCulture =>
             _effectiveCulture ?? (_effectiveCulture = Culture
-                ?? (TargetObject as Element)?.EffectiveCulture
-                ?? Thread.CurrentThread.CurrentCulture);
+             ?? (TargetObject as Element)?.EffectiveCulture
+             ?? Thread.CurrentThread.CurrentCulture);
 
+        [CanBeNull]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "'Value' is a conventional name for binding results.")]
-        public object GetValue(object targetObject = null)
+        public object GetValue([CanBeNull] object targetObject = null)
         {
             object source = Source;
             if (source == null) {
@@ -48,15 +58,19 @@ namespace Alba.CsConsoleFormat.Markup
             return GetValueFromSource(source);
         }
 
-        protected abstract object GetValueFromSource(object source);
+        [CanBeNull]
+        protected abstract object GetValueFromSource([CanBeNull] object source);
 
-        protected virtual object ConvertValue(object value) => value;
+        [CanBeNull]
+        protected virtual object ConvertValue([CanBeNull] object value) => value;
 
+        [CanBeNull]
         protected virtual object ConvertMethod([NotNull] MethodInfo method, [NotNull] object target) => throw new NotSupportedException();
 
-        protected virtual object TryGetCachedMethod(MethodInfo method) => null;
+        [CanBeNull]
+        protected virtual object TryGetCachedMethod([NotNull] MethodInfo method) => null;
 
-        internal static object Get(object value, string memberName)
+        private static object Get([NotNull] object value, [NotNull] string memberName)
         {
             if (!_getterFunctions.Value.TryGetValue(memberName, out GetterDelegate func))
                 _getterFunctions.Value.Add(memberName, func = DynamicCaller.Get<object, object>(memberName));
@@ -69,9 +83,10 @@ namespace Alba.CsConsoleFormat.Markup
             }
         }
 
-        internal object TraversePathToMethod(object source)
+        [CanBeNull]
+        internal object TraversePathToMethod([NotNull] object source)
         {
-            string[] memberNames = Path.Split('.');
+            string[] memberNames = Path?.Split('.') ?? new string[0];
             string memberName;
             object value = source;
             for (int i = 0; i < memberNames.Length - 1; i++) {
@@ -109,13 +124,16 @@ namespace Alba.CsConsoleFormat.Markup
             }
         }
 
+        [CanBeNull]
         internal object TraversePathToProperty(object source)
         {
             object value = source;
-            foreach (string memberName in Path.Split('.')) {
-                value = Get(value, memberName);
-                if (value == null)
-                    return ConvertValue(null);
+            if (Path != null) {
+                foreach (string memberName in Path.Split('.')) {
+                    value = Get(value, memberName);
+                    if (value == null)
+                        return ConvertValue(null);
+                }
             }
             return ConvertValue(value);
         }

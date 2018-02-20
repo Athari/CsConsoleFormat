@@ -3,13 +3,13 @@ using System.IO;
 using Alba.CsConsoleFormat.Presentation;
 using static System.ConsoleColor;
 
+// ReSharper disable MemberCanBeMadeStatic.Local
 namespace Alba.CsConsoleFormat.Sample.Presentation
 {
-    public partial class MainWindow
+    public sealed partial class MainWindow
     {
-        public Document Document(string world) => CreateDocument(world);
-        public Document FixedDocument => Document("fixed");
-        public Document FlowDocument => Document("flow");
+        public Document FixedDocument => CreateDocument("fixed");
+        public Document FlowDocument => CreateDocument("flow");
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Render targets close streams.")]
         public MainWindow()
@@ -20,21 +20,21 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("fixed XPS"),
-                new XpsRenderTarget(File.Create(@"../../Tmp/0a.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FixedDocument },
+                new XpsRenderTarget(File.Create("../../Tmp/0a.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FixedDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("flow XPS"),
-                new XpsRenderTarget(File.Create(@"../../Tmp/0b.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FlowDocument },
+                new XpsRenderTarget(File.Create("../../Tmp/0b.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FlowDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("RTF"),
-                new RtfRenderTarget(File.Create(@"../../Tmp/0.rtf")) { FontSize = 16 },
+                new RtfRenderTarget(File.Create("../../Tmp/0.rtf")) { FontSize = 16 },
                 renderRect);
         }
 
-        private static Document CreateDocument(string world) =>
+        private Document CreateDocument(string world) =>
             new Document { Color = White, Background = Black }
                 .AddChildren(
                     new Div { Color = Red }.AddChildren($"Hello {world} world!"),

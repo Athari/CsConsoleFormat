@@ -1,6 +1,8 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using System.Diagnostics.Contracts;
+
+namespace Alba.CsConsoleFormat
 {
-    internal class LayoutInfo
+    internal sealed class LayoutInfo
     {
         public Vector ActualOffset { get; set; }
         public Size DesiredSize { get; set; }
@@ -9,6 +11,7 @@
         public Rect RenderSlotRect { get; set; }
         public Size UnclippedDesiredSize { get; set; }
 
+        [Pure]
         public LayoutInfo Clone() => (LayoutInfo)MemberwiseClone();
     }
 }

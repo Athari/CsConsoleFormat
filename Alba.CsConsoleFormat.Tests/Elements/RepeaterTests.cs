@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class RepeaterTests : ElementTestsBase
+    public sealed class RepeaterTests : ElementTestsBase
     {
         [Fact]
         public void NoChildren()

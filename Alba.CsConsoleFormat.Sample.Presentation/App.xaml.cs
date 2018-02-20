@@ -1,5 +1,5 @@
 ﻿namespace Alba.CsConsoleFormat.Sample.Presentation
 {
-    public partial class App
-    {}
+    public sealed partial class App
+    { }
 }

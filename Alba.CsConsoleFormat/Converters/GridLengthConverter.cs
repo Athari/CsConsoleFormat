@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Reflection;
+using JetBrains.Annotations;
 using static System.FormattableString;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
@@ -50,7 +51,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value, Type destinationType)
         {
             if (!(value is GridLength length))
                 throw GetConvertToException(value, destinationType);

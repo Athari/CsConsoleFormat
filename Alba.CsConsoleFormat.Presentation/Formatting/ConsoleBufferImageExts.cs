@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
@@ -28,7 +29,7 @@ namespace Alba.CsConsoleFormat.Presentation
             [Color.FromRgb(255, 255, 255)] = ConsoleColor.White,
         };
 
-        public static void DrawImage([NotNull] this ConsoleBuffer @this, ImageSource imageSource, int x, int y, int width, int height)
+        public static void DrawImage([NotNull] this ConsoleBuffer @this, [NotNull] ImageSource imageSource, int x, int y, int width, int height)
         {
             if (@this == null)
                 throw new ArgumentNullException(nameof(@this));
@@ -48,6 +49,7 @@ namespace Alba.CsConsoleFormat.Presentation
             int stride = 4 * (bmp.PixelWidth * bitsPerPixel + 31) / 32;
             byte[] bytes = new byte[stride * bmp.PixelHeight];
             bmp.CopyPixels(bytes, stride, 0);
+            Debug.Assert(bmp.Palette != null);
 
             for (int iy = y1, py = 0; iy < y2; iy++, py++) {
                 ConsoleChar[] charsLine = @this.GetLine(iy);
@@ -59,13 +61,13 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        private static void SetColor(ref ConsoleChar c, BitmapPalette palette, int colorIndex)
+        private static void SetColor(ref ConsoleChar c, [NotNull] BitmapPalette palette, int colorIndex)
         {
             if (ConsolePaletteMap.TryGetValue(palette.Colors[colorIndex], out ConsoleColor color))
                 c.BackgroundColor = color;
         }
 
-        public static void DrawImage(this ConsoleBuffer @this, ImageSource imageSource, Rect rect)
+        public static void DrawImage([NotNull] this ConsoleBuffer @this, [NotNull] ImageSource imageSource, Rect rect)
         {
             @this.DrawImage(imageSource, rect.X, rect.Y, rect.Width, rect.Height);
         }

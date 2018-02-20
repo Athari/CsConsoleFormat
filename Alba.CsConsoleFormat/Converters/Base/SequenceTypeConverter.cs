@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value, Type destinationType)
         {
             if (!(value is T))
                 throw GetConvertToException(value, destinationType);

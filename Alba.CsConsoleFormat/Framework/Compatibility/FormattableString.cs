@@ -1,8 +1,11 @@
 ﻿using System.Globalization;
+using JetBrains.Annotations;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable MemberCanBeProtected.Global
 namespace System
 {
+    [PublicAPI]
     internal abstract class FormattableString : IFormattable
     {
         public abstract string Format { get; }
@@ -14,21 +17,22 @@ namespace System
         string IFormattable.ToString(string _, IFormatProvider provider) => ToString(provider);
         public override string ToString() => ToString(CultureInfo.CurrentCulture);
 
-        public static string Invariant(FormattableString formattable) => formattable.ToString(CultureInfo.InvariantCulture);
+        public static string Invariant([NotNull] FormattableString formattable) => formattable.ToString(CultureInfo.InvariantCulture);
     }
 
     namespace Runtime.CompilerServices
     {
+        [PublicAPI]
         internal static class FormattableStringFactory
         {
-            public static FormattableString Create(string format, params object[] arguments) => new ConcreteFormattableString(format, arguments);
+            public static FormattableString Create([NotNull] string format, [NotNull] params object[] arguments) => new ConcreteFormattableString(format, arguments);
 
-            private class ConcreteFormattableString : FormattableString
+            private sealed class ConcreteFormattableString : FormattableString
             {
                 private readonly string _format;
                 private readonly object[] _arguments;
 
-                internal ConcreteFormattableString(string format, object[] arguments)
+                internal ConcreteFormattableString([NotNull] string format, [NotNull] object[] arguments)
                 {
                     _format = format ?? throw new ArgumentNullException(nameof(format));
                     _arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));

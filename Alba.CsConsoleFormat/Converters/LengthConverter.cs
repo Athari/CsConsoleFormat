@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using JetBrains.Annotations;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
 namespace Alba.CsConsoleFormat
@@ -31,7 +32,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value, Type destinationType)
         {
             if (destinationType == typeof(string)) {
                 switch (value) {

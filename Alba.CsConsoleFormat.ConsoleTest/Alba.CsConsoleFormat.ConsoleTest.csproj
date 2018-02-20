@@ -52,6 +52,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs">
+      <Link>Properties\JetBrainsAnnotations.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

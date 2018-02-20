@@ -2,11 +2,12 @@
 using System.Globalization;
 using Alba.CsConsoleFormat.Markup;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests.Markup
 {
-    public class CallConverterExpressionTests
+    public sealed class CallConverterExpressionTests
     {
         private static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("en-us");
         private static readonly Foo Source = new Foo { Prefix = "A", Sub = new Foo { Prefix = "B" } };
@@ -57,21 +58,22 @@ namespace Alba.CsConsoleFormat.Tests.Markup
             expr.GetValue(Source).As<ConverterFunc>().Invoke(1, 2, Culture).Should().Be("A-1");
         }
 
-        public class Foo
+        [UsedImplicitly(ImplicitUseTargetFlags.Members)]
+        public sealed class Foo
         {
             public Foo Sub { get; set; }
             public string Prefix { get; set; }
 
             public string InstanceConvert1(int value) => $"{Prefix}-{value}";
             public string InstanceConvert2(int value, int param) => $"{Prefix}-{value}-{param}";
-            public string InstanceConvert3(int value, int param, CultureInfo culture) => $"{Prefix}-{value}-{param}-{culture.TwoLetterISOLanguageName}";
+            public string InstanceConvert3(int value, int param, [NotNull] CultureInfo culture) => $"{Prefix}-{value}-{param}-{culture.TwoLetterISOLanguageName}";
 
             public string InstanceConvertOverloaded(int value, decimal param) => $"{Prefix}-{value}-{param}m";
             public string InstanceConvertOverloaded(int value, float param) => $"{Prefix}-{value}-{param}f";
 
             public static string StaticConvert1(int value) => $"S-{value}";
             public static string StaticConvert2(int value, int param) => $"S-{value}-{param}";
-            public static string StaticConvert3(int value, int param, CultureInfo culture) => $"S-{value}-{param}-{culture.TwoLetterISOLanguageName}";
+            public static string StaticConvert3(int value, int param, [NotNull] CultureInfo culture) => $"S-{value}-{param}-{culture.TwoLetterISOLanguageName}";
         }
     }
 }

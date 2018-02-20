@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using static System.FormattableString;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
     [TypeConverter(typeof(PointConverter))]
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode", Justification = "XAML requires writable members.")]
     public struct Point
     {
         public int X { get; set; }
@@ -22,7 +24,10 @@ namespace Alba.CsConsoleFormat
 
         public override string ToString() => Invariant($"{X} {Y}");
 
+        [Pure]
         public static Point Add(Point left, Vector right) => new Point(left.X + right.X, left.Y + right.Y);
+
+        [Pure]
         public static Point Subtract(Point left, Vector right) => new Point(left.X - right.X, left.Y - right.Y);
 
         public static bool operator ==(Point left, Point right) => left.Equals(right);

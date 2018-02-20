@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
@@ -7,13 +8,13 @@ namespace Alba.CsConsoleFormat
     {
         public string Text { get; set; }
 
-        public Span(string text)
+        public Span([CanBeNull] string text)
         {
             Text = text;
         }
 
         public Span() : this(null)
-        {}
+        { }
 
         public override string GeneratedText =>
             Text ?? string.Concat(VisualChildren.Cast<InlineElement>().Select(c => c.GeneratedText));

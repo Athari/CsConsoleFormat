@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class XmlLanguageConverterTests
+    public sealed class XmlLanguageConverterTests
     {
         private readonly XmlLanguageConverter _converter = new XmlLanguageConverter();
 

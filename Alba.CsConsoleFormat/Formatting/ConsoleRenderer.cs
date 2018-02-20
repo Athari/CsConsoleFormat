@@ -36,7 +36,7 @@ namespace Alba.CsConsoleFormat
         }
 
         public static TElement ReadElementFromStream<TElement>([NotNull] Stream stream,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
             if (stream == null)
@@ -63,7 +63,7 @@ namespace Alba.CsConsoleFormat
         }
 
         public static TElement ReadElementFromResource<TElement>([NotNull] Type type, [NotNull] string resourceName,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
             if (type == null)
@@ -78,7 +78,7 @@ namespace Alba.CsConsoleFormat
         }
 
         public static TElement ReadElementFromResource<TElement>([NotNull] Assembly assembly, [NotNull] string resourceName,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
             if (assembly == null)
@@ -93,24 +93,24 @@ namespace Alba.CsConsoleFormat
         }
 
         public static Document ReadDocumentFromStream([NotNull] Stream stream,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {
             return ReadElementFromStream<Document>(stream, dataContext, settings);
         }
 
         public static Document ReadDocumentFromResource([NotNull] Type type, [NotNull] string resourceName,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(type, resourceName, dataContext, settings);
         }
 
         public static Document ReadDocumentFromResource([NotNull] Assembly assembly, [NotNull] string resourceName,
-            object dataContext, XamlElementReaderSettings settings = null)
+            [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
 
-        public static void RenderDocument([NotNull] Document document, IRenderTarget target = null, Rect? renderRect = null)
+        public static void RenderDocument([NotNull] Document document, [CanBeNull] IRenderTarget target = null, Rect? renderRect = null)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -149,7 +149,7 @@ namespace Alba.CsConsoleFormat
             RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip, renderRect);
         }
 
-        private static void RenderElement(BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
+        private static void RenderElement([NotNull] BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
         {
             if (element.Visibility != Visibility.Visible || element.RenderSize.IsEmpty)
                 return;

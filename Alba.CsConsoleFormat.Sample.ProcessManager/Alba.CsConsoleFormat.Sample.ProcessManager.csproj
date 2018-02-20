@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs">
+      <Link>Properties\JetBrainsAnnotations.cs</Link>
+    </Compile>
     <Compile Include="CommandOptions\HelpOptions.cs" />
     <Compile Include="CommandOptions\ListOptions.cs" />
     <Compile Include="CommandOptions\RootOptions.cs" />

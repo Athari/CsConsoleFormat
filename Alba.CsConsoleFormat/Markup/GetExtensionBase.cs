@@ -3,14 +3,19 @@ using System.Reflection;
 using System.Windows.Markup;
 using System.Xaml;
 using Alba.CsConsoleFormat.Framework.Sys;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
     public abstract class GetExtensionBase : MarkupExtension
     {
-        [ConstructorArgument("path")]
+        [CanBeNull, ConstructorArgument("path")]
         public string Path { get; set; }
+
+        [CanBeNull]
         public string Element { get; set; }
+
+        [CanBeNull]
         public object Source { get; set; }
 
         protected GetExtensionBase(string path)
@@ -19,7 +24,7 @@ namespace Alba.CsConsoleFormat.Markup
         }
 
         protected GetExtensionBase() : this(null)
-        {}
+        { }
 
         public sealed override object ProvideValue(IServiceProvider serviceProvider)
         {
@@ -52,7 +57,8 @@ namespace Alba.CsConsoleFormat.Markup
             return ProvideExpression(serviceProvider, obj, property);
         }
 
-        protected abstract object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo property);
+        [CanBeNull]
+        protected abstract object ProvideExpression([NotNull] IServiceProvider provider, [CanBeNull] BindableObject obj, [CanBeNull] PropertyInfo property);
 
         public override string ToString() => $"{{Get Path={Path}}}";
     }

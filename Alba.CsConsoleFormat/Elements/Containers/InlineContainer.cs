@@ -8,13 +8,15 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    internal class InlineContainer : BlockElement
+    internal sealed class InlineContainer : BlockElement
     {
         private InlineSequence _inlineSequence;
         private List<List<InlineSegment>> _lines;
 
-        public InlineContainer(BlockElement source)
+        public InlineContainer([NotNull] BlockElement source)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
             DataContext = source.DataContext;
             Align = HorizontalAlignment.Left;
             VAlign = VerticalAlignment.Top;
@@ -75,12 +77,12 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private static int GetLineLength(List<InlineSegment> line)
+        private static int GetLineLength([NotNull] List<InlineSegment> line)
         {
             return line.Sum(s => s.TextLength);
         }
 
-        private class LineWrapper
+        private sealed class LineWrapper
         {
             private readonly InlineContainer _container;
             private readonly Size _availableSize;
@@ -102,7 +104,8 @@ namespace Alba.CsConsoleFormat
                 _wrapPos = -1;
             }
 
-            [UsedImplicitly, ExcludeFromCodeCoverage, SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+            [UsedImplicitly, ExcludeFromCodeCoverage]
+            [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
             private IEnumerable<object> DebugLines => _lines.Select(l => new {
                 text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
                 len = GetLineLength(l),
@@ -132,7 +135,7 @@ namespace Alba.CsConsoleFormat
                 return _lines;
             }
 
-            private void AppendTextSegmentNoWrap(InlineSegment sourceSeg)
+            private void AppendTextSegmentNoWrap([NotNull] InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
@@ -147,7 +150,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void AppendTextSegmentCharWrap(InlineSegment sourceSeg)
+            private void AppendTextSegmentCharWrap([NotNull] InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 for (int i = 0; i < sourceSeg.Text.Length; i++) {
@@ -172,7 +175,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void AppendTextSegmentWordWrap(InlineSegment sourceSeg)
+            private void AppendTextSegmentWordWrap([NotNull] InlineSegment sourceSeg)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 _segPos = 0;
@@ -262,7 +265,7 @@ namespace Alba.CsConsoleFormat
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
             }
 
-            private void SplitWrappedText(string wrappedText, out string textBeforeWrap, out string textAfterWrap)
+            private void SplitWrappedText([NotNull] string wrappedText, [NotNull] out string textBeforeWrap, [NotNull] out string textAfterWrap)
             {
                 if (_wrapChar.IsSpace) {
                     // "aaa bb" => "aaa" + "bb"
@@ -295,13 +298,14 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class InlineSequence : IInlineSequence
+        private sealed class InlineSequence : IInlineSequence
         {
             private readonly Stack<InlineSegment> _formattingStack = new Stack<InlineSegment>();
 
             public List<InlineSegment> Segments { get; }
 
-            public InlineSequence(InlineContainer container)
+            [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Specific container type assumed.")]
+            public InlineSequence([NotNull] InlineContainer container)
             {
                 var initSegment = InlineSegment.CreateFromColors(container.EffectiveColor, container.EffectiveBackground);
                 _formattingStack.Push(initSegment);
@@ -351,7 +355,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
-        private class InlineSegment
+        private sealed class InlineSegment
         {
             public ConsoleColor? Color { get; set; }
             public ConsoleColor? Background { get; set; }
@@ -372,7 +376,7 @@ namespace Alba.CsConsoleFormat
             public static InlineSegment CreateFromColors(ConsoleColor? color, ConsoleColor? background) =>
                 new InlineSegment(null, null) { Color = color, Background = background };
 
-            public static InlineSegment CreateFromText(string text) =>
+            public static InlineSegment CreateFromText([CanBeNull] string text) =>
                 new InlineSegment(text?.Replace("\r", "") ?? "", null);
 
             // TODO MemPerf: Avoid calling InlineSegment.CreateWithBuilder (share string builder, try appending).

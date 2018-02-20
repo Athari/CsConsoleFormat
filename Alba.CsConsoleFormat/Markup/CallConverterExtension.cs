@@ -13,13 +13,15 @@ namespace Alba.CsConsoleFormat.Markup
         public CultureInfo Culture { get; set; }
 
         public CallConverterExtension()
-        {}
+        { }
 
         public CallConverterExtension(string path) : base(path)
-        {}
+        { }
 
         protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo property)
         {
+            if (provider == null)
+                throw new ArgumentNullException(nameof(provider));
             var expression = new CallConverterExpression {
                 Source = Source,
                 Path = Path,

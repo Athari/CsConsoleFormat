@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class GridLengthConverterTests
+    public sealed class GridLengthConverterTests
     {
         private readonly GridLengthConverter _converter = new GridLengthConverter();
 

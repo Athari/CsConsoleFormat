@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class SizeConverterTests
+    public sealed class SizeConverterTests
     {
         private readonly SizeConverter _converter = new SizeConverter();
 

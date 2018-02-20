@@ -1,8 +1,10 @@
 using CommandLine;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
-    internal class RootOptions
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    internal sealed class RootOptions
     {
         [VerbOption("list", HelpText = "List running processes.")]
         public ListOptions List { get; set; }

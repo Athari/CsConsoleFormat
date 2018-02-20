@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using JetBrains.Annotations;
@@ -7,15 +8,16 @@ namespace Alba.CsConsoleFormat
 {
     public class TextRenderTarget : TextRenderTargetBase
     {
-        public TextRenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
-        {}
+        public TextRenderTarget([NotNull] Stream output, [CanBeNull] Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+        { }
 
-        public TextRenderTarget(TextWriter writer = null) : base(writer)
-        {}
+        public TextRenderTarget([CanBeNull] TextWriter writer = null) : base(writer)
+        { }
 
         protected override void RenderOverride(IConsoleBufferSource buffer)
         {
             ThrowIfDisposed();
+            Debug.Assert(Writer != null);
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 

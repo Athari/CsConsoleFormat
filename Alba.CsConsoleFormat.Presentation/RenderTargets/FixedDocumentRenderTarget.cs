@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public class FixedDocumentRenderTarget : DocumentRenderTargetBase
+    public sealed class FixedDocumentRenderTarget : DocumentRenderTargetBase
     {
         public FixedDocument Document { get; }
 

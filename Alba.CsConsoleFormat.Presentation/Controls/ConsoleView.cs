@@ -102,7 +102,7 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
             Content = target.Canvas;
         }
 
-        private class CanvasRenderTarget : DocumentRenderTargetBase
+        private sealed class CanvasRenderTarget : DocumentRenderTargetBase
         {
             public WpfCanvas Canvas { get; private set; }
 

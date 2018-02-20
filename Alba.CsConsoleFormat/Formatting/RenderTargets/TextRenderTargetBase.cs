@@ -12,9 +12,10 @@ namespace Alba.CsConsoleFormat
 
         private readonly bool _leaveOpen;
 
+        [CanBeNull]
         protected TextWriter Writer { get; private set; }
 
-        protected TextRenderTargetBase([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false)
+        protected TextRenderTargetBase([NotNull] Stream output, [CanBeNull] Encoding encoding = null, bool leaveOpen = false)
         {
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
@@ -22,7 +23,7 @@ namespace Alba.CsConsoleFormat
             _leaveOpen = leaveOpen;
         }
 
-        protected TextRenderTargetBase(TextWriter writer = null)
+        protected TextRenderTargetBase([CanBeNull] TextWriter writer = null)
         {
             Writer = writer ?? new StringWriter(CultureInfo.InvariantCulture);
         }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Alba.CsConsoleFormat.Testing.FluentAssertions;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class GridTests : ElementTestsBase
+    public sealed class GridTests : ElementTestsBase
     {
         [Fact]
         public void NoColumnsNoChildren()
@@ -33,6 +34,7 @@ namespace Alba.CsConsoleFormat.Tests
             new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
         }
 
+        [UsedImplicitly]
         public static readonly object[][] ColumnConfigsData = {
             // Absolute - no borders
             GridConfig.WithoutBorders
@@ -147,7 +149,7 @@ namespace Alba.CsConsoleFormat.Tests
 
         [Theory]
         [MemberData(nameof(ColumnConfigsData))]
-        public void ColumnConfigs(GridConfig config)
+        public void ColumnConfigs([NotNull] GridConfig config)
         {
             var grid = new Grid { Stroke = config.GridStroke };
             foreach (Column column in config.Columns) {
@@ -225,20 +227,20 @@ namespace Alba.CsConsoleFormat.Tests
                 "╚═╧════╝");
         }
 
-        public class GridConfig
+        public sealed class GridConfig
         {
-            public List<Column> Columns { get; set; }
-            public List<Element> Cells { get; set; }
-            public LineThickness GridStroke { get; set; } = LineThickness.None;
-            public LineThickness CellStroke { get; set; } = LineThickness.None;
-            public Size Size { get; set; }
+            public List<Column> Columns { get; private set; }
+            public List<Element> Cells { get; private set; }
+            public LineThickness GridStroke { get; private set; } = LineThickness.None;
+            public LineThickness CellStroke { get; private set; } = LineThickness.None;
+            public Size Size { get; private set; }
 
-            public List<int> ExpectedColumnWidths { get; set; }
+            public List<int> ExpectedColumnWidths { get; private set; }
 
             public static GridConfig WithoutBorders => new GridConfig { GridStroke = LineThickness.None, CellStroke = LineThickness.None };
             public static GridConfig WithBorders => new GridConfig { GridStroke = LineThickness.Single, CellStroke = LineThickness.Single };
 
-            public GridConfig WithColumns(params GridLength[] columnWidths)
+            public GridConfig WithColumns([NotNull] params GridLength[] columnWidths)
             {
                 Columns = columnWidths.Select(w => new Column { Width = w }).ToList();
                 return this;
@@ -250,7 +252,7 @@ namespace Alba.CsConsoleFormat.Tests
                 return this;
             }
 
-            public GridConfig WithCells(params string[] cellTexts)
+            public GridConfig WithCells([NotNull] params string[] cellTexts)
             {
                 EnsureCells();
                 foreach (string cellText in cellTexts) {
@@ -262,7 +264,7 @@ namespace Alba.CsConsoleFormat.Tests
                 return this;
             }
 
-            public GridConfig WithCells(params Element[] cells)
+            public GridConfig WithCells([NotNull] params Element[] cells)
             {
                 EnsureCells();
                 foreach (Element cell in cells)
@@ -270,7 +272,7 @@ namespace Alba.CsConsoleFormat.Tests
                 return this;
             }
 
-            public GridConfig ExpectColumnWidths(params int[] columnWidths)
+            public GridConfig ExpectColumnWidths([NotNull] params int[] columnWidths)
             {
                 ExpectedColumnWidths = columnWidths.ToList();
                 return this;
@@ -286,7 +288,7 @@ namespace Alba.CsConsoleFormat.Tests
 
             public static implicit operator object[](GridConfig @this) => new object[] { @this };
 
-            private static string GetColumnWidthString(Column c) =>
+            private static string GetColumnWidthString([NotNull] Column c) =>
                 c.Width + (c.MinWidth != 0 || c.MaxWidth != Size.Infinity ? $"{c.MinWidth},{(c.MaxWidth == Size.Infinity ? "Inf" : c.MaxWidth + "")}" : "");
         }
     }

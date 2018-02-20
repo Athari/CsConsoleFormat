@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.Markup
         }
 
         public ResExtension() : this(null)
-        {}
+        { }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {

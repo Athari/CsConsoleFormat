@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using static System.FormattableString;
 
@@ -64,6 +65,7 @@ namespace Alba.CsConsoleFormat
             set => SetBits(ref _state, (byte)value, 2, 0b11);
         }
 
+        [Pure]
         private static byte GetBits(byte data, int offset, byte mask)
         {
             return (byte)((data >> offset) & mask);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
@@ -240,6 +241,7 @@ namespace Alba.CsConsoleFormat
             _layoutInfo = source._layoutInfo.Clone();
         }
 
+        [Pure]
         internal static int MinMax(int value, int min, int max) => Math.Max(Math.Min(value, max), min);
 
         private struct MinMaxSize

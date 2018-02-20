@@ -6,9 +6,11 @@ using System.Security;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
 
+// ReSharper disable AnnotateNotNullParameter
+// ReSharper disable MemberCanBeMadeStatic.Local
 namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
-    internal class Program
+    internal sealed class Program
     {
         private static void Main(string[] args) => new Program().Run(args);
 

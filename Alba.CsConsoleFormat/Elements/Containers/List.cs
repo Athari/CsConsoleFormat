@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
     public class List : BlockElement
     {
-        internal const string DefaultIndexFormat = "{0}. ";
+        private const string DefaultIndexFormat = "{0}. ";
 
         private string _indexFormat = DefaultIndexFormat;
 
         public int StartIndex { get; set; } = 1;
 
+        [NotNull]
         public string IndexFormat
         {
             get => _indexFormat;

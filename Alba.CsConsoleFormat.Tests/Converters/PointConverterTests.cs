@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class PointConverterTests
+    public sealed class PointConverterTests
     {
         private readonly PointConverter _converter = new PointConverter();
 

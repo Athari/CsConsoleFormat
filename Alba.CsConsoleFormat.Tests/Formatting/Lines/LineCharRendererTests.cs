@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class LineCharRendererTests : ElementTestsBase
+    public sealed class LineCharRendererTests : ElementTestsBase
     {
         [Fact]
         public void CharLineCharRendererEmpty()

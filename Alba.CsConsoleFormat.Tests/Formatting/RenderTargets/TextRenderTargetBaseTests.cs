@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
@@ -8,12 +9,13 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class TextRenderTargetBaseTests
+    public sealed class TextRenderTargetBaseTests
     {
         [Fact]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
+        [SuppressMessage("ReSharper", "LocalNameCapturedOnly")]
         public void NullArguments()
         {
             var output = Stream.Null;
@@ -92,16 +94,18 @@ namespace Alba.CsConsoleFormat.Tests
             new Action(() => target.OutputText.As<string>()).ShouldThrow<InvalidOperationException>().WithMessage($"*{nameof(StringWriter)}*");
         }
 
-        private class RenderTarget : TextRenderTargetBase
+        private sealed class RenderTarget : TextRenderTargetBase
         {
-            public RenderTarget([NotNull] Stream output, Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
-            {}
+            public RenderTarget([NotNull] Stream output, [CanBeNull] Encoding encoding = null, bool leaveOpen = false) : base(output, encoding, leaveOpen)
+            { }
 
-            public RenderTarget(TextWriter writer = null) : base(writer)
-            {}
+            public RenderTarget([CanBeNull] TextWriter writer = null) : base(writer)
+            { }
 
             protected override void RenderOverride(IConsoleBufferSource buffer)
             {
+                ThrowIfDisposed();
+                Debug.Assert(Writer != null);
                 Writer.Write("Foo");
             }
         }

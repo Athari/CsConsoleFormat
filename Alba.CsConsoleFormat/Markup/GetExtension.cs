@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Markup;
-using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Markup
 {
@@ -15,13 +14,15 @@ namespace Alba.CsConsoleFormat.Markup
         public CultureInfo Culture { get; set; }
 
         public GetExtension()
-        {}
+        { }
 
         public GetExtension(string path) : base(path)
-        {}
+        { }
 
-        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, [NotNull] PropertyInfo property)
+        protected override object ProvideExpression(IServiceProvider provider, BindableObject obj, PropertyInfo property)
         {
+            if (provider == null)
+                throw new ArgumentNullException(nameof(provider));
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 

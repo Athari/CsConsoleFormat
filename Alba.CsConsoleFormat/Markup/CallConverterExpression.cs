@@ -29,6 +29,8 @@ namespace Alba.CsConsoleFormat.Markup
 
         protected override object TryGetCachedMethod(MethodInfo method)
         {
+            if (method == null)
+                throw new ArgumentNullException(nameof(method));
             return _converterFunctions.Value.TryGetValue(method, out ConverterFunc func) ? func : null;
         }
 

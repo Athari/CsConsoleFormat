@@ -3,12 +3,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Alba.CsConsoleFormat.Markup;
 using FluentAssertions;
+using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Tests
 {
     internal static class BindableObjectTestsExts
     {
-        public static T Bind<T, TTarget, TSource>(this T @this, Expression<Func<T, TTarget>> propertyExpr, Func<TSource, TTarget> getValue)
+        public static T Bind<T, TTarget, TSource>([NotNull] this T @this, [NotNull] Expression<Func<T, TTarget>> propertyExpr, [NotNull] Func<TSource, TTarget> getValue)
             where T : BindableObject
         {
             @this.Bind(
@@ -17,7 +18,7 @@ namespace Alba.CsConsoleFormat.Tests
             return @this;
         }
 
-        private class LambdaExpression<TSource, TTarget> : GetExpressionBase
+        private sealed class LambdaExpression<TSource, TTarget> : GetExpressionBase
         {
             private readonly Func<TSource, TTarget> _getValue;
             public LambdaExpression(Func<TSource, TTarget> getValue) => _getValue = getValue;

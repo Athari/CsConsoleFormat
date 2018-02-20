@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class InlineContainerTests : ElementTestsBase
+    public sealed class InlineContainerTests : ElementTestsBase
     {
         [Fact]
         public void Empty()

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Xaml;
 using Alba.CsConsoleFormat.Markup;
@@ -12,7 +13,11 @@ namespace Alba.CsConsoleFormat
     public abstract class BindableObject : IAttachedPropertyStore
     {
         private object _dataContext;
+
+        [CanBeNull]
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
+
+        [CanBeNull]
         private IDictionary<AttachableMemberIdentifier, object> _attachedProperties;
 
         [CanBeNull]
@@ -49,6 +54,7 @@ namespace Alba.CsConsoleFormat
             _getters[property] = getter;
         }
 
+        [Pure]
         public BindableObject Clone()
         {
             BindableObject clone = CreateInstance();
@@ -66,6 +72,7 @@ namespace Alba.CsConsoleFormat
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
         }
 
+        [Pure]
         protected virtual BindableObject CreateInstance()
         {
             return (BindableObject)MemberwiseClone();
@@ -74,9 +81,12 @@ namespace Alba.CsConsoleFormat
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         int IAttachedPropertyStore.PropertyCount => _attachedProperties?.Count ?? 0;
 
+        [Pure]
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier identifier, out object value)
+        bool IAttachedPropertyStore.TryGetProperty([NotNull] AttachableMemberIdentifier identifier, out object value)
         {
+            if (identifier == null)
+                throw new ArgumentNullException(nameof(identifier));
             if (_attachedProperties != null && _attachedProperties.TryGetValue(identifier, out value))
                 return true;
             value = AttachedProperty.Get(identifier).DefaultValueUntyped;
@@ -84,45 +94,52 @@ namespace Alba.CsConsoleFormat
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier identifier, object value)
+        void IAttachedPropertyStore.SetProperty([NotNull] AttachableMemberIdentifier identifier, object value)
         {
-            EnsureAttachedPropertiesCreated();
+            if (identifier == null)
+                throw new ArgumentNullException(nameof(identifier));
+            EnsureAttachedPropertiesCreated(); // ReSharper disable once PossibleNullReferenceException
             _attachedProperties[identifier] = value;
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier identifier)
+        bool IAttachedPropertyStore.RemoveProperty([NotNull] AttachableMemberIdentifier identifier)
         {
-            return _attachedProperties != null && _attachedProperties.Remove(identifier);
+            if (identifier == null)
+                throw new ArgumentNullException(nameof(identifier));
+            return _attachedProperties?.Remove(identifier) == true;
         }
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
-        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        void IAttachedPropertyStore.CopyPropertiesTo([NotNull] KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
         {
             _attachedProperties?.CopyTo(array, index);
         }
 
+        [Pure]
         public bool HasValue<T>([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
-            return _attachedProperties != null && _attachedProperties.ContainsKey(property.Identifier);
+            return _attachedProperties?.ContainsKey(property.Identifier) == true;
         }
 
+        [Pure, CanBeNull]
         public T GetValue<T>([NotNull] AttachedProperty<T> property)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
-            return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out object value)
-                ? property.DefaultValue
-                : (T)value;
+            object value = null;
+            return _attachedProperties?.TryGetValue(property.Identifier, out value) == true
+                ? (T)value
+                : property.DefaultValue;
         }
 
         public void SetValue<T>([NotNull] AttachedProperty<T> property, T value)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
-            EnsureAttachedPropertiesCreated();
+            EnsureAttachedPropertiesCreated(); // ReSharper disable once PossibleNullReferenceException
             _attachedProperties[property.Identifier] = value;
         }
 
@@ -139,6 +156,7 @@ namespace Alba.CsConsoleFormat
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
         }
 
+        [Pure, CanBeNull]
         [SuppressMessage("Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Justification = "It is .NET Framework interface.")]
         public object this[[NotNull] AttachedProperty property]
         {
@@ -146,15 +164,16 @@ namespace Alba.CsConsoleFormat
             {
                 if (property == null)
                     throw new ArgumentNullException(nameof(property));
-                return _attachedProperties == null || !_attachedProperties.TryGetValue(property.Identifier, out object value)
-                    ? property.DefaultValueUntyped
-                    : value;
+                object value = null;
+                return _attachedProperties?.TryGetValue(property.Identifier, out value) == true
+                    ? value
+                    : property.DefaultValueUntyped;
             }
             set
             {
                 if (property == null)
                     throw new ArgumentNullException(nameof(property));
-                EnsureAttachedPropertiesCreated();
+                EnsureAttachedPropertiesCreated(); // ReSharper disable once PossibleNullReferenceException
                 _attachedProperties[property.Identifier] = value;
             }
         }

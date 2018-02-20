@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 
 namespace Alba.CsConsoleFormat
 {
@@ -20,7 +21,11 @@ namespace Alba.CsConsoleFormat
         }
 
         public static GridLength Auto => new GridLength(0, GridUnitType.Auto);
+
+        [Pure]
         public static GridLength Char(int value) => new GridLength(value, GridUnitType.Char);
+
+        [Pure]
         public static GridLength Star(int value) => new GridLength(value, GridUnitType.Star);
 
         public bool IsAbsolute => UnitType == GridUnitType.Char;

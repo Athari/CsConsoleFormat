@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat.Presentation
 {
-    public class XpsRenderTarget : DocumentRenderTargetBase
+    public sealed class XpsRenderTarget : DocumentRenderTargetBase
     {
         private readonly Stream _output;
         private readonly bool _leaveOpen;
@@ -35,7 +35,7 @@ namespace Alba.CsConsoleFormat.Presentation
             SaveDocument(document);
         }
 
-        private void SaveDocument(IDocumentPaginatorSource document)
+        private void SaveDocument([NotNull] IDocumentPaginatorSource document)
         {
             using (var package = Package.Open(_output, FileMode.Create, FileAccess.ReadWrite))
             using (var xps = new XpsDocument(package, CompressionOption.Maximum))

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests.Framework.Reflection
 {
-    public class DynamicCallerTests
+    public sealed class DynamicCallerTests
     {
         [Fact]
         public void CallInstanceMethodSimple()

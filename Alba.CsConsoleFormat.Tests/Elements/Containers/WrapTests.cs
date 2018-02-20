@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class WrapTests : ElementTestsBase
+    public sealed class WrapTests : ElementTestsBase
     {
         [Fact]
         public void NegativeItemWidth()

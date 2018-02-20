@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat.Tests.Resources
 {
-    internal class Res
+    internal static class Res
     {
         public const string DocumentSpan = "DocumentSpan.xaml";
         public const string DocumentSpanWithContext = "DocumentSpanWithContext.xaml";

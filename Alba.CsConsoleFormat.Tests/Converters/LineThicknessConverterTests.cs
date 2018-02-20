@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class LineThicknessConverterTests
+    public sealed class LineThicknessConverterTests
     {
         private readonly LineThicknessConverter _converter = new LineThicknessConverter();
 

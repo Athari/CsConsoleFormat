@@ -4,17 +4,19 @@ using System.IO;
 using System.Reflection;
 using Alba.CsConsoleFormat.Tests.Resources;
 using FluentAssertions;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace Alba.CsConsoleFormat.Tests
 {
-    public class ConsoleRendererTests : ElementTestsBase
+    public sealed class ConsoleRendererTests : ElementTestsBase
     {
         [Fact]
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         [SuppressMessage("ReSharper", "UnusedVariable")]
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         [SuppressMessage("ReSharper", "ImplicitlyCapturedClosure")]
+        [SuppressMessage("ReSharper", "LocalNameCapturedOnly")]
         public void NullArguments()
         {
             var type = GetType();
@@ -167,8 +169,10 @@ namespace Alba.CsConsoleFormat.Tests
             target.OutputText.Should().Be($"Foo{Environment.NewLine}");
         }
 
-        private Stream StringToStream(string value)
+        private static Stream StringToStream([NotNull] string value)
         {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
             var stream = new MemoryStream(value.Length);
             var writer = new StreamWriter(stream) { AutoFlush = true };
             writer.Write(value);
