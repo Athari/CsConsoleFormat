@@ -11,8 +11,8 @@
 
   <!-- Common -->
   <PropertyGroup>
-    <TargetFrameworks>net40;netstandard1.3;netstandard2.0</TargetFrameworks>
-    <!--<TargetFramework>net40</TargetFramework>-->
+    <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <!--<TargetFramework>net35</TargetFramework>-->
     <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
     <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
@@ -58,16 +58,28 @@
     <Compile Include="Framework/Compatibility/*.netstandard20.*" />
   </ItemGroup>
 
+  <!-- .NET Framework 3.5 -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
+    <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+    <DefineConstants>$(DefineConstants);NET_FULL;NET_35</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Compile Remove="Formatting/RenderTargets/HtmlRenderTarget.cs" />
+    <Compile Include="Framework/Compatibility/*.net35.*" />
+  </ItemGroup>
+
   <!-- .NET Framework 4.0 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
     <DefineConstants>$(DefineConstants);NET_FULL;NET_40</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Compile Include="Framework/Compatibility/*.net40.*" />
   </ItemGroup>

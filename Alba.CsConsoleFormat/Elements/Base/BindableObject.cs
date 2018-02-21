@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -19,9 +18,9 @@ namespace Alba.CsConsoleFormat
         : IAttachedPropertyStore
         #endif
     {
+        #if XAML
         private object _dataContext;
 
-        #if XAML
         [CanBeNull]
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
         #endif
@@ -84,7 +83,7 @@ namespace Alba.CsConsoleFormat
                 _getters = new Dictionary<PropertyInfo, GetExpressionBase>(obj._getters);
           #endif
             if (obj._attachedProperties != null)
-                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
+                _attachedProperties = new Dictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
         }
 
         [Pure]
@@ -172,7 +171,7 @@ namespace Alba.CsConsoleFormat
         private void EnsureAttachedPropertiesCreated()
         {
             if (_attachedProperties == null)
-                _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>();
+                _attachedProperties = new Dictionary<AttachableMemberIdentifier, object>();
         }
 
         [Pure, CanBeNull]

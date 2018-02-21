@@ -9,7 +9,7 @@ namespace System
     {
         public static Assembly GetAssembly([NotNull] this Type @this)
         {
-          #if NET40
+          #if NET_FULL
             return @this.Assembly;
           #else
             return @this.GetTypeInfo().Assembly;

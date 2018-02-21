@@ -106,12 +106,14 @@ namespace Alba.CsConsoleFormat
                 _wrapPos = -1;
             }
 
+            #if !NET_35
             [UsedImplicitly, ExcludeFromCodeCoverage]
             [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
             private IEnumerable<object> DebugLines => _lines.Select(l => new {
                 text = string.Concat(l.Where(s => s.TextLength > 0).Select(s => s.ToString())),
                 len = GetLineLength(l),
             });
+            #endif
 
             private int AvailableWidth => _availableSize.Width;
 

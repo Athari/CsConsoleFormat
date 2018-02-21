@@ -58,8 +58,19 @@ namespace Alba.CsConsoleFormat
 
         [Pure]
         public static T StringToEnum<T>([CanBeNull] string str)
-            where T : struct =>
-            Enum.TryParse(str, true, out T value) ? value : throw new FormatException($"'{str}' is not a valid {typeof(T).Name} value.");
+            where T : struct
+        {
+          #if !NET_35
+            return Enum.TryParse(str, true, out T value) ? value : throw new FormatException($"'{str}' is not a valid {typeof(T).Name} value.");
+          #else
+            try {
+                return (T)Enum.Parse(typeof(T), str ?? "", true);
+            }
+            catch (Exception e) when (e is ArgumentException || e is OverflowException) {
+                throw new FormatException($"'{str}' is not a valid {typeof(T).Name} value.");
+            }
+          #endif
+        }
 
         [Pure]
         public static T NumberToEnum<T>([NotNull] object number) =>
