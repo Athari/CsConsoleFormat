@@ -12,6 +12,16 @@
   <Import Project="$(SolutionDir)Build\Settings.props" />
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>
+      Library for advanced formatting of console/terminal output.
+      Format output like HTML using .NET DSL (like LINQ to XML).
+      Supports paragraphs, lists, grids, Unicode formatting, drawing, export to various formats and much more.
+    </Description>
+    <PackageTags>$(PackageTags)</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*; Elements/Repeater.cs; Formatting/XamlElementReaderSettings.cs; Framework/Reflection/*; Markup/*" />
     <Compile Include="Markup/XmlLanguage.cs" />

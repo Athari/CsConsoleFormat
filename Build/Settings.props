@@ -31,6 +31,19 @@
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
+  <!-- NuGet package properties -->
+  <PropertyGroup>
+    <Version>0.9.0</Version>
+    <Authors>Athari</Authors>
+    <Copyright>Copyright © 2014–$([System.DateTime]::Now.ToString(yyyy)) Alexander "Athari" Prokhorov</Copyright>
+    <PackageProjectUrl>https://github.com/Athari/CsConsoleFormat</PackageProjectUrl>
+    <PackageLicenseUrl>$(PackageProjectUrl)/blob/master/License.md</PackageLicenseUrl>
+    <PackageIconUrl>$(PackageProjectUrl)/raw/master/Docs/Images/CsConsoleFormatIcon256.png</PackageIconUrl>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>console;terminal;shell;command line;format;html;ascii</PackageTags>
+  </PropertyGroup>
+
   <!-- .NET 3.5 workaround -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
     <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
