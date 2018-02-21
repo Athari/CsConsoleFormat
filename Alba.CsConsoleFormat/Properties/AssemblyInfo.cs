@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+#if SYSTEM_XAML
 using System.Windows.Markup;
+#elif PORTABLE_XAML
+using Portable.Xaml.Markup;
+#endif
 
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

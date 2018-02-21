@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+#if SYSTEM_XAML
 using System.Windows.Markup;
+#elif PORTABLE_XAML
+using Portable.Xaml.Markup;
+#endif
 
 namespace Alba.CsConsoleFormat.Markup
 {

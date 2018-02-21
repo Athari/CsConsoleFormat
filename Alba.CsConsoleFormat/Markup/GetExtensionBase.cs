@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Reflection;
-using System.Windows.Markup;
-using System.Xaml;
 using Alba.CsConsoleFormat.Framework.Sys;
 using JetBrains.Annotations;
+#if SYSTEM_XAML
+using System.Windows.Markup;
+using System.Xaml;
+#elif PORTABLE_XAML
+using Portable.Xaml;
+using Portable.Xaml.Markup;
+#endif
 
 namespace Alba.CsConsoleFormat.Markup
 {

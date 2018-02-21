@@ -12,8 +12,8 @@ namespace Alba.CsConsoleFormat
         public XamlElementReaderSettings()
         {
             ReferenceAssemblies = new List<Assembly> {
-                typeof(Document).Assembly,
-                typeof(Console).Assembly,
+                typeof(Document).GetTypeInfo().Assembly,
+                typeof(Console).GetTypeInfo().Assembly,
             };
         }
     }

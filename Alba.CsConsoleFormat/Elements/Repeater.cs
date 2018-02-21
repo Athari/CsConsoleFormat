@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Markup;
 using JetBrains.Annotations;
+#if SYSTEM_XAML
+using System.Windows.Markup;
+#elif PORTABLE_XAML
+using Portable.Xaml.Markup;
+#endif
 
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat

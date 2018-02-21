@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Alba.CsConsoleFormat.Framework.Collections;
+using Alba.CsConsoleFormat.Framework.Compatibility;
 using Alba.CsConsoleFormat.Framework.Reflection;
 using JetBrains.Annotations;
 using Microsoft.CSharp.RuntimeBinder;
@@ -40,7 +41,7 @@ namespace Alba.CsConsoleFormat.Markup
         protected CultureInfo EffectiveCulture =>
             _effectiveCulture ?? (_effectiveCulture = Culture
              ?? (TargetObject as Element)?.EffectiveCulture
-             ?? Thread.CurrentThread.CurrentCulture);
+             ?? CultureUtils.DefaultCulture);
 
         [CanBeNull]
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "'Value' is a conventional name for binding results.")]

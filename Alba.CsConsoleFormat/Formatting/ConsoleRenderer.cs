@@ -2,8 +2,12 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xaml;
 using JetBrains.Annotations;
+#if SYSTEM_XAML
+using System.Xaml;
+#elif PORTABLE_XAML
+using Portable.Xaml;
+#endif
 
 namespace Alba.CsConsoleFormat
 {
@@ -66,15 +70,7 @@ namespace Alba.CsConsoleFormat
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-            if (resourceName == null)
-                throw new ArgumentNullException(nameof(resourceName));
-            using (Stream stream = type.Assembly.GetManifestResourceStream(type, resourceName)) {
-                if (stream == null)
-                    throw new FileNotFoundException($"Resource '{resourceName}' not found in assembly and namespace of type '{type.Name}'.");
-                return ReadElementFromStream<TElement>(stream, dataContext, settings);
-            }
+            return ReadElementFromResource<TElement>(type.GetTypeInfo().Assembly, $"{type.Namespace}.{resourceName}", dataContext, settings);
         }
 
         public static TElement ReadElementFromResource<TElement>([NotNull] Assembly assembly, [NotNull] string resourceName,

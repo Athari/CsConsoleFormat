@@ -4,10 +4,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Markup;
 using Alba.CsConsoleFormat.Framework.Collections;
 using Alba.CsConsoleFormat.Markup;
 using JetBrains.Annotations;
+#if SYSTEM_XAML
+using System.Windows.Markup;
+#elif PORTABLE_XAML
+using Portable.Xaml.Markup;
+#endif
 
 namespace Alba.CsConsoleFormat
 {

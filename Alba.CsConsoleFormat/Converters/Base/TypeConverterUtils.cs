@@ -3,6 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using JetBrains.Annotations;
+#if !(NET_FULL || NET_STANDARD_20)
+using System.Linq;
+using System.Reflection;
+#endif
 
 namespace Alba.CsConsoleFormat
 {
@@ -14,18 +18,33 @@ namespace Alba.CsConsoleFormat
         public const string Inherit = nameof(Inherit);
         public const string INHERIT = nameof(INHERIT);
 
+        #if !(NET_FULL || NET_STANDARD_20)
+        private static readonly Type[] NumericTypes = {
+            typeof(Int16), typeof(UInt16), typeof(Int32), typeof(UInt32), typeof(Int64), typeof(UInt64),
+            typeof(Single), typeof(Double), typeof(Decimal),
+        };
+        #endif
+
         [Pure]
         public static bool IsTypeStringOrNumeric([CanBeNull] Type type)
         {
+          #if NET_FULL || NET_STANDARD_20
             TypeCode code = Type.GetTypeCode(type);
             return type != null && (code == TypeCode.String || TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum);
+          #else
+            return type != null && (type == typeof(string) || NumericTypes.Contains(type) && !type.GetTypeInfo().IsEnum);
+          #endif
         }
 
         [Pure]
         public static bool IsTypeNumeric([CanBeNull] Type type)
         {
+          #if NET_FULL || NET_STANDARD_20
             TypeCode code = Type.GetTypeCode(type);
             return type != null && TypeCode.Int16 <= code && code <= TypeCode.Decimal && !type.IsEnum;
+          #else
+            return type != null && NumericTypes.Contains(type) && !type.GetTypeInfo().IsEnum;
+          #endif
         }
 
         [Pure]

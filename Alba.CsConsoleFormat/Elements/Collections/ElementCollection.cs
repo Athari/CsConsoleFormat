@@ -2,8 +2,12 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Markup;
 using JetBrains.Annotations;
+#if SYSTEM_XAML
+using System.Windows.Markup;
+#elif PORTABLE_XAML
+using Portable.Xaml.Markup;
+#endif
 
 namespace Alba.CsConsoleFormat
 {
