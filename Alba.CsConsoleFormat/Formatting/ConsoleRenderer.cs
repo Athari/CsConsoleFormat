@@ -39,6 +39,8 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        #if XAML
+
         public static TElement ReadElementFromStream<TElement>([NotNull] Stream stream,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
@@ -105,6 +107,8 @@ namespace Alba.CsConsoleFormat
         {
             return ReadElementFromResource<Document>(assembly, resourceName, dataContext, settings);
         }
+
+        #endif // XAML
 
         public static void RenderDocument([NotNull] Document document, [CanBeNull] IRenderTarget target = null, Rect? renderRect = null)
         {

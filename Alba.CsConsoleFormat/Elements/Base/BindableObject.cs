@@ -8,21 +8,28 @@ using Alba.CsConsoleFormat.Markup;
 using JetBrains.Annotations;
 #if SYSTEM_XAML
 using System.Xaml;
-#elif PORTABLE_XAML
+#else
 using Portable.Xaml;
 #endif
 
 namespace Alba.CsConsoleFormat
 {
-    public abstract class BindableObject : IAttachedPropertyStore
+    public abstract class BindableObject
+        #if XAML
+        : IAttachedPropertyStore
+        #endif
     {
         private object _dataContext;
 
+        #if XAML
         [CanBeNull]
         private IDictionary<PropertyInfo, GetExpressionBase> _getters;
+        #endif
 
         [CanBeNull]
         private IDictionary<AttachableMemberIdentifier, object> _attachedProperties;
+
+        #if XAML
 
         [CanBeNull]
         public object DataContext
@@ -58,6 +65,8 @@ namespace Alba.CsConsoleFormat
             _getters[property] = getter;
         }
 
+        #endif
+
         [Pure]
         public BindableObject Clone()
         {
@@ -70,8 +79,10 @@ namespace Alba.CsConsoleFormat
         {
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
+          #if XAML
             if (obj._getters != null)
                 _getters = new Dictionary<PropertyInfo, GetExpressionBase>(obj._getters);
+          #endif
             if (obj._attachedProperties != null)
                 _attachedProperties = new ConcurrentDictionary<AttachableMemberIdentifier, object>(obj._attachedProperties);
         }
@@ -81,6 +92,8 @@ namespace Alba.CsConsoleFormat
         {
             return (BindableObject)MemberwiseClone();
         }
+
+        #if XAML
 
         [SuppressMessage("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes", Justification = "IAttachedPropertyStore should not be reimplemented.")]
         int IAttachedPropertyStore.PropertyCount => _attachedProperties?.Count ?? 0;
@@ -119,6 +132,8 @@ namespace Alba.CsConsoleFormat
         {
             _attachedProperties?.CopyTo(array, index);
         }
+
+        #endif
 
         [Pure]
         public bool HasValue<T>([NotNull] AttachedProperty<T> property)

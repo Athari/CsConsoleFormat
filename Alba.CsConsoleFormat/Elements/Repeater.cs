@@ -9,7 +9,9 @@ using Portable.Xaml.Markup;
 // TODO Add to Repeater: HeaderTpl, FooterTpl, AlternatingItemTpl, SeparatorTpl
 namespace Alba.CsConsoleFormat
 {
+    #if XAML
     [ContentProperty(nameof(ItemTemplate))]
+    #endif
     public class Repeater : GeneratorElement
     {
         private ElementCollection _itemTemplate;

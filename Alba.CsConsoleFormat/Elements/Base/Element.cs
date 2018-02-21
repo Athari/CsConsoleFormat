@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
-using Alba.CsConsoleFormat.Markup;
 using JetBrains.Annotations;
+using Alba.CsConsoleFormat.Markup;
 #if SYSTEM_XAML
 using System.Windows.Markup;
 #elif PORTABLE_XAML
@@ -15,7 +15,9 @@ using Portable.Xaml.Markup;
 
 namespace Alba.CsConsoleFormat
 {
+    #if XAML
     [RuntimeNameProperty(nameof(Name)), ContentProperty(nameof(Children)), XmlLangProperty(nameof(Language)), UsableDuringInitialization(true)]
+    #endif
     public abstract class Element : BindableObject
     {
         private const ConsoleColor DefaultColor = ConsoleColor.White;
@@ -75,6 +77,7 @@ namespace Alba.CsConsoleFormat
         internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
         internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
+        #if XAML
         protected override void UpdateDataContext()
         {
             base.UpdateDataContext();
@@ -83,6 +86,7 @@ namespace Alba.CsConsoleFormat
             foreach (Element child in _children.Where(c => c.DataContext == null))
                 child.DataContext = DataContext;
         }
+        #endif
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void GenerateVisualTree()
@@ -138,7 +142,9 @@ namespace Alba.CsConsoleFormat
             else if (visualChildren.Count > 1) {
                 VisualChildren = new List<Element>(1) {
                     new Stack {
+                      #if XAML
                         DataContext = DataContext,
+                      #endif
                         VisualChildren = visualChildren,
                     }
                 };
@@ -159,7 +165,9 @@ namespace Alba.CsConsoleFormat
                 _children = new ElementCollection(this);
                 foreach (Element child in source._children) {
                     var childClone = (Element)child.Clone();
+                  #if XAML
                     childClone.DataContext = null;
+                  #endif
                     _children.Add(childClone);
                 }
             }
@@ -168,7 +176,9 @@ namespace Alba.CsConsoleFormat
         public override string ToString() =>
             $"{GetType().Name}:"
           + (Name != null ? $" Name={Name}" : "")
+          #if XAML
           + (DataContext != null ? $" DC={DataContext}" : "")
+          #endif
           + (_children?.Count > 0 ? $" Children={_children.Count}" : "");
     }
 }

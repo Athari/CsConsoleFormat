@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,6 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.ProcessManager", "Alba.CsConsoleFormat.Sample.ProcessManager\Alba.CsConsoleFormat.Sample.ProcessManager.csproj", "{99A14C98-3634-47FC-8919-975FC3757B57}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat-NoXaml", "Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj", "{D8A1DBC6-E015-4153-829C-013AB79825D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{99A14C98-3634-47FC-8919-975FC3757B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A14C98-3634-47FC-8919-975FC3757B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A14C98-3634-47FC-8919-975FC3757B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8A1DBC6-E015-4153-829C-013AB79825D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8A1DBC6-E015-4153-829C-013AB79825D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8A1DBC6-E015-4153-829C-013AB79825D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8A1DBC6-E015-4153-829C-013AB79825D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

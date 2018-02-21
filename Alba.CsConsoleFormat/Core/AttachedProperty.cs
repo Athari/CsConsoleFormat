@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using JetBrains.Annotations;
 #if SYSTEM_XAML
 using System.Xaml;
-#elif PORTABLE_XAML
+#else
 using Portable.Xaml;
 #endif
 

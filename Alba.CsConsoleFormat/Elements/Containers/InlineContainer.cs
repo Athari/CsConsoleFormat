@@ -17,7 +17,9 @@ namespace Alba.CsConsoleFormat
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
+          #if XAML
             DataContext = source.DataContext;
+          #endif
             Align = HorizontalAlignment.Left;
             VAlign = VerticalAlignment.Top;
             TextAlign = source.TextAlign;

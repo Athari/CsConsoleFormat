@@ -11,7 +11,9 @@ using Portable.Xaml.Markup;
 
 namespace Alba.CsConsoleFormat
 {
+    #if XAML
     [ContentWrapper(typeof(Span))]
+    #endif
     //[WhitespaceSignificantCollection]
     public class ElementCollection<T> : Collection<T>, IList
         where T : Element
@@ -50,8 +52,10 @@ namespace Alba.CsConsoleFormat
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
             item.Parent = _parent;
+          #if XAML
             if (item.DataContext == null && _parent != null)
                 item.DataContext = _parent.DataContext;
+          #endif
             base.InsertItem(index, item);
         }
 
