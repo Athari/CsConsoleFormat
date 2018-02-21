@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace System
 {
-    internal static class TypeExts
+    internal static partial class TypeExts
     {
         [CanBeNull]
         public static ConstructorInfo GetConstructor([NotNull] this Type @this, [NotNull, ItemNotNull] Type[] types)

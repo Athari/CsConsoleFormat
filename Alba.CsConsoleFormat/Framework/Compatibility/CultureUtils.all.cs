@@ -1,4 +1,7 @@
 using System.Globalization;
+#if NET_40
+using System.Threading;
+#endif
 
 namespace Alba.CsConsoleFormat.Framework.Compatibility
 {

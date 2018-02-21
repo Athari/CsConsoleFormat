@@ -70,7 +70,7 @@ namespace Alba.CsConsoleFormat
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
-            return ReadElementFromResource<TElement>(type.GetTypeInfo().Assembly, $"{type.Namespace}.{resourceName}", dataContext, settings);
+            return ReadElementFromResource<TElement>(type.GetAssembly(), $"{type.Namespace}.{resourceName}", dataContext, settings);
         }
 
         public static TElement ReadElementFromResource<TElement>([NotNull] Assembly assembly, [NotNull] string resourceName,
