@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33
 		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
 		Build\Common.targets = Build\Common.targets
 		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
+		Build\Settings.props = Build\Settings.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".git", ".git", "{77664CCE-A151-4179-9ED3-9786F72E11BF}"

@@ -1,0 +1,51 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Output directories -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(SolutionDir)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+    <BaseOutputPath>$(SolutionDir)Bin\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
+    <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
+  </PropertyGroup>
+
+  <!-- Common properties -->
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);TRACE</DefineConstants>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <DisableImplicitFrameworkDefines>true</DisableImplicitFrameworkDefines>
+    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+  </PropertyGroup>
+
+  <!-- Framework-specific properties -->
+  <PropertyGroup>
+    <TargetFrameworkId>net</TargetFrameworkId>
+    <TargetFrameworkId Condition="$(TargetFramework.StartsWith('netstandard'))">netstandard</TargetFrameworkId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
+    <DefineConstants>$(DefineConstants);NET_STANDARD;$(TargetFramework.Replace('netstandard', 'NET_STANDARD_').Replace('.', ''))</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
+    <DefineConstants>$(DefineConstants);NET_FULL;$(TargetFramework.Replace('net', 'NET_'))</DefineConstants>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  </PropertyGroup>
+
+  <!-- .NET 3.5 workaround -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
+    <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+  </PropertyGroup>
+
+  <!-- Code analysis -->
+  <PropertyGroup>
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Library'">$(SolutionDir)Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Sample'">$(SolutionDir)Analysis\AlbaSample.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="$(SolutionDir)Analysis\CustomDictionary.xml">
+      <Link>Properties\CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+  </ItemGroup>
+
+</Project>

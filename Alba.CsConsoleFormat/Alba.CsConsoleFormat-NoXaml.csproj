@@ -1,97 +1,44 @@
 <Project>
 
-  <!-- Shared -->
-  <PropertyGroup>
-    <BaseIntermediateOutputPath>$(SolutionDir)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <BaseOutputPath>$(SolutionDir)Bin\</BaseOutputPath>
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
-    <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
-    <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
-  </PropertyGroup>
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-
   <!-- Common -->
   <PropertyGroup>
     <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>net35</TargetFramework>-->
-    <TargetFrameworkId>.NETFramework</TargetFrameworkId>
-    <TargetFrameworkId Condition="$(TargetFramework.StartsWith('netstandard'))">.NETStandard</TargetFrameworkId>
-
     <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
-    <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
-    <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);TRACE</DefineConstants>
-
-    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-
-    <EnableDefaultItems>false</EnableDefaultItems>
-    <DisableImplicitFrameworkDefines>true</DisableImplicitFrameworkDefines>
-    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+    <CodeAnalysisLevel>Library</CodeAnalysisLevel>
   </PropertyGroup>
+
+  <Import Project="$(SolutionDir)Build\Settings.props" />
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <ItemGroup>
     <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*; Elements/Repeater.cs; Formatting/XamlElementReaderSettings.cs; Framework/Reflection/*; Markup/*" />
     <Compile Include="Markup/XmlLanguage.cs" />
     <Compile Include="Framework/Compatibility/*.all.*; Framework/Compatibility/*.noxaml.*" />
-    <CodeAnalysisDictionary Include="..\Analysis\CustomDictionary.xml">
-      <Link>Properties\CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
   </ItemGroup>
 
-
-  <!-- .NET Standard Common -->
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == '.NETStandard'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETStandard'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="[4.1.0,)" />
   </ItemGroup>
-
-  <!-- .NET Standard 1.3 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD_13</DefineConstants>
-  </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <Compile Include="Framework/Compatibility/*.netstandard13.*" />
   </ItemGroup>
 
-  <!-- .NET Standard 2.0 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD_20</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Include="Framework/Compatibility/*.netstandard20.*" />
   </ItemGroup>
 
-  <!-- .NET Framework Common -->
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <DefineConstants>$(DefineConstants);NET_FULL</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
-
-  <!-- .NET Framework 3.5 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
-    <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
-    <DefineConstants>$(DefineConstants);NET_35</DefineConstants>
-  </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
     <Compile Remove="Formatting/RenderTargets/HtmlRenderTarget.cs" />
     <Compile Include="Framework/Compatibility/*.net35.*" />
   </ItemGroup>
-
-  <!-- .NET Framework 4.0 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>$(DefineConstants);NET_40</DefineConstants>
-  </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <Compile Include="Framework/Compatibility/*.net40.*" />
