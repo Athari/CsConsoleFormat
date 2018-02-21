@@ -87,12 +87,12 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             //Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType().Assembly, "Alba.CsConsoleFormat.ConsoleTest.Markup.xaml", data);
             Console.WriteLine("XAML");
             ConsoleRenderer.RenderDocument(xamlDoc);
-            ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create("../../Tmp/0.html"), new UTF8Encoding(false)));
+            ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create("../Tmp/0.html"), new UTF8Encoding(false)));
 
             Document builtDoc = new ViewBuilder().CreateDocument(data);
             Console.WriteLine("Builder");
             ConsoleRenderer.RenderDocument(builtDoc);
-            ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create("../../Tmp/0a.html"), new UTF8Encoding(false)));
+            ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create("../Tmp/0a.html"), new UTF8Encoding(false)));
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.Box,
@@ -130,13 +130,13 @@ namespace Alba.CsConsoleFormat.ConsoleTest
 
             //new ConsoleRenderTarget().Render(buffer);
             //new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BackgroundOverride = ConsoleColor.Black }.Render(buffer);
-            using (var file = File.Create("../../Tmp/1.html"))
+            using (var file = File.Create("../Tmp/1.html"))
                 new HtmlRenderTarget(file, new UTF8Encoding(false)).Render(buffer);
-            using (var file = new StreamWriter(File.Create("../../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" })
+            using (var file = new StreamWriter(File.Create("../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" })
                 new AnsiRenderTarget(file).Render(buffer);
-            using (var file = File.Create("../../Tmp/1.txt"))
+            using (var file = File.Create("../Tmp/1.txt"))
                 new TextRenderTarget(file).Render(buffer);
-            using (var file = File.Create("../../Tmp/1.asc"))
+            using (var file = File.Create("../Tmp/1.asc"))
                 new TextRenderTarget(file, Encoding.GetEncoding("ibm437")).Render(buffer);
 
             /*var text = new TextRenderTarget();
