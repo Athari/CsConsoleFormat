@@ -6,6 +6,7 @@
     <BaseOutputPath>$(SolutionDir)Bin\</BaseOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
+    <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
@@ -13,16 +14,19 @@
   <PropertyGroup>
     <TargetFrameworks>net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>netstandard2.0</TargetFramework>-->
+    <TargetFrameworkId>.NETFramework</TargetFrameworkId>
+    <TargetFrameworkId Condition="$(TargetFramework.StartsWith('netstandard'))">.NETStandard</TargetFrameworkId>
+
     <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
-    <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DefineConstants>XAML;JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);TRACE</DefineConstants>
 
     <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
 
     <EnableDefaultItems>false</EnableDefaultItems>
     <DisableImplicitFrameworkDefines>true</DisableImplicitFrameworkDefines>
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,19 +37,19 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+  <!-- .NET Standard Common -->
+  <PropertyGroup Condition="'$(TargetFrameworkId)' == '.NETStandard'">
+    <DefineConstants>$(DefineConstants);NET_STANDARD;PORTABLE_XAML</DefineConstants>
   </PropertyGroup>
 
-  <!-- .NET Standard Common -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETStandard'">
     <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
     <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
   </ItemGroup>
 
   <!-- .NET Standard 1.3 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD;NET_STANDARD_13;XAML;PORTABLE_XAML</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_STANDARD_13</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
@@ -54,7 +58,7 @@
 
   <!-- .NET Standard 2.0 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD;NET_STANDARD_20;XAML;PORTABLE_XAML</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_STANDARD_20</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -62,11 +66,12 @@
   </ItemGroup>
 
   <!-- .NET Framework Common -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
+  <PropertyGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <DefineConstants>$(DefineConstants);NET_FULL;SYSTEM_XAML</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+  <ItemGroup Condition="'$(TargetFrameworkId)' == '.NETFramework'">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,7 +81,7 @@
 
   <!-- .NET Framework 4.0 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <DefineConstants>$(DefineConstants);NET_FULL;NET_40;XAML;SYSTEM_XAML</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_40</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">

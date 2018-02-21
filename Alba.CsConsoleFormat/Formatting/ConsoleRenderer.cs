@@ -72,6 +72,10 @@ namespace Alba.CsConsoleFormat
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
         {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+            if (resourceName == null)
+                throw new ArgumentNullException(nameof(resourceName));
             return ReadElementFromResource<TElement>(type.GetAssembly(), $"{type.Namespace}.{resourceName}", dataContext, settings);
         }
 
