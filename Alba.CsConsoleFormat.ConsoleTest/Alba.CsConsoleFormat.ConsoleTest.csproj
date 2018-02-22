@@ -8,7 +8,7 @@
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
   </PropertyGroup>
 
-  <Import Project="$(SolutionDir)Build\Settings.props" />
+  <Import Project="$(ProjectDir)..\Build\Settings.props" />
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <ItemGroup>

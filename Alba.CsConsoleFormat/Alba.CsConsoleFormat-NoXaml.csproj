@@ -8,11 +8,11 @@
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
   </PropertyGroup>
 
-  <Import Project="$(SolutionDir)Build\Settings.props" />
+  <Import Project="$(ProjectDir)..\Build\Settings.props" />
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <Description>
       Library for advanced formatting of console/terminal output.
       Format output like HTML using .NET DSL (like LINQ to XML).

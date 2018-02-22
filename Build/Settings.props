@@ -2,6 +2,7 @@
 
   <!-- Output directories -->
   <PropertyGroup>
+    <SolutionDir Condition="'$(MSBuildThisFile)' != 'Alba.CsConsoleFormat.sln'">$(ProjectFile)..\</SolutionDir>
     <BaseIntermediateOutputPath>$(SolutionDir)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
     <BaseOutputPath>$(SolutionDir)Bin\</BaseOutputPath>

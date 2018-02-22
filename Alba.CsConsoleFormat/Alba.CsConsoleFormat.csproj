@@ -9,11 +9,11 @@
     <DefineConstants>XAML</DefineConstants>
   </PropertyGroup>
 
-  <Import Project="$(SolutionDir)Build\Settings.props" />
+  <Import Project="$(ProjectDir)..\Build\Settings.props" />
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <Description>
       Library for advanced formatting of console/terminal output.
       Format output like HTML using either .NET DSL (like LINQ to XML), or XAML with bindings (like WPF).
