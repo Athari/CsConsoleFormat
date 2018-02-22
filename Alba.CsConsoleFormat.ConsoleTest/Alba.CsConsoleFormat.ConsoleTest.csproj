@@ -12,14 +12,15 @@
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.ColorfulConsole\Alba.CsConsoleFormat.ColorfulConsole.csproj" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Compile Include="**/*.cs" />
-    <Compile Include="$(SolutionDir)\Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
     <EmbeddedResource Include="**/*.xaml" />
   </ItemGroup>
 

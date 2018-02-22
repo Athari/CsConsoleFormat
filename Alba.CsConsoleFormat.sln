@@ -3,45 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}"
-	ProjectSection(SolutionItems) = preProject
-		Analysis\AlbaLibrary.ruleset = Analysis\AlbaLibrary.ruleset
-		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
-		Build\Common.targets = Build\Common.targets
-		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
-		Build\Settings.props = Build\Settings.props
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".git", ".git", "{77664CCE-A151-4179-9ED3-9786F72E11BF}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{B82057D6-FEAE-4361-8A97-6C5C896EFB3C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}"
 	ProjectSection(SolutionItems) = preProject
-		License.md = License.md
-		ReadMe.md = ReadMe.md
+		Build\Settings.props = Build\Settings.props
+		Build\Common.targets = Build\Common.targets
+		Analysis\AlbaLibrary.ruleset = Analysis\AlbaLibrary.ruleset
+		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
+		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Presentation", "Alba.CsConsoleFormat.Presentation\Alba.CsConsoleFormat.Presentation.csproj", "{83367422-0496-4917-93F7-C8133DF13435}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.Presentation", "Alba.CsConsoleFormat.Sample.Presentation\Alba.CsConsoleFormat.Sample.Presentation.csproj", "{967BD562-1463-4851-8941-B48BA96B0FD8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{16537D22-E855-4762-8F15-EDABC1D1FB28}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Tests", "Alba.CsConsoleFormat.Tests\Alba.CsConsoleFormat.Tests.csproj", "{4184EFCD-D6BA-485E-B693-039D796A1979}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Testing", "Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj", "{35DB30E3-3113-43BB-9748-1738D0D76D16}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC13AEB-C99F-4A75-A5EB-366AF8636C32}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.ProcessManager", "Alba.CsConsoleFormat.Sample.ProcessManager\Alba.CsConsoleFormat.Sample.ProcessManager.csproj", "{99A14C98-3634-47FC-8919-975FC3757B57}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat-NoXaml", "Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj", "{D8A1DBC6-E015-4153-829C-013AB79825D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.ConsoleTest", "Alba.CsConsoleFormat.ConsoleTest\Alba.CsConsoleFormat.ConsoleTest.csproj", "{17239990-88F0-47BC-964E-F75B5CC7DD8D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WpfProjectSystem", "WpfProjectSystem", "{34A0F021-4AE4-4E5E-AEEA-09AC770FF8F7}"
 	ProjectSection(SolutionItems) = preProject
@@ -55,6 +29,34 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{F58D1BD5
 		Build\WpfProjectSystem\Rules\Page.xaml = Build\WpfProjectSystem\Rules\Page.xaml
 		Build\WpfProjectSystem\Rules\ProjectItemsSchema.xaml = Build\WpfProjectSystem\Rules\ProjectItemsSchema.xaml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{B82057D6-FEAE-4361-8A97-6C5C896EFB3C}"
+	ProjectSection(SolutionItems) = preProject
+		License.md = License.md
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat", "Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj", "{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat-NoXaml", "Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj", "{D8A1DBC6-E015-4153-829C-013AB79825D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat.ColorfulConsole", "Alba.CsConsoleFormat.ColorfulConsole\Alba.CsConsoleFormat.ColorfulConsole.csproj", "{B9735047-4457-4B62-8C47-80894A5C19AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Presentation", "Alba.CsConsoleFormat.Presentation\Alba.CsConsoleFormat.Presentation.csproj", "{83367422-0496-4917-93F7-C8133DF13435}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC13AEB-C99F-4A75-A5EB-366AF8636C32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.Presentation", "Alba.CsConsoleFormat.Sample.Presentation\Alba.CsConsoleFormat.Sample.Presentation.csproj", "{967BD562-1463-4851-8941-B48BA96B0FD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Sample.ProcessManager", "Alba.CsConsoleFormat.Sample.ProcessManager\Alba.CsConsoleFormat.Sample.ProcessManager.csproj", "{99A14C98-3634-47FC-8919-975FC3757B57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{16537D22-E855-4762-8F15-EDABC1D1FB28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.ConsoleTest", "Alba.CsConsoleFormat.ConsoleTest\Alba.CsConsoleFormat.ConsoleTest.csproj", "{17239990-88F0-47BC-964E-F75B5CC7DD8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Tests", "Alba.CsConsoleFormat.Tests\Alba.CsConsoleFormat.Tests.csproj", "{4184EFCD-D6BA-485E-B693-039D796A1979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.Testing", "Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj", "{35DB30E3-3113-43BB-9748-1738D0D76D16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,10 @@ Global
 		{17239990-88F0-47BC-964E-F75B5CC7DD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17239990-88F0-47BC-964E-F75B5CC7DD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17239990-88F0-47BC-964E-F75B5CC7DD8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9735047-4457-4B62-8C47-80894A5C19AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9735047-4457-4B62-8C47-80894A5C19AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9735047-4457-4B62-8C47-80894A5C19AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9735047-4457-4B62-8C47-80894A5C19AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

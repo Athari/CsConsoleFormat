@@ -4,7 +4,7 @@
     <TargetFrameworks>net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>netstandard1.3</TargetFramework>-->
     <LangVersion>latest</LangVersion>
-    <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
+    <RootNamespace>Alba.CsConsoleFormat.ColorfulConsole</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
     <DefineConstants>XAML</DefineConstants>
   </PropertyGroup>
@@ -15,16 +15,15 @@
   <PropertyGroup>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
     <Description>
-      Library for advanced formatting of console/terminal output.
-      Format output like HTML using either .NET DSL (like LINQ to XML), or XAML with bindings (like WPF).
-      Supports paragraphs, lists, grids, Unicode formatting, drawing, export to various formats and much more.
+      Colorful.Console adapter of Alba.CsConsoleFormat.
+      Supports rendering FIGlet fonts.
     </Description>
-    <PackageTags>$(PackageTags);xml;xaml</PackageTags>
+    <PackageTags>$(PackageTags);xml;xaml;colorful;figlet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*" />
-    <Compile Include="Framework/Compatibility/*.all.*" />
+    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+    <Compile Include="**/*.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
@@ -32,17 +31,15 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
-    <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
     <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <Compile Include="Framework/Compatibility/*.netstandard13.*" />
+    <PackageReference Include="Colorful.Console" Version="[1.1.0,1.2.0)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Include="Framework/Compatibility/*.netstandard20.*" />
+    <PackageReference Include="Colorful.Console" Version="[1.2.1,)" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
@@ -50,15 +47,11 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="Colorful.Console" Version="[1.1.0,)" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Compile Include="Framework/Compatibility/*.net40.*" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

@@ -73,9 +73,9 @@ namespace Alba.CsConsoleFormat
 
         private IEnumerable<Element> Parents => this.TraverseList(e => e.Parent);
 
-        internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
-        internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
-        internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
+        protected internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
+	    protected internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
+	    protected internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
         #if XAML
         protected override void UpdateDataContext()

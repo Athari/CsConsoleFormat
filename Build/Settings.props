@@ -47,7 +47,7 @@
     <PackageIconUrl>$(PackageProjectUrl)/raw/master/Docs/Images/CsConsoleFormatIcon256.png</PackageIconUrl>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>console;terminal;shell;command line;format;html;ascii</PackageTags>
+    <PackageTags>cross-platform;console;terminal;shell;command-line;format;html;ascii</PackageTags>
   </PropertyGroup>
 
   <!-- .NET 3.5 workaround -->

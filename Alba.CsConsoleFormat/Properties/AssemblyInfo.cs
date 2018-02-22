@@ -17,5 +17,6 @@ using Portable.Xaml.Markup;
 [assembly: XmlnsDefinition("urn:alba:cs-console-format", "Alba.CsConsoleFormat.Markup")]
 #endif
 
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.ColorfulConsole")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests")]

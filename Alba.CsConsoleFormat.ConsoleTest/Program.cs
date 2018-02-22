@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Alba.CsConsoleFormat.ColorfulConsole;
 using JetBrains.Annotations;
 using static System.ConsoleColor;
 using static Alba.CsConsoleFormat.Chars;
@@ -83,7 +84,9 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             /*if (MemoryProfiler.IsActive)
                 MemoryProfiler.Dump();*/
 
-            Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType(), "Markup.xaml", data);
+            Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType(), "Markup.xaml", data, new XamlElementReaderSettings {
+                ReferenceAssemblies = { typeof(FigletDiv).Assembly }
+            });
             //Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType().Assembly, "Alba.CsConsoleFormat.ConsoleTest.Markup.xaml", data);
             Console.WriteLine("XAML");
             ConsoleRenderer.RenderDocument(xamlDoc);
@@ -273,7 +276,17 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Border { Width = 38, Height = 20, Padding = 1, Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
                                 .Set(Canvas.LeftProperty, 21).Set(Canvas.TopProperty, 11)
                                 .AddChildren(LoremIpsumWordWrapWithSoftHyphens(data))
-                        )
+                        ),
+                    new FigletDiv {
+                        Text = "BuilderFIGlet",
+                        ColorGradient = new FigletGradient {
+                            GradientStops = {
+                                new FigletGradientStop(White, 0),
+                                new FigletGradientStop(Yellow),
+                                new FigletGradientStop(DarkYellow, 3),
+                            },
+                        },
+                    }
                 );
         }
 
