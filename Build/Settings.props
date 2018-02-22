@@ -32,6 +32,11 @@
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
+  <!-- WPF-specific properties -->
+  <PropertyGroup Condition="$(ProjectGuid.ToLower().Contains('83367422-0496-4917-93f7-c8133df13435'))">
+    <CustomProjectExtensionsPath>$(SolutionDir)Build\WpfProjectSystem\</CustomProjectExtensionsPath>
+  </PropertyGroup>
+
   <!-- NuGet package properties -->
   <PropertyGroup>
     <Version>0.9.0</Version>

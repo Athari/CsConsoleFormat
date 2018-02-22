@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- WPF project type based on https://github.com/aienabled/WpfNewProjectSystemSample -->
+  <ItemGroup>
+    <ProjectCapability Include="DynamicDependentFile" />
+    <ProjectCapability Include="WindowsXaml;WindowsXamlPage;WindowsXamlCodeBehind;WindowsXamlResourceDictionary;WindowsXamlUserControl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- This is a workaround for issue described in https://github.com/Microsoft/VSProjectSystem/issues/261 -->
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.xaml" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\ProjectItemsSchema.xaml;" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\Page.xaml;" Context="File;BrowseObject" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\ApplicationDefinition.xaml;" Context="File;BrowseObject" />
+  </ItemGroup>
+
+  <!-- Workaround to fix Intellisense file generation for XAML projects https://github.com/dotnet/project-system/issues/2488 -->
+  <Target Name="WorkaroundForXAMLIntellisenseBuildIssue" AfterTargets="_CheckCompileDesignTimePrerequisite">
+    <PropertyGroup>
+      <BuildingProject>false</BuildingProject>
+    </PropertyGroup>
+  </Target>
+
+  <!-- workaround for issue #4 from https://github.com/dotnet/sdk/issues/810#issuecomment-295642279 -->
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+
+</Project>

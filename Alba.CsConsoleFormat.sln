@@ -43,6 +43,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat-NoXaml
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alba.CsConsoleFormat.ConsoleTest", "Alba.CsConsoleFormat.ConsoleTest\Alba.CsConsoleFormat.ConsoleTest.csproj", "{17239990-88F0-47BC-964E-F75B5CC7DD8D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WpfProjectSystem", "WpfProjectSystem", "{34A0F021-4AE4-4E5E-AEEA-09AC770FF8F7}"
+	ProjectSection(SolutionItems) = preProject
+		Build\WpfProjectSystem\WpfProject.props = Build\WpfProjectSystem\WpfProject.props
+		Build\WpfProjectSystem\WpfProject.targets = Build\WpfProjectSystem\WpfProject.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rules", "Rules", "{F58D1BD5-E5DF-4289-9D42-25519CEE0504}"
+	ProjectSection(SolutionItems) = preProject
+		Build\WpfProjectSystem\Rules\ApplicationDefinition.xaml = Build\WpfProjectSystem\Rules\ApplicationDefinition.xaml
+		Build\WpfProjectSystem\Rules\Page.xaml = Build\WpfProjectSystem\Rules\Page.xaml
+		Build\WpfProjectSystem\Rules\ProjectItemsSchema.xaml = Build\WpfProjectSystem\Rules\ProjectItemsSchema.xaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +104,8 @@ Global
 		{35DB30E3-3113-43BB-9748-1738D0D76D16} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 		{99A14C98-3634-47FC-8919-975FC3757B57} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
 		{17239990-88F0-47BC-964E-F75B5CC7DD8D} = {1EC13AEB-C99F-4A75-A5EB-366AF8636C32}
+		{34A0F021-4AE4-4E5E-AEEA-09AC770FF8F7} = {223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}
+		{F58D1BD5-E5DF-4289-9D42-25519CEE0504} = {34A0F021-4AE4-4E5E-AEEA-09AC770FF8F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4304DB63-2FFC-4F63-B1B8-926E64D576FD}

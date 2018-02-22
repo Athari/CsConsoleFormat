@@ -1,102 +1,45 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project>
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{83367422-0496-4917-93F7-C8133DF13435}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ProjectGuid>83367422-0496-4917-93f7-c8133df13435</ProjectGuid>
+    <!--<TargetFrameworks>net40</TargetFrameworks>-->
+    <TargetFramework>net40</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.Presentation</RootNamespace>
-    <AssemblyName>Alba.CsConsoleFormat.Presentation</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
+    <CodeAnalysisLevel>Library</CodeAnalysisLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
+
+  <Import Project="$(ProjectDir)..\Build\Settings.props" />
+  <Import Project="$(CustomProjectExtensionsPath)WpfProject.props" />
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+    <Description>
+      WPF module of Alba.CsConsoleFormat.
+      WPF control for rendering console documents. Output images to console. Export to FixedDocument, FlowDocument, RTF and XPS.
+    </Description>
+    <PackageTags>$(PackageTags);xml;xaml;wpf;image;bitmap;rtf;xps</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ReachFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Printing" />
-    <Reference Include="System.Xml" />
+    <Compile Include="**/*.cs" />
+    <Page Include="**\*.xaml" Generator="MSBuild:Compile" SubType="Designer" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
+    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Core\Enums\Stretch.cs" />
-    <Compile Include="Core\Enums\StretchDirection.cs" />
-    <Compile Include="Core\FontDefaults.cs" />
-    <Compile Include="Elements\Image.cs" />
-    <Compile Include="Formatting\ConsoleBufferImageExts.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Markup\DocumentConverter.cs" />
-    <Compile Include="RenderTargets\FlowDocumentRenderTarget.cs" />
-    <Compile Include="RenderTargets\RtfRenderTarget.cs" />
-    <Compile Include="RenderTargets\XpsRenderTarget.cs" />
-    <Compile Include="Core\Enums\PresentationDocumentType.cs" />
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Controls\ConsoleView.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="RenderTargets\DocumentRenderTargetBase.cs" />
-    <Compile Include="RenderTargets\FixedDocumentRenderTarget.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj">
-      <Project>{15DF9206-BC6B-43B5-9B45-9F50B32C00F2}</Project>
-      <Name>Alba.CsConsoleFormat</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDictionary Include="..\Analysis\CustomDictionary.xml">
-      <Link>Properties\CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <Import Project="$(CustomProjectExtensionsPath)WpfProject.targets" />
+
 </Project>
