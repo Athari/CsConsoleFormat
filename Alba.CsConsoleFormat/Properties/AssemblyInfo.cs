@@ -18,5 +18,6 @@ using Portable.Xaml.Markup;
 #endif
 
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.ColorfulConsole")]
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.ColorfulConsole-NoXaml")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests")]

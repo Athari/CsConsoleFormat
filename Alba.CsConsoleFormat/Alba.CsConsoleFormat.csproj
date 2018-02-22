@@ -32,12 +32,12 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
     <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
     <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
     <Compile Include="Framework/Compatibility/*.netstandard13.*" />
   </ItemGroup>
 

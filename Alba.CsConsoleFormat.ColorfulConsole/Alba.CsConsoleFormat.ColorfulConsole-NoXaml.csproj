@@ -6,7 +6,6 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.ColorfulConsole</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
-    <DefineConstants>XAML</DefineConstants>
   </PropertyGroup>
 
   <Import Project="$(ProjectDir)..\Build\Settings.props" />
@@ -18,7 +17,7 @@
       Colorful.Console adapter of Alba.CsConsoleFormat.
       Supports rendering FIGlet fonts.
     </Description>
-    <PackageTags>$(PackageTags);xml;xaml;colorful;figlet</PackageTags>
+    <PackageTags>$(PackageTags);colorful;figlet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,16 +25,12 @@
     <Compile Include="**/*.cs" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <DefineConstants>$(DefineConstants);PORTABLE_XAML</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" Version="[4.1.0,)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.1.0,)" />
     <PackageReference Include="Colorful.Console" Version="[1.1.0,1.2.0)" />
   </ItemGroup>
 
@@ -43,15 +38,10 @@
     <PackageReference Include="Colorful.Console" Version="[1.2.1,)" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);SYSTEM_XAML</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
     <PackageReference Include="Colorful.Console" Version="[1.1.0,)" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
   </ItemGroup>
 

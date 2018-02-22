@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.1.0,)" />
     <Compile Include="Framework/Compatibility/*.netstandard13.*" />
   </ItemGroup>
 
