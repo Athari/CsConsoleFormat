@@ -1,3 +1,5 @@
+<img align="right" width="128" src="Docs/Images/CsConsoleFormatIcon256.png" style="margin: 0 20px">
+
 *CsConsoleFormat: advanced formatting of console output for .NET*
 =================================================================
 
@@ -33,7 +35,7 @@ The code quickly becomes an unreadable mess. It's just not fun! In GUI, we have 
 
 *CsConsoleFormat to the rescue!*
 
-Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're two syntaxes, you can use any of them in any combination.
+Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're two syntaxes, you can use either.
 
 **XAML** (like WPF):
 
@@ -128,33 +130,90 @@ Features
 * **Multiple syntaxes** (see examples above):
     * **Like WPF**: XAML with one-time bindings, resources, converters, attached properties, loading documents from assembly resources.
     * **Like LINQ to XML**: C# with object initializers, setting attached properties via extension methods or indexers, adding children elements by collapsing enumerables and converting objects and strings to elements.
-* **Drawing**: geometric primitives (lines, rectangles) using box-drawing characters, color transformations (dark, light), text.
+* **Drawing**: geometric primitives (lines, rectangles) using box-drawing characters, color transformations (dark, light), text, images.
 * **Internationalization**: cultures are respected on every level and can be customized per-element.
-* **Export** to many formats: ANSI text, unformatted text, HTML; RTF, XPF, WPF FixedDocument, WPF FlowDocument (requires WPF).
-* **JetBrains R# annotations**: CanBeNull, NotNull, ValueProvider.
-* **WPF** document control, document converter, image importer (pre-alpha).
+* **Export** to many formats: ANSI text, unformatted text, HTML; RTF, XPF, WPF FixedDocument, WPF FlowDocument.
+* **JetBrains ReSharper annotations**: CanBeNull, NotNull, ValueProvider, Pure etc.
+* **WPF** document control, document converter.
 
 Getting started
 ===============
 
-TODO
+1. Install NuGet package `Alba.CsConsoleFormat` using Package Manager:
 
-Which syntax to choose?
-=======================
+        PM> Install-Package Alba.CsConsoleFormat
 
-**XAML** (like WPF) forces clear separation of views and models which is good thing. However, it isn't strongly typed, so it's easy to get runtime error. Syntax wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Wide"`).
+    or .NET CLI:
+
+        > dotnet add package Alba.CsConsoleFormat
+
+2. Add `using Alba.CsConsoleFormat;` to your .cs file.
+
+3. If you're going to use ASCII graphics on Windows, set `Console.OutputEncoding = Encoding.UTF8;`.
+
+4. If you want to use XAML:
+
+    1. Add XAML file to your project. Set its build action to "Embedded Resource".
+    2. Load XAML using `ConsoleRenderer.ReadDocumentFromResource`.
+
+5. If you want to use pure C#:
+
+    1. Build a document in code starting with `Document` element as a root.
+
+6. Call `ConsoleRenderer.RenderDocument` on the generated document.
+
+Choosing syntax
+===============
+
+**XAML** (like WPF) forces clear separation of views and models which is a good thing. However, it isn't strongly typed, so it's easy to get runtime errors if not careful. Syntax-wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Wide"`).
 
 XAML library in Mono is currently very buggy. If you want to build a cross-platform application, using XAML may be problematic. However, if you need to support only Windows and are experienced in WPF, XAML should feel natural.
 
-XAML is only partially supported by Visual Studio + ReSharper: syntax highlighting and code completion work, but almost the whole document is highlighted as containing numerous errors.
+XAML is only partially supported by Visual Studio + ReSharper: syntax highlighting and code completion work, but library-specific markup extensions are't understood by code completion, so incorrect errors may be displayed.
 
 **C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using `AddChildren(params object[])` extension method (which is optional).
 
-Building documents in the code is fully supported, but currently there's a bug in ReSharper 9 which causes large documents to consume lots of CPU in Visual Studio 2015.
+Building documents in code is fully supported by IDE, but code completion may cause lags if documents are built with huge single statements.
+
+Framework Compatibility
+=======================
+
+The library contains the following packages:
+* **Alba.CsConsoleFormat**: main library with XAML and bindings support.
+* **Alba.CsConsoleFormat-NoXaml**: main library without XAML and bindings support (also without Repeater element).
+* **Alba.CsConsoleFormat.Presentation**: WPF-dependent features, including WPF control, export to RTF etc.
+* **Alba.CsConsoleFormat.ColorfulConsole**: support for Coloful.Console's FIGlet fonts.
+* **Alba.CsConsoleFormat.ColorfulConsole-NoXaml**: Alba.CsConsoleFormat.ColorfulConsole which depends on Alba.CsConsoleFormat-NoXaml.
+
+The library supports the following targets:
+
+* **.NET Standard 2.0** *(Windows Vista; Core 2.0; Mono 5.4)*
+    * Alba.CsConsoleFormat (depends in Portable.Xaml)
+    * Alba.CsConsoleFormat-NoXaml
+    * Alba.CsConsoleFormat.ColorfulConsole
+    * Alba.CsConsoleFormat.ColorfulConsole-NoXaml
+* **.NET Standard 1.3** *(Windows Vista; Core 1.0; Mono 4.6)*
+    * Alba.CsConsoleFormat (depends in Portable.Xaml)
+    * Alba.CsConsoleFormat-NoXaml
+    * Alba.CsConsoleFormat.ColorfulConsole
+    * Alba.CsConsoleFormat.ColorfulConsole-NoXaml
+* **.NET Framework 4.0** *(Windows Vista)*
+    * Alba.CsConsoleFormat (depends in System.Xaml)
+    * Alba.CsConsoleFormat-NoXaml
+    * Alba.CsConsoleFormat.Presentation
+    * Alba.CsConsoleFormat.ColorfulConsole
+    * Alba.CsConsoleFormat.ColorfulConsole-NoXaml
+* **.NET Framework 3.5** *(Windows XP)*
+    * Alba.CsConsoleFormat-NoXaml
+
+*Notes:*
+
+1. Alba.CsConsoleFormat can be ported to .NET Framework 3.5 if someone actually needs it. It's just not worth the hassle otherwise as it requires changes to Portable.Xaml library.
+2. Alba.CsConsoleFormat-NoXaml can be supported on .NET Standard 1.0, Windows Phone 8.0 and other platforms, but they don't support console. WPF control belongs to the "just for fun" genre, but if somebody actually needs something like this on other platforms, it can be ported.
 
 License
 =======
-Copyright © 2014 Alexander Prokhorov
+Copyright © 2014–2018 Alexander "Athari" Prokhorov
 
 Licensed under the [Apache License, Version 2.0](License.md) (the "License");
 you may not use this file except in compliance with the License.
@@ -170,8 +229,22 @@ limitations under the License.
 
 Some parts of the library are based on ConsoleFramework © Igor Kostomin under MIT license.
 
+Related Projects
+================
+
+* [**ConsoleFramework**](http://elw00d.github.io/consoleframework) — fully-featured cross-platform console user interface framework. Using ConsoleFramework, you can create interactive user interface with mouse input, but its formatting capabilities are limited.
+
+    CsConsoleFormat includes more formatting features: inline text with support for Unicode, more layouts, more everything, so if you only need to output text, CsConsoleFormat is more appropriate. However, if you want an interactive user interface with windows, menus and buttons, ConsoleFramework is the only library out there which supports it.
+
+* [**Colorful.Console**](https://github.com/tomakita/Colorful.Console) — library for coloring text in console and ASCII-art fonts. Supports RGB colors on Windows, falls back to 16 colors on other platforms.
+
+    Colorful.Console offers more coloring features: RGB colors, text highlighting based on regular expressions, gradients. However, it falls flat if anything beyond coloring is required as its output is based on calling Console.WriteLine variations, so it suffers from the same basic problems as the standard System.Console. FIGlet fonts are supported by CsConsoleFormat through Colorful.Console, but there's no integration beyond that.
+
+* [**ConsoleTables**](https://github.com/khalidabuhakmeh/ConsoleTables) — simple library for printing tables. (There're several alternatives, but this one is the most popular.)
+
+    Almost all features of ConsoleTables are trivial to implement with CsConsoleFormat. ConsoleTables is limited to single-line cells and a few fixed formatting styles.
+
 Links
 =====
 
-* Related projects:
-    * [ConsoleFramework](http://elw00d.github.io/consoleframework/) — full-featured cross-platform console user interface framework. Using ConsoleFramework, you can create interactive user interface, but its formatting capabilities are limited.
+TODO
