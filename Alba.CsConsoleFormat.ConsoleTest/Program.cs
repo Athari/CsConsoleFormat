@@ -6,9 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Alba.CsConsoleFormat.ColorfulConsole;
+using Colorful;
 using JetBrains.Annotations;
 using static System.ConsoleColor;
 using static Alba.CsConsoleFormat.Chars;
+using Console = System.Console;
 
 // ReSharper disable AnnotateNotNullParameter
 // ReSharper disable ClassCanBeSealed.Global
@@ -69,7 +71,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new DataItem { Id = 22, Name = "Name 2.2", Value = "Value 2.2" },
                         }
                     },
-                }
+                },
+                Roman = FigletFont.Load(GetType().Assembly.GetManifestResourceStream(GetType(), "Resources.Roman.flf")),
             };
 
             /*if (MemoryProfiler.IsActive) {
@@ -189,6 +192,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
 
+        public FigletFont Roman { get; set; }
+        
         public static string Replace(string value, string to) => value.Replace("|", to);
         public static string Replace(string value, char to) => value.Replace('|', to);
         public static IEnumerable<string> ReplaceSplit(string value, string to) => Split(Replace(value, to));
@@ -286,6 +291,27 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                 new FigletGradientStop(DarkYellow, 3),
                             },
                         },
+                    },
+                    new FigletDiv {
+                        Text = "Roman!",
+                        FigletFont = data.Roman,
+                        Height = 8,
+                        ColorGradient = new FigletGradient {
+                            GradientStops = {
+                                new FigletGradientStop(White),
+                                new FigletGradientStop(Yellow),
+                                new FigletGradientStop(Green),
+                                new FigletGradientStop(DarkYellow),
+                                new FigletGradientStop(Yellow, 5),
+                                new FigletGradientStop(Green),
+                            },
+                        },
+                        BackgroundGradient = new FigletGradient {
+                            GradientStops = {
+                                new FigletGradientStop(),
+                                new FigletGradientStop(DarkBlue, 7),
+                            }
+                        }
                     }
                 );
         }

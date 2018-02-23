@@ -16,7 +16,7 @@ namespace Alba.CsConsoleFormat.ColorfulConsole
         {
             base.InsertItem(index, item);
             if (item.Offset == FigletGradientStop.AutoOffset)
-                item.Offset = _gradient.GradientStops.Max(s => s.Offset) + 1;
+                item.Offset = _gradient.GradientStops.Any() ? _gradient.GradientStops.Max(s => s.Offset) + 1 : 0;
         }
     }
 }

@@ -28,14 +28,14 @@ namespace Alba.CsConsoleFormat.ColorfulConsole
             if (FigletFont == null)
                 return Size.Empty;
             _lines = new Figlet(FigletFont).ToAscii(Text ?? "").ConcreteValue.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            return new Size(_lines.FirstOrDefault()?.Length ?? 0, _lines.Length);
+            return new Size(_lines.FirstOrDefault()?.Length ?? 0, _lines.Length - 1);
         }
 
         public override void Render(ConsoleBuffer buffer)
         {
             base.Render(buffer);
             ConsoleColor color = EffectiveColor, background = EffectiveBackground;
-            for (int i = 0; i < _lines.Length; i++) {
+            for (int i = 0; i < _lines.Length - 1; i++) {
                 string line = _lines[i];
                 buffer.FillBackgroundRectangle(0, i, line.Length, 1, BackgroundGradient?.GetColor(i) ?? background);
                 buffer.DrawString(0, i, ColorGradient?.GetColor(i) ?? color, line);

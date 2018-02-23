@@ -250,5 +250,9 @@
             </Repeater>
         </Div>
     </Repeater>
-    <colorful:FigletDiv Text="XAML FIGlet" ColorGradient="White 0; Yellow; DarkYellow 3"/>
+    <colorful:FigletDiv Text="XAML FIGlet"
+            ColorGradient="White 0; Yellow; DarkYellow 3"/>
+    <colorful:FigletDiv Text="Roman!" FigletFont="{Get Roman}" Height="8"
+            ColorGradient="White; Yellow; Green; DarkYellow; Yellow 5; Green"
+            BackgroundGradient="Inherit; DarkBlue 7"/>
 </Document>

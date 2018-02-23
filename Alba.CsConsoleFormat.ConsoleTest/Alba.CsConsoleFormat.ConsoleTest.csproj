@@ -21,7 +21,7 @@
     <Reference Include="System.Xml" />
     <Compile Include="**/*.cs" />
     <Compile Include="$(SolutionDir)Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
-    <EmbeddedResource Include="**/*.xaml" />
+    <EmbeddedResource Include="**/*.xaml; **/*.flf" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

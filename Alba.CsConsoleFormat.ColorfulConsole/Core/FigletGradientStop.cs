@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.ColorfulConsole
         public ConsoleColor? Color { get; set; }
         public int Offset { get; set; }
 
-        public FigletGradientStop()
+        public FigletGradientStop() : this(null)
         { }
 
         public FigletGradientStop(ConsoleColor? color, int offset = AutoOffset)
