@@ -1,0 +1,18 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Output directories -->
+  <PropertyGroup>
+    <SolutionDir Condition="'$(MSBuildThisFile)' != 'Alba.CsConsoleFormat.sln'">$(ProjectFile)..\</SolutionDir>
+    <BaseArtifactsPath>$(SolutionDir)Artifacts\</BaseArtifactsPath>
+
+    <BaseIntermediateOutputPath>$(BaseArtifactsPath)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(ArtifactsPathPostfix)</IntermediateOutputPath>
+    <BaseOutputPath>$(BaseArtifactsPath)Bin\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)\$(ArtifactsPathPostfix)</OutputPath>
+    <PackageOutputPath>$(BaseOutputPath)$(Configuration)\nuget\</PackageOutputPath>
+    <NuGetPackageRoot>$(BaseArtifactsPath)Packages\</NuGetPackageRoot>
+
+    <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
+  </PropertyGroup>
+
+</Project>

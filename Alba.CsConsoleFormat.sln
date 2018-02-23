@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33
 		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
 		Build\Common.targets = Build\Common.targets
 		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
+		NuGet.config = NuGet.config
+		Build\Settings.Dirs.props = Build\Settings.Dirs.props
 		Build\Settings.props = Build\Settings.props
 	EndProjectSection
 EndProject
@@ -78,6 +80,10 @@ Global
 		{B9735047-4457-4B62-8C47-80894A5C19AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9735047-4457-4B62-8C47-80894A5C19AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9735047-4457-4B62-8C47-80894A5C19AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83367422-0496-4917-93F7-C8133DF13435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83367422-0496-4917-93F7-C8133DF13435}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83367422-0496-4917-93F7-C8133DF13435}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,10 +108,6 @@ Global
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DB30E3-3113-43BB-9748-1738D0D76D16}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AFC0985-6970-4C55-B249-8D630E37F15C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

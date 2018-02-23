@@ -1,14 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- Output directories -->
-  <PropertyGroup>
-    <SolutionDir Condition="'$(MSBuildThisFile)' != 'Alba.CsConsoleFormat.sln'">$(ProjectFile)..\</SolutionDir>
-    <BaseIntermediateOutputPath>$(SolutionDir)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
-    <BaseOutputPath>$(SolutionDir)Bin\</BaseOutputPath>
-    <OutputPath>$(BaseOutputPath)$(Configuration)\</OutputPath>
-    <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
-  </PropertyGroup>
+  <Import Project="Settings.Dirs.props" />
 
   <!-- Common properties -->
   <PropertyGroup>
@@ -45,12 +37,19 @@
     <PackageProjectUrl>https://github.com/Athari/CsConsoleFormat</PackageProjectUrl>
     <PackageLicenseUrl>$(PackageProjectUrl)/blob/master/License.md</PackageLicenseUrl>
     <PackageIconUrl>$(PackageProjectUrl)/raw/master/Docs/Images/CsConsoleFormatIcon256.png</PackageIconUrl>
+    <PackageReleaseNotes>$(PackageProjectUrl)/blob/master/ReadMe.md</PackageReleaseNotes>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>cross-platform;console;terminal;shell;command-line;format;html;ascii</PackageTags>
+    <!--<ContentTargetFolders>content</ContentTargetFolders>-->
   </PropertyGroup>
 
-  <!-- .NET 3.5 workaround -->
+  <ItemGroup Condition="'$(Description)' != ''">
+    <Content Include="$(SolutionDir)*.md" Link="Content/%(Filename)%(Extension)" PackagePath="files/%(Filename)%(Extension)" />
+    <Content Include="$(SolutionDir)Docs/**/*" Link="Content/Docs/%(RecursiveDir)%(Filename)%(Extension)" PackagePath="files/Docs/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!-- HACK Workaround for MSBuild.Core .NET 3.5 bug -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
     <FrameworkPathOverride>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
   </PropertyGroup>
@@ -62,9 +61,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="$(SolutionDir)Analysis\CustomDictionary.xml">
-      <Link>Properties\CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="$(SolutionDir)Analysis\CustomDictionary.xml" Link="Properties\CustomDictionary.xml" />
   </ItemGroup>
 
 </Project>

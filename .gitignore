@@ -1,6 +1,7 @@
 .vs
 /TestResults
 /Tmp
+Artifacts/
 bin/
 obj/
 packages/
