@@ -13,7 +13,7 @@ namespace Alba.CsConsoleFormat.Tests
             var repeater = new Repeater();
             var doc = new Document().AddChildren(repeater);
 
-            new Action(() => RenderOn1x1(doc)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(doc)).Should().NotThrow();
         }
 
         [Fact]

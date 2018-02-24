@@ -21,8 +21,8 @@ namespace Alba.CsConsoleFormat.Tests
             const string width = nameof(width);
             const string height = nameof(height);
 
-            new Action(() => _ = Line.Horizontal(1, 2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(width);
-            new Action(() => _ = Line.Vertical(-1, -2, -10)).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(height);
+            new Action(() => _ = Line.Horizontal(1, 2, -10)).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(width);
+            new Action(() => _ = Line.Vertical(-1, -2, -10)).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(height);
         }
 
         [Fact]
@@ -40,8 +40,8 @@ namespace Alba.CsConsoleFormat.Tests
             Line horizontal = Line.Horizontal(1, 2, 10);
             Line vertical = Line.Vertical(-1, -2, 10);
 
-            new Action(() => horizontal.Width = -10).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(value);
-            new Action(() => vertical.Height = -10).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(value);
+            new Action(() => horizontal.Width = -10).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(value);
+            new Action(() => vertical.Height = -10).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(value);
         }
 
         [Fact]
@@ -52,8 +52,8 @@ namespace Alba.CsConsoleFormat.Tests
             Line horizontal = Line.Horizontal(1, 2, 10);
             Line vertical = Line.Vertical(-1, -2, 10);
 
-            new Action(() => horizontal.Height = 10).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(value);
-            new Action(() => vertical.Width = 10).ShouldThrow<ArgumentException>().Which.ParamName.Should().Be(value);
+            new Action(() => horizontal.Height = 10).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(value);
+            new Action(() => vertical.Width = 10).Should().Throw<ArgumentException>().Which.ParamName.Should().Be(value);
         }
 
         [Fact]

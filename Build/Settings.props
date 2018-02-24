@@ -12,15 +12,25 @@
   </PropertyGroup>
 
   <!-- Framework-specific properties -->
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != ''">
     <TargetFrameworkId>net</TargetFrameworkId>
     <TargetFrameworkId Condition="$(TargetFramework.StartsWith('netstandard'))">netstandard</TargetFrameworkId>
+    <TargetFrameworkId Condition="$(TargetFramework.StartsWith('netcoreapp'))">netcoreapp</TargetFrameworkId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <DefineConstants>$(DefineConstants);NET_STANDARD;$(TargetFramework.Replace('netstandard', 'NET_STANDARD_').Replace('.', ''))</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_STANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('netstandard', 'NET_STANDARD_').Substring(0, 14))X</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('netstandard', 'NET_STANDARD_').Replace('.', ''))</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netcoreapp'">
+    <DefineConstants>$(DefineConstants);NET_COREAPP</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('netcoreapp', 'NET_COREAPP_').Substring(0, 13))X</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('netcoreapp', 'NET_COREAPP_').Replace('.', ''))</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);NET_FULL;$(TargetFramework.Replace('net', 'NET_'))</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_FULL</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('net', 'NET_').Substring(0, 5))X</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('net', 'NET_'))</DefineConstants>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
@@ -45,8 +55,12 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Description)' != ''">
-    <Content Include="$(SolutionDir)*.md" Link="Content/%(Filename)%(Extension)" PackagePath="files/%(Filename)%(Extension)" />
-    <Content Include="$(SolutionDir)Docs/**/*" Link="Content/Docs/%(RecursiveDir)%(Filename)%(Extension)" PackagePath="files/Docs/%(RecursiveDir)%(Filename)%(Extension)" />
+    <Content Include="$(SolutionDir)*.md"
+        Link="Content/%(Filename)%(Extension)"
+        PackagePath="files/%(Filename)%(Extension)" />
+    <Content Include="$(SolutionDir)Docs/**/*"
+        Link="Content/Docs/%(RecursiveDir)%(Filename)%(Extension)"
+        PackagePath="files/Docs/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <!-- HACK Workaround for MSBuild.Core .NET 3.5 bug -->

@@ -20,47 +20,51 @@ namespace Alba.CsConsoleFormat.Tests
         public void NullArguments()
         {
             var type = GetType();
-            var assembly = type.Assembly;
+            var assembly = type.GetAssembly();
             var stream = Stream.Null;
-            var resourceName = "";
             var dataContext = new object();
             var document = new Document();
             var target = new TextRenderTarget();
             var buffer = new ConsoleBuffer(80);
             var renderRect = Rect.Empty;
 
+          #if XAML
+            var resourceName = "";
+
             new Action(() => ConsoleRenderer.ReadElementFromStream<Br>(null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(stream));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(stream));
             new Action(() => ConsoleRenderer.ReadElementFromResource<Br>((Assembly)null, resourceName, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(assembly));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(assembly));
             new Action(() => ConsoleRenderer.ReadElementFromResource<Br>(assembly, null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
             new Action(() => ConsoleRenderer.ReadElementFromResource<Br>((Type)null, resourceName, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(type));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(type));
             new Action(() => ConsoleRenderer.ReadElementFromResource<Br>(type, null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
             new Action(() => ConsoleRenderer.ReadDocumentFromStream(null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(stream));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(stream));
             new Action(() => ConsoleRenderer.ReadDocumentFromResource((Assembly)null, resourceName, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(assembly));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(assembly));
             new Action(() => ConsoleRenderer.ReadDocumentFromResource(assembly, null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
             new Action(() => ConsoleRenderer.ReadDocumentFromResource((Type)null, resourceName, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(type));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(type));
             new Action(() => ConsoleRenderer.ReadDocumentFromResource(type, null, dataContext))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(resourceName));
+          #endif
             new Action(() => ConsoleRenderer.RenderDocument(null))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
             new Action(() => ConsoleRenderer.RenderDocumentToBuffer(null, buffer, renderRect))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
             new Action(() => ConsoleRenderer.RenderDocumentToBuffer(document, null, renderRect))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(buffer));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(buffer));
             new Action(() => ConsoleRenderer.RenderDocumentToText(null, target))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(document));
             new Action(() => ConsoleRenderer.RenderDocumentToText(document, null))
-                .ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(target));
+                .Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(target));
         }
 
+        #if XAML
         [Fact]
         public void ReadElementFromStream()
         {
@@ -78,21 +82,21 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ReadElementFromResource()
         {
-            Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.Span}", null);
+            Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).GetAssembly(), $"{typeof(Res).Namespace}.{Res.Span}", null);
             span.Text.Should().Be("Foo");
         }
 
         [Fact]
         public void ReadElementFromResourceError()
         {
-            new Action(() => ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, "Oops", null))
-                .ShouldThrow<FileNotFoundException>().WithMessage("*Oops*not found*");
+            new Action(() => ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).GetAssembly(), "Oops", null))
+                .Should().Throw<FileNotFoundException>().WithMessage("*Oops*not found*");
         }
 
         [Fact]
         public void ReadElementFromResourceWithContext()
         {
-            Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.SpanWithContext}", "abc");
+            Span span = ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res).GetAssembly(), $"{typeof(Res).Namespace}.{Res.SpanWithContext}", "abc");
             span.Text.Should().Be("3");
         }
 
@@ -107,7 +111,7 @@ namespace Alba.CsConsoleFormat.Tests
         public void ReadElementFromResourceByTypeError()
         {
             new Action(() => ConsoleRenderer.ReadElementFromResource<Span>(typeof(Res), "Oops", null))
-                .ShouldThrow<FileNotFoundException>().WithMessage("*Oops*not found*");
+                .Should().Throw<FileNotFoundException>().WithMessage("*Oops*not found*");
         }
 
         [Fact]
@@ -134,14 +138,14 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ReadDocumentFromResource()
         {
-            Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.DocumentSpan}", null);
+            Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).GetAssembly(), $"{typeof(Res).Namespace}.{Res.DocumentSpan}", null);
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("Foo");
         }
 
         [Fact]
         public void ReadDocumentFromResourceWithContext()
         {
-            Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).Assembly, $"{typeof(Res).Namespace}.{Res.DocumentSpanWithContext}", "abc");
+            Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res).GetAssembly(), $"{typeof(Res).Namespace}.{Res.DocumentSpanWithContext}", "abc");
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("3");
         }
 
@@ -158,6 +162,8 @@ namespace Alba.CsConsoleFormat.Tests
             Document doc = ConsoleRenderer.ReadDocumentFromResource(typeof(Res), Res.DocumentSpanWithContext, "abc");
             doc.Children.Should().ContainSingle().Which.Should().BeOfType<Span>().Which.Text.Should().Be("3");
         }
+
+        #endif
 
         [Fact]
         public void RenderDocumentToString()

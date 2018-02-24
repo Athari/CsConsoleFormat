@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Xaml;
 using FluentAssertions;
 using Xunit;
+#if SYSTEM_XAML
+using System.Xaml;
+#else
+using Portable.Xaml;
+#endif
 
 namespace Alba.CsConsoleFormat.Tests
 {
@@ -26,9 +30,9 @@ namespace Alba.CsConsoleFormat.Tests
             var nameExpression = (IntPropertyExpression)(() => MyIntProperty);
             var identifier = new AttachableMemberIdentifier(typeof(AttachedPropertyTests), name);
 
-            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>((string)null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(name));
-            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>((IntPropertyExpression)null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(nameExpression));
-            new Action(() => _ = AttachedProperty.Get(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(identifier));
+            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>((string)null, 1)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(name));
+            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>((IntPropertyExpression)null, 1)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(nameExpression));
+            new Action(() => _ = AttachedProperty.Get(null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(identifier));
         }
 
         [Fact]
@@ -69,7 +73,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             const string Name = "MyPropertyRegisterDouble";
             _ = AttachedProperty.Register<AttachedPropertyTests, int>(Name);
-            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>(Name)).ShouldThrow<ArgumentException>()
+            new Action(() => _ = AttachedProperty.Register<AttachedPropertyTests, int>(Name)).Should().Throw<ArgumentException>()
                 .WithMessage("*already registered*").WithMessage($"*{typeof(AttachedPropertyTests).Name}*").WithMessage($"*{Name}*");
         }
 

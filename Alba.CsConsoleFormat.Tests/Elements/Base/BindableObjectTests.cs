@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Xaml;
+using System.Reflection;
 using Alba.CsConsoleFormat.Markup;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Xunit;
+#if SYSTEM_XAML
+using System.Xaml;
+#else
+using Portable.Xaml;
+#endif
 
 // ReSharper disable UseObjectOrCollectionInitializer
 namespace Alba.CsConsoleFormat.Tests
@@ -13,29 +18,37 @@ namespace Alba.CsConsoleFormat.Tests
     public sealed class BindableObjectTests
     {
         [Fact]
+        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        [SuppressMessage("ReSharper", "UnusedVariable")]
+        [SuppressMessage("ReSharper", "LocalNameCapturedOnly")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        public void NullArguments()
+        {
+            var obj = new MyBindableObject();
+            var property = obj.GetType().GetProperty(nameof(MyBindableObject.MyStringValue));
+
+          #if XAML
+            var getter = new GetExpression();
+
+            new Action(() => obj.Bind(null, getter)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj.Bind(property, null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(getter));
+          #endif
+            new Action(() => _ = obj.HasValue<int>(null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => _ = obj.GetValue<int>(null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj.ResetValue<int>(null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj.SetValue(null, 1)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj[null] = 1).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => _ = obj[null].As<int>()).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+        }
+
+        #if XAML
+
+        [Fact]
         public void EmptyDataContext()
         {
             var obj = new MyBindableObject();
 
-            new Action(() => obj.DataContext = null).ShouldNotThrow();
-        }
-
-        [Fact]
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-        public void NullArguments()
-        {
-            var obj = new MyBindableObject();
-            var getter = new GetExpression();
-            var property = obj.GetType().GetProperty(nameof(MyBindableObject.MyStringValue));
-
-            new Action(() => obj.Bind(null, getter)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj.Bind(property, null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(getter));
-            new Action(() => _ = obj.HasValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => _ = obj.GetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj.ResetValue<int>(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj.SetValue(null, 1)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj[null] = 1).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
-            new Action(() => obj[null].As<int>()).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(property));
+            new Action(() => obj.DataContext = null).Should().NotThrow();
         }
 
         [Fact]
@@ -65,9 +78,11 @@ namespace Alba.CsConsoleFormat.Tests
 
             obj.DataContext = data;
 
-            obj.MyStringValue.Should().Be(default(string));
-            obj.MyInt32Value.Should().Be(default(int));
+            obj.MyStringValue.Should().Be(default);
+            obj.MyInt32Value.Should().Be(default);
         }
+
+        #endif
 
         [Fact]
         public void Clone()
@@ -133,16 +148,6 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void SetValueWithSetProperty()
-        {
-            var obj = new MyBindableObject();
-
-            obj.As<IAttachedPropertyStore>().SetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, 2m);
-
-            AssertCustomValue(obj, 2m);
-        }
-
-        [Fact]
         public void ResetValue()
         {
             var obj = new MyBindableObject();
@@ -151,6 +156,17 @@ namespace Alba.CsConsoleFormat.Tests
             obj.ResetValue(MyBindableObject.AttachedDecimalProperty);
 
             AssertDefaultValue(obj, 1m);
+        }
+
+        #if XAML
+        [Fact]
+        public void SetValueWithSetProperty()
+        {
+            var obj = new MyBindableObject();
+
+            obj.As<IAttachedPropertyStore>().SetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, 2m);
+
+            AssertCustomValue(obj, 2m);
         }
 
         [Fact]
@@ -164,30 +180,38 @@ namespace Alba.CsConsoleFormat.Tests
             AssertDefaultValue(obj, 1m);
         }
 
+        #endif
+
         [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
         private static void AssertDefaultValue([NotNull] MyBindableObject obj, decimal expectedValue)
         {
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeFalse();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
             obj[MyBindableObject.AttachedDecimalProperty].Should().Be(expectedValue);
+
+          #if XAML
             obj.As<IAttachedPropertyStore>().PropertyCount.Should().Be(0);
             obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out object value);
             value.Should().Be(expectedValue);
+          #endif
         }
 
         [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
         private static void AssertCustomValue([NotNull] MyBindableObject obj, decimal expectedValue)
         {
-            var properties = new KeyValuePair<AttachableMemberIdentifier, object>[1];
-
             obj.HasValue(MyBindableObject.AttachedDecimalProperty).Should().BeTrue();
             obj.GetValue(MyBindableObject.AttachedDecimalProperty).Should().Be(expectedValue);
             obj[MyBindableObject.AttachedDecimalProperty].Should().Be(expectedValue);
+
+          #if XAML
+            var properties = new KeyValuePair<AttachableMemberIdentifier, object>[1];
+
             obj.As<IAttachedPropertyStore>().PropertyCount.Should().Be(1);
             obj.As<IAttachedPropertyStore>().TryGetProperty(MyBindableObject.AttachedDecimalProperty.Identifier, out object value);
             value.Should().Be(expectedValue);
             obj.As<IAttachedPropertyStore>().CopyPropertiesTo(properties, 0);
             properties[0].Should().Be(new KeyValuePair<AttachableMemberIdentifier, object>(MyBindableObject.AttachedDecimalProperty.Identifier, expectedValue));
+          #endif
         }
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]

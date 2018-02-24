@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var stack = new Stack();
 
-            new Action(() => RenderOn1x1(stack)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(stack)).Should().NotThrow();
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var stack = new Stack { Children = { new Div() } };
 
-            new Action(() => RenderOn1x1(stack)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(stack)).Should().NotThrow();
         }
 
         [Fact]

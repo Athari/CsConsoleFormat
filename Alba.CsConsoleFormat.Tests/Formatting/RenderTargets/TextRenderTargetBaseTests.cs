@@ -21,8 +21,8 @@ namespace Alba.CsConsoleFormat.Tests
             var output = Stream.Null;
             var buffer = new ConsoleBuffer(80);
 
-            new Action(() => new RenderTarget((Stream)null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(output));
-            new Action(() => new RenderTarget(output).Render(null)).ShouldThrow<ArgumentNullException>().Which.ParamName.Should().Be(nameof(buffer));
+            new Action(() => new RenderTarget((Stream)null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(output));
+            new Action(() => new RenderTarget(output).Render(null)).Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be(nameof(buffer));
         }
 
         [Fact]
@@ -32,13 +32,13 @@ namespace Alba.CsConsoleFormat.Tests
             {
                 var target = new RenderTarget(Stream.Null);
                 target.Dispose();
-                new Action(() => use(target)).ShouldThrow<ObjectDisposedException>();
+                new Action(() => use(target)).Should().Throw<ObjectDisposedException>();
             }
 
             var buffer = new ConsoleBuffer(80);
 
             AfterDispose(t => t.Render(buffer));
-            AfterDispose(t => t.OutputText.As<string>());
+            AfterDispose(t => _ = t.OutputText.As<string>());
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Alba.CsConsoleFormat.Tests
             var target = new RenderTarget(Stream.Null);
             target.Dispose();
 
-            new Action(() => target.Dispose()).ShouldNotThrow<Exception>();
+            new Action(() => target.Dispose()).Should().NotThrow<Exception>();
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Alba.CsConsoleFormat.Tests
             using (var target = new RenderTarget(stream, Encoding.ASCII))
                 target.Render(buffer);
 
-            stream.GetBuffer().Should().Equal((byte)'F', (byte)'o', (byte)'o');
+            stream.ToArray().Should().Equal((byte)'F', (byte)'o', (byte)'o');
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace Alba.CsConsoleFormat.Tests
             using (var target = new RenderTarget(stream))
                 target.Render(buffer);
 
-            stream.GetBuffer().Should().Equal((byte)'F', 0, (byte)'o', 0, (byte)'o', 0);
+            stream.ToArray().Should().Equal((byte)'F', 0, (byte)'o', 0, (byte)'o', 0);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Alba.CsConsoleFormat.Tests
             using (var target = new RenderTarget(stream, Encoding.ASCII, true))
                 target.Render(buffer);
 
-            stream.GetBuffer().Should().Equal((byte)'F', (byte)'o', (byte)'o');
+            stream.ToArray().Should().Equal((byte)'F', (byte)'o', (byte)'o');
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var target = new RenderTarget(TextWriter.Null);
 
-            new Action(() => target.OutputText.As<string>()).ShouldThrow<InvalidOperationException>().WithMessage($"*{nameof(StringWriter)}*");
+            new Action(() => _ = target.OutputText.As<string>()).Should().Throw<InvalidOperationException>().WithMessage($"*{nameof(StringWriter)}*");
         }
 
         private sealed class RenderTarget : TextRenderTargetBase

@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var dock = new Dock();
 
-            new Action(() => RenderOn1x1(dock)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(dock)).Should().NotThrow();
         }
 
         [Fact]

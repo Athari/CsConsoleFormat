@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var wrap = new Wrap();
 
-            new Action(() => wrap.ItemWidth = -1).ShouldThrow<ArgumentOutOfRangeException>();
+            new Action(() => wrap.ItemWidth = -1).Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var wrap = new Wrap();
 
-            new Action(() => wrap.ItemHeight = -1).ShouldThrow<ArgumentOutOfRangeException>();
+            new Action(() => wrap.ItemHeight = -1).Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var wrap = new Wrap();
 
-            new Action(() => RenderOn1x1(wrap)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(wrap)).Should().NotThrow();
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var wrap = new Wrap { Children = { new Div() } };
 
-            new Action(() => RenderOn1x1(wrap)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(wrap)).Should().NotThrow();
         }
 
         [Fact]

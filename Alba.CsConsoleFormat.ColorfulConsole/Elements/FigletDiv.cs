@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat.ColorfulConsole
 
         private string[] _lines;
 
-        [CanBeNull]
+        [CanBeNull, CLSCompliant(false)]
         public FigletFont FigletFont { get; set; } = DefaultFigletFont.Value;
 
         [CanBeNull]

@@ -10,7 +10,8 @@
     <BaseOutputPath>$(BaseArtifactsPath)Bin\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\$(ArtifactsPathPostfix)</OutputPath>
     <PackageOutputPath>$(BaseOutputPath)$(Configuration)\nuget\</PackageOutputPath>
-    <NuGetPackageRoot>$(BaseArtifactsPath)Packages\</NuGetPackageRoot>
+    <!-- HACK ReShaper's test discovery fails if package root is changed -->
+    <!--<NuGetPackageRoot>$(BaseArtifactsPath)Packages\</NuGetPackageRoot>-->
 
     <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
   </PropertyGroup>

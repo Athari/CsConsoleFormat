@@ -19,13 +19,13 @@ namespace Alba.CsConsoleFormat.Tests
             IList<ConsoleColor> colorMapInvalid = new ConsoleColor[15];
             ApplyColorMapCallback processChar = (ref ConsoleChar c) => { };
 
-            new Action(() => buffer.LineCharRenderer = null).ShouldThrow<ArgumentNullException>()
+            new Action(() => buffer.LineCharRenderer = null).Should().Throw<ArgumentNullException>()
                 .Which.ParamName.Should().Be("value");
-            new Action(() => buffer.ApplyColorMap(new Rect(), null, processChar)).ShouldThrow<ArgumentNullException>()
+            new Action(() => buffer.ApplyColorMap(new Rect(), null, processChar)).Should().Throw<ArgumentNullException>()
                 .Which.ParamName.Should().Be(nameof(colorMap));
-            new Action(() => buffer.ApplyColorMap(new Rect(), colorMapInvalid, processChar)).ShouldThrow<ArgumentException>()
+            new Action(() => buffer.ApplyColorMap(new Rect(), colorMapInvalid, processChar)).Should().Throw<ArgumentException>()
                 .Which.ParamName.Should().Be(nameof(colorMap));
-            new Action(() => buffer.ApplyColorMap(new Rect(), colorMap, null)).ShouldThrow<ArgumentNullException>()
+            new Action(() => buffer.ApplyColorMap(new Rect(), colorMap, null)).Should().Throw<ArgumentNullException>()
                 .Which.ParamName.Should().Be(nameof(processChar));
         }
 

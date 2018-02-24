@@ -59,7 +59,7 @@ namespace Alba.CsConsoleFormat.Tests
         [InlineData(0, 0, "0 0")]
         [InlineData(101, 2001, "101 2001")]
         [InlineData(-101, -2001, "-101 -2001")]
-        public void ToString(int px, int py, string str)
+        public void ConvertToString(int px, int py, string str)
         {
             var p = new Point(px, py);
 

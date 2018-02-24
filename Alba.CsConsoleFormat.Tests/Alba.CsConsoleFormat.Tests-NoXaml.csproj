@@ -5,10 +5,9 @@
     <!--<TargetFrameworks>netcoreapp2.0</TargetFrameworks>-->
 
     <LangVersion>latest</LangVersion>
-    <AssemblyName>Alba.CsConsoleFormat.Tests</AssemblyName>
+    <AssemblyName>Alba.CsConsoleFormat.Tests-NoXaml</AssemblyName>
     <RootNamespace>Alba.CsConsoleFormat.Tests</RootNamespace>
     <CodeAnalysisLevel>Tests</CodeAnalysisLevel>
-    <DefineConstants>XAML</DefineConstants>
   </PropertyGroup>
 
   <Import Project="$(ProjectDir)..\Build\Settings.props" />
@@ -17,7 +16,7 @@
   <ItemGroup>
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
 
-    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj" />
     <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj" />
 
     <PackageReference Include="FluentAssertions" Version="5.1.2" />
@@ -27,17 +26,11 @@
     <PackageReference Include="Xunit" Version="2.3.1" />
     <PackageReference Include="Xunit.Runner.VisualStudio" Version="2.3.1" />
 
-    <Compile Include="**/*.cs" />
-    <EmbeddedResource Include="**/*.xaml" Generator="MSBuild:Compile" SubType="Designer" />
+    <Compile Include="**/*.cs" Exclude="Base/BindableObjectTestsExts.cs; Elements/RepeaterTests.cs; Formatting/XamlElementReaderSettingsTests.cs; Framework/Reflection/*; Markup/*" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netcoreapp'">
-    <DefineConstants>$(DefineConstants);PORTABLE_XAML</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'netcoreapp'">
-    <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
-    <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" Version="[4.3.0,)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
@@ -45,15 +38,12 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);SYSTEM_XAML;HAS_INSTANCE_DESCRIPTOR</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_INSTANCE_DESCRIPTOR</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

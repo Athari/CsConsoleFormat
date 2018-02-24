@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Tests.Markup
 {
     public sealed class CallConverterExpressionTests
     {
-        private static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("en-us");
+        private static readonly CultureInfo Culture = new CultureInfo("en-us");
         private static readonly Foo Source = new Foo { Prefix = "A", Sub = new Foo { Prefix = "B" } };
 
         [Theory]

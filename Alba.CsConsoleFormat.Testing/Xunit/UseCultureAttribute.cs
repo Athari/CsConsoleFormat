@@ -32,17 +32,30 @@ namespace Alba.CsConsoleFormat.Testing.Xunit
 
         public override void Before(MethodInfo methodUnderTest)
         {
+          #if NET_FULL
             _originalCulture = Thread.CurrentThread.CurrentCulture;
             _originalUICulture = Thread.CurrentThread.CurrentUICulture;
 
             Thread.CurrentThread.CurrentCulture = Culture;
             Thread.CurrentThread.CurrentUICulture = UICulture;
+          #elif NET_STANDARD
+            _originalCulture = CultureInfo.CurrentCulture;
+            _originalUICulture = CultureInfo.CurrentUICulture;
+
+            CultureInfo.CurrentCulture = Culture;
+            CultureInfo.CurrentUICulture = UICulture;
+          #endif
         }
 
         public override void After(MethodInfo methodUnderTest)
         {
+          #if NET_FULL
             Thread.CurrentThread.CurrentCulture = _originalCulture;
             Thread.CurrentThread.CurrentUICulture = _originalUICulture;
+          #elif NET_STANDARD
+            CultureInfo.CurrentCulture = _originalCulture;
+            CultureInfo.CurrentUICulture = _originalUICulture;
+          #endif
         }
     }
 }

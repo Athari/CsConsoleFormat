@@ -15,7 +15,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid();
 
-            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).Should().NotThrow();
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid { Children = { new Div() } };
 
-            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).Should().NotThrow();
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var grid = new Grid { Columns = { new Column() } };
 
-            new Action(() => RenderOn1x1(grid)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(grid)).Should().NotThrow();
         }
 
         [UsedImplicitly]

@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var canvas = new Canvas();
 
-            new Action(() => RenderOn1x1(canvas)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(canvas)).Should().NotThrow();
         }
 
         [Fact]

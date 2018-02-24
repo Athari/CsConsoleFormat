@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var border = new Border();
 
-            new Action(() => RenderOn1x1(border)).ShouldNotThrow();
+            new Action(() => RenderOn1x1(border)).Should().NotThrow();
         }
 
         [Fact]
