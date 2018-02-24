@@ -1,5 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <PropertyGroup>
+    <IsFullSolutionBuild>$(MSBuildThisFile.EndsWith('.sln').ToString().ToLower())</IsFullSolutionBuild>
+  </PropertyGroup>
+
   <Import Project="Settings.Dirs.props" />
 
   <!-- Common properties -->
@@ -41,7 +45,8 @@
 
   <!-- NuGet package properties -->
   <PropertyGroup>
-    <Version>0.9.0</Version>
+    <VersionPrefix>0.9.0</VersionPrefix>
+    <VersionSuffixBase>alpha</VersionSuffixBase>
     <Authors>Athari</Authors>
     <Copyright>Copyright © 2014–$([System.DateTime]::Now.ToString(yyyy)) Alexander "Athari" Prokhorov</Copyright>
     <PackageProjectUrl>https://github.com/Athari/CsConsoleFormat</PackageProjectUrl>
@@ -55,10 +60,13 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Description)' != ''">
-    <Content Include="$(SolutionDir)*.md"
+    <Content
+        Include="$(SolutionDir)*.md"
         Link="Content/%(Filename)%(Extension)"
         PackagePath="files/%(Filename)%(Extension)" />
-    <Content Include="$(SolutionDir)Docs/**/*"
+    <Content
+        Include="$(SolutionDir)Docs/**/*"
+        Exclude="$(SolutionDir)Docs/**/*.NuGet.*"
         Link="Content/Docs/%(RecursiveDir)%(Filename)%(Extension)"
         PackagePath="files/Docs/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
@@ -70,12 +78,25 @@
 
   <!-- Code analysis -->
   <PropertyGroup>
-    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Library'">$(SolutionDir)Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Sample'">$(SolutionDir)Analysis\AlbaSample.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Library'">$(SolutionDir)Build\Analysis\AlbaLibrary.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisLevel)' == 'Sample'">$(SolutionDir)Build\Analysis\AlbaSample.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <CodeAnalysisDictionary Include="$(SolutionDir)Analysis\CustomDictionary.xml" Link="Properties\CustomDictionary.xml" />
+    <CodeAnalysisDictionary Include="$(SolutionDir)Build\Analysis\CustomDictionary.xml" Link="Properties\CustomDictionary.xml" />
   </ItemGroup>
+
+  <!-- AppVeyor -->
+  <!--<PropertyGroup Condition="'$(APPVEYOR)' == ''">
+    ~1~<AppVeyorArgRepoBranch>master</AppVeyorArgRepoBranch>@1@
+    <AppVeyorArgRepoBranch>feature-1-branch</AppVeyorArgRepoBranch>
+    ~1~<AppVeyorArgRepoTag>v0.8.1</AppVeyorArgRepoTag>@1@
+    <AppVeyorArgPullNumber>101</AppVeyorArgPullNumber>
+    <AppVeyorArgPullRepo>Pull-User/CsConsoleFormat-Clone</AppVeyorArgPullRepo>
+    <AppVeyorArgPullBranch>Pull Branch-Name</AppVeyorArgPullBranch>
+  </PropertyGroup>
+  <Import Project="Settings.AppVeyor.Emulate.props" />-->
+
+  <Import Project="Settings.AppVeyor.props" Condition="'$(APPVEYOR)' != ''" />
 
 </Project>

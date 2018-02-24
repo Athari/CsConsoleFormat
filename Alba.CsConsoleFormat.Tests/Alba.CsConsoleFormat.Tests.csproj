@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp1.0;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp1.1;netcoreapp2.0</TargetFrameworks>
     <!--<TargetFrameworks>netcoreapp2.0</TargetFrameworks>-->
 
     <LangVersion>latest</LangVersion>
@@ -40,7 +40,7 @@
     <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
     <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
   </ItemGroup>
 
@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
 
+  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
 </Project>

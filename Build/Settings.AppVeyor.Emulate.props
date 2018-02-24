@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <APPVEYOR>True</APPVEYOR>
+    <APPVEYOR_BUILD_NUMBER>1337</APPVEYOR_BUILD_NUMBER>
+    <APPVEYOR_REPO_NAME>CsConsoleFormat</APPVEYOR_REPO_NAME>
+    <APPVEYOR_REPO_BRANCH>$(AppVeyorArgRepoBranch)</APPVEYOR_REPO_BRANCH>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AppVeyorArgRepoTag)' != ''">
+    <APPVEYOR_REPO_TAG>true</APPVEYOR_REPO_TAG>
+    <APPVEYOR_REPO_TAG_NAME>$(AppVeyorArgRepoTag)</APPVEYOR_REPO_TAG_NAME>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(AppVeyorArgPullNumber)' != ''">
+    <APPVEYOR_PULL_REQUEST_NUMBER>$(AppVeyorArgPullNumber)</APPVEYOR_PULL_REQUEST_NUMBER>
+    <APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME>$(AppVeyorArgPullRepo)</APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME>
+    <APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH>$(AppVeyorArgPullBranch)</APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH>
+  </PropertyGroup>
+
+</Project>

@@ -12,8 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{223EAB33
 	ProjectSection(SolutionItems) = preProject
 		Build\Common.targets = Build\Common.targets
 		NuGet.config = NuGet.config
+		Build\Settings.AppVeyor.Emulate.props = Build\Settings.AppVeyor.Emulate.props
+		Build\Settings.AppVeyor.props = Build\Settings.AppVeyor.props
 		Build\Settings.Dirs.props = Build\Settings.Dirs.props
 		Build\Settings.props = Build\Settings.props
+		Build\Settings.targets = Build\Settings.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WpfProjectSystem", "WpfProjectSystem", "{34A0F021-4AE4-4E5E-AEEA-09AC770FF8F7}"
@@ -59,9 +62,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat.Testin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analysis", "Analysis", "{2158283F-6879-4CFC-9A03-55C5117F1408}"
 	ProjectSection(SolutionItems) = preProject
-		Analysis\AlbaLibrary.ruleset = Analysis\AlbaLibrary.ruleset
-		Analysis\AlbaSample.ruleset = Analysis\AlbaSample.ruleset
-		Analysis\CustomDictionary.xml = Analysis\CustomDictionary.xml
+		Build\Analysis\AlbaLibrary.ruleset = Build\Analysis\AlbaLibrary.ruleset
+		Build\Analysis\AlbaSample.ruleset = Build\Analysis\AlbaSample.ruleset
+		Build\Analysis\CustomDictionary.xml = Build\Analysis\CustomDictionary.xml
+		Build\Analysis\CustomDictionary.xsd = Build\Analysis\CustomDictionary.xsd
+		Build\Analysis\Inspection.DotSettings = Build\Analysis\Inspection.DotSettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat.Tests", "Alba.CsConsoleFormat.Tests\Alba.CsConsoleFormat.Tests.csproj", "{7B949EFD-C0D1-451E-83E5-68BFF6E553C7}"

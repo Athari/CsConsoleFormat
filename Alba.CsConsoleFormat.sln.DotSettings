@@ -1,9 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=02D5D4E17D695F46BC3DE9DFCA4AB6B9/@KeyIndexDefined">True</s:Boolean>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=02D5D4E17D695F46BC3DE9DFCA4AB6B9/AbsolutePath/@EntryValue">D:\Docs\Projects\CsConsoleFormat\Analysis\Inspection.DotSettings</s:String>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=02D5D4E17D695F46BC3DE9DFCA4AB6B9/RelativePath/@EntryValue">..\Analysis\Inspection.DotSettings</s:String>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File02D5D4E17D695F46BC3DE9DFCA4AB6B9/@KeyIndexDefined">True</s:Boolean>
 	
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File02D5D4E17D695F46BC3DE9DFCA4AB6B9/RelativePriority/@EntryValue">1</s:Double>
+	
+	
+	
+	
+	
 	<s:String x:Key="/Default/FilterSettingsManager/CoverageFilterXml/@EntryValue">&lt;data&gt;&lt;IncludeFilters /&gt;&lt;ExcludeFilters&gt;&lt;Filter ModuleMask="*" ModuleVersionMask="*" ClassMask="JetBrains.Annotations.*" FunctionMask="*" IsEnabled="True" /&gt;&lt;Filter ModuleMask="*.Tests" ModuleVersionMask="*" ClassMask="*" FunctionMask="*" IsEnabled="True" /&gt;&lt;Filter ModuleMask="*" ModuleVersionMask="*" ClassMask="System.*" FunctionMask="*" IsEnabled="True" /&gt;&lt;/ExcludeFilters&gt;&lt;/data&gt;</s:String>
 	<s:String x:Key="/Default/FilterSettingsManager/AttributeFilterXml/@EntryValue">&lt;data /&gt;</s:String></wpf:ResourceDictionary>

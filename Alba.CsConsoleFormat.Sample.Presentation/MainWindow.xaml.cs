@@ -20,17 +20,17 @@ namespace Alba.CsConsoleFormat.Sample.Presentation
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("fixed XPS"),
-                new XpsRenderTarget(File.Create("../../Tmp/0a.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FixedDocument },
+                new XpsRenderTarget(File.Create("../../../../Tmp/0a.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FixedDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("flow XPS"),
-                new XpsRenderTarget(File.Create("../../Tmp/0b.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FlowDocument },
+                new XpsRenderTarget(File.Create("../../../../Tmp/0b.xps")) { FontSize = 16, DocumentType = PresentationDocumentType.FlowDocument },
                 renderRect);
 
             ConsoleRenderer.RenderDocument(
                 CreateDocument("RTF"),
-                new RtfRenderTarget(File.Create("../../Tmp/0.rtf")) { FontSize = 16 },
+                new RtfRenderTarget(File.Create("../../../../Tmp/0.rtf")) { FontSize = 16 },
                 renderRect);
         }
 

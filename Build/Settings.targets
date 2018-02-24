@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Fix formatting in properties -->
+  <PropertyGroup>
+    <Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), '[ \r\n]+', ' '))</Description>
+    <Description>$(Description.Trim())</Description>
+  </PropertyGroup>
+
+  <!-- Trim ReadMe.md for NuGet -->
+  <Target Name="WriteReadMeForNuGet"
+      Inputs="$(SolutionDir)ReadMe.md"
+      Outputs="$(SolutionDir)Docs/ReadMe.NuGet.md"
+      BeforeTargets="Build">
+    <PropertyGroup>
+      <ReadMeNuGetText>$([System.IO.File]::ReadAllText('$(SolutionDir)ReadMe.md'))</ReadMeNuGetText>
+      <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace('$(ReadMeNuGetText)', '(?is)Choosing syntax.+(?=Links)', ''))</ReadMeNuGetText>
+    </PropertyGroup>
+    <WriteLinesToFile Lines="$(ReadMeNuGetText)" File="$(SolutionDir)Docs/ReadMe.NuGet.md" Overwrite="True" />
+  </Target>
+
+</Project>

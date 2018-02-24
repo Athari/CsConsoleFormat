@@ -40,6 +40,7 @@
     <Reference Include="ReachFramework" />
   </ItemGroup>
 
+  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
   <Import Project="$(CustomProjectExtensionsPath)WpfProject.targets" />
 
 </Project>

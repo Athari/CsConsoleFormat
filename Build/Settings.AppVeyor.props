@@ -1,0 +1,30 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <IsTagRelease>false</IsTagRelease>
+    <IsTagRelease Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(AppVeyor_Repo_Tag_Name)', '^v[0-9]+\.[0-9]+\.[0-9]+'))">true</IsTagRelease>
+
+    <!--<AppVeyorBuildNumber>$([System.Int32]::Parse($(AppVeyor_Build_Number)).ToString('0000'))</AppVeyorBuildNumber>-->
+    <AppVeyorBuildNumber>$(AppVeyor_Build_Number)</AppVeyorBuildNumber>
+    <AppVeyorRepo>$([System.Text.RegularExpressions.Regex]::Replace('$(AppVeyor_Repo_Name.ToLower())', '(?i)[^a-z0-9/]', '').Replace('/', '.'))</AppVeyorRepo>
+    <AppVeyorTag>$([System.Text.RegularExpressions.Regex]::Replace('$(AppVeyor_Repo_Tag_Name.ToLower())', '(?i)[^a-z0-9]', ''))</AppVeyorTag>
+    <AppVeyorTagVersion Condition="'$(IsTagRelease)' == 'true'">$(AppVeyor_Repo_Tag_Name.Substring(1))</AppVeyorTagVersion>
+    <AppVeyorBranch>$([System.Text.RegularExpressions.Regex]::Replace('$(AppVeyor_Repo_Branch.ToLower())', '(?i)[^a-z0-9]', ''))</AppVeyorBranch>
+    <AppVeyorPullNumber>$(AppVeyor_Pull_Request_Number)</AppVeyorPullNumber>
+    <AppVeyorPullRepo>$([System.Text.RegularExpressions.Regex]::Replace('$(AppVeyor_Pull_Request_Head_Repo_Name.ToLower())', '(?i)[^a-z0-9/]', '').Replace('/', '.'))</AppVeyorPullRepo>
+    <AppVeyorPullBranch>$([System.Text.RegularExpressions.Regex]::Replace('$(AppVeyor_Pull_Request_Head_Repo_Branch.ToLower())', '(?i)[^a-z0-9]', ''))</AppVeyorPullBranch>
+
+    <AppVeyorVersionSuffix Condition="'$(IsTagRelease)' == 'false' and '$(AppVeyorBranch)' == 'master'">$(VersionSuffixBase).$(AppVeyorBuildNumber)</AppVeyorVersionSuffix>
+    <AppVeyorVersionSuffix Condition="'$(IsTagRelease)' == 'false' and '$(AppVeyorBranch)' != 'master'">$(VersionSuffixBase).$(AppVeyorBranch).$(AppVeyorBuildNumber)</AppVeyorVersionSuffix>
+    <AppVeyorVersionSuffix Condition="'$(AppVeyorPullNumber)' != ''">$(AppVeyorVersionSuffix).pull.$(AppVeyorPullNumber).$(AppVeyorPullRepo).$(AppVeyorPullBranch)</AppVeyorVersionSuffix>
+
+    <VersionPrefix Condition="'$(IsTagRelease)' == 'true'">$(AppVeyorTagVersion)</VersionPrefix>
+    <VersionSuffix>$(AppVeyorVersionSuffix)</VersionSuffix>
+    <FileVersion>$(VersionPrefix).$(AppVeyorBuildNumber)</FileVersion>
+    <AssemblyVersion>$(VersionPrefix).$(AppVeyorBuildNumber)</AssemblyVersion>
+
+    <RepositoryBranch>$(AppVeyor_Repo_Branch)</RepositoryBranch>
+    <RepositoryCommit>$(AppVeyor_Repo_Commit)</RepositoryCommit>
+  </PropertyGroup>
+
+</Project>

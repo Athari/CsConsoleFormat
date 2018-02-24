@@ -24,6 +24,7 @@
     <EmbeddedResource Include="**/*.xaml; **/*.flf" />
   </ItemGroup>
 
+  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
 </Project>
