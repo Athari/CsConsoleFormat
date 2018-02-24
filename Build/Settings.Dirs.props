@@ -2,7 +2,7 @@
 
   <!-- Output directories -->
   <PropertyGroup>
-    <SolutionDir Condition="not $(IsFullSolutionBuild)">$(ProjectFile)..\</SolutionDir>
+    <SolutionDir Condition="'$(MSBuildThisFile)' != 'Alba.CsConsoleFormat.sln'">$(ProjectFile)..\</SolutionDir>
     <BaseArtifactsPath>$(SolutionDir)Artifacts\</BaseArtifactsPath>
 
     <BaseIntermediateOutputPath>$(BaseArtifactsPath)Obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
