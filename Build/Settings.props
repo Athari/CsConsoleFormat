@@ -41,7 +41,7 @@
 
   <!-- NuGet package properties -->
   <PropertyGroup>
-    <VersionPrefix>0.9.0</VersionPrefix>
+    <VersionPrefix>0.9.1</VersionPrefix>
     <VersionSuffixBase>alpha</VersionSuffixBase>
     <Authors>Athari</Authors>
     <Copyright>Copyright © 2014–$([System.DateTime]::Now.ToString(yyyy)) Alexander "Athari" Prokhorov</Copyright>
@@ -53,6 +53,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>cross-platform;console;terminal;shell;command-line;format;html;ascii</PackageTags>
     <!--<ContentTargetFolders>content</ContentTargetFolders>-->
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Description)' != ''">
