@@ -1,11 +1,9 @@
-<img align="right" width="128" src="Docs/Images/CsConsoleFormatIcon256.png" style="margin: 0 20px">
+![CsConsoleFormat Logo](Images/CsConsoleFormatIcon256.png)
 
 *CsConsoleFormat: advanced formatting of console output for .NET*
 =================================================================
 
 * [**GitHub repository**](https://github.com/Athari/CsConsoleFormat)
-
-[![AppVeyor Build master](https://ci.appveyor.com/api/projects/status/22dmoxknxw4l75dw/branch/master?svg=true)](https://ci.appveyor.com/project/Athari/csconsoleformat/branch/master)
 
 CsConsoleFormat is a library for formatting text in console based on documents resembling a mix of WPF and HTML: tables, lists, paragraphs, colors, word wrapping, lines etc. Like this:
 

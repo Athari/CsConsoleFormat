@@ -73,6 +73,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alba.CsConsoleFormat.Tests-NoXaml", "Alba.CsConsoleFormat.Tests\Alba.CsConsoleFormat.Tests-NoXaml.csproj", "{6BB75578-1237-4554-868C-870CD6A3F121}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EBA04052-A12A-4DCA-842F-26149298C1FD}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\ReadMe.NuGet.md = Docs\ReadMe.NuGet.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +142,7 @@ Global
 		{2158283F-6879-4CFC-9A03-55C5117F1408} = {223EAB33-87FE-46F8-BC1E-3BEC4DDE782E}
 		{7B949EFD-C0D1-451E-83E5-68BFF6E553C7} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
 		{6BB75578-1237-4554-868C-870CD6A3F121} = {16537D22-E855-4762-8F15-EDABC1D1FB28}
+		{EBA04052-A12A-4DCA-842F-26149298C1FD} = {B82057D6-FEAE-4361-8A97-6C5C896EFB3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4304DB63-2FFC-4F63-B1B8-926E64D576FD}

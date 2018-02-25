@@ -5,7 +5,24 @@
 
 * [**GitHub repository**](https://github.com/Athari/CsConsoleFormat)
 
-[![AppVeyor Build master](https://ci.appveyor.com/api/projects/status/22dmoxknxw4l75dw/branch/master?svg=true)](https://ci.appveyor.com/project/Athari/csconsoleformat/branch/master)
+[![GitHub license](https://img.shields.io/github/license/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![GitHub license](https://img.shields.io/github/languages/top/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![GitHub license](https://img.shields.io/github/languages/code-size/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![Badges](https://img.shields.io/badge/badges-15-lightgrey.svg)](http://shields.io/)
+<br>
+[![AppVeyor build master](https://img.shields.io/appveyor/ci/athari/csconsoleformat/master.svg?logo=appveyor)](https://ci.appveyor.com/project/Athari/csconsoleformat/branch/master)
+[![AppVeyor tests master](https://img.shields.io/appveyor/tests/athari/csconsoleformat/master.svg?logo=appveyor)](https://ci.appveyor.com/project/Athari/csconsoleformat/branch/master/tests)
+<br>
+[![GitHub release version](https://img.shields.io/github/release/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![GitHub release date](https://img.shields.io/github/release-date/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![GitHub commits since release](https://img.shields.io/github/commits-since/Athari/CsConsoleFormat/latest.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
+[![GitHub issues](https://img.shields.io/github/issues/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/pulls)
+<br>
+[![NuGet downloads](https://img.shields.io/nuget/dt/Alba.CsConsoleFormat.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMpJREFUeNqUkbENwjAQRY8ovZkgG5AJYALS0GaDMAGeACYIE7ABtFSZgEyAy3TegG/pR7IuToCTXuHTvTufvTo8h42InIAFTn6MDARxCwr5I3JOuYAuyhdsqCPU%2BFHslHQD9cKwI7jmKtlSsrz%2BPiGGGhOLBjSgAg/m3jO7nzMlSrSbiXLJV510A3dOi0X/TRTuNko9KMGaayyKcVSUhbtbLfoZ0SX%2BciL2CbFR5/DPXl91l5jcsjg0eHH3UouecqfyNRsIH8p9BBgAANInlRmoOxQAAAAASUVORK5CYII=)](https://www.nuget.org/packages/Alba.CsConsoleFormat)
+[![NuGet release version](https://img.shields.io/nuget/v/Alba.CsConsoleFormat.svg?label=release&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMpJREFUeNqUkbENwjAQRY8ovZkgG5AJYALS0GaDMAGeACYIE7ABtFSZgEyAy3TegG/pR7IuToCTXuHTvTufvTo8h42InIAFTn6MDARxCwr5I3JOuYAuyhdsqCPU%2BFHslHQD9cKwI7jmKtlSsrz%2BPiGGGhOLBjSgAg/m3jO7nzMlSrSbiXLJV510A3dOi0X/TRTuNko9KMGaayyKcVSUhbtbLfoZ0SX%2BciL2CbFR5/DPXl91l5jcsjg0eHH3UouecqfyNRsIH8p9BBgAANInlRmoOxQAAAAASUVORK5CYII=)](https://www.nuget.org/packages/Alba.CsConsoleFormat)
+[![MyGet downloads](https://img.shields.io/myget/athari/dt/Alba.CsConsoleFormat.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGZJREFUeNpi/P//PwM5gJFsjXKtDAFAmheINYFYGoiloLQmTI28pDHI9EVAvB6IN4AEWaAcYkAcFH8C4r1MZLiSD4gDmRjIBKMacYNTLNC4AQWxBjTikTEy2ANNBIspS3LkagQIMADeAxhiTKPYOgAAAABJRU5ErkJggg==)](https://www.myget.org/feed/Packages/athari)
+[![MyGet pre-release version](https://img.shields.io/myget/athari/vpre/Alba.CsConsoleFormat.svg?label=pre-release&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGZJREFUeNpi/P//PwM5gJFsjXKtDAFAmheINYFYGoiloLQmTI28pDHI9EVAvB6IN4AEWaAcYkAcFH8C4r1MZLiSD4gDmRjIBKMacYNTLNC4AQWxBjTikTEy2ANNBIspS3LkagQIMADeAxhiTKPYOgAAAABJRU5ErkJggg==)](https://www.myget.org/feed/Packages/athari)
 
 CsConsoleFormat is a library for formatting text in console based on documents resembling a mix of WPF and HTML: tables, lists, paragraphs, colors, word wrapping, lines etc. Like this:
 
