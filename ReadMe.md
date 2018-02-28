@@ -163,7 +163,7 @@ Features
 Getting started
 ===============
 
-1. Install NuGet package `Alba.CsConsoleFormat` using Package Manager:
+1. Install NuGet package [Alba.CsConsoleFormat](https://www.nuget.org/packages/Alba.CsConsoleFormat) using Package Manager:
 
         PM> Install-Package Alba.CsConsoleFormat
 
