@@ -193,7 +193,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public List<DataItem> Items { get; set; }
 
         public FigletFont Roman { get; set; }
-        
+
         public static string Replace(string value, string to) => value.Replace("|", to);
         public static string Replace(string value, char to) => value.Replace('|', to);
         public static IEnumerable<string> ReplaceSplit(string value, string to) => Split(Replace(value, to));
@@ -231,11 +231,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             data.Items.Select(d => d.Name + " ")
                         ),
                     new Grid()
-                        .AddColumns(
-                            GridLength.Auto,
-                            GridLength.Auto,
-                            GridLength.Auto
-                        )
+                        .AddColumns(-1, -1, -1)
                         .AddChildren(
                             new Cell { Stroke = cellHeaderThickness }.AddChildren("Id"),
                             new Cell { Stroke = cellHeaderThickness }.AddChildren("Name"),
@@ -244,6 +240,19 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                 new Cell { Color = Yellow, Align = HorizontalAlignment.Right }.AddChildren(d.Id),
                                 new Cell { Color = Gray }.AddChildren(d.Name),
                                 new Cell { Color = Gray }.AddChildren(d.Value),
+                            })
+                        ),
+                    "",
+                    new Grid { Stroke = LineThickness.None }
+                        .AddColumns(-1, -1, -1)
+                        .AddChildren(
+                            new Div("Id"),
+                            new Div("Name"),
+                            new Div("Value"),
+                            data.Items.Select(d => new[] {
+                                new Div(d.Id.ToString()),
+                                new Div(d.Name),
+                                new Div(d.Value),
                             })
                         ),
                     new Dock { Width = 80, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue }

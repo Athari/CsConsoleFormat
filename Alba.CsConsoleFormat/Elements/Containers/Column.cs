@@ -10,7 +10,7 @@
 
         public Column()
         {
-            Width = GridLength.Star(1);
+            Width = GridLength.Auto;
             MinWidth = 0;
             MaxWidth = Size.Infinity;
         }

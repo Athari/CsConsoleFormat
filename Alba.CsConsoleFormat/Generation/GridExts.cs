@@ -9,9 +9,9 @@ namespace Alba.CsConsoleFormat
         public static T AddColumns<T>([NotNull] this T @this, [NotNull, ItemCanBeNull] params object[] columns)
             where T : Grid
         {
-            if (@this == null) 
+            if (@this == null)
                 throw new ArgumentNullException(nameof(@this));
-            if (columns == null) 
+            if (columns == null)
                 throw new ArgumentNullException(nameof(columns));
             foreach (object column in columns) {
                 switch (column) {
@@ -47,7 +47,7 @@ namespace Alba.CsConsoleFormat
                     catch (Exception e) when (e is FormatException || e is InvalidCastException || e is OverflowException) {
                         throw new ArgumentException($"Value of type '{column.GetType().Name}' cannot be converted to column.");
                     }
-                    @this.Columns.Add(new Column { Width = GridLength.Char(width) });
+                    @this.Columns.Add(new Column { Width = width == -1 ? GridLength.Auto : GridLength.Char(width) });
                     break;
                 }
             }

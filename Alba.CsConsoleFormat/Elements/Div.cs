@@ -1,8 +1,19 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using JetBrains.Annotations;
+
+namespace Alba.CsConsoleFormat
 {
     public class Div : BlockElement
     {
         public Thickness Padding { get; set; }
+
+        public Div()
+        { }
+
+        public Div([CanBeNull] string text)
+        {
+            if (text != null)
+                Children.Add(new Span(text));
+        }
 
         protected override Size MeasureOverride(Size availableSize)
         {
