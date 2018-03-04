@@ -15,18 +15,63 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrap()
+        public void NoWrapSingleLineShortTextAlignLeft()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap }
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
                 .AddChildren("a bc def");
 
             GetRenderedText(doc, 3).Should().BeLines("a b");
         }
 
         [Fact]
-        public void NoWrapMultiLine()
+        public void NoWrapSingleLineShortTextAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap }
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
+                .AddChildren("a bc def");
+
+            GetRenderedText(doc, 3).Should().BeLines("a b");
+        }
+
+        [Fact]
+        public void NoWrapSingleLineShortTextAlignCenter()
+        {
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
+                .AddChildren("a bc def");
+
+            GetRenderedText(doc, 3).Should().BeLines("a b");
+        }
+
+        [Fact]
+        public void NoWrapSingleLineLongTextAlignLeft()
+        {
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
+                .AddChildren("a bc def");
+
+            GetRenderedText(doc, 11).Should().BeLines("a bc def   ");
+        }
+
+        [Fact]
+        public void NoWrapSingleLineLongTextAlignRight()
+        {
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
+                .AddChildren("a bc def");
+
+            GetRenderedText(doc, 11).Should().BeLines("   a bc def");
+        }
+
+        [Fact]
+        public void NoWrapSingleLineLongTextAlignCenter()
+        {
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
+                .AddChildren("a bc def");
+
+            GetRenderedText(doc, 11).Should().BeLines(" a bc def  ");
+        }
+
+        [Fact]
+        public void NoWrapMultiLineTextAlignLeft()
+        {
+            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
                 .AddChildren("a bc def\nghij klmno");
 
             GetRenderedText(doc, 5).Should().BeLines(
@@ -35,7 +80,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrapAlignCenter()
+        public void NoWrapMultiLineTextAlignCenter()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
                 .AddChildren("a\nbc\ndef\nghij\nklmno");
@@ -49,7 +94,7 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
-        public void NoWrapAlignRight()
+        public void NoWrapMultiLineTextAlignRight()
         {
             var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
                 .AddChildren("a\nbc\ndef\nghij\nklmno");
