@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using JetBrains.Annotations;
 
 [assembly: AssemblyTitle("Alba.CsConsoleFormat.Sample.Presentation")]
 [assembly: AssemblyDescription("")]
@@ -19,3 +20,5 @@ using System.Windows;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: ExcludeFromCodeCoverageAssembly]

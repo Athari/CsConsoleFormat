@@ -67,6 +67,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
     <Resource Include="Sample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

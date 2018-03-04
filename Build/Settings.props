@@ -41,7 +41,7 @@
 
   <!-- NuGet package properties -->
   <PropertyGroup>
-    <VersionPrefix>0.9.1</VersionPrefix>
+    <VersionPrefix>0.9.2</VersionPrefix>
     <VersionSuffixBase>alpha</VersionSuffixBase>
     <Authors>Athari</Authors>
     <Copyright>Copyright © 2014–$([System.DateTime]::Now.ToString(yyyy)) Alexander "Athari" Prokhorov</Copyright>
@@ -51,7 +51,7 @@
     <PackageReleaseNotes>$(PackageProjectUrl)/blob/master/ReadMe.md</PackageReleaseNotes>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>cross-platform;console;terminal;shell;command-line;format;html;ascii</PackageTags>
+    <PackageTags>cross-platform;console;terminal;shell;command-line;format;html;ascii;grid;table</PackageTags>
     <!--<ContentTargetFolders>content</ContentTargetFolders>-->
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>

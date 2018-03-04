@@ -590,4 +590,8 @@ namespace JetBrains.Annotations
     [Conditional("JETBRAINS_ANNOTATIONS")]
     internal sealed class RegexPatternAttribute : Attribute
     { }
+
+    [AttributeUsage(AttributeTargets.Assembly)]
+    internal sealed class ExcludeFromCodeCoverageAssemblyAttribute : Attribute
+    { }
 }

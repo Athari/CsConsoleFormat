@@ -64,14 +64,37 @@ namespace Alba.CsConsoleFormat.Tests
             };
         }
 
-        protected sealed class Fill : BlockElement
+        protected class Fill : BlockElement
         {
             [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Write-only properties are not okay.")]
             public char Char { get; set; }
 
             public override void Render(ConsoleBuffer buffer)
             {
+                base.Render(buffer);
                 buffer.FillForegroundRectangle(new Rect(RenderSize), null, Char);
+            }
+        }
+
+        protected sealed class FillAlphabet : Fill
+        {
+            public int AlphaWidth { get; set; }
+            public int AlphaHeight { get; set; }
+
+            public FillAlphabet()
+            {
+                Char = '-';
+            }
+
+            protected override Size MeasureOverride(Size availableSize) => new Size(AlphaWidth, AlphaHeight);
+
+            public override void Render(ConsoleBuffer buffer)
+            {
+                base.Render(buffer);
+                char nextChar = 'a';
+                for (int y = 0; y < AlphaHeight; y++)
+                    for (int x = 0; x < AlphaWidth; x++)
+                        buffer.DrawString(x, y, null, new string(nextChar++, 1));
             }
         }
     }

@@ -13,9 +13,9 @@
       BeforeTargets="Build">
     <PropertyGroup>
       <ReadMeNuGetText>$([System.IO.File]::ReadAllText('$(SolutionDir)ReadMe.md'))</ReadMeNuGetText>
-      <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadMeNuGetText), '(?is)Choosing syntax.+(?=Links)', ''))</ReadMeNuGetText>
       <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadMeNuGetText), '(?is)^.+?src="Docs/([^"]+)".+?(?=\*)', '![CsConsoleFormat Logo]($1)%0A%0A'))</ReadMeNuGetText>
-      <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadMeNuGetText), '(?is)\[!\[.+?(?=CsConsoleFormat is)', ''))</ReadMeNuGetText>
+      <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadMeNuGetText), '(?is)\* \[\*\*NuGet.+?(?=CsConsoleFormat is)', '%0A'))</ReadMeNuGetText>
+      <ReadMeNuGetText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadMeNuGetText), '(?is)Choosing syntax.+(?=Links)', ''))</ReadMeNuGetText>
     </PropertyGroup>
     <WriteLinesToFile Lines="$(ReadMeNuGetText)" File="$(SolutionDir)Docs/ReadMe.NuGet.md" Overwrite="True" />
   </Target>

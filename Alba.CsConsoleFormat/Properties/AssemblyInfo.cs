@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+#if !NET_40
+using JetBrains.Annotations;
+#endif
 #if SYSTEM_XAML
 using System.Windows.Markup;
 #elif PORTABLE_XAML
@@ -22,3 +25,7 @@ using Portable.Xaml.Markup;
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests-NoXaml")]
+
+#if !NET_40
+[assembly: ExcludeFromCodeCoverageAssembly]
+#endif

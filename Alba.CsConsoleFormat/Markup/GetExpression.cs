@@ -59,6 +59,7 @@ namespace Alba.CsConsoleFormat.Markup
         }
 
         [SuppressMessage("ReSharper", "AnnotateCanBeNullTypeMember", Justification = "Simple stub.")]
+        [ExcludeFromCodeCoverage]
         private sealed class ValueConverterContext : ITypeDescriptorContext
         {
             public static readonly ValueConverterContext Context = new ValueConverterContext();
