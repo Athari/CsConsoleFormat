@@ -4,6 +4,9 @@
 =================================================================
 
 * [**GitHub repository**](https://github.com/Athari/CsConsoleFormat)
+* [**NuGet package**](https://www.nuget.org/packages/Alba.CsConsoleFormat)
+<!-- -->
+    PM> Install-Package Alba.CsConsoleFormat
 
 [![GitHub license](https://img.shields.io/github/license/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
 [![GitHub license](https://img.shields.io/github/languages/top/Athari/CsConsoleFormat.svg?logo=github)](https://github.com/Athari/CsConsoleFormat/releases)
@@ -42,12 +45,13 @@ CsConsoleFormat is a library for formatting text in console based on documents r
 or like this:
 
 ```c#
-new Document()
-    .AddChildren(
+new Document {
+    Children = {
         new Span("Hello") { Color = ConsoleColor.Red },
         "\n",
         new Span("world!") { Color = ConsoleColor.Yellow }
-    );
+    }
+};
 ```
 
 Why?
@@ -109,37 +113,34 @@ using static System.ConsoleColor;
 
 var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
 
-var doc = new Document()
-    .AddChildren(
+var doc = new Document {
+    Children = {
         new Span("Order #") { Color = Yellow },
         Order.Id,
         "\n",
         new Span("Customer: ") { Color = Yellow },
         Order.Customer.Name,
 
-        new Grid { Color = Gray }
-            .AddColumns(
+        new Grid {
+            Color = Gray,
+            Columns = {
                 new Column { Width = GridLength.Auto },
                 new Column { Width = GridLength.Star(1) },
                 new Column { Width = GridLength.Auto }
-            )
-            .AddChildren(
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Id"),
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Name"),
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Count"),
+            },
+            Children = {
+                new Cell("Id") { Stroke = headerThickness },
+                new Cell("Name") { Stroke = headerThickness },
+                new Cell("Count") { Stroke = headerThickness },
                 Order.OrderItems.Select(item => new[] {
-                    new Cell()
-                        .AddChildren(item.Id),
-                    new Cell()
-                        .AddChildren(item.Name),
-                    new Cell { Align = HorizontalAlignment.Right }
-                        .AddChildren(item.Count),
+                    new Cell { Children = { item.Id } },
+                    new Cell { Children = { item.Name } },
+                    new Cell { Align = Align.Right, Children = { item.Count } },
                 })
-            )
-    );
+            }
+        }
+    }
+};
 
 ConsoleRenderer.RenderDocument(doc);
 ```
@@ -195,7 +196,7 @@ XAML library in Mono is currently very buggy. If you want to build a cross-platf
 
 XAML is only partially supported by Visual Studio + ReSharper: syntax highlighting and code completion work, but library-specific markup extensions are't understood by code completion, so incorrect errors may be displayed.
 
-**C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using `AddChildren(params object[])` extension method (which is optional).
+**C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using collection initializer of `Children` property which accepts any object.
 
 Building documents in code is fully supported by IDE, but code completion may cause lags if documents are built with huge single statements.
 

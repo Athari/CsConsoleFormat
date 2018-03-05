@@ -18,12 +18,13 @@ CsConsoleFormat is a library for formatting text in console based on documents r
 or like this:
 
 ```c#
-new Document()
-    .AddChildren(
+new Document {
+    Children = {
         new Span("Hello") { Color = ConsoleColor.Red },
         "\n",
         new Span("world!") { Color = ConsoleColor.Yellow }
-    );
+    }
+};
 ```
 
 Why?
@@ -85,37 +86,34 @@ using static System.ConsoleColor;
 
 var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
 
-var doc = new Document()
-    .AddChildren(
+var doc = new Document {
+    Children = {
         new Span("Order #") { Color = Yellow },
         Order.Id,
         "\n",
         new Span("Customer: ") { Color = Yellow },
         Order.Customer.Name,
 
-        new Grid { Color = Gray }
-            .AddColumns(
+        new Grid {
+            Color = Gray,
+            Columns = {
                 new Column { Width = GridLength.Auto },
                 new Column { Width = GridLength.Star(1) },
                 new Column { Width = GridLength.Auto }
-            )
-            .AddChildren(
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Id"),
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Name"),
-                new Cell { Stroke = headerThickness }
-                    .AddChildren("Count"),
+            },
+            Children = {
+                new Cell("Id") { Stroke = headerThickness },
+                new Cell("Name") { Stroke = headerThickness },
+                new Cell("Count") { Stroke = headerThickness },
                 Order.OrderItems.Select(item => new[] {
-                    new Cell()
-                        .AddChildren(item.Id),
-                    new Cell()
-                        .AddChildren(item.Name),
-                    new Cell { Align = HorizontalAlignment.Right }
-                        .AddChildren(item.Count),
+                    new Cell { Children = { item.Id } },
+                    new Cell { Children = { item.Name } },
+                    new Cell { Align = Align.Right, Children = { item.Count } },
                 })
-            )
-    );
+            }
+        }
+    }
+};
 
 ConsoleRenderer.RenderDocument(doc);
 ```
@@ -139,7 +137,7 @@ Features
 Getting started
 ===============
 
-1. Install NuGet package `Alba.CsConsoleFormat` using Package Manager:
+1. Install NuGet package [Alba.CsConsoleFormat](https://www.nuget.org/packages/Alba.CsConsoleFormat) using Package Manager:
 
         PM> Install-Package Alba.CsConsoleFormat
 
