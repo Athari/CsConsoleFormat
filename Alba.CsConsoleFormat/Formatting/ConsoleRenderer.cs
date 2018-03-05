@@ -159,7 +159,9 @@ namespace Alba.CsConsoleFormat
                 return;
 
             Vector offset = parentOffset + element.ActualOffset;
-            Rect clip = new Rect( /*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
+            //Rect clip = new Rect( /*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
+            Rect clip = new Rect(element.RenderSize)
+                //.Intersect(new Rect(element.DesiredSize))
                 .Intersect(element.LayoutClip)
                 .Offset(offset)
                 .Intersect(renderRect)

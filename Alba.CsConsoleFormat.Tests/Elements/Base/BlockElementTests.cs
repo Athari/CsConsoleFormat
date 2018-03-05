@@ -61,6 +61,162 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
+        public void AlignHorizontalSmallBlockLeftMinLessThanSize()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MinWidth = 2,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 7).Should().BeLines(
+                "abc____",
+                "def____");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockLeftMinLessThanSizeWithMargin()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MinWidth = 2,
+                        Margin = 1,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "_abc_____",
+                "_def_____",
+                "_________");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockLeftMinMoreThanSize()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MinWidth = 5,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 7).Should().BeLines(
+                "abc--__",
+                "def--__");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockLeftMinMoreThanSizeWithMargin()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MinWidth = 5,
+                        Margin = 1,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "_abc--___",
+                "_def--___",
+                "_________");
+        }
+
+        [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
+        public void AlignHorizontalSmallBlockLeftMaxLessThanSize()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MaxWidth = 2,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 7).Should().BeLines(
+                "ab_____",
+                "de_____");
+        }
+
+        [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
+        public void AlignHorizontalSmallBlockLeftMaxLessThanSizeWithMargin()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MaxWidth = 2,
+                        Margin = 1,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "_ab______",
+                "_de______",
+                "_________");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockLeftMaxMoreThanSize()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MaxWidth = 5,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 7).Should().BeLines(
+                "abc____",
+                "def____");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockLeftMaxMoreThanSizeWithMargin()
+        {
+            var fill = new Fill { Char = '_' }
+                .AddChildren(
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MaxWidth = 5,
+                        Margin = 1,
+                        Align = HorizontalAlignment.Left,
+                    }
+                );
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "_abc_____",
+                "_def_____",
+                "_________");
+        }
+
+        [Fact]
         public void AlignHorizontalSmallBlockCenter()
         {
             var fill = new Fill { Char = '_' }
