@@ -20,10 +20,10 @@ namespace Alba.CsConsoleFormat
         public int MaxWidth { get; set; }
         public int MaxHeight { get; set; }
 
-        public HorizontalAlignment Align { get; set; }
-        public VerticalAlignment VAlign { get; set; }
-        public TextAlignment TextAlign { get; set; }
-        public TextWrapping TextWrap { get; set; }
+        public Align Align { get; set; }
+        public VerticalAlign VerticalAlign { get; set; }
+        public TextAlign TextAlign { get; set; }
+        public TextWrap TextWrap { get; set; }
 
         public Thickness Margin { get; set; }
 
@@ -33,10 +33,10 @@ namespace Alba.CsConsoleFormat
             MinHeight = 0;
             MaxWidth = Size.Infinity;
             MaxHeight = Size.Infinity;
-            Align = HorizontalAlignment.Stretch;
-            VAlign = VerticalAlignment.Stretch;
-            TextAlign = TextAlignment.Left;
-            TextWrap = TextWrapping.WordWrap;
+            Align = Align.Stretch;
+            VerticalAlign = VerticalAlign.Stretch;
+            TextAlign = TextAlign.Left;
+            TextWrap = TextWrap.WordWrap;
         }
 
         /// <summary>Render area width.</summary><seealso cref="RenderSize"/>
@@ -156,9 +156,9 @@ namespace Alba.CsConsoleFormat
             Size arrangeSize = Size.Max(finalRect.Size - Margin, UnclippedDesiredSize);
 
             // Alignment == Stretch --> arrange at the slot size minus margins; Alignment != Stretch --> arrange at the UnclippedDesiredSize.
-            if (Align != HorizontalAlignment.Stretch)
+            if (Align != Align.Stretch)
                 arrangeSize.Width = UnclippedDesiredSize.Width;
-            if (VAlign != VerticalAlignment.Stretch)
+            if (VerticalAlign != VerticalAlign.Stretch)
                 arrangeSize.Height = UnclippedDesiredSize.Height;
 
             // Here we use un-clipped RenderSize because element does not know that it is clipped by layout system and it should have
@@ -198,25 +198,25 @@ namespace Alba.CsConsoleFormat
         {
             Vector offset = new Vector();
 
-            HorizontalAlignment halign = Align;
-            VerticalAlignment valign = VAlign;
+            Align halign = Align;
+            VerticalAlign valign = VerticalAlign;
 
             // This is to degenerate Stretch to Top-Left in case when clipping is about to occur.
-            if (halign == HorizontalAlignment.Stretch && renderSize.Width > clientSize.Width)
-                halign = HorizontalAlignment.Left;
-            if (valign == VerticalAlignment.Stretch && renderSize.Height > clientSize.Height)
-                valign = VerticalAlignment.Top;
+            if (halign == Align.Stretch && renderSize.Width > clientSize.Width)
+                halign = Align.Left;
+            if (valign == VerticalAlign.Stretch && renderSize.Height > clientSize.Height)
+                valign = VerticalAlign.Top;
 
-            if (halign == HorizontalAlignment.Center || halign == HorizontalAlignment.Stretch)
+            if (halign == Align.Center || halign == Align.Stretch)
                 offset.X = (clientSize.Width - renderSize.Width) / 2;
-            else if (halign == HorizontalAlignment.Right)
+            else if (halign == Align.Right)
                 offset.X = clientSize.Width - renderSize.Width;
             else
                 offset.X = 0;
 
-            if (valign == VerticalAlignment.Center || valign == VerticalAlignment.Stretch)
+            if (valign == VerticalAlign.Center || valign == VerticalAlign.Stretch)
                 offset.Y = (clientSize.Height - renderSize.Height) / 2;
-            else if (valign == VerticalAlignment.Bottom)
+            else if (valign == VerticalAlign.Bottom)
                 offset.Y = clientSize.Height - renderSize.Height;
             else
                 offset.Y = 0;

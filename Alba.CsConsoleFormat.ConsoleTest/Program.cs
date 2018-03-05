@@ -236,7 +236,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Cell("Name") { Stroke = cellHeaderThickness },
                             new Cell("Value") { Stroke = cellHeaderThickness },
                             data.Items.Select(d => new[] {
-                                new Cell { Color = Yellow, Align = HorizontalAlignment.Right, Children = { d.Id } },
+                                new Cell { Color = Yellow, Align = Align.Right, Children = { d.Id } },
                                 new Cell { Color = Gray, Children = { d.Name } },
                                 new Cell { Color = Gray, Children = { d.Value } },
                             }),
@@ -258,11 +258,11 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                         },
                     },
                     new Dock {
-                        Width = 80, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue,
+                        Width = 80, Align = Align.Left, Color = Gray, Background = Blue,
                         Children = {
                             new Div {
                                 Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1,
-                                Background = DarkBlue, TextWrap = TextWrapping.CharWrap,
+                                Background = DarkBlue, TextWrap = TextWrap.CharWrap,
                                 [Dock.ToProperty] = DockTo.Left,
                                 Children = { LoremIpsumCharWrap(data) },
                             },
@@ -290,10 +290,10 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     },
                     "",
                     new Canvas {
-                        Width = 80, Height = 43, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue,
+                        Width = 80, Height = 43, Align = Align.Left, Color = Gray, Background = Blue,
                         Children = {
                             new Div {
-                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap,
+                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrap.CharWrap,
                                 [Canvas.LeftProperty] = 1, [Canvas.TopProperty] = 1,
                                 Children = { LoremIpsumCharWrap(data) },
                             },

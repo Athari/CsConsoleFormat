@@ -54,11 +54,11 @@ namespace Alba.CsConsoleFormat
                 int length = GetLineLength(line);
 
                 int offset = 0;
-                if (TextAlign == TextAlignment.Left || TextAlign == TextAlignment.Justify)
+                if (TextAlign == TextAlign.Left || TextAlign == TextAlign.Justify)
                     offset = 0;
-                else if (TextAlign == TextAlignment.Center)
+                else if (TextAlign == TextAlign.Center)
                     offset = (ActualWidth - length) / 2;
-                else if (TextAlign == TextAlignment.Right)
+                else if (TextAlign == TextAlign.Right)
                     offset = ActualWidth - length;
 
                 int x = offset;
@@ -125,12 +125,12 @@ namespace Alba.CsConsoleFormat
                         _curLine.Add(sourceSeg);
                     }
                     else {
-                        TextWrapping textWrap = _container.TextWrap;
-                        if (textWrap == TextWrapping.NoWrap)
+                        TextWrap textWrap = _container.TextWrap;
+                        if (textWrap == TextWrap.NoWrap)
                             AppendTextSegmentNoWrap(sourceSeg);
-                        else if (textWrap == TextWrapping.CharWrap)
+                        else if (textWrap == TextWrap.CharWrap)
                             AppendTextSegmentCharWrap(sourceSeg);
-                        else if (textWrap == TextWrapping.WordWrap)
+                        else if (textWrap == TextWrap.WordWrap)
                             AppendTextSegmentWordWrap(sourceSeg);
                     }
                 }

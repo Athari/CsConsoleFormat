@@ -10,31 +10,31 @@ namespace Alba.CsConsoleFormat
         private static readonly GridLengthConverter _Converter = new GridLengthConverter();
 
         public int Value { get; }
-        public GridUnitType UnitType { get; }
+        public GridUnit Unit { get; }
 
-        public GridLength(int value, GridUnitType unitType)
+        public GridLength(int value, GridUnit unit)
         {
             if (value < 0)
                 throw new ArgumentException("Value cannot be negative.", nameof(value));
-            Value = unitType != GridUnitType.Auto ? value : 0;
-            UnitType = unitType;
+            Value = unit != GridUnit.Auto ? value : 0;
+            Unit = unit;
         }
 
-        public static GridLength Auto => new GridLength(0, GridUnitType.Auto);
+        public static GridLength Auto => new GridLength(0, GridUnit.Auto);
 
         [Pure]
-        public static GridLength Char(int value) => new GridLength(value, GridUnitType.Char);
+        public static GridLength Char(int value) => new GridLength(value, GridUnit.Char);
 
         [Pure]
-        public static GridLength Star(int value) => new GridLength(value, GridUnitType.Star);
+        public static GridLength Star(int value) => new GridLength(value, GridUnit.Star);
 
-        public bool IsAbsolute => UnitType == GridUnitType.Char;
-        public bool IsAuto => UnitType == GridUnitType.Auto;
-        public bool IsStar => UnitType == GridUnitType.Star;
+        public bool IsAbsolute => Unit == GridUnit.Char;
+        public bool IsAuto => Unit == GridUnit.Auto;
+        public bool IsStar => Unit == GridUnit.Star;
 
-        public bool Equals(GridLength other) => Value == other.Value && UnitType == other.UnitType;
+        public bool Equals(GridLength other) => Value == other.Value && Unit == other.Unit;
         public override bool Equals(object obj) => obj is GridLength && Equals((GridLength)obj);
-        public override int GetHashCode() => Value.GetHashCode() ^ UnitType.GetHashCode();
+        public override int GetHashCode() => Value.GetHashCode() ^ Unit.GetHashCode();
 
         public override string ToString() => _Converter.ConvertToString(this) ?? "";
 

@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat
     public sealed class GridLengthConverter : TypeConverter
     {
         private static readonly Lazy<ConstructorInfo> GridLengthConstructor = new Lazy<ConstructorInfo>(() =>
-            typeof(GridLength).GetConstructor(new[] { typeof(int), typeof(GridUnitType) }));
+            typeof(GridLength).GetConstructor(new[] { typeof(int), typeof(GridUnit) }));
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
             base.CanConvertFrom(context, sourceType) || IsTypeStringOrNumeric(sourceType);
@@ -43,11 +43,11 @@ namespace Alba.CsConsoleFormat
             GridLength FromString(string str)
             {
                 if (str.ToUpperInvariant() == AUTO)
-                    return new GridLength(0, GridUnitType.Auto);
+                    return new GridLength(0, GridUnit.Auto);
                 else if (str.EndsWith(Asterisk, StringComparison.Ordinal))
-                    return new GridLength(str.Length > 1 ? ParseInt(str.Remove(str.Length - 1)) : 1, GridUnitType.Star);
+                    return new GridLength(str.Length > 1 ? ParseInt(str.Remove(str.Length - 1)) : 1, GridUnit.Star);
                 else
-                    return new GridLength(ParseInt(str), GridUnitType.Char);
+                    return new GridLength(ParseInt(str), GridUnit.Char);
             }
         }
 
@@ -59,18 +59,18 @@ namespace Alba.CsConsoleFormat
             if (destinationType == typeof(string))
                 return ToString();
             else if (destinationType == typeof(InstanceDescriptor))
-                return new InstanceDescriptor(GridLengthConstructor.Value, new object[] { length.Value, length.UnitType }, true);
+                return new InstanceDescriptor(GridLengthConstructor.Value, new object[] { length.Value, length.Unit }, true);
             else
                 return base.ConvertTo(context, culture, value, destinationType);
 
             string ToString()
             {
-                switch (length.UnitType) {
-                    case GridUnitType.Auto:
+                switch (length.Unit) {
+                    case GridUnit.Auto:
                         return Auto;
-                    case GridUnitType.Char:
+                    case GridUnit.Char:
                         return Invariant($"{length.Value}");
-                    case GridUnitType.Star:
+                    case GridUnit.Star:
                         return length.Value > 1 ? Invariant($"{length.Value}{Asterisk}") : Asterisk;
                     default:
                         throw new InvalidOperationException();

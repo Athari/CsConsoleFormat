@@ -47,11 +47,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                             processes.Select(process => new[] {
                                 new Cell { Stroke = StrokeRight }
                                     .AddChildren(process.Id),
-                                new Cell { Stroke = StrokeRight, Color = Yellow, TextWrap = TextWrapping.NoWrap }
+                                new Cell { Stroke = StrokeRight, Color = Yellow, TextWrap = TextWrap.NoWrap }
                                     .AddChildren(process.ProcessName),
-                                new Cell { Stroke = StrokeRight, Color = White, TextWrap = TextWrapping.NoWrap }
+                                new Cell { Stroke = StrokeRight, Color = White, TextWrap = TextWrap.NoWrap }
                                     .AddChildren(process.MainWindowTitle),
-                                new Cell { Stroke = LineThickness.None, Align = HorizontalAlignment.Right }
+                                new Cell { Stroke = LineThickness.None, Align = Align.Right }
                                     .AddChildren(process.PrivateMemorySize64.ToString("n0")),
                             })
                         )

@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public enum GridUnitType
+    public enum GridUnit
     {
         Auto,
         Char,

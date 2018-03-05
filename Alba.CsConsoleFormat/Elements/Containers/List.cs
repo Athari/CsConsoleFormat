@@ -30,7 +30,7 @@ namespace Alba.CsConsoleFormat
                     Children = {
                         Children.Select((child, index) => new[] {
                             new Div {
-                                TextAlign = TextAlignment.Right,
+                                TextAlign = TextAlign.Right,
                                 Children = { string.Format(EffectiveCulture, IndexFormat, StartIndex + index) }
                             },
                             child

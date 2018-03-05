@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public enum VerticalAlignment
+    public enum VerticalAlign
     {
         Top,
         Center,

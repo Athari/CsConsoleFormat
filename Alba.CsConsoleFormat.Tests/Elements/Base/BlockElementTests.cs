@@ -34,7 +34,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -54,7 +54,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = 1,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -76,7 +76,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MinWidth = 2,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -97,7 +97,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaHeight = 2,
                         MinWidth = 2,
                         Margin = 1,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -119,7 +119,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MinWidth = 5,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -140,7 +140,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaHeight = 2,
                         MinWidth = 5,
                         Margin = 1,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -162,7 +162,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MaxWidth = 2,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -183,7 +183,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaHeight = 2,
                         MaxWidth = 2,
                         Margin = 1,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -205,7 +205,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MaxWidth = 5,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -226,7 +226,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaHeight = 2,
                         MaxWidth = 5,
                         Margin = 1,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -247,7 +247,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Center,
+                        Align = Align.Center,
                     }
                 }
             };
@@ -266,7 +266,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Center,
+                        Align = Align.Center,
                     }
                 }
             };
@@ -285,7 +285,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Right,
+                        Align = Align.Right,
                     }
                 }
             };
@@ -304,7 +304,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Stretch,
+                        Align = Align.Stretch,
                     }
                 }
             };
@@ -324,7 +324,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(1, 2),
-                        Align = HorizontalAlignment.Stretch,
+                        Align = Align.Stretch,
                     }
                 }
             };
@@ -347,7 +347,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -367,7 +367,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(2, 1),
-                        Align = HorizontalAlignment.Left,
+                        Align = Align.Left,
                     }
                 }
             };
@@ -388,7 +388,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Center,
+                        Align = Align.Center,
                     }
                 }
             };
@@ -407,7 +407,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Center,
+                        Align = Align.Center,
                     }
                 }
             };
@@ -426,7 +426,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Right,
+                        Align = Align.Right,
                     }
                 }
             };
@@ -445,7 +445,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        Align = HorizontalAlignment.Stretch,
+                        Align = Align.Stretch,
                     }
                 }
             };
@@ -465,7 +465,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(1, 2, 3, 4),
-                        Align = HorizontalAlignment.Stretch,
+                        Align = Align.Stretch,
                     }
                 }
             };
@@ -490,7 +490,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Top,
+                        VerticalAlign = VerticalAlign.Top,
                     }
                 }
             };
@@ -513,7 +513,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(0, 1),
-                        VAlign = VerticalAlignment.Top,
+                        VerticalAlign = VerticalAlign.Top,
                     }
                 }
             };
@@ -537,7 +537,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Center,
+                        VerticalAlign = VerticalAlign.Center,
                     }
                 }
             };
@@ -559,7 +559,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
-                        VAlign = VerticalAlignment.Center,
+                        VerticalAlign = VerticalAlign.Center,
                     }
                 }
             };
@@ -581,7 +581,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Bottom,
+                        VerticalAlign = VerticalAlign.Bottom,
                     }
                 }
             };
@@ -603,7 +603,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Stretch,
+                        VerticalAlign = VerticalAlign.Stretch,
                     }
                 }
             };
@@ -626,7 +626,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(1, 0),
-                        VAlign = VerticalAlignment.Stretch,
+                        VerticalAlign = VerticalAlign.Stretch,
                     }
                 }
             };
@@ -648,7 +648,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Top,
+                        VerticalAlign = VerticalAlign.Top,
                     }
                 }
             };
@@ -667,7 +667,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(1, 0, 0, 1),
-                        VAlign = VerticalAlignment.Top,
+                        VerticalAlign = VerticalAlign.Top,
                     }
                 }
             };
@@ -686,7 +686,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Center,
+                        VerticalAlign = VerticalAlign.Center,
                     }
                 }
             };
@@ -704,7 +704,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
-                        VAlign = VerticalAlignment.Center,
+                        VerticalAlign = VerticalAlign.Center,
                     }
                 }
             };
@@ -722,7 +722,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Bottom,
+                        VerticalAlign = VerticalAlign.Bottom,
                     }
                 }
             };
@@ -740,7 +740,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
-                        VAlign = VerticalAlignment.Stretch,
+                        VerticalAlign = VerticalAlign.Stretch,
                     }
                 }
             };
@@ -759,7 +759,7 @@ namespace Alba.CsConsoleFormat.Tests
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(0, 1, 1, 0),
-                        VAlign = VerticalAlignment.Stretch,
+                        VerticalAlign = VerticalAlign.Stretch,
                     }
                 }
             };

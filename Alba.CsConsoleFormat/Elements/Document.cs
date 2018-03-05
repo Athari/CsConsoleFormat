@@ -8,7 +8,7 @@ namespace Alba.CsConsoleFormat
 
         public Document()
         {
-            VAlign = VerticalAlignment.Top;
+            VerticalAlign = VerticalAlign.Top;
         }
     }
 }

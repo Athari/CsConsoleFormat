@@ -1,10 +1,10 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public enum TextAlignment
+    public enum Align
     {
         Left,
         Center,
         Right,
-        Justify,
+        Stretch,
     }
 }

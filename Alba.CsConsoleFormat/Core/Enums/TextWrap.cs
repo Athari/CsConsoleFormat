@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat
 {
-    public enum TextWrapping
+    public enum TextWrap
     {
         NoWrap,
         CharWrap,

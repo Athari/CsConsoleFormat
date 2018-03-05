@@ -53,11 +53,11 @@ namespace Alba.CsConsoleFormat.Tests
             sb.Remove(sb.Length - newLineLength, newLineLength);
 
             return new Div {
-                TextWrap = TextWrapping.NoWrap,
+                TextWrap = TextWrap.NoWrap,
                 Width = width,
                 Height = height,
-                Align = HorizontalAlignment.Left,
-                VAlign = VerticalAlignment.Top,
+                Align = Align.Left,
+                VerticalAlign = VerticalAlign.Top,
                 Children = {
                     new Span(sb.ToString())
                 }
