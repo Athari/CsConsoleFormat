@@ -10,14 +10,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVisibilityCollapsed()
         {
-            var fill = new Fill { Char = '_', Background = ConsoleColor.Black, Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Background = ConsoleColor.Black, Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 1,
                         AlphaHeight = 1,
                         Visibility = Visibility.Collapsed,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "_____");
@@ -26,14 +28,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeft()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "abc__",
@@ -43,15 +47,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = 1,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "_______",
@@ -63,15 +69,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMinLessThanSize()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MinWidth = 2,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "abc____",
@@ -81,8 +89,9 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMinLessThanSizeWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
@@ -90,7 +99,8 @@ namespace Alba.CsConsoleFormat.Tests
                         Margin = 1,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 9).Should().BeLines(
                 "_________",
@@ -102,15 +112,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMinMoreThanSize()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MinWidth = 5,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "abc--__",
@@ -120,8 +132,9 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMinMoreThanSizeWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
@@ -129,7 +142,8 @@ namespace Alba.CsConsoleFormat.Tests
                         Margin = 1,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 9).Should().BeLines(
                 "_________",
@@ -141,15 +155,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
         public void AlignHorizontalSmallBlockLeftMaxLessThanSize()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MaxWidth = 2,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "ab_____",
@@ -159,8 +175,9 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
         public void AlignHorizontalSmallBlockLeftMaxLessThanSizeWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
@@ -168,7 +185,8 @@ namespace Alba.CsConsoleFormat.Tests
                         Margin = 1,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 9).Should().BeLines(
                 "_________",
@@ -180,15 +198,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMaxMoreThanSize()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         MaxWidth = 5,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "abc____",
@@ -198,8 +218,9 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockLeftMaxMoreThanSizeWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
@@ -207,7 +228,8 @@ namespace Alba.CsConsoleFormat.Tests
                         Margin = 1,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 9).Should().BeLines(
                 "_________",
@@ -219,14 +241,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockCenter()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "_abc_",
@@ -236,14 +260,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockCenterRoundLeft()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "_ab__",
@@ -253,14 +279,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockRight()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Right,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "__abc",
@@ -270,14 +298,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockStretch()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "abc--",
@@ -287,15 +317,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalSmallBlockStretchWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(1, 2),
                         Align = HorizontalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 7).Should().BeLines(
                 "_______",
@@ -309,14 +341,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockLeft()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 1).Should().BeLines(
                 "a",
@@ -326,15 +360,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockLeftWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(2, 1),
                         Align = HorizontalAlignment.Left,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "_____",
@@ -346,14 +382,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockCenter()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 1).Should().BeLines(
                 "b",
@@ -363,14 +401,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockCenterRoundLeft()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 1).Should().BeLines(
                 "a",
@@ -380,14 +420,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockRight()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Right,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 1).Should().BeLines(
                 "c",
@@ -397,14 +439,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockStretch()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Align = HorizontalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 1).Should().BeLines(
                 "a",
@@ -414,15 +458,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignHorizontalLargeBlockStretchWithMargin()
         {
-            var fill = new Fill { Char = '_' }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_',
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
                         Margin = new Thickness(1, 2, 3, 4),
                         Align = HorizontalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 5).Should().BeLines(
                 "_____",
@@ -438,14 +484,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockTop()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Top,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ab",
@@ -458,15 +506,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockTopWithMargin()
         {
-            var fill = new Fill { Char = '_', Height = 7 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 7,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(0, 1),
                         VAlign = VerticalAlignment.Top,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "__",
@@ -481,14 +531,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockCenter()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "__",
@@ -501,14 +553,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockCenterRoundTop()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
                         VAlign = VerticalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "__",
@@ -521,14 +575,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockBottom()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Bottom,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "__",
@@ -541,14 +597,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockStretch()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ab",
@@ -561,15 +619,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalSmallBlockStretchWithMargin()
         {
-            var fill = new Fill { Char = '_', Height = 5 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 5,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(1, 0),
                         VAlign = VerticalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 4).Should().BeLines(
                 "_ab_",
@@ -582,14 +642,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockTop()
         {
-            var fill = new Fill { Char = '_', Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Top,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ab");
@@ -598,15 +660,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockTopWithMargin()
         {
-            var fill = new Fill { Char = '_', Height = 2 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 2,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(1, 0, 0, 1),
                         VAlign = VerticalAlignment.Top,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 3).Should().BeLines(
                 "_ab",
@@ -616,14 +680,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockCenter()
         {
-            var fill = new Fill { Char = '_', Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "cd");
@@ -632,14 +698,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockCenterRoundTop()
         {
-            var fill = new Fill { Char = '_', Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 2,
                         VAlign = VerticalAlignment.Center,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ab");
@@ -648,14 +716,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockBottom()
         {
-            var fill = new Fill { Char = '_', Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Bottom,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ef");
@@ -664,14 +734,16 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockStretch()
         {
-            var fill = new Fill { Char = '_', Height = 1 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 1,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         VAlign = VerticalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 2).Should().BeLines(
                 "ab");
@@ -680,15 +752,17 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void AlignVerticalLargeBlockStretchWithMargin()
         {
-            var fill = new Fill { Char = '_', Height = 2 }
-                .AddChildren(
+            var fill = new Fill {
+                Char = '_', Height = 2,
+                Children = {
                     new FillAlphabet {
                         AlphaWidth = 2,
                         AlphaHeight = 3,
                         Margin = new Thickness(0, 1, 1, 0),
                         VAlign = VerticalAlignment.Stretch,
                     }
-                );
+                }
+            };
 
             GetRenderedText(fill, 3).Should().BeLines(
                 "___",

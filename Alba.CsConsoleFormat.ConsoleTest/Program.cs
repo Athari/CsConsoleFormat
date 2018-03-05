@@ -219,33 +219,34 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public Document CreateDocument(Data data)
         {
             var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
-            return new Document { Color = White, Background = Black }
-                .AddChildren(
+            return new Document {
+                Color = White, Background = Black,
+                Children = {
                     "Hello world!",
-                    new List()
-                        .AddChildren(
-                            data.Items.Select(d => new Div().AddChildren(d.Name))
-                        ),
-                    new Div()
-                        .AddChildren(
-                            data.Items.Select(d => d.Name + " ")
-                        ),
-                    new Grid()
-                        .AddColumns(-1, -1, -1)
-                        .AddChildren(
-                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Id"),
-                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Name"),
-                            new Cell { Stroke = cellHeaderThickness }.AddChildren("Value"),
+                    new List {
+                        Children = { data.Items.Select(d => new Div(d.Name)) },
+                    },
+                    new Div {
+                        Children = { data.Items.Select(d => d.Name + " ") },
+                    },
+                    new Grid {
+                        Columns = { -1, -1, -1 },
+                        Children = {
+                            new Cell("Id") { Stroke = cellHeaderThickness },
+                            new Cell("Name") { Stroke = cellHeaderThickness },
+                            new Cell("Value") { Stroke = cellHeaderThickness },
                             data.Items.Select(d => new[] {
-                                new Cell { Color = Yellow, Align = HorizontalAlignment.Right }.AddChildren(d.Id),
-                                new Cell { Color = Gray }.AddChildren(d.Name),
-                                new Cell { Color = Gray }.AddChildren(d.Value),
-                            })
-                        ),
+                                new Cell { Color = Yellow, Align = HorizontalAlignment.Right, Children = { d.Id } },
+                                new Cell { Color = Gray, Children = { d.Name } },
+                                new Cell { Color = Gray, Children = { d.Value } },
+                            }),
+                        },
+                    },
                     "",
-                    new Grid { Stroke = LineThickness.None }
-                        .AddColumns(-1, -1, -1)
-                        .AddChildren(
+                    new Grid {
+                        Stroke = LineThickness.None,
+                        Columns = { -1, -1, -1 },
+                        Children = {
                             new Div("Id"),
                             new Div("Name"),
                             new Div("Value"),
@@ -253,44 +254,72 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                                 new Div(d.Id.ToString()),
                                 new Div(d.Name),
                                 new Div(d.Value),
-                            })
-                        ),
-                    new Dock { Width = 80, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue }
-                        .AddChildren(
-                            new Div { Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
-                                .Set(Dock.ToProperty, DockTo.Left)
-                                .AddChildren(LoremIpsumCharWrap(data)),
-                            new Div { Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1, Background = DarkBlue }
-                                .Set(Dock.ToProperty, DockTo.Top)
-                                .AddChildren(LoremIpsumWordWrapWithSpaces(data)),
-                            new Div { Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1, Background = DarkBlue }
-                                .Set(Dock.ToProperty, DockTo.Right)
-                                .AddChildren(LoremIpsumWordWrapWithZeroWidthSpaces(data)),
-                            new Div { Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1, Background = DarkBlue }
-                                .Set(Dock.ToProperty, DockTo.Bottom)
-                                .AddChildren(LoremIpsumWordWrapWithNoBreakSpaces(data)),
-                            new Border { Margin = 1, Padding = 1, Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
-                                .AddChildren(LoremIpsumWordWrapWithSoftHyphens(data))
-                        ),
+                            }),
+                        },
+                    },
+                    new Dock {
+                        Width = 80, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue,
+                        Children = {
+                            new Div {
+                                Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1,
+                                Background = DarkBlue, TextWrap = TextWrapping.CharWrap,
+                                [Dock.ToProperty] = DockTo.Left,
+                                Children = { LoremIpsumCharWrap(data) },
+                            },
+                            new Div {
+                                Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1, Background = DarkBlue,
+                                [Dock.ToProperty] = DockTo.Top,
+                                Children = { LoremIpsumWordWrapWithSpaces(data) },
+                            },
+                            new Div {
+                                Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1, Background = DarkBlue,
+                                [Dock.ToProperty] = DockTo.Right,
+                                Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
+                            },
+                            new Div {
+                                Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1, Background = DarkBlue,
+                                [Dock.ToProperty] = DockTo.Bottom,
+                                Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
+                            },
+                            new Border {
+                                Margin = 1, Padding = 1, Background = DarkCyan,
+                                Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
+                                Children = { LoremIpsumWordWrapWithSoftHyphens(data) },
+                            }
+                        },
+                    },
                     "",
-                    new Canvas { Width = 80, Height = 43, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue }
-                        .AddChildren(
-                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap }
-                                .Set(Canvas.LeftProperty, 1).Set(Canvas.TopProperty, 1)
-                                .AddChildren(LoremIpsumCharWrap(data)),
-                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
-                                .Set(Canvas.LeftProperty, 1).Set(Canvas.BottomProperty, 1)
-                                .AddChildren(LoremIpsumWordWrapWithSpaces(data)),
-                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
-                                .Set(Canvas.RightProperty, 1).Set(Canvas.TopProperty, 1)
-                                .AddChildren(LoremIpsumWordWrapWithZeroWidthSpaces(data)),
-                            new Div { Width = 38, Height = 20, Padding = 1, Background = DarkBlue }
-                                .Set(Canvas.RightProperty, 1).Set(Canvas.BottomProperty, 1)
-                                .AddChildren(LoremIpsumWordWrapWithNoBreakSpaces(data)),
-                            new Border { Width = 38, Height = 20, Padding = 1, Background = DarkCyan, Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single }
-                                .Set(Canvas.LeftProperty, 21).Set(Canvas.TopProperty, 11)
-                                .AddChildren(LoremIpsumWordWrapWithSoftHyphens(data))
-                        ),
+                    new Canvas {
+                        Width = 80, Height = 43, Align = HorizontalAlignment.Left, Color = Gray, Background = Blue,
+                        Children = {
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrapping.CharWrap,
+                                [Canvas.LeftProperty] = 1, [Canvas.TopProperty] = 1,
+                                Children = { LoremIpsumCharWrap(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
+                                [Canvas.LeftProperty] = 1, [Canvas.BottomProperty] = 1,
+                                Children = { LoremIpsumWordWrapWithSpaces(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
+                                [Canvas.RightProperty] = 1, [Canvas.TopProperty] = 1,
+                                Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
+                                [Canvas.RightProperty] = 1, [Canvas.BottomProperty] = 1,
+                                Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
+                            },
+                            new Border {
+                                Width = 38, Height = 20, Padding = 1, Background = DarkCyan,
+                                Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
+                                [Canvas.LeftProperty] = 21, [Canvas.TopProperty] = 11,
+                                Children = { LoremIpsumWordWrapWithSoftHyphens(data) },
+                            },
+                        },
+                    },
                     new FigletDiv {
                         Text = "BuilderFIGlet",
                         ColorGradient = new FigletGradient {
@@ -322,7 +351,8 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             }
                         }
                     }
-                );
+                }
+            };
         }
 
         private static object[] LoremIpsumCharWrap(Data data) => new object[] {

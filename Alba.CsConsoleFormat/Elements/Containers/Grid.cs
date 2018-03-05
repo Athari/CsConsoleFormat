@@ -32,8 +32,8 @@ namespace Alba.CsConsoleFormat
 
         public Grid()
         {
-            Columns = new ElementCollection<Column>(this);
-            Rows = new ElementCollection<Row>(this);
+            Columns = new ColumnCollection(this);
+            Rows = new RowCollection(this);
             Stroke = LineThickness.Wide;
         }
 

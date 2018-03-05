@@ -24,20 +24,19 @@ namespace Alba.CsConsoleFormat
         public override IEnumerable<Element> GenerateVisualElements()
         {
             Children.Replace(new[] {
-                new Grid { Stroke = LineThickness.None }
-                    .AddColumns(
-                        GridLength.Auto,
-                        GridLength.Star(1)
-                    )
-                    .AddChildren(
+                new Grid {
+                    Stroke = LineThickness.None,
+                    Columns = { GridLength.Auto, GridLength.Star(1) },
+                    Children = {
                         Children.Select((child, index) => new[] {
-                            new Div { TextAlign = TextAlignment.Right }
-                                .AddChildren(
-                                    string.Format(EffectiveCulture, IndexFormat, StartIndex + index)
-                                ),
+                            new Div {
+                                TextAlign = TextAlignment.Right,
+                                Children = { string.Format(EffectiveCulture, IndexFormat, StartIndex + index) }
+                            },
                             child
                         })
-                    )
+                    }
+                }
             });
             return base.GenerateVisualElements();
         }

@@ -15,35 +15,50 @@ namespace Alba.CsConsoleFormat
     [ContentWrapper(typeof(Span))]
     #endif
     //[WhitespaceSignificantCollection]
-    public class ElementCollection<T> : Collection<T>, IList
+    public abstract class ElementCollection<T> : Collection<T>, IList
         where T : Element
     {
         [CanBeNull]
-        private readonly Element _parent;
+        protected Element Parent { get; }
 
-        public ElementCollection(Element parent)
+        protected ElementCollection(Element parent)
         {
-            _parent = parent;
+            Parent = parent;
         }
 
+        /// <summary>Add node through XAML.</summary>
         int IList.Add(object value)
         {
             switch (value) {
                 case string text:
-                    return AddText(text);
+                    if (!(new Span(text) is T span))
+                        throw new ArgumentException("Text cannot be added.");
+                    AddItem(span);
+                    break;
                 case T el:
-                    return AddElement(el);
+                    AddItem(el);
+                    break;
                 default:
                     if (typeof(T).IsAssignableFrom(typeof(Span)))
                         throw new ArgumentException($"Only {typeof(T).Name} and string can be added.", nameof(value));
                     else
                         throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));
             }
+            return Count - 1;
         }
 
-        public int Add(string text)
+        /// <summary>Add node through collection initializer.</summary>
+        public virtual void Add(object child)
         {
-            return AddText(text);
+            if (child == null)
+                return;
+            AddItem(child as T ?? throw new ArgumentException($"Only {typeof(T).Name} can be added."));
+        }
+
+        /// <summary>Add node through simple sequental code.</summary>
+        public void Add(params object[] children)
+        {
+            Add((object)children);
         }
 
         [SuppressMessage("ReSharper", "AnnotationRedundancyInHierarchy", Justification = "Base Collection is not supposed to contain only non-null items.")]
@@ -51,25 +66,17 @@ namespace Alba.CsConsoleFormat
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            item.Parent = _parent;
+            item.Parent = Parent;
           #if XAML
-            if (item.DataContext == null && _parent != null)
-                item.DataContext = _parent.DataContext;
+            if (item.DataContext == null && Parent != null)
+                item.DataContext = Parent.DataContext;
           #endif
             base.InsertItem(index, item);
         }
 
-        private int AddText(string text)
+        protected void AddItem(T item)
         {
-            if (!(new Span(text) is T el))
-                throw new ArgumentException("Text cannot be added.");
-            return AddElement(el);
-        }
-
-        private int AddElement([NotNull] T el)
-        {
-            InsertItem(Count, el);
-            return Count - 1;
+            InsertItem(Count, item);
         }
     }
 
@@ -77,5 +84,29 @@ namespace Alba.CsConsoleFormat
     {
         public ElementCollection(Element parent) : base(parent)
         { }
+
+        public override void Add(object child)
+        {
+            switch (child) {
+                case null:
+                    break;
+                case IEnumerable enumerable when !(enumerable is string):
+                    foreach (object subchild in enumerable)
+                        Add(subchild);
+                    break;
+                case string text:
+                    AddItem(new Span(text));
+                    break;
+                case Element element:
+                    AddItem(element);
+                    break;
+                case IFormattable formattable:
+                    AddItem(new Span(formattable.ToString(null, Parent?.EffectiveCulture)));
+                    break;
+                default:
+                    AddItem(new Span(child.ToString()));
+                    break;
+            }
+        }
     }
 }

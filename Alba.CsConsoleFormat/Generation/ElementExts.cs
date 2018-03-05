@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
@@ -15,52 +14,23 @@ namespace Alba.CsConsoleFormat
             return @this;
         }
 
-        public static T AddChildren<T>([NotNull] this T @this, [NotNull, ItemCanBeNull] params object[] children)
+        [Obsolete("Use Element.Children.Add and Element.Children collection initializer instead.")]
+        public static T AddChildren<T>([NotNull] this T @this, [NotNull] params object[] children)
             where T : Element
         {
             if (@this == null)
                 throw new ArgumentNullException(nameof(@this));
             if (children == null)
                 throw new ArgumentNullException(nameof(children));
-            foreach (object child in children) {
-                switch (child) {
-                    case null:
-                        continue;
-                    case IEnumerable enumerable when !(enumerable is string):
-                        foreach (object subchild in enumerable)
-                            @this.AddChildren(subchild);
-                        break;
-                    default:
-                        @this.AddChild(child);
-                        break;
-                }
-            }
+            @this.Children.Add(children);
             return @this;
         }
 
-        private static void AddChild<T>([NotNull] this T @this, [NotNull] object child)
-            where T : Element
-        {
-            switch (child) {
-                case string text:
-                    @this.Children.Add(text);
-                    break;
-                case Element element:
-                    @this.Children.Add(element);
-                    break;
-                case IFormattable formattable:
-                    @this.Children.Add(formattable.ToString(null, @this.EffectiveCulture));
-                    break;
-                default:
-                    @this.Children.Add(child.ToString());
-                    break;
-            }
-        }
-
+        [Obsolete("Use Element[] and Element.Values collection initializer instead.")]
         public static T Set<T, TValue>([NotNull] this T @this, [NotNull] AttachedProperty<TValue> property, TValue value)
             where T : Element, new()
         {
-            (@this ?? throw new ArgumentNullException(nameof(@this))).SetValue(property, value);
+            (@this ?? throw new ArgumentNullException(nameof(@this))).Values.Add(property, value);
             return @this;
         }
     }

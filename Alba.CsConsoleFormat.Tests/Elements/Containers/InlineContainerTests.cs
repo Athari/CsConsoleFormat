@@ -9,7 +9,7 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void Empty()
         {
-            var doc = new Document().AddChildren();
+            var doc = new Document();
 
             GetRenderedText(doc, 3).Should().BeLines("");
         }
@@ -17,8 +17,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineShortTextAlignLeft()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 3).Should().BeLines("a b");
         }
@@ -26,8 +28,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineShortTextAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 3).Should().BeLines("a b");
         }
@@ -35,8 +39,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineShortTextAlignCenter()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 3).Should().BeLines("a b");
         }
@@ -44,8 +50,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineLongTextAlignLeft()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 11).Should().BeLines("a bc def   ");
         }
@@ -53,8 +61,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineLongTextAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 11).Should().BeLines("   a bc def");
         }
@@ -62,8 +72,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapSingleLineLongTextAlignCenter()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
-                .AddChildren("a bc def");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center,
+                Children = { "a bc def" }
+            };
 
             GetRenderedText(doc, 11).Should().BeLines(" a bc def  ");
         }
@@ -71,8 +83,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapMultiLineTextAlignLeft()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left }
-                .AddChildren("a bc def\nghij klmno");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Left,
+                Children = { "a bc def\nghij klmno" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "a bc ",
@@ -82,8 +96,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapMultiLineTextAlignCenter()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center }
-                .AddChildren("a\nbc\ndef\nghij\nklmno");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Center,
+                Children = { "a\nbc\ndef\nghij\nklmno" }
+            };
 
             GetRenderedText(doc, 4).Should().BeLines(
                 " a  ",
@@ -96,8 +112,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void NoWrapMultiLineTextAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a\nbc\ndef\nghij\nklmno");
+            var doc = new Document {
+                TextWrap = TextWrapping.NoWrap, TextAlign = TextAlignment.Right,
+                Children = { "a\nbc\ndef\nghij\nklmno" }
+            };
 
             GetRenderedText(doc, 4).Should().BeLines(
                 "   a",
@@ -110,8 +128,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void CharWrap()
         {
-            var doc = new Document { TextWrap = TextWrapping.CharWrap }
-                .AddChildren("a bc def ghij");
+            var doc = new Document {
+                TextWrap = TextWrapping.CharWrap,
+                Children = { "a bc def ghij" }
+            };
 
             GetRenderedText(doc, 4).Should().BeLines(
                 "a bc",
@@ -123,8 +143,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void CharWrapExact()
         {
-            var doc = new Document { TextWrap = TextWrapping.CharWrap }
-                .AddChildren("a bc def ghij123");
+            var doc = new Document {
+                TextWrap = TextWrapping.CharWrap,
+                Children = { "a bc def ghij123" }
+            };
 
             GetRenderedText(doc, 4).Should().BeLines(
                 "a bc",
@@ -136,8 +158,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void CharWrapMultiLine()
         {
-            var doc = new Document { TextWrap = TextWrapping.CharWrap }
-                .AddChildren("a bc def\nghij klmno");
+            var doc = new Document {
+                TextWrap = TextWrapping.CharWrap,
+                Children = { "a bc def\nghij klmno" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "a bc ",
@@ -149,8 +173,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void CharWrapMultiLineExact()
         {
-            var doc = new Document { TextWrap = TextWrapping.CharWrap }
-                .AddChildren("a bc def\nghij");
+            var doc = new Document {
+                TextWrap = TextWrapping.CharWrap,
+                Children = { "a bc def\nghij" }
+            };
 
             GetRenderedText(doc, 4).Should().BeLines(
                 "a bc",
@@ -161,8 +187,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapSingleLine()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("abc");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "abc" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines("abc  ");
         }
@@ -170,8 +198,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithSpaces()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("a bc def ghijk lmnopq");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "a bc def ghijk lmnopq" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "a bc ",
@@ -184,8 +214,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithSpacesAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a bc def ghijk lmnopq");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right,
+                Children = { "a bc def ghijk lmnopq" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 " a bc",
@@ -198,8 +230,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapMultipleUnwrappable()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("a bcdefg hijklm");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "a bcdefg hijklm" }
+            };
 
             GetRenderedText(doc, 3).Should().BeLines(
                 "a  ",
@@ -212,8 +246,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithHyphens()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("a-bc-def-ghijk-lmnopq");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "a-bc-def-ghijk-lmnopq" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "a-bc-",
@@ -227,8 +263,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithHyphensAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a-bc-def-ghijk-lmnopq");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right,
+                Children = { "a-bc-def-ghijk-lmnopq" }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "a-bc-",
@@ -242,8 +280,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithSoftHyphens()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen));
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen) }
+            };
 
             GetRenderedText(doc, 5).Replace(Chars.SoftHyphen, '-').Should().BeLines(
                 "abc- ",
@@ -257,8 +297,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithSoftHyphensAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen));
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right,
+                Children = { "a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.SoftHyphen) }
+            };
 
             GetRenderedText(doc, 5).Replace(Chars.SoftHyphen, '-').Should().BeLines(
                 " abc-",
@@ -273,8 +315,10 @@ namespace Alba.CsConsoleFormat.Tests
         public void WordWrapSplitToChars()
         {
             // Tests wrapping of extra segments.
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("1", "2", Chars.SoftHyphen, "1", "2", "3");
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "1", "2", Chars.SoftHyphen, "1", "2", "3" }
+            };
 
             GetRenderedText(doc, 4).Replace(Chars.SoftHyphen, '-').Should().BeLines(
                 "12- ",
@@ -284,8 +328,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithZeroWidthSpaces()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap }
-                .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace));
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap,
+                Children = { "a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace) }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "abc  ",
@@ -299,8 +345,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void WordWrapWithZeroWidthSpacesAlignRight()
         {
-            var doc = new Document { TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right }
-                .AddChildren("a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace));
+            var doc = new Document {
+                TextWrap = TextWrapping.WordWrap, TextAlign = TextAlignment.Right,
+                Children = { "a-bc-def-ghij-klmno-pqrstu".Replace('-', Chars.ZeroWidthSpace) }
+            };
 
             GetRenderedText(doc, 5).Should().BeLines(
                 "  abc",

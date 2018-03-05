@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat.Tests
         public void NoChildren()
         {
             var repeater = new Repeater();
-            var doc = new Document().AddChildren(repeater);
+            var doc = new Document { Children = { repeater } };
 
             new Action(() => RenderOn1x1(doc)).Should().NotThrow();
         }
@@ -53,8 +53,8 @@ namespace Alba.CsConsoleFormat.Tests
                     new object[] { 5, 4, 3 },
                 },
                 ItemTemplate = {
-                    new Div()
-                        .AddChildren(
+                    new Div {
+                        Children = {
                             new Span().Bind(o => o.Text, (object[] items) => $"{items.Length}: "),
                             new Repeater {
                                 ItemTemplate = {
@@ -62,7 +62,8 @@ namespace Alba.CsConsoleFormat.Tests
                                     new Span(", "),
                                 }
                             }.Bind(o => o.Items, (object[] items) => items)
-                        )
+                        }
+                    }
                 }
             };
 

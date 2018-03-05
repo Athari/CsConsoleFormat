@@ -173,9 +173,10 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void RenderDefaultBorders()
         {
-            var grid = new Grid()
-                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
-                .AddChildren(Enumerable.Range(1, 6).Select(i => new Cell().AddChildren(i)));
+            var grid = new Grid {
+                Columns = { GridLength.Char(1), GridLength.Char(1), GridLength.Char(1) },
+                Children = { Enumerable.Range(1, 6).Select(i => new Cell { Children = { i } }) }
+            };
 
             GetRenderedText(grid, 8).Should().BeLines(
                 "╔═╤═╤═╗ ",
@@ -189,16 +190,18 @@ namespace Alba.CsConsoleFormat.Tests
         public void RenderCustomBorders()
         {
             var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
-            var grid = new Grid { Stroke = new LineThickness(LineWidth.None) }
-                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
-                .AddChildren(
-                    new Cell { Stroke = headerThickness }.AddChildren(1),
-                    new Cell { Stroke = headerThickness }.AddChildren(2),
-                    new Cell { Stroke = headerThickness }.AddChildren(3),
-                    new Cell().AddChildren(4),
-                    new Cell().AddChildren(5),
-                    new Cell().AddChildren(6)
-                );
+            var grid = new Grid {
+                Stroke = new LineThickness(LineWidth.None),
+                Columns = { GridLength.Char(1), GridLength.Char(1), GridLength.Char(1) },
+                Children = {
+                    new Cell { Stroke = headerThickness, Children = { 1 } },
+                    new Cell { Stroke = headerThickness, Children = { 2 } },
+                    new Cell { Stroke = headerThickness, Children = { 3 } },
+                    new Cell { Children = { 4 } },
+                    new Cell { Children = { 5 } },
+                    new Cell { Children = { 6 } },
+                }
+            };
 
             GetRenderedText(grid, 8).Should().BeLines(
                 "╒═╤═╤═╕ ",
@@ -211,13 +214,15 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void RenderManualPosition()
         {
-            var grid = new Grid { AutoPosition = false }
-                .AddColumns(GridLength.Char(1), GridLength.Char(1), GridLength.Char(1), GridLength.Char(1))
-                .AddChildren(
-                    new Cell { [Grid.ColumnProperty] = 0, [Grid.RowProperty] = 0 }.AddChildren(1),
-                    new Cell { [Grid.ColumnProperty] = 3, [Grid.RowProperty] = 0 }.AddChildren(2),
-                    new Cell { [Grid.ColumnProperty] = 1, [Grid.RowProperty] = 1, [Grid.ColumnSpanProperty] = 3 }.AddChildren(3)
-                );
+            var grid = new Grid {
+                AutoPosition = false,
+                Columns = { GridLength.Char(1), GridLength.Char(1), GridLength.Char(1), GridLength.Char(1) },
+                Children = {
+                    new Cell { [Grid.ColumnProperty] = 0, [Grid.RowProperty] = 0, Children = { 1 } },
+                    new Cell { [Grid.ColumnProperty] = 3, [Grid.RowProperty] = 0, Children = { 2 } },
+                    new Cell { [Grid.ColumnProperty] = 1, [Grid.RowProperty] = 1, [Grid.ColumnSpanProperty] = 3, Children = { 3 } },
+                }
+            };
 
             GetRenderedText(grid, 8).Should().BeLines(
                 "╔═╤══╤═╗",
