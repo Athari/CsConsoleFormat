@@ -82,9 +82,9 @@ Imagine you have usual Order, OrderItem and Customer classes. Let's create a doc
             <Column Width="*"/>
             <Column Width="Auto"/>
         </Grid.Columns>
-        <Cell Stroke="Single Wide" Color="White">Id</Cell>
-        <Cell Stroke="Single Wide" Color="White">Name</Cell>
-        <Cell Stroke="Single Wide" Color="White">Count</Cell>
+        <Cell Stroke="Single Double" Color="White">Id</Cell>
+        <Cell Stroke="Single Double" Color="White">Name</Cell>
+        <Cell Stroke="Single Double" Color="White">Count</Cell>
         <Repeater Items="{Get OrderItems}">
             <Cell>
                 <Span Text="{Get Id}"/>
@@ -111,7 +111,7 @@ ConsoleRenderer.RenderDocument(doc);
 ```c#
 using static System.ConsoleColor;
 
-var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
 
 var doc = new Document {
     Children = {
@@ -190,7 +190,7 @@ Getting started
 Choosing syntax
 ===============
 
-**XAML** (like WPF) forces clear separation of views and models which is a good thing. However, it isn't strongly typed, so it's easy to get runtime errors if not careful. Syntax-wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Wide"`).
+**XAML** (like WPF) forces clear separation of views and models which is a good thing. However, it isn't strongly typed, so it's easy to get runtime errors if not careful. Syntax-wise it's a combination of XML verbosity (`<Grid><Grid.Columns><Column/></Grid.Columns></Grid>`) and conciseness of short enums (`Color="White"`) and converters (`Stroke="Single Double"`).
 
 XAML library in Mono is currently very buggy. If you want to build a cross-platform application, using XAML may be problematic. However, if you need to support only Windows and are experienced in WPF, XAML should feel natural.
 

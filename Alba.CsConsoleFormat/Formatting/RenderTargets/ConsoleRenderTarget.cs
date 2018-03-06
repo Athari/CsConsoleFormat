@@ -39,7 +39,7 @@ namespace Alba.CsConsoleFormat
                         ConsoleColor backColor = BackgroundOverride ?? chr.BackgroundColor;
                         if (backColor != currentBackColor)
                             Console.BackgroundColor = currentBackColor = backColor;
-                        Console.Write(chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
+                        Console.Write(chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
                     }
                     if (isManualWrap)
                         Console.WriteLine();

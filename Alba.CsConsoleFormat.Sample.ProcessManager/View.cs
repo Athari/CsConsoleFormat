@@ -10,7 +10,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal static class View
     {
-        private static readonly LineThickness StrokeHeader = new LineThickness(LineWidth.None, LineWidth.Wide);
+        private static readonly LineThickness StrokeHeader = new LineThickness(LineWidth.None, LineWidth.Double);
         private static readonly LineThickness StrokeRight = new LineThickness(LineWidth.None, LineWidth.None, LineWidth.Single, LineWidth.None);
 
         public static Document Error(string message, string extra = null) =>

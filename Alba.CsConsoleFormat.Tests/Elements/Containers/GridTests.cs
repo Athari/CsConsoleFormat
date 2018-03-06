@@ -189,7 +189,7 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void RenderCustomBorders()
         {
-            var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+            var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
             var grid = new Grid {
                 Stroke = new LineThickness(LineWidth.None),
                 Columns = { GridLength.Char(1), GridLength.Char(1), GridLength.Char(1) },

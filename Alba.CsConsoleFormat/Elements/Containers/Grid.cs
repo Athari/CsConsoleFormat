@@ -34,7 +34,7 @@ namespace Alba.CsConsoleFormat
         {
             Columns = new ColumnCollection(this);
             Rows = new RowCollection(this);
-            Stroke = LineThickness.Wide;
+            Stroke = LineThickness.Double;
         }
 
         public LineThickness Stroke

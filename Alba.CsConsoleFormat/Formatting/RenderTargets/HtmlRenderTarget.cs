@@ -78,7 +78,7 @@ namespace Alba.CsConsoleFormat
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
                     }
-                    char c = chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
+                    char c = chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                     Writer.Write(WebUtility.HtmlEncode(c.ToString()));
                 }
 

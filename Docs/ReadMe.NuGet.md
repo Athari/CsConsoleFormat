@@ -55,9 +55,9 @@ Imagine you have usual Order, OrderItem and Customer classes. Let's create a doc
             <Column Width="*"/>
             <Column Width="Auto"/>
         </Grid.Columns>
-        <Cell Stroke="Single Wide" Color="White">Id</Cell>
-        <Cell Stroke="Single Wide" Color="White">Name</Cell>
-        <Cell Stroke="Single Wide" Color="White">Count</Cell>
+        <Cell Stroke="Single Double" Color="White">Id</Cell>
+        <Cell Stroke="Single Double" Color="White">Name</Cell>
+        <Cell Stroke="Single Double" Color="White">Count</Cell>
         <Repeater Items="{Get OrderItems}">
             <Cell>
                 <Span Text="{Get Id}"/>
@@ -84,7 +84,7 @@ ConsoleRenderer.RenderDocument(doc);
 ```c#
 using static System.ConsoleColor;
 
-var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
 
 var doc = new Document {
     Children = {

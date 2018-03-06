@@ -22,7 +22,7 @@ namespace Alba.CsConsoleFormat
             Bottom = bottom;
         }
 
-        public LineThickness(LineWidth vertical, LineWidth horizontal) : this(vertical, horizontal, vertical, horizontal)
+        public LineThickness(LineWidth horizontal, LineWidth vertical) : this(horizontal, vertical, horizontal, vertical)
         { }
 
         public LineThickness(LineWidth width) : this(width, width, width, width)
@@ -30,7 +30,8 @@ namespace Alba.CsConsoleFormat
 
         public static LineThickness None => new LineThickness(LineWidth.None);
         public static LineThickness Single => new LineThickness(LineWidth.Single);
-        public static LineThickness Wide => new LineThickness(LineWidth.Wide);
+        public static LineThickness Heavy => new LineThickness(LineWidth.Heavy);
+        public static LineThickness Double => new LineThickness(LineWidth.Double);
 
         public Thickness CharThickness => new Thickness(Left.ToCharWidth(), Top.ToCharWidth(), Right.ToCharWidth(), Bottom.ToCharWidth());
         public Size CollapsedCharThickness => CharThickness.CollapsedThickness;

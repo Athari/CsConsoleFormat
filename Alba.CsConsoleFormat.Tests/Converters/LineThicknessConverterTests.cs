@@ -60,14 +60,17 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.ConvertFrom("Single").Should().Be(LineThickness.Single);
             _converter.ConvertFrom("SinglE").Should().Be(LineThickness.Single);
             _converter.ConvertFrom("1").Should().Be(LineThickness.Single);
-            _converter.ConvertFrom("Wide").Should().Be(LineThickness.Wide);
-            _converter.ConvertFrom("WidE").Should().Be(LineThickness.Wide);
-            _converter.ConvertFrom("2").Should().Be(LineThickness.Wide);
+            _converter.ConvertFrom("Heavy").Should().Be(LineThickness.Heavy);
+            _converter.ConvertFrom("HeavY").Should().Be(LineThickness.Heavy);
+            _converter.ConvertFrom("2").Should().Be(LineThickness.Heavy);
+            _converter.ConvertFrom("Double").Should().Be(LineThickness.Double);
+            _converter.ConvertFrom("DoublE").Should().Be(LineThickness.Double);
+            _converter.ConvertFrom("3").Should().Be(LineThickness.Double);
 
             _converter.ConvertFrom("None Single").Should().Be(new LineThickness(LineWidth.None, LineWidth.Single));
-            _converter.ConvertFrom("Single 2").Should().Be(new LineThickness(LineWidth.Single, LineWidth.Wide));
+            _converter.ConvertFrom("Single 2").Should().Be(new LineThickness(LineWidth.Single, LineWidth.Heavy));
 
-            _converter.ConvertFrom("None Single Wide 0").Should().Be(new LineThickness(LineWidth.None, LineWidth.Single, LineWidth.Wide, LineWidth.None));
+            _converter.ConvertFrom("None Heavy Double 0").Should().Be(new LineThickness(LineWidth.None, LineWidth.Heavy, LineWidth.Double, LineWidth.None));
         }
 
         [Fact]
@@ -76,7 +79,8 @@ namespace Alba.CsConsoleFormat.Tests
             _converter.ConvertFrom(0).Should().Be(LineThickness.None);
             _converter.ConvertFrom(0m).Should().Be(LineThickness.None);
             _converter.ConvertFrom(1).Should().Be(LineThickness.Single);
-            _converter.ConvertFrom(2L).Should().Be(LineThickness.Wide);
+            _converter.ConvertFrom(2).Should().Be(LineThickness.Heavy);
+            _converter.ConvertFrom(3L).Should().Be(LineThickness.Double);
         }
 
         [Fact]
@@ -84,7 +88,8 @@ namespace Alba.CsConsoleFormat.Tests
         {
             _converter.ConvertFrom(LineWidth.None).Should().Be(LineThickness.None);
             _converter.ConvertFrom(LineWidth.Single).Should().Be(LineThickness.Single);
-            _converter.ConvertFrom(LineWidth.Wide).Should().Be(LineThickness.Wide);
+            _converter.ConvertFrom(LineWidth.Heavy).Should().Be(LineThickness.Heavy);
+            _converter.ConvertFrom(LineWidth.Double).Should().Be(LineThickness.Double);
         }
 
         [Fact]
@@ -103,8 +108,8 @@ namespace Alba.CsConsoleFormat.Tests
         [Fact]
         public void ConvertToString()
         {
-            _converter.ConvertToString(new LineThickness(LineWidth.None, LineWidth.Single, LineWidth.Wide, LineWidth.None))
-                .Should().Be("None Single Wide None");
+            _converter.ConvertToString(new LineThickness(LineWidth.None, LineWidth.Single, LineWidth.Double, LineWidth.Heavy))
+                .Should().Be("None Single Double Heavy");
         }
 
         #if HAS_INSTANCE_DESCRIPTOR
@@ -113,9 +118,9 @@ namespace Alba.CsConsoleFormat.Tests
         {
             _converter.CanConvertFrom(null, typeof(InstanceDescriptor)).Should().BeTrue();
             _converter.CanConvertTo(null, typeof(InstanceDescriptor)).Should().BeTrue();
-            _converter.ConvertTo(LineThickness.Wide, typeof(InstanceDescriptor))
+            _converter.ConvertTo(LineThickness.Double, typeof(InstanceDescriptor))
                 .As<InstanceDescriptor>().Invoke()
-                .Should().Be(LineThickness.Wide);
+                .Should().Be(LineThickness.Double);
         }
         #endif
     }

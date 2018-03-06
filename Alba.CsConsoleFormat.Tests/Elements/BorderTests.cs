@@ -34,7 +34,7 @@ namespace Alba.CsConsoleFormat.Tests
         {
             var border = new Border {
                 Padding = new Thickness(2, 0, 1, 0),
-                Stroke = new LineThickness(LineWidth.None, LineWidth.Wide, LineWidth.Single, LineWidth.Wide),
+                Stroke = new LineThickness(LineWidth.None, LineWidth.Double, LineWidth.Single, LineWidth.Double),
                 Children = { CreateRectDiv(2, 1) },
             };
 
@@ -81,7 +81,7 @@ namespace Alba.CsConsoleFormat.Tests
         public void RenderAllDecorations()
         {
             var border = new Border {
-                Stroke = new LineThickness(LineWidth.Wide, LineWidth.Single),
+                Stroke = new LineThickness(LineWidth.Double, LineWidth.Single),
                 Shadow = new Thickness(-1, -1, 1, 1),
                 ShadowColor = ConsoleColor.DarkYellow,
                 Padding = new Thickness(1, 0),

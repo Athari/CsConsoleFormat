@@ -1,42 +1,73 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using Alba.CsConsoleFormat.Framework.Sys;
 
 namespace Alba.CsConsoleFormat
 {
-    [Flags]
-    [SuppressMessage("Microsoft.Naming", "CA1714:FlagsEnumsShouldHavePluralNames", Justification = "Enumeration represents options of a single character through extension methods.")]
-    public enum LineChar
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
+    public struct LineChar
     {
-        None = 0,
+        private byte _widths;
 
-        Horizontal = 1 << 0,
-        HorizontalWide = 1 << 1,
-        Vertical = 1 << 2,
-        VerticalWide = 1 << 3,
+        private LineChar(byte widths)
+        {
+            _widths = widths;
+        }
 
-        MaskHorizontal = Horizontal | HorizontalWide,
-        MaskVertical = Vertical | VerticalWide,
-    }
+        public LineChar(LineWidth left, LineWidth top, LineWidth right, LineWidth bottom)
+            : this((byte)(((byte)left << 0) | ((byte)right << 2) | ((byte)top << 4) | ((byte)bottom << 6)))
+        { }
 
-    internal static class LineCharExts
-    {
-        [Pure]
-        public static bool IsEmpty(this LineChar @this) => @this.IsNone() || !@this.IsHorizontal() && !@this.IsVertical();
+        public LineChar(LineWidth horizontal, LineWidth vertical)
+            : this(horizontal, vertical, horizontal, vertical)
+        { }
 
-        [Pure]
-        public static bool IsNone(this LineChar @this) => @this == LineChar.None;
+        public LineWidth Left
+        {
+            get => (LineWidth)Bits.Get(_widths, 0, 2);
+            set => Bits.Set(ref _widths, (byte)value, 0, 2);
+        }
 
-        [Pure]
-        public static bool IsHorizontal(this LineChar @this) => (@this & LineChar.Horizontal) != 0;
+        public LineWidth Right
+        {
+            get => (LineWidth)Bits.Get(_widths, 2, 2);
+            set => Bits.Set(ref _widths, (byte)value, 2, 2);
+        }
 
-        [Pure]
-        public static bool IsHorizontalWide(this LineChar @this) => (@this & LineChar.HorizontalWide) != 0;
+        public LineWidth Top
+        {
+            get => (LineWidth)Bits.Get(_widths, 4, 2);
+            set => Bits.Set(ref _widths, (byte)value, 4, 2);
+        }
 
-        [Pure]
-        public static bool IsVertical(this LineChar @this) => (@this & LineChar.Vertical) != 0;
+        public LineWidth Bottom
+        {
+            get => (LineWidth)Bits.Get(_widths, 6, 2);
+            set => Bits.Set(ref _widths, (byte)value, 6, 2);
+        }
 
-        [Pure]
-        public static bool IsVerticalWide(this LineChar @this) => (@this & LineChar.VerticalWide) != 0;
+        public static readonly LineChar None = new LineChar();
+
+        public bool IsEmpty => _widths == 0;
+
+        public void SetHorizontal(LineWidth horizontal)
+        {
+            byte value = (byte)horizontal;
+            Bits.Set(ref _widths, (byte)((value << 2) | value), 0, 4);
+        }
+
+        public void SetVertical(LineWidth vertical)
+        {
+            byte value = (byte)vertical;
+            Bits.Set(ref _widths, (byte)((value << 2) | value), 4, 4);
+        }
+
+        public bool Equals(LineChar other) => _widths == other._widths;
+        public override bool Equals(object obj) => obj is LineChar && Equals((LineChar)obj);
+        public override int GetHashCode() => _widths.GetHashCode();
+
+        public static bool operator ==(LineChar left, LineChar right) => left.Equals(right);
+        public static bool operator !=(LineChar left, LineChar right) => !left.Equals(right);
+
+        public override string ToString() => $"({Left}-{Right})x({Top}-{Bottom})";
     }
 }

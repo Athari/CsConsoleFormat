@@ -116,15 +116,15 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             for (int i = 0; i < rainbow.Length; i++)
                 buffer.FillBackgroundRectangle(i, i, 80 - i * 2, (rainbow.Length - i) * 2, rainbow[i]);
             buffer.DrawHorizontalLine(1, 0, 78, White);
-            buffer.DrawHorizontalLine(1, 1, 78, White, LineWidth.Wide);
+            buffer.DrawHorizontalLine(1, 1, 78, White, LineWidth.Double);
             buffer.DrawHorizontalLine(3, 3, 7, White);
             buffer.DrawVerticalLine(1, 1, 9, White);
             buffer.DrawVerticalLine(2, 2, 4, White);
-            buffer.DrawVerticalLine(5, 0, 6, White, LineWidth.Wide);
+            buffer.DrawVerticalLine(5, 0, 6, White, LineWidth.Double);
             buffer.DrawVerticalLine(5, 0, 6, White);
             buffer.DrawVerticalLine(6, 0, 6, White);
-            buffer.DrawVerticalLine(3, 0, 12, White, LineWidth.Wide);
-            buffer.DrawRectangle(0, 0, 80, 32, White, LineWidth.Wide);
+            buffer.DrawVerticalLine(3, 0, 12, White, LineWidth.Double);
+            buffer.DrawRectangle(0, 0, 80, 32, White, LineWidth.Double);
             buffer.FillBackgroundVerticalLine(40, 0, 32, Yellow);
             buffer.FillForegroundVerticalLine(41, 0, 32, White, FullBlock);
             buffer.FillForegroundVerticalLine(42, 0, 32, White, DarkShade);
@@ -230,7 +230,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
     {
         public Document CreateDocument(Data data)
         {
-            var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Wide);
+            var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
             return new Document {
                 Color = White, Background = Black,
                 Children = {

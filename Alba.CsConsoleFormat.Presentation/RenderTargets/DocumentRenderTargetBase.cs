@@ -112,7 +112,7 @@ namespace Alba.CsConsoleFormat.Presentation
                             Background = ConsoleBrushes[backColor],
                         };
                     }
-                    text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
+                    text.Text += chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
                 AppendRunIfNeeded();
                 if (iy + 1 < buffer.Height)
@@ -154,7 +154,7 @@ namespace Alba.CsConsoleFormat.Presentation
                         WpfCanvas.SetLeft(text, ix * charSize.Width);
                         WpfCanvas.SetTop(text, iy * charSize.Height);
                     }
-                    text.Text += chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
+                    text.Text += chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
                 AppendTextBlockIfNeeded();
             }

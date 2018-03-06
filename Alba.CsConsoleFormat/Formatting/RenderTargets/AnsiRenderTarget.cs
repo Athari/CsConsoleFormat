@@ -59,7 +59,7 @@ namespace Alba.CsConsoleFormat
                         currentForeColor = foreColor;
                         currentBackColor = backColor;
                     }
-                    Writer.Write(chr.HasChar || chr.LineChar.IsEmpty() ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
+                    Writer.Write(chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy));
                 }
                 Writer.WriteLine();
             }

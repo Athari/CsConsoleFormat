@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.Globalization;
-using static System.FormattableString;
+using Alba.CsConsoleFormat.Framework.Sys;
 
-// ReSharper disable ConvertToAutoProperty
 // ReSharper disable NonReadonlyMemberInGetHashCode
 namespace Alba.CsConsoleFormat
 {
     public struct ConsoleChar : IEquatable<ConsoleChar>
     {
-        private char _char;
         private byte _colors;
-        private byte _state;
 
-        public char Char
-        {
-            get => _char;
-            set => _char = value;
-        }
+        public char Char { get; set; }
+        public LineChar LineChar { get; set; }
 
         public bool HasChar => Char != '\0';
 
@@ -25,67 +18,38 @@ namespace Alba.CsConsoleFormat
         {
             get
             {
-                if (_char < ' ')
+                if (Char < ' ')
                     return ' ';
-                if (_char == Chars.NoBreakHyphen || _char == Chars.SoftHyphen)
+                if (Char == Chars.NoBreakHyphen || Char == Chars.SoftHyphen)
                     return '-';
-                if (_char == Chars.NoBreakSpace || _char == Chars.ZeroWidthSpace)
+                if (Char == Chars.NoBreakSpace || Char == Chars.ZeroWidthSpace)
                     return ' ';
-                return _char;
+                return Char;
             }
         }
 
         public ConsoleColor ForegroundColor
         {
-            get => (ConsoleColor)GetBits(_colors, 0, 0b1111);
-            set => SetBits(ref _colors, (byte)value, 0, 0b1111);
+            get => (ConsoleColor)Bits.Get(_colors, 0, 4);
+            set => Bits.Set(ref _colors, (byte)value, 0, 4);
         }
 
         public ConsoleColor BackgroundColor
         {
-            get => (ConsoleColor)GetBits(_colors, 4, 0b1111);
-            set => SetBits(ref _colors, (byte)value, 4, 0b1111);
-        }
-
-        public LineChar LineChar
-        {
-            get => (LineChar)GetBits(_state, 0, 0b1111);
-            set => SetBits(ref _state, (byte)value, 0, 0b1111);
-        }
-
-        public LineWidth LineWidthHorizontal
-        {
-            get => (LineWidth)GetBits(_state, 0, 0b11);
-            set => SetBits(ref _state, (byte)value, 0, 0b11);
-        }
-
-        public LineWidth LineWidthVertical
-        {
-            get => (LineWidth)GetBits(_state, 2, 0b11);
-            set => SetBits(ref _state, (byte)value, 2, 0b11);
-        }
-
-        [Pure]
-        private static byte GetBits(byte data, int offset, byte mask)
-        {
-            return (byte)((data >> offset) & mask);
-        }
-
-        private static void SetBits(ref byte data, byte value, int offset, byte mask)
-        {
-            data = (byte)((data & ~(mask << offset)) | (value & mask) << offset);
+            get => (ConsoleColor)Bits.Get(_colors, 4, 4);
+            set => Bits.Set(ref _colors, (byte)value, 4, 4);
         }
 
         public override string ToString() =>
             string.Format(CultureInfo.InvariantCulture, "{0}{1} ({2} @ {3})",
-                _char >= ' ' ? _char.ToString() : "#" + (int)_char,
-                (LineChar != LineChar.None ? Invariant($" ({LineWidthHorizontal} x {LineWidthVertical})") : ""),
+                Char >= ' ' ? Char.ToString() : "#" + (int)Char,
+                LineChar != LineChar.None ? $" {LineChar}" : "",
                 ForegroundColor,
                 BackgroundColor);
 
-        public bool Equals(ConsoleChar other) => _char == other._char && _colors == other._colors && _state == other._state;
+        public bool Equals(ConsoleChar other) => _colors == other._colors && Char == other.Char && LineChar == other.LineChar;
         public override bool Equals(object obj) => obj is ConsoleChar && Equals((ConsoleChar)obj);
-        public override int GetHashCode() => _char.GetHashCode() ^ _colors.GetHashCode() ^ _state.GetHashCode();
+        public override int GetHashCode() => _colors.GetHashCode() ^ Char.GetHashCode() ^ LineChar.GetHashCode();
 
         public static bool operator ==(ConsoleChar left, ConsoleChar right) => left.Equals(right);
         public static bool operator !=(ConsoleChar left, ConsoleChar right) => !left.Equals(right);

@@ -9,9 +9,9 @@ namespace Alba.CsConsoleFormat
     /// <summary>
     /// Converts <see cref="LineThickness"/> to and from <see cref="string"/> and numeric types:
     /// <list type="bullet">
-    /// <item>"None Single Wide Single", "0 1 2 0" - <c>new LineThickness(None, Single, Wide, Single)</c></item>
-    /// <item>"Single Wide", "1 2" - <c>new LineThickness(Single, Wide)</c> (<c>new LineThickness(Single, Wide, Single, Wide)</c>)</item>
-    /// <item>"Wide", "2", 2 - <c>new LineThickness(Wide)</c> (<c>new LineThickness(Wide, Wide, Wide, Wide)</c>)</item>
+    /// <item>"None Single Double Single", "0 1 3 0" - <c>new LineThickness(None, Single, Double, Single)</c></item>
+    /// <item>"Single Double", "1 3" - <c>new LineThickness(Single, Double)</c> (<c>new LineThickness(Single, Double, Single, Double)</c>)</item>
+    /// <item>"Heavy", "2", 2 - <c>new LineThickness(Heavy)</c> (<c>new LineThickness(Heavy, Heavy, Heavy, Heavy)</c>)</item>
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
@@ -53,7 +53,7 @@ namespace Alba.CsConsoleFormat
         protected override ConstructorInfo InstanceConstructor => LineThicknessConstructor.Value;
         protected override object[] InstanceConstructorArgs(LineThickness o) => new object[] { o.Left, o.Top, o.Right, o.Bottom };
 
-        private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single ? width : LineWidth.Wide;
+        private static LineWidth FixWidth(LineWidth width) => width == LineWidth.None || width == LineWidth.Single || width == LineWidth.Heavy ? width : LineWidth.Double;
         private static LineWidth GetWidth(string str) => FixWidth(StringToEnum<LineWidth>(str));
     }
 }

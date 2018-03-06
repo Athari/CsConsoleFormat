@@ -221,7 +221,7 @@
             <Span Text="{Get LoremIpsumShort, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Div>
     </Stack>
-    <Border Stroke="1 2, Single Wide" Color="Yellow" Background="Blue" Padding="1 0" Margin="1" Visibility="Collapsed">
+    <Border Stroke="1 2, Single Double" Color="Yellow" Background="Blue" Padding="1 0" Margin="1" Visibility="Collapsed">
         <Div TextAlign="Left" Align="Center" Color="Gray" Background="DarkBlue" Padding="1 0" TextWrap="WordWrap" Width="20">
             <!--<Span Text="{Get Title}" Color="White"/><Br/>
             <Span Text="{Get SubTitle}"/><Br/>
@@ -234,7 +234,7 @@
             <!--<Span Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/><Br/><Br/>-->
             <!--<Span Text="Word wrap with hyphens" Color="White"/><Br/><Br/>-->
             <!--<Span Text="Lo­rem ip­sum do­lor sit amet, con­sec­te­tur adi­pis­cing elit, sed do eius­mod tem­por in­ci­di­dunt ut la­bo­re et do­lo­re mag­na ali­qua. Ut enim ad mi­nim ve­ni­am, qu­is nos­trud exer­ci­ta­tion ul­lam­co la­bo­ris ni­si ut ali­quip ex ea com­mo­do con­se­quat. Du­is au­te iru­re do­lor in rep­re­hen­de­rit in vo­lup­ta­te ve­lit es­se cil­lum do­lo­re eu fu­gi­at nul­la pa­ri­a­tur. Ex­cep­te­ur sint oc­ca­e­cat cu­pi­da­tat non pro­i­dent, sunt in cul­pa qui of­fi­cia de­se­runt mol­lit anim id est la­bo­rum."/><Br/>-->
-            <!--<Line Orientation="Horizontal" Stroke="Wide" Margin="5 1" Width="40" Align="Center"/>-->
+            <!--<Line Orientation="Horizontal" Stroke="Double" Margin="5 1" Width="40" Align="Center"/>-->
             <!--<Span Text="{Get Guid}" Color="{Res BoldColor}"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green"/><Br/>
             <Span Text="{Get Date, Format=D}" Color="Green" Language="fr"/><Br/>

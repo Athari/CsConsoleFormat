@@ -33,44 +33,104 @@ namespace Alba.CsConsoleFormat
             set => _lineCharRenderer = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public void DrawHorizontalLine(int x, int y, int width, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)
+        public void DrawHorizontalLine(int x, int y, int width, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single,
+            DrawLineFlags flags = DrawLineFlags.CapCenter)
         {
-            if (lineWidth == LineWidth.None)
-                return;
             int x1 = x, x2 = x + width;
             OffsetY(ref y).OffsetX(ref x1).OffsetX(ref x2);
+            int unclippedx1 = x1, unclippedx2 = x2;
             if (!ClipHorizontalLine(y, ref x1, ref x2))
                 return;
+
+            // Draw line
             ConsoleChar[] charsLine = GetLine(y);
-            for (int ix = x1; ix < x2; ix++) {
-                if (color != null)
+            if (color != null) {
+                for (int ix = x1; ix < x2; ix++)
                     charsLine[ix].ForegroundColor = color.Value;
-                charsLine[ix].LineWidthHorizontal = lineWidth;
             }
+            for (int ix = x1 + 1; ix < x2 - 1; ix++) {
+                LineChar lineChar = charsLine[ix].LineChar;
+                lineChar.SetHorizontal(lineWidth);
+                charsLine[ix].LineChar = lineChar;
+            }
+
+            // Cap start
+            LineChar lineCharStart = charsLine[x1].LineChar;
+            if (x1 != unclippedx1)
+                lineCharStart.SetHorizontal(lineWidth);
+            else if (flags.HasCapStartFull())
+                lineCharStart.SetHorizontal(lineWidth);
+            else if (flags.HasCapStartCenter())
+                lineCharStart.Right = lineWidth;
+            charsLine[x1].LineChar = lineCharStart;
+
+            // Cap end
+            LineChar lineCharEnd = charsLine[x2 - 1].LineChar;
+            if (x2 != unclippedx2)
+                lineCharEnd.SetHorizontal(lineWidth);
+            else if (flags.HasCapEndFull())
+                lineCharEnd.SetHorizontal(lineWidth);
+            else if (flags.HasCapEndCenter())
+                lineCharEnd.Left = lineWidth;
+            charsLine[x2 - 1].LineChar = lineCharEnd;
         }
 
-        public void DrawVerticalLine(int x, int y, int height, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)
+        public void DrawVerticalLine(int x, int y, int height, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single,
+            DrawLineFlags flags = DrawLineFlags.CapCenter)
         {
             if (lineWidth == LineWidth.None)
                 return;
+
             int y1 = y, y2 = y + height;
             OffsetX(ref x).OffsetY(ref y1).OffsetY(ref y2);
+            int unclippedy1 = y1, unclippedy2 = y2;
             if (!ClipVerticalLine(x, ref y1, ref y2))
                 return;
-            for (int iy = y1; iy < y2; iy++) {
-                ConsoleChar[] charsLine = GetLine(iy);
-                if (color != null)
+
+            // Draw line
+            if (color != null) {
+                for (int iy = y1; iy < y2; iy++) {
+                    ConsoleChar[] charsLine = GetLine(iy);
                     charsLine[x].ForegroundColor = color.Value;
-                charsLine[x].LineWidthVertical = lineWidth;
+                }
             }
+            for (int iy = y1 + 1; iy < y2 - 1; iy++) {
+                ConsoleChar[] charsLine = GetLine(iy);
+                LineChar lineChar = charsLine[x].LineChar;
+                lineChar.SetVertical(lineWidth);
+                charsLine[x].LineChar = lineChar;
+            }
+
+            // Cap start
+            ConsoleChar[] charsLineStart = GetLine(y1);
+            LineChar lineCharStart = charsLineStart[x].LineChar;
+            if (y1 != unclippedy1)
+                lineCharStart.SetVertical(lineWidth);
+            else if (flags.HasCapStartFull())
+                lineCharStart.SetVertical(lineWidth);
+            else if (flags.HasCapStartCenter())
+                lineCharStart.Bottom = lineWidth;
+            charsLineStart[x].LineChar = lineCharStart;
+
+            // Cap end
+            ConsoleChar[] charsLineEnd = GetLine(y2 - 1);
+            LineChar lineCharEnd = charsLineEnd[x].LineChar;
+            if (y2 != unclippedy2)
+                lineCharEnd.SetVertical(lineWidth);
+            else if (flags.HasCapEndFull())
+                lineCharEnd.SetVertical(lineWidth);
+            else if (flags.HasCapEndCenter())
+                lineCharEnd.Top = lineWidth;
+            charsLineEnd[x].LineChar = lineCharEnd;
         }
 
-        public void DrawLine(Line line, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single)
+        public void DrawLine(Line line, ConsoleColor? color = null, LineWidth lineWidth = LineWidth.Single,
+            DrawLineFlags flags = DrawLineFlags.CapCenter)
         {
             if (line.IsHorizontal)
-                DrawHorizontalLine(line.X, line.Y, line.Width, color, lineWidth);
+                DrawHorizontalLine(line.X, line.Y, line.Width, color, lineWidth, flags);
             else if (line.IsVertical)
-                DrawVerticalLine(line.X, line.Y, line.Height, color, lineWidth);
+                DrawVerticalLine(line.X, line.Y, line.Height, color, lineWidth, flags);
         }
 
         public void DrawRectangle(int x, int y, int width, int height, ConsoleColor? color = null, LineThickness? thickness = null)
@@ -265,7 +325,7 @@ namespace Alba.CsConsoleFormat
                 return false;
             x1 = Math.Max(x1, Clip.X);
             x2 = Math.Min(x2, Clip.Right);
-            return true;
+            return x1 != x2;
         }
 
         internal bool ClipVerticalLine(int x, ref int y1, ref int y2)
@@ -274,7 +334,7 @@ namespace Alba.CsConsoleFormat
                 return false;
             y1 = Math.Max(y1, Clip.Y);
             y2 = Math.Min(y2, Clip.Bottom);
-            return true;
+            return y1 != y2;
         }
 
         internal bool ClipRectangle(ref int x1, ref int y1, ref int x2, ref int y2)
@@ -327,11 +387,7 @@ namespace Alba.CsConsoleFormat
         char IConsoleBufferSource.GetLineChar(int x, int y)
         {
             ConsoleChar? chr = GetChar(x, y);
-            return chr == null ? '\0' : LineCharRenderer.GetChar(chr.Value.LineChar,
-                charLeft: GetChar(x - 1, y)?.LineChar ?? LineChar.None,
-                charTop: GetChar(x, y - 1)?.LineChar ?? LineChar.None,
-                charRight: GetChar(x + 1, y)?.LineChar ?? LineChar.None,
-                charBottom: GetChar(x, y + 1)?.LineChar ?? LineChar.None);
+            return chr == null ? '\0' : LineCharRenderer.GetChar(chr.Value.LineChar);
         }
     }
 }
