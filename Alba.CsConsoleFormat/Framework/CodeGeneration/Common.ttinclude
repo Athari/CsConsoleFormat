@@ -1,0 +1,43 @@
+﻿<#@   import namespace="System.Runtime.Remoting.Messaging"
+#><#@ import namespace="System.Xml.Linq"
+#><#@ include file="MultipleFiles.ttinclude"
+#><#+
+    T4Manager GetT4() {
+        return T4Manager.Create(Host, GenerationEnvironment);
+    }
+
+    string LoadText(string fileName = null, string ext = null)
+    {
+        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, ext));
+        return File.ReadAllText(fileName, Encoding.UTF8);
+    }
+
+    XDocument LoadXml(string fileName = null, string ext = "xml")
+    {
+        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, ext));
+        return XDocument.Load(fileName);
+    }
+
+    void WriteHeader()
+    { #>
+//
+// Generated file. Do not edit manually.
+//
+
+<#+ }
+
+    string Namespace => (string)CallContext.LogicalGetData("NamespaceHint");
+
+    string ClassName {
+        get {
+            string name = Host.TemplateFile;
+            while (Path.GetExtension(name) != "")
+                name = Path.GetFileNameWithoutExtension(name);
+            return name;
+        }
+    }
+
+    static string IfFormat(string format, object value) => value != null ? string.Format(format, value) : "";
+
+    static string F(string format, params object[] args) => string.Format(format, args);
+#>

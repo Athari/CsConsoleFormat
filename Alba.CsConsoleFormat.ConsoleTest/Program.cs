@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Alba.CsConsoleFormat.ColorfulConsole;
+using Alba.CsConsoleFormat.Fluent;
 using Colorful;
 using JetBrains.Annotations;
 using static System.ConsoleColor;
@@ -133,9 +134,20 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             buffer.DrawString(15, 16, White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
-
             //new ConsoleRenderTarget().Render(buffer);
-            //new ConsoleRenderTarget { ColorOverride = ConsoleColor.White, BackgroundOverride = ConsoleColor.Black }.Render(buffer);
+            //new ConsoleRenderTarget { ColorOverride = White, BackgroundOverride = Black }.Render(buffer);
+
+            Colors.WriteLine("Console without colors is boring...");
+            Colors.WriteLine("Colors".Red(), " are".Green(), " fun!".Blue());
+            Colors.WriteLine(
+                "Background".Red().OnDarkRed(), "colors".Green().OnDarkGreen(), "are".Blue().OnDarkBlue(),
+                "even".DarkRed().OnRed(), "more".DarkGreen().OnGreen(), "fun!".DarkBlue().OnBlue());
+            Colors.WriteLine(new Border {
+                Shadow = new Thickness(-1, -1, 1, 1), ShadowColor = DarkGray,
+                Align = Align.Left,
+                Children = { "Borders yay!".Yellow().OnGray() }
+            });
+
             using (var file = File.Create("../Tmp/1.html"))
                 new HtmlRenderTarget(file, new UTF8Encoding(false)).Render(buffer);
             using (var file = new StreamWriter(File.Create("../Tmp/1.ans"), Encoding.GetEncoding("ibm437")) { NewLine = "" })

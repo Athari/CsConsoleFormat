@@ -23,8 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*" />
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*; **/*.g.cs" />
     <Compile Include="Framework/Compatibility/*.all.*" />
+    <None Include="**/*.ttinclude" />
+    <None Include="Generation/Fluent/Colors.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="Colors.g.cs" />
+    <Compile Include="Generation/Fluent/Colors.g.cs" DesignTime="True" AutoGen="True" DependentUpon="Colors.tt" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">

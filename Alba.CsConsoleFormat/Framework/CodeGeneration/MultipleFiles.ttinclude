@@ -1,0 +1,129 @@
+﻿<#@   assembly name="System.Core"
+#><#@ assembly name="System.Data.Linq"
+#><#@ assembly name="EnvDTE"
+#><#@ assembly name="System.Xml"
+#><#@ assembly name="System.Xml.Linq"
+#><#@ import namespace="System.Collections.Generic"
+#><#@ import namespace="System.IO"
+#><#@ import namespace="System.Linq"
+#><#@ import namespace="System.Text"
+#><#@ import namespace="System.Threading.Tasks"
+#><#@ import namespace="Microsoft.VisualStudio.TextTemplating"
+#><#+
+
+public delegate void FileGenerator();
+
+public class T4Manager
+{
+    private readonly List<Block> _files = new List<Block>();
+    private readonly ITextTemplatingEngineHost _host;
+    private readonly StringBuilder _template;
+    protected readonly List<string> _generatedFileNames = new List<string>();
+
+    private Block CurrentBlock { get; set; }
+
+    private T4Manager(ITextTemplatingEngineHost host, StringBuilder template)
+    {
+        _host = host;
+        _template = template;
+    }
+
+    public static T4Manager Create(ITextTemplatingEngineHost host, StringBuilder template)
+    {
+        return host is IServiceProvider ? new VST4Manager(host, template) : new T4Manager(host, template);
+    }
+
+    public virtual string DefaultProjectNamespace => null;
+    public virtual string GetCustomToolNamespace(string fileName) => null;
+
+    public void GenerateFile(string name, FileGenerator generate)
+    {
+        if (name == null)
+            throw new ArgumentNullException(nameof(name));
+        if (CurrentBlock != null)
+            EndBlock();
+        CurrentBlock = new Block { Name = name, Length = _template.Length };
+        generate();
+    }
+
+    private void EndBlock()
+    {
+        if (CurrentBlock == null)
+            return;
+        CurrentBlock.Length = _template.Length - CurrentBlock.Start;
+        _files.Add(CurrentBlock);
+        CurrentBlock = null;
+    }
+
+    public virtual void Process()
+    {
+        EndBlock();
+        string outputPath = Path.GetDirectoryName(_host.TemplateFile) ?? throw new InvalidOperationException();
+        _files.Reverse();
+        foreach(Block block in _files) {
+            string fileName = Path.Combine(outputPath, block.Name);
+            string content = _template.ToString(block.Start, block.Length);
+            _generatedFileNames.Add(fileName);
+            if (!File.Exists(fileName) || File.ReadAllText(fileName) != content)
+                File.WriteAllText(fileName, content);
+            _template.Remove(block.Start, block.Length);
+        }
+    }
+
+    private class Block
+    {
+        public string Name { get; set; }
+        public int Start { get; set; }
+        public int Length { get; set; }
+    }
+
+    private class VST4Manager : T4Manager
+    {
+        private readonly EnvDTE.ProjectItem _projectItem;
+        private readonly EnvDTE.DTE _dte;
+        private readonly Action<IEnumerable<string>> _projectSyncAction;
+
+        internal VST4Manager(ITextTemplatingEngineHost host, StringBuilder template) : base(host, template)
+        {
+            _dte = (EnvDTE.DTE)(host as IServiceProvider)?.GetService(typeof(EnvDTE.DTE));
+            if (_dte == null)
+                throw new ArgumentException("Could not obtain DTE from host", nameof(host));
+            _projectItem = _dte.Solution.FindProjectItem(host.TemplateFile);
+            _projectSyncAction = keepFileNames => ProjectSync(_projectItem, keepFileNames);
+        }
+
+        public override string DefaultProjectNamespace =>
+            _projectItem.ContainingProject.Properties.Item("DefaultNamespace").Value.ToString();
+
+        public override string GetCustomToolNamespace(string fileName) =>
+            _dte.Solution.FindProjectItem(fileName).Properties.Item("CustomToolNamespace").Value.ToString();
+
+        public override void Process()
+        {
+            if (_projectItem.ProjectItems == null)
+                return;
+            base.Process();
+            //projectSyncAction.EndInvoke(projectSyncAction.BeginInvoke(generatedFileNames, null, null));
+            Task.Run(() => _projectSyncAction(_generatedFileNames));
+        }
+
+        private static void ProjectSync(EnvDTE.ProjectItem templateProjectItem, IEnumerable<string> keepFileNames)
+        {
+            var keepFileNameSet = new HashSet<string>(keepFileNames);
+            var projectFiles = new Dictionary<string, EnvDTE.ProjectItem>();
+            var originalFilePrefix = Path.GetFileNameWithoutExtension(templateProjectItem.FileNames[0]) + ".";
+            foreach(EnvDTE.ProjectItem projectItem in templateProjectItem.ProjectItems)
+                projectFiles.Add(projectItem.FileNames[0], projectItem);
+
+            // Remove unused items from the project
+            foreach(var pair in projectFiles)
+                if (!keepFileNames.Contains(pair.Key) && !(Path.GetFileNameWithoutExtension(pair.Key) + ".").StartsWith(originalFilePrefix))
+                    pair.Value.Delete();
+
+            // Add missing files to the project
+            foreach(string fileName in keepFileNameSet)
+                if (!projectFiles.ContainsKey(fileName))
+                    templateProjectItem.ProjectItems.AddFromFile(fileName);
+        }
+    }
+} #>
