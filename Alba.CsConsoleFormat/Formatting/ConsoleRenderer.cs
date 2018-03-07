@@ -147,6 +147,8 @@ namespace Alba.CsConsoleFormat
                 throw new ArgumentNullException(nameof(document));
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
+            if (document.LineCharRenderer != null)
+                buffer.LineCharRenderer = document.LineCharRenderer;
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
             document.Arrange(renderRect);

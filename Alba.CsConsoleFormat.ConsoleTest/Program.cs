@@ -102,7 +102,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create("../Tmp/0a.html"), new UTF8Encoding(false)));
 
             var buffer = new ConsoleBuffer(80) {
-                LineCharRenderer = LineCharRenderer.Box,
+                LineCharRenderer = LineCharRenderer.BoxExtended,
                 //Clip = new Rect(1, 1, 78, 30),
             };
             var rainbow = new[] {
@@ -113,18 +113,19 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             };
             /*for (int i = 0; i < 16; i++)
                 buffer.FillRectangle((ConsoleColor)i, i, i, 80 - i * 2, 31 - i * 2);*/
+            const LineWidth Thick = LineWidth.Heavy;
             for (int i = 0; i < rainbow.Length; i++)
                 buffer.FillBackgroundRectangle(i, i, 80 - i * 2, (rainbow.Length - i) * 2, rainbow[i]);
             buffer.DrawHorizontalLine(1, 0, 78, White);
-            buffer.DrawHorizontalLine(1, 1, 78, White, LineWidth.Double);
+            buffer.DrawHorizontalLine(1, 1, 78, White, Thick);
             buffer.DrawHorizontalLine(3, 3, 7, White);
             buffer.DrawVerticalLine(1, 1, 9, White);
             buffer.DrawVerticalLine(2, 2, 4, White);
-            buffer.DrawVerticalLine(5, 0, 6, White, LineWidth.Double);
+            buffer.DrawVerticalLine(5, 0, 6, White, Thick);
             buffer.DrawVerticalLine(5, 0, 6, White);
             buffer.DrawVerticalLine(6, 0, 6, White);
-            buffer.DrawVerticalLine(3, 0, 12, White, LineWidth.Double);
-            buffer.DrawRectangle(0, 0, 80, 32, White, LineWidth.Double);
+            buffer.DrawVerticalLine(3, 0, 12, White, Thick);
+            buffer.DrawRectangle(0, 0, 80, 32, White, Thick);
             buffer.FillBackgroundVerticalLine(40, 0, 32, Yellow);
             buffer.FillForegroundVerticalLine(41, 0, 32, White, FullBlock);
             buffer.FillForegroundVerticalLine(42, 0, 32, White, DarkShade);
@@ -134,7 +135,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
             buffer.DrawString(15, 16, White, "Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!");
             //buffer.ApplyBackgroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
             //buffer.ApplyForegroundColorMap(0, 0, buffer.Width, buffer.Height, ColorMaps.Invert);
-            //new ConsoleRenderTarget().Render(buffer);
+            new ConsoleRenderTarget().Render(buffer);
             //new ConsoleRenderTarget { ColorOverride = White, BackgroundOverride = Black }.Render(buffer);
 
             Colors.WriteLine("Console without colors is boring...");

@@ -159,6 +159,19 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
+        public void BoxLineCharRendererRectangles()
+        {
+            var buffer = new ConsoleBuffer(4) { LineCharRenderer = LineCharRenderer.Box };
+
+            buffer.DrawRectangle(0, 0, 2, 2, null, LineWidth.Single);
+            buffer.DrawRectangle(2, 0, 2, 2, null, LineWidth.Single);
+
+            GetRenderedText(buffer).Should().BeLines(
+                "┌┐┌┐",
+                "└┘└┘");
+        }
+
+        [Fact]
         public void BoxLineCharRendererLines()
         {
             var buffer = new ConsoleBuffer(3) { LineCharRenderer = LineCharRenderer.Box };

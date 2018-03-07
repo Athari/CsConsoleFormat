@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using static Alba.CsConsoleFormat.LineWidthExts;
 
 namespace Alba.CsConsoleFormat
 {
     public static class LineCharRenderer
     {
-        public static readonly ILineCharRenderer Box = new BoxLineCharRenderer(false);
-        public static readonly ILineCharRenderer BoxExtended = new BoxLineCharRenderer(true);
+        public static readonly ILineCharRenderer Box = new BoxLineCharRenderer(supportExtended: false);
+        public static readonly ILineCharRenderer BoxExtended = new BoxLineCharRenderer(supportExtended: true);
         public static readonly ILineCharRenderer None = new CharLineCharRenderer('\0');
         public static readonly ILineCharRenderer Simple = new SimpleLineCharRenderer();
         public static ILineCharRenderer Char(char c) => new CharLineCharRenderer(c);
@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat
 
             protected static Exception GetCharException(LineChar lineChar)
             {
-                return new NotSupportedException($"Line char '{lineChar}' supported.");
+                return new NotSupportedException($"Line char '{lineChar}' not supported.");
             }
         }
 
@@ -35,33 +35,28 @@ namespace Alba.CsConsoleFormat
             private static readonly char[] CharsDoubleTBottom = { '┬', '╤', '╥', '╦' };
             private static readonly char[] CharsDoubleCross = { '┼', '╪', '╫', '╬' };
 
-            private static readonly char[] CharsHeavyLeft = { '╴', '╸' };
-            private static readonly char[] CharsHeavyTop = { '╵', '╹' };
-            private static readonly char[] CharsHeavyRight = { '╶', '╺' };
-            private static readonly char[] CharsHeavyBottom = { '╷', '╻' };
-            private static readonly char[] CharsHeavyHorizontal = { '─', '━', '╼', '╾' };
-            private static readonly char[] CharsHeavyVertical = { '│', '┃', '╽', '╿' };
+            private static readonly char[] CharsHeavySideSingle = { '╴', '╵', '╶', '╷' };
+            private static readonly char[] CharsHeavySideHeavy = { '╸', '╹', '╺', '╻' };
+            private static readonly char[] CharsHeavyHorizontal = { '─', '━' };
+            private static readonly char[] CharsHeavyHorizontalUneven = { '╾', '╼' };
+            private static readonly char[] CharsHeavyVertical = { '│', '┃' };
+            private static readonly char[] CharsHeavyVerticalUneven = { '╿', '╽' };
             private static readonly char[] CharsHeavyCornerTopLeft = { '┘', '┙', '┚', '┛' };
             private static readonly char[] CharsHeavyCornerTopRight = { '└', '┕', '┖', '┗' };
             private static readonly char[] CharsHeavyCornerBottomLeft = { '┐', '┑', '┒', '┓' };
             private static readonly char[] CharsHeavyCornerBottomRight = { '┌', '┍', '┎', '┏' };
             private static readonly char[] CharsHeavyTLeft = { '┤', '┥', '┨', '┫' };
-            private static readonly char[] CharsHeavyTLeft1 = { '┦', '┧' };
-            private static readonly char[] CharsHeavyTLeft2 = { '┩', '┪' };
+            private static readonly char[] CharsHeavyTLeftUneven = { '┦', '┧', '┩', '┪' };
             private static readonly char[] CharsHeavyTTop = { '┴', '┷', '┸', '┻' };
-            private static readonly char[] CharsHeavyTTop1 = { '┵', '┶' };
-            private static readonly char[] CharsHeavyTTop2 = { '┹', '┺' };
+            private static readonly char[] CharsHeavyTTopUneven = { '┵', '┶', '┹', '┺' };
             private static readonly char[] CharsHeavyTRight = { '├', '┝', '┠', '┣' };
-            private static readonly char[] CharsHeavyTRight1 = { '┞', '┟' };
-            private static readonly char[] CharsHeavyTRight2 = { '┡', '┢' };
+            private static readonly char[] CharsHeavyTRightUneven = { '┞', '┟', '┡', '┢' };
             private static readonly char[] CharsHeavyTBottom = { '┬', '┯', '┰', '┳' };
-            private static readonly char[] CharsHeavyTBottom1 = { '┭', '┮' };
-            private static readonly char[] CharsHeavyTBottom2 = { '┱', '┲' };
+            private static readonly char[] CharsHeavyTBottomUneven = { '┭', '┮', '┱', '┲' };
             private static readonly char[] CharsHeavyCross = { '┼', '┿', '╂', '╋' };
-            private static readonly char[] CharsHeavyCross1 = { '┽', '╀', '┾', '╁' };
-            private static readonly char[] CharsHeavyCross2Line = { '┿', '╂' };
-            private static readonly char[] CharsHeavyCross2Corner = { '╃', '╄', '╅', '╆' };
-            private static readonly char[] CharsHeavyCross3 = { '╉', '╇', '╊', '╈' };
+            private static readonly char[] CharsHeavyCrossUnevenSide = { '┽', '╀', '┾', '╁' };
+            private static readonly char[] CharsHeavyCrossUnevenCorner = { '╃', '╄', '╅', '╆' };
+            private static readonly char[] CharsHeavyCrossUnevenT = { '╊', '╈', '╉', '╇' };
 
             private readonly bool _supportExtended;
 
@@ -70,76 +65,144 @@ namespace Alba.CsConsoleFormat
                 _supportExtended = supportExtended;
             }
 
-            [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Logic is straightforward, complexity comes from inability to iterate over variables.")]
             public override char GetChar(LineChar lineChar)
             {
+                const LineWidth None = LineWidth.None;
+                const LineWidth Single = LineWidth.Single;
+                const LineWidth Double = LineWidth.Double;
+                const LineWidth Heavy = LineWidth.Heavy;
+
                 LineWidth left = lineChar.Left;
                 LineWidth top = lineChar.Top;
                 LineWidth right = lineChar.Right;
                 LineWidth bottom = lineChar.Bottom;
 
-                bool hasSingle = HasLineWidth(LineWidth.Single);
-                bool hasHeavy = HasLineWidth(LineWidth.Heavy);
-                bool hasDouble = HasLineWidth(LineWidth.Double);
-                int lineCount = CountLines(width => width != LineWidth.None);
+                bool hasSingle = HasLineWidth(Single);
+                bool hasDouble = HasLineWidth(Double);
+                bool hasHeavy = HasLineWidth(Heavy);
+                int lineCount = CountAllLines();
 
                 if (hasHeavy && hasDouble)
                     throw new InvalidOperationException("Heavy and Double line widths can't be combined.");
-                if (hasHeavy && !_supportExtended)
-                    throw new NotSupportedException("Heavy line width not supported by Box line char renderer. Use BoxExtended instead.");
 
-                if (!hasSingle && !hasHeavy && !hasDouble)
-                    return '\0';
-                else if (hasHeavy) {
-                    throw new NotImplementedException("Heavy line width not supported yet.");
+                bool isHor = left != None && right != None;
+                bool isVer = top != None && bottom != None;
+                int horIndex = EvenIndex(left, right);
+                int verIndex = EvenIndex(top, bottom);
+                int combinedIndex = CombineIndex(verIndex, horIndex);
+
+                return !hasSingle && !hasHeavy && !hasDouble ? '\0' : hasHeavy ? GetHeavyChar() : GetDoubleChar();
+
+                bool HasLineWidth(LineWidth width) => left == width || top == width || right == width || bottom == width;
+                int CountAllLines() => (left != None ? 1 : 0) + (top != None ? 1 : 0) + (right != None ? 1 : 0) + (bottom != None ? 1 : 0);
+                int CountLines(LineWidth width) => (left == width ? 1 : 0) + (top == width ? 1 : 0) + (right == width ? 1 : 0) + (bottom == width ? 1 : 0);
+                int EvenIndex(LineWidth a, LineWidth b) => Max(a, b) == Single ? 0 : 1;
+                int UnevenIndex(LineWidth a, LineWidth b) => a != None && b != None && a != b ? (a == Heavy ? 0 : 1) : -1;
+                int CombineIndex(int index1, int index2) => index1 * 2 + index2;
+                int FirstIndex(LineWidth width) => left == width ? 0 : top == width ? 1 : right == width ? 2 : bottom == width ? 3 : -1;
+
+                char GetCornerChar(
+                    char[] charsCornerTopLeft, char[] charsCornerTopRight,
+                    char[] charsCornerBottomLeft, char[] charsCornerBottomRight)
+                {
+                    if (top != None && left != None)
+                        return charsCornerTopLeft[combinedIndex];
+                    else if (top != None && right != None)
+                        return charsCornerTopRight[combinedIndex];
+                    else if (bottom != None && left != None)
+                        return charsCornerBottomLeft[combinedIndex];
+                    else if (bottom != None && right != None)
+                        return charsCornerBottomRight[combinedIndex];
+                    throw GetCharException(lineChar);
                 }
-                else {
-                    int horizontalIndex = LineWidthExts.Max(left, right) == LineWidth.Single ? 0 : 1;
-                    int verticalIndex = LineWidthExts.Max(top, bottom) == LineWidth.Single ? 0 : 1;
-                    int combinedIndex = verticalIndex * 2 + horizontalIndex;
+
+                char GetEvenTChar(char[] charsTRight, char[] charsTBottom, char[] charsTLeft, char[] charsTTop)
+                {
+                    if (left == None)
+                        return charsTRight[combinedIndex];
+                    else if (top == None)
+                        return charsTBottom[combinedIndex];
+                    else if (right == None)
+                        return charsTLeft[combinedIndex];
+                    else if (bottom == None)
+                        return charsTTop[combinedIndex];
+                    throw GetCharException(lineChar);
+                }
+
+                char GetHeavyChar()
+                {
+                    int lineCountHeavy = CountLines(Heavy);
+                    int horUnevenIndex = UnevenIndex(left, right);
+                    int verUnevenIndex = UnevenIndex(top, bottom);
+                    int firstSingleIndex = FirstIndex(Single);
+                    int firstHeavyIndex = FirstIndex(Heavy);
+                    bool isEven = horUnevenIndex == -1 && verUnevenIndex == -1;
+
                     switch (lineCount) {
                         case 1:
-                            return left != LineWidth.None || right != LineWidth.None
-                                ? CharsDoubleHorizontal[horizontalIndex]
-                                : CharsDoubleVertical[verticalIndex];
+                            return firstSingleIndex != -1 ? CharsHeavySideSingle[firstSingleIndex] : CharsHeavySideHeavy[firstHeavyIndex];
                         case 2:
-                            if (left != LineWidth.None && right != LineWidth.None)
-                                return CharsDoubleHorizontal[horizontalIndex];
-                            else if (top != LineWidth.None && bottom != LineWidth.None)
-                                return CharsDoubleVertical[verticalIndex];
-                            else if (top != LineWidth.None && left != LineWidth.None)
-                                return CharsDoubleCornerTopLeft[combinedIndex];
-                            else if (top != LineWidth.None && right != LineWidth.None)
-                                return CharsDoubleCornerTopRight[combinedIndex];
-                            else if (bottom != LineWidth.None && left != LineWidth.None)
-                                return CharsDoubleCornerBottomLeft[combinedIndex];
-                            else if (bottom != LineWidth.None && right != LineWidth.None)
-                                return CharsDoubleCornerBottomRight[combinedIndex];
+                            if (isHor)
+                                return horUnevenIndex == -1 ? CharsHeavyHorizontal[horIndex] : CharsHeavyHorizontalUneven[horUnevenIndex];
+                            else if (isVer)
+                                return verUnevenIndex == -1 ? CharsHeavyVertical[verIndex] : CharsHeavyVerticalUneven[horUnevenIndex];
                             else
-                                throw new InvalidOperationException();
+                                return GetCornerChar(
+                                    CharsHeavyCornerTopLeft, CharsHeavyCornerTopRight,
+                                    CharsHeavyCornerBottomLeft, CharsHeavyCornerBottomRight);
                         case 3:
-                            if (left == LineWidth.None)
-                                return CharsDoubleTRight[combinedIndex];
-                            else if (top == LineWidth.None)
-                                return CharsDoubleTBottom[combinedIndex];
-                            else if (right == LineWidth.None)
-                                return CharsDoubleTLeft[combinedIndex];
-                            else if (bottom == LineWidth.None)
-                                return CharsDoubleTTop[combinedIndex];
+                            if (isEven)
+                                return GetEvenTChar(CharsHeavyTRight, CharsHeavyTBottom, CharsHeavyTLeft, CharsHeavyTTop);
+                            else if (left == None)
+                                return CharsHeavyTRightUneven[CombineIndex(right == Single ? 1 : 0, verUnevenIndex)];
+                            else if (top == None)
+                                return CharsHeavyTBottomUneven[CombineIndex(bottom == Single ? 1 : 0, horUnevenIndex)];
+                            else if (right == None)
+                                return CharsHeavyTLeftUneven[CombineIndex(left == Single ? 1 : 0, verUnevenIndex)];
+                            else if (bottom == None)
+                                return CharsHeavyTTopUneven[CombineIndex(top == Single ? 1 : 0, horUnevenIndex)];
+                            break;
+                        case 4:
+                            if (isEven)
+                                return CharsHeavyCross[combinedIndex];
+                            switch (lineCountHeavy) {
+                                case 1:
+                                    return CharsHeavyCrossUnevenSide[firstHeavyIndex];
+                                case 2:
+                                    return CharsHeavyCrossUnevenCorner[CombineIndex(verUnevenIndex, horUnevenIndex)];
+                                case 3:
+                                    return CharsHeavyCrossUnevenT[firstSingleIndex];
+                            }
+                            break;
+                    }
+                    throw GetCharException(lineChar);
+                }
+
+                char GetDoubleChar()
+                {
+                    int firstSingleIndex = FirstIndex(Single);
+
+                    switch (lineCount) {
+                        case 1:
+                            return _supportExtended
+                                ? CharsHeavySideSingle[firstSingleIndex]
+                                : left != None || right != None ? CharsDoubleHorizontal[horIndex] : CharsDoubleVertical[verIndex];
+                        case 2:
+                            if (isHor)
+                                return CharsDoubleHorizontal[horIndex];
+                            else if (isVer)
+                                return CharsDoubleVertical[verIndex];
                             else
-                                throw new InvalidOperationException();
+                                return GetCornerChar(
+                                    CharsDoubleCornerTopLeft, CharsDoubleCornerTopRight,
+                                    CharsDoubleCornerBottomLeft, CharsDoubleCornerBottomRight);
+                        case 3:
+                            return GetEvenTChar(CharsDoubleTRight, CharsDoubleTBottom, CharsDoubleTLeft, CharsDoubleTTop);
                         case 4:
                             return CharsDoubleCross[combinedIndex];
                     }
+                    throw GetCharException(lineChar);
                 }
-
-                throw GetCharException(lineChar);
-
-                bool HasLineWidth(LineWidth width) => left == width || top == width || right == width || bottom == width;
-
-                int CountLines(Func<LineWidth, bool> predicate) =>
-                    (predicate(left) ? 1 : 0) + (predicate(top) ? 1 : 0)
-                  + (predicate(right) ? 1 : 0) + (predicate(bottom) ? 1 : 0);
             }
         }
 
@@ -147,8 +210,8 @@ namespace Alba.CsConsoleFormat
         {
             public override char GetChar(LineChar lineChar)
             {
-                LineWidth horizontal = LineWidthExts.Max(lineChar.Left, lineChar.Right);
-                LineWidth vertical = LineWidthExts.Max(lineChar.Top, lineChar.Bottom);
+                LineWidth horizontal = Max(lineChar.Left, lineChar.Right);
+                LineWidth vertical = Max(lineChar.Top, lineChar.Bottom);
                 if (horizontal == LineWidth.None && vertical == LineWidth.None)
                     return '\0';
                 if (horizontal != LineWidth.None && vertical != LineWidth.None)
