@@ -55,6 +55,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Formatted = "Aaaa\nBbbb\nCccc",
                 LoremIpsum = "Lo|rem ip|sum do|lor sit amet, con|sec|te|tur adi|pis|cing elit, sed do eius|mod tem|por in|ci|di|dunt ut la|bo|re et do|lo|re mag|na ali|qua. Ut enim ad mi|nim ve|ni|am, qu|is nos|trud exer|ci|ta|tion ul|lam|co la|bo|ris ni|si ut ali|quip ex ea com|mo|do con|se|quat. Du|is au|te iru|re do|lor in rep|re|hen|de|rit in vo|lup|ta|te ve|lit es|se cil|lum do|lo|re eu fu|gi|at nul|la pa|ri|a|tur. Ex|cep|te|ur sint oc|ca|e|cat cu|pi|da|tat non pro|i|dent, sunt in cul|pa qui of|fi|cia de|se|runt mol|lit anim id est la|bo|rum.",
                 LoremIpsumShort = "Lo|rem ip|sum do|lor sit amet, con|sec|te|tur adi|pis|cing elit, sed do eius|mod tem|por in|ci|di|dunt ut la|bo|re et do|lo|re mag|na ali|qua. Ut enim ad mi|nim ve|ni|am, qu|is nos|trud exer|ci|ta|tion ul|lam|co la|bo|ris ni|si ut ali|quip ex ea com|mo|do con|se|quat.",
+                Unicode = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž",
                 Guid = Guid.NewGuid(),
                 Date = DateTime.Now,
                 Items = new List<DataItem> {
@@ -201,6 +202,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
         public string Formatted { get; set; }
         public string LoremIpsum { get; set; }
         public string LoremIpsumShort { get; set; }
+        public string Unicode { get; set; }
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
         public List<DataItem> Items { get; set; }
@@ -236,6 +238,16 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 Color = White, Background = Black,
                 Children = {
                     "Hello world!",
+                    new Div {
+                        TextWrap = TextWrap.CharWrap,
+                        Color = Green,
+                        Children = { data.Unicode.Normalize(NormalizationForm.FormD) }
+                    },
+                    new Div {
+                        TextWrap = TextWrap.CharWrap,
+                        Color = DarkYellow,
+                        Children = { data.Unicode.Normalize(NormalizationForm.FormC) }
+                    },
                     new List {
                         Children = { data.Items.Select(d => new Div(d.Name)) },
                     },
