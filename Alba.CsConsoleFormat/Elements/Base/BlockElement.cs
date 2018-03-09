@@ -158,7 +158,7 @@ namespace Alba.CsConsoleFormat
             // Here we use un-clipped RenderSize because element does not know that it is clipped by layout system and it should have
             // as much space to render as it returned from its own ArrangeOverride.
             RenderSize = ArrangeOverride(arrangeSize);
-            ActualOffset = CalculateAlignmentOffset() + new Vector(finalRect.X + Margin.Left, finalRect.Y + Margin.Top);
+            ActualOffset = CalculateAlignmentOffset() + new Vector(finalRect.X, finalRect.Y) + new Vector(Margin.Left, Margin.Top);
             LayoutClip = CalculateLayoutClip();
         }
 
@@ -170,7 +170,7 @@ namespace Alba.CsConsoleFormat
 
         private Rect CalculateLayoutClip()
         {
-            return new Rect(-CalculateAlignmentOffset(), CalculateClientSize());
+            return new Rect(-CalculateAlignmentOffset(), Size.Min(RenderSlotRect.Size, new Size(MaxWidth, MaxHeight)) - Margin);
         }
 
         private Vector CalculateAlignmentOffset()
@@ -180,12 +180,7 @@ namespace Alba.CsConsoleFormat
             // of the element limited by Max properties. It is Top-left because in case when we are clipped by container we also degrade
             // to Top-Left, so we are consistent.
             MinMaxSize mm = new MinMaxSize(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
-            return CalculateAlignmentOffsetCore(CalculateClientSize(), Size.Min(RenderSize, mm.MaxSize));
-        }
-
-        private Size CalculateClientSize()
-        {
-            return new Size(RenderSlotRect.Width - Margin.Width, RenderSlotRect.Height - Margin.Height, false);
+            return CalculateAlignmentOffsetCore(RenderSlotRect.Size - Margin, Size.Min(RenderSize, mm.MaxSize));
         }
 
         private Vector CalculateAlignmentOffsetCore(Size clientSize, Size renderSize)

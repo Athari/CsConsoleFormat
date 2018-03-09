@@ -152,7 +152,7 @@ namespace Alba.CsConsoleFormat.Tests
                 "_________");
         }
 
-        [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
+        [Fact]
         public void AlignHorizontalSmallBlockLeftMaxLessThanSize()
         {
             var fill = new Fill {
@@ -172,7 +172,7 @@ namespace Alba.CsConsoleFormat.Tests
                 "de_____");
         }
 
-        [Fact(Skip = "MaxWidth is ignored when Stretch is used.")]
+        [Fact]
         public void AlignHorizontalSmallBlockLeftMaxLessThanSizeWithMargin()
         {
             var fill = new Fill {
@@ -181,7 +181,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        MaxWidth = 2,
+                        MaxWidth = 4,
                         Margin = 1,
                         Align = Align.Left,
                     }
