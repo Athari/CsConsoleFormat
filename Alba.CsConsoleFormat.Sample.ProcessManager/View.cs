@@ -107,14 +107,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             };
 
         private static object[] OptionNameAndHelp(BaseOptionAttribute option) => new object[] {
-            new Div {
-                Margin = new Thickness(1, 0, 1, 1), Color = Yellow, MinWidth = 14,
-                Children = { GetOptionSyntax(option) }
-            },
-            new Div {
-                Margin = new Thickness(1, 0, 1, 1),
-                Children = { option.HelpText }
-            },
+            new Div(GetOptionSyntax(option)) { Margin = new Thickness(1, 0, 1, 1), Color = Yellow, MinWidth = 14 },
+            new Div(option.HelpText) { Margin = new Thickness(1, 0, 1, 1) },
         };
 
         private static object GetOptionSyntax(BaseOptionAttribute option)

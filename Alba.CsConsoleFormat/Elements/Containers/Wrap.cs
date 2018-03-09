@@ -9,12 +9,13 @@ namespace Alba.CsConsoleFormat
         private int? _itemWidth;
         private int? _itemHeight;
 
-        public Orientation Orientation { get; set; }
+        public Orientation Orientation { get; set; } = Orientation.Horizontal;
 
         public Wrap()
-        {
-            Orientation = Orientation.Horizontal;
-        }
+        { }
+
+        public Wrap(params object[] children) : base(children)
+        { }
 
         [TypeConverter(typeof(LengthConverter))]
         public int? ItemWidth
@@ -150,7 +151,7 @@ namespace Alba.CsConsoleFormat
             }
 
             public UVSize(Orientation orientation, Size size) : this(orientation, size.Width, size.Height)
-            {}
+            { }
 
             public int Width => _orientation == Orientation.Horizontal ? U : V;
             public int Height => _orientation == Orientation.Horizontal ? V : U;

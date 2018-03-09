@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace Alba.CsConsoleFormat
+﻿namespace Alba.CsConsoleFormat
 {
     public class Div : BlockElement
     {
@@ -9,11 +7,8 @@ namespace Alba.CsConsoleFormat
         public Div()
         { }
 
-        public Div([CanBeNull] string text)
-        {
-            if (text != null)
-                Children.Add(new Span(text));
-        }
+        public Div(params object[] children) : base(children)
+        { }
 
         protected override Size MeasureOverride(Size availableSize)
         {

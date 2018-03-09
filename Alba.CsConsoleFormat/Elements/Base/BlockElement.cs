@@ -15,29 +15,23 @@ namespace Alba.CsConsoleFormat
         [TypeConverter(typeof(LengthConverter))]
         public int? Height { get; set; }
 
-        public int MinWidth { get; set; }
-        public int MinHeight { get; set; }
-        public int MaxWidth { get; set; }
-        public int MaxHeight { get; set; }
+        public int MinWidth { get; set; } = 0;
+        public int MinHeight { get; set; } = 0;
+        public int MaxWidth { get; set; } = Size.Infinity;
+        public int MaxHeight { get; set; } = Size.Infinity;
 
-        public Align Align { get; set; }
-        public VerticalAlign VerticalAlign { get; set; }
-        public TextAlign TextAlign { get; set; }
-        public TextWrap TextWrap { get; set; }
+        public Align Align { get; set; } = Align.Stretch;
+        public VerticalAlign VerticalAlign { get; set; } = VerticalAlign.Stretch;
+        public TextAlign TextAlign { get; set; } = TextAlign.Left;
+        public TextWrap TextWrap { get; set; } = TextWrap.WordWrap;
 
         public Thickness Margin { get; set; }
 
         protected BlockElement()
-        {
-            MinWidth = 0;
-            MinHeight = 0;
-            MaxWidth = Size.Infinity;
-            MaxHeight = Size.Infinity;
-            Align = Align.Stretch;
-            VerticalAlign = VerticalAlign.Stretch;
-            TextAlign = TextAlign.Left;
-            TextWrap = TextWrap.WordWrap;
-        }
+        { }
+
+        protected BlockElement(params object[] children) : base(children)
+        { }
 
         /// <summary>Render area width.</summary><seealso cref="RenderSize"/>
         public int ActualWidth => RenderSize.Width;

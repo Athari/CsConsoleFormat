@@ -7,12 +7,13 @@ namespace Alba.CsConsoleFormat
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "The name is fine, I like it.")]
     public class Stack : ContainerElement
     {
-        public Orientation Orientation { get; set; }
+        public Orientation Orientation { get; set; } = Orientation.Vertical;
 
         public Stack()
-        {
-            Orientation = Orientation.Vertical;
-        }
+        { }
+
+        public Stack(params object[] children) : base(children)
+        { }
 
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride(Size availableSize)

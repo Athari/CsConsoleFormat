@@ -261,13 +261,12 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Cell("Name") { Stroke = cellHeaderThickness },
                             new Cell("Value") { Stroke = cellHeaderThickness },
                             data.Items.Select(d => new[] {
-                                new Cell { Color = Yellow, Align = Align.Right, Children = { d.Id } },
-                                new Cell { Color = Gray, Children = { d.Name } },
-                                new Cell { Color = Gray, Children = { d.Value } },
+                                new Cell(d.Id) { Color = Yellow, Align = Align.Right },
+                                new Cell(d.Name) { Color = Gray },
+                                new Cell(d.Value) { Color = Gray },
                             }),
                         },
                     },
-                    "",
                     new Grid {
                         Stroke = LineThickness.None,
                         Columns = { -1, -1, -1 },
@@ -276,7 +275,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Div("Name"),
                             new Div("Value"),
                             data.Items.Select(d => new[] {
-                                new Div(d.Id.ToString()),
+                                new Div(d.Id),
                                 new Div(d.Name),
                                 new Div(d.Value),
                             }),

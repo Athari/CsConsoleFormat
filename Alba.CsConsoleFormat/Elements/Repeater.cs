@@ -19,6 +19,12 @@ namespace Alba.CsConsoleFormat
         [CanBeNull]
         public IEnumerable<object> Items { get; set; }
 
+        public Repeater()
+        { }
+
+        public Repeater(params object[] children) : base(children)
+        { }
+
         public ElementCollection ItemTemplate => _itemTemplate ?? (_itemTemplate = new ElementCollection(null));
 
         public override IEnumerable<Element> GenerateVisualElements()

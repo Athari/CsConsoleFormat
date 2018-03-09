@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using JetBrains.Annotations;
 #if SYSTEM_XAML
 using System.Windows.Markup;
@@ -78,6 +79,18 @@ namespace Alba.CsConsoleFormat
         {
             InsertItem(Count, item);
         }
+
+        public static bool IsNullOrEmpty(object child)
+        {
+            switch (child) {
+                case null:
+                    return true;
+                case IEnumerable enumerable when !(enumerable is string):
+                    return enumerable.Cast<object>().All(IsNullOrEmpty);
+                default:
+                    return false;
+            }
+        }
     }
 
     public class ElementCollection : ElementCollection<Element>
@@ -90,12 +103,12 @@ namespace Alba.CsConsoleFormat
             switch (child) {
                 case null:
                     break;
-                case IEnumerable enumerable when !(enumerable is string):
-                    foreach (object subchild in enumerable)
-                        Add(subchild);
-                    break;
                 case string text:
                     AddItem(new Span(text));
+                    break;
+                case IEnumerable enumerable:
+                    foreach (object subchild in enumerable)
+                        Add(subchild);
                     break;
                 case Element element:
                     AddItem(element);

@@ -34,6 +34,12 @@ namespace Alba.CsConsoleFormat
 
         public static void SetBottom([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
 
+        public Canvas()
+        { }
+
+        public Canvas(params object[] children) : base(children)
+        { }
+
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride(Size availableSize)
         {

@@ -14,6 +14,12 @@ namespace Alba.CsConsoleFormat
 
         public int StartIndex { get; set; } = 1;
 
+        public List()
+        { }
+
+        public List(params object[] children) : base(children)
+        { }
+
         [NotNull]
         public string IndexFormat
         {

@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Alba.CsConsoleFormat.Framework.Collections;
-using JetBrains.Annotations;
 using Alba.CsConsoleFormat.Markup;
+using JetBrains.Annotations;
 #if SYSTEM_XAML
 using System.Windows.Markup;
 #elif PORTABLE_XAML
@@ -46,6 +46,15 @@ namespace Alba.CsConsoleFormat
 
         public Visibility Visibility { get; set; }
 
+        protected Element()
+        { }
+
+        protected Element(params object[] children)
+        {
+            if (!ElementCollection.IsNullOrEmpty(children))
+                Children.Add(children);
+        }
+
         [ItemNotNull]
         public ElementCollection Children
         {
@@ -74,8 +83,8 @@ namespace Alba.CsConsoleFormat
         private IEnumerable<Element> Parents => this.TraverseList(e => e.Parent);
 
         protected internal ConsoleColor EffectiveColor => Parents.FirstOrDefault(e => e.Color != null)?.Color ?? DefaultColor;
-	    protected internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
-	    protected internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
+        protected internal ConsoleColor EffectiveBackground => Parents.FirstOrDefault(e => e.Background != null)?.Background ?? DefaultBackground;
+        protected internal CultureInfo EffectiveCulture => Parents.FirstOrDefault(e => e.Language != null)?.Language?.Culture ?? CultureInfo.CurrentCulture;
 
         #if XAML
         protected override void UpdateDataContext()

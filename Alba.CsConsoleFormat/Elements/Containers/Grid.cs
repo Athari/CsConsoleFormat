@@ -37,6 +37,12 @@ namespace Alba.CsConsoleFormat
             Stroke = LineThickness.Double;
         }
 
+        public Grid(params object[] children) : this()
+        {
+            if (!ElementCollection.IsNullOrEmpty(children))
+                Children.Add(children);
+        }
+
         public LineThickness Stroke
         {
             get => GetStroke(this);

@@ -11,5 +11,10 @@ namespace Alba.CsConsoleFormat
         {
             VerticalAlign = VerticalAlign.Top;
         }
+
+        public Document(params object[] children) : base(children)
+        {
+            VerticalAlign = VerticalAlign.Top;
+        }
     }
 }

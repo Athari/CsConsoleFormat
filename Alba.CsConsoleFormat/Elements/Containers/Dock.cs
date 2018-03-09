@@ -17,6 +17,12 @@ namespace Alba.CsConsoleFormat
 
         public static void SetTo([NotNull] BlockElement @this, DockTo value) => @this.SetValueSafe(ToProperty, value);
 
+        public Dock()
+        { }
+
+        public Dock(params object[] children) : base(children)
+        { }
+
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
         protected override Size MeasureOverride(Size availableSize)
         {

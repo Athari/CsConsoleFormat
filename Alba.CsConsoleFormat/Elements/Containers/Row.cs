@@ -2,18 +2,11 @@
 {
     internal class Row : Element
     {
-        public GridLength Height { get; set; }
-        public int MinHeight { get; set; }
-        public int MaxHeight { get; set; }
+        public GridLength Height { get; set; } = GridLength.Auto;
+        public int MinHeight { get; set; } = 0;
+        public int MaxHeight { get; set; } = Size.Infinity;
         public int Index { get; internal set; }
         public int ActualHeight { get; set; }
-
-        public Row()
-        {
-            Height = GridLength.Auto;
-            MinHeight = 0;
-            MaxHeight = Size.Infinity;
-        }
 
         protected override bool CanHaveChildren => false;
 

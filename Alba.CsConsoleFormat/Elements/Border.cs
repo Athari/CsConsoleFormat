@@ -13,15 +13,15 @@ namespace Alba.CsConsoleFormat
 
         [CanBeNull, ValueProvider(ValueProviders.ColorMaps)]
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Designed to be assigned one of predefined read-only collections.")]
-        public IList<ConsoleColor> ShadowColorMap { get; set; }
+        public IList<ConsoleColor> ShadowColorMap { get; set; } = ColorMaps.Darkest;
 
-        public LineThickness Stroke { get; set; }
+        public LineThickness Stroke { get; set; } = LineThickness.None;
 
         public Border()
-        {
-            Stroke = LineThickness.None;
-            ShadowColorMap = ColorMaps.Darkest;
-        }
+        { }
+
+        public Border(params object[] children) : base(children)
+        { }
 
         protected override Size MeasureOverride(Size availableSize)
         {

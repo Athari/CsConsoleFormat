@@ -1,13 +1,13 @@
-﻿using JetBrains.Annotations;
-
-namespace Alba.CsConsoleFormat
+﻿namespace Alba.CsConsoleFormat
 {
     public class Cell : Div
     {
-        public Cell() : this(null)
-        { }
+        public Cell()
+        {
+            Stroke = LineThickness.Single;
+        }
 
-        public Cell([CanBeNull] string text) : base(text)
+        public Cell(params object[] children) : base(children)
         {
             Stroke = LineThickness.Single;
         }
