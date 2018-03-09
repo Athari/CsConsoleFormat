@@ -4,8 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Resources;
-using WpfCanvas = System.Windows.Controls.Canvas;
-using WpfSize = System.Windows.Size;
 
 namespace Alba.CsConsoleFormat.Presentation.Controls
 {
@@ -104,11 +102,11 @@ namespace Alba.CsConsoleFormat.Presentation.Controls
 
         private sealed class CanvasRenderTarget : DocumentRenderTargetBase
         {
-            public WpfCanvas Canvas { get; private set; }
+            public Canvas Canvas { get; private set; }
 
             public override void Render(IConsoleBufferSource buffer)
             {
-                WpfSize charSize = CharSize;
+                var charSize = CharSize;
                 Canvas = CreateLinePanel(buffer, charSize);
                 RenderToCanvas(buffer, Canvas, charSize);
             }

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
-    public class Canvas : ContainerElement
+    public class Absolute : ContainerElement
     {
         public static readonly AttachedProperty<int?> LeftProperty = RegisterAttached(() => LeftProperty);
         public static readonly AttachedProperty<int?> TopProperty = RegisterAttached(() => TopProperty);
@@ -34,10 +34,10 @@ namespace Alba.CsConsoleFormat
 
         public static void SetBottom([NotNull] BlockElement @this, int? value) => @this.SetValueSafe(BottomProperty, value);
 
-        public Canvas()
+        public Absolute()
         { }
 
-        public Canvas(params object[] children) : base(children)
+        public Absolute(params object[] children) : base(children)
         { }
 
         [SuppressMessage("ReSharper", "PossibleInvalidCastExceptionInForeachLoop")]
@@ -80,6 +80,6 @@ namespace Alba.CsConsoleFormat
 
         [MustUseReturnValue]
         private static AttachedProperty<T> RegisterAttached<T>([NotNull] Expression<Func<AttachedProperty<T>>> nameExpression, T defaultValue = default) =>
-            AttachedProperty.Register<Canvas, T>(nameExpression, defaultValue);
+            AttachedProperty.Register<Absolute, T>(nameExpression, defaultValue);
     }
 }

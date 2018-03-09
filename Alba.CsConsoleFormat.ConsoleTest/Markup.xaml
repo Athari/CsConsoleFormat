@@ -37,28 +37,28 @@
         </Border>
     </Dock>
     <Span/>
-    <Canvas Width="80" Align="Left" Height="43" Color="Gray" Background="Blue">
-        <Div Canvas.Left="1" Canvas.Top="1" Width="38" Height="20" Padding="1" Background="DarkBlue" TextWrap="CharWrap">
+    <Absolute Width="80" Align="Left" Height="43" Color="Gray" Background="Blue">
+        <Div Absolute.Left="1" Absolute.Top="1" Width="38" Height="20" Padding="1" Background="DarkBlue" TextWrap="CharWrap">
             <Span Text="Char wrap" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
         </Div>
-        <Div Canvas.Left="1" Canvas.Bottom="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
+        <Div Absolute.Left="1" Absolute.Bottom="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
             <Span Text="Word wrap with spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter=''}"/>
         </Div>
-        <Div Canvas.Right="1" Canvas.Top="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
+        <Div Absolute.Right="1" Absolute.Top="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
             <Span Text="Word wrap with no-break spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.NoBreakSpace}}"/>
         </Div>
-        <Div Canvas.Right="1" Canvas.Bottom="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
+        <Div Absolute.Right="1" Absolute.Bottom="1" Width="38" Height="20" Padding="1" Background="DarkBlue">
             <Span Text="Word wrap with zero-width spaces" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.ZeroWidthSpace}}"/>
         </Div>
-        <Border Canvas.Left="21" Canvas.Top="11" Width="38" Height="20" Padding="1" Background="DarkCyan" Shadow="-1 -1 1 1" Stroke="1">
+        <Border Absolute.Left="21" Absolute.Top="11" Width="38" Height="20" Padding="1" Background="DarkCyan" Shadow="-1 -1 1 1" Stroke="1">
             <Span Text="Word wrap with soft hyphens" Color="White"/><Br/><Br/>
             <Span Text="{Get LoremIpsum, Converter={Res Replace}, Parameter={x:Static Chars.SoftHyphen}}"/>
         </Border>
-    </Canvas>
+    </Absolute>
     <Span/>
     <Wrap Width="80" Align="Left" Orientation="Horizontal" ItemWidth="{Res ParaWidth}" Color="Gray" Background="Blue">
         <Div Margin="1 1 0 0" Padding="1" Background="DarkBlue" TextWrap="CharWrap">

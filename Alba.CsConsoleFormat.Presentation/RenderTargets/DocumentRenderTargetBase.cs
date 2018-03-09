@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using JetBrains.Annotations;
 using static Alba.CsConsoleFormat.Presentation.FontDefaults;
-using WpfCanvas = System.Windows.Controls.Canvas;
 using WpfSize = System.Windows.Size;
 
 namespace Alba.CsConsoleFormat.Presentation
@@ -72,7 +71,7 @@ namespace Alba.CsConsoleFormat.Presentation
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
             WpfSize charSize = CharSize;
-            WpfCanvas linesPanel = AddDocumentPage(document, buffer, charSize);
+            Canvas linesPanel = AddDocumentPage(document, buffer, charSize);
             RenderToCanvas(buffer, linesPanel, charSize);
         }
 
@@ -90,7 +89,7 @@ namespace Alba.CsConsoleFormat.Presentation
                 FontStretch = FontStretch,
                 FontStyle = FontStyle,
                 FontWeight = FontWeight,
-                TextAlignment = System.Windows.TextAlignment.Left,
+                TextAlignment = TextAlignment.Left,
             };
             document.Blocks.Add(par);
 
@@ -129,7 +128,7 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        protected static void RenderToCanvas([NotNull] IConsoleBufferSource buffer, WpfCanvas linesPanel, WpfSize charSize)
+        protected static void RenderToCanvas([NotNull] IConsoleBufferSource buffer, Canvas linesPanel, WpfSize charSize)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
@@ -151,8 +150,8 @@ namespace Alba.CsConsoleFormat.Presentation
                             Background = ConsoleBrushes[backColor],
                             Height = charSize.Height,
                         };
-                        WpfCanvas.SetLeft(text, ix * charSize.Width);
-                        WpfCanvas.SetTop(text, iy * charSize.Height);
+                        Canvas.SetLeft(text, ix * charSize.Width);
+                        Canvas.SetTop(text, iy * charSize.Height);
                     }
                     text.Text += chr.HasChar || chr.LineChar.IsEmpty ? chr.PrintableChar : buffer.GetLineChar(ix, iy);
                 }
@@ -170,13 +169,13 @@ namespace Alba.CsConsoleFormat.Presentation
             }
         }
 
-        private WpfCanvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
+        private Canvas AddDocumentPage([NotNull] FixedDocument document, [NotNull] IConsoleBufferSource buffer, WpfSize charSize)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
-            WpfCanvas linesPanel = CreateLinePanel(buffer, charSize);
+            Canvas linesPanel = CreateLinePanel(buffer, charSize);
             document.Pages.Add(
                 new PageContent {
                     Child = new FixedPage {
@@ -189,11 +188,11 @@ namespace Alba.CsConsoleFormat.Presentation
             return linesPanel;
         }
 
-        protected WpfCanvas CreateLinePanel([NotNull] IConsoleBufferSource buffer, WpfSize charSize)
+        protected Canvas CreateLinePanel([NotNull] IConsoleBufferSource buffer, WpfSize charSize)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
-            var linesPanel = new WpfCanvas {
+            var linesPanel = new Canvas {
                 Width = buffer.Width * charSize.Width,
                 Height = buffer.Height * charSize.Height,
                 Background = Background,

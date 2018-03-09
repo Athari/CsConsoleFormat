@@ -313,33 +313,33 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                         },
                     },
                     "",
-                    new Canvas {
+                    new Absolute {
                         Width = 80, Height = 43, Align = Align.Left, Color = Gray, Background = Blue,
                         Children = {
                             new Div {
                                 Width = 38, Height = 20, Padding = 1, Background = DarkBlue, TextWrap = TextWrap.CharWrap,
-                                [Canvas.LeftProperty] = 1, [Canvas.TopProperty] = 1,
+                                [Absolute.LeftProperty] = 1, [Absolute.TopProperty] = 1,
                                 Children = { LoremIpsumCharWrap(data) },
                             },
                             new Div {
                                 Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
-                                [Canvas.LeftProperty] = 1, [Canvas.BottomProperty] = 1,
+                                [Absolute.LeftProperty] = 1, [Absolute.BottomProperty] = 1,
                                 Children = { LoremIpsumWordWrapWithSpaces(data) },
                             },
                             new Div {
                                 Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
-                                [Canvas.RightProperty] = 1, [Canvas.TopProperty] = 1,
+                                [Absolute.RightProperty] = 1, [Absolute.TopProperty] = 1,
                                 Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
                             },
                             new Div {
                                 Width = 38, Height = 20, Padding = 1, Background = DarkBlue,
-                                [Canvas.RightProperty] = 1, [Canvas.BottomProperty] = 1,
+                                [Absolute.RightProperty] = 1, [Absolute.BottomProperty] = 1,
                                 Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
                             },
                             new Border {
                                 Width = 38, Height = 20, Padding = 1, Background = DarkCyan,
                                 Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
-                                [Canvas.LeftProperty] = 21, [Canvas.TopProperty] = 11,
+                                [Absolute.LeftProperty] = 21, [Absolute.TopProperty] = 11,
                                 Children = { LoremIpsumWordWrapWithSoftHyphens(data) },
                             },
                         },
