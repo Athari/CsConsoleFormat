@@ -93,14 +93,17 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                 ReferenceAssemblies = { typeof(FigletDiv).Assembly }
             });
             //Document xamlDoc = ConsoleRenderer.ReadDocumentFromResource(GetType().Assembly, "Alba.CsConsoleFormat.ConsoleTest.Markup.xaml", data);
-            Console.WriteLine("XAML");
+            Console.WriteLine("\nXAML\n");
             ConsoleRenderer.RenderDocument(xamlDoc);
             ConsoleRenderer.RenderDocument(xamlDoc, new HtmlRenderTarget(File.Create("../Tmp/0.html"), new UTF8Encoding(false)));
 
             Document builtDoc = new ViewBuilder().CreateDocument(data);
-            Console.WriteLine("Builder");
+            Console.WriteLine("\nBUILDER\n");
             ConsoleRenderer.RenderDocument(builtDoc);
             ConsoleRenderer.RenderDocument(builtDoc, new HtmlRenderTarget(File.Create("../Tmp/0a.html"), new UTF8Encoding(false)));
+
+            Console.WriteLine("\nBUILDER FLUENT\n");
+            ConsoleRenderer.RenderDocument(new ViewBuilder().CreateDocumentFluent(data));
 
             var buffer = new ConsoleBuffer(80) {
                 LineCharRenderer = LineCharRenderer.BoxExtended,
@@ -255,7 +258,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                         Children = { data.Items.Select(d => d.Name + " ") },
                     },
                     new Grid {
-                        Columns = { -1, -1, -1 },
+                        Columns = { GridLength.Auto, GridLength.Auto, GridLength.Auto },
                         Children = {
                             new Cell("Id") { Stroke = cellHeaderThickness },
                             new Cell("Name") { Stroke = cellHeaderThickness },
@@ -269,7 +272,7 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                     },
                     new Grid {
                         Stroke = LineThickness.None,
-                        Columns = { -1, -1, -1 },
+                        Columns = { GridLength.Auto, GridLength.Auto, GridLength.Auto },
                         Children = {
                             new Div("Id"),
                             new Div("Name"),
@@ -287,22 +290,22 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Div {
                                 Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1,
                                 Background = DarkBlue, TextWrap = TextWrap.CharWrap,
-                                Values = { Dock.ToProperty == DockTo.Left },
+                                [Dock.ToProperty] = DockTo.Left,
                                 Children = { LoremIpsumCharWrap(data) },
                             },
                             new Div {
                                 Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1, Background = DarkBlue,
-                                Values = { Dock.ToProperty == DockTo.Top },
+                                [Dock.ToProperty] = DockTo.Top,
                                 Children = { LoremIpsumWordWrapWithSpaces(data) },
                             },
                             new Div {
                                 Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1, Background = DarkBlue,
-                                Values = { Dock.ToProperty == DockTo.Right },
+                                [Dock.ToProperty] = DockTo.Right,
                                 Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
                             },
                             new Div {
                                 Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1, Background = DarkBlue,
-                                Values = { Dock.ToProperty == DockTo.Bottom },
+                                [Dock.ToProperty] = DockTo.Bottom,
                                 Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
                             },
                             new Border {
@@ -375,6 +378,113 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             }
                         }
                     }
+                }
+            };
+        }
+
+        public Document CreateDocumentFluent(Data data)
+        {
+            var cellHeaderThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
+            return new Document {
+                Color = White, Background = Black,
+                Children = {
+                    "Hello world!",
+                    new Div {
+                        Values = { Green, TextWrap.CharWrap },
+                        Children = { data.Unicode.Normalize(NormalizationForm.FormD) }
+                    },
+                    new Div {
+                        Values = { DarkYellow, TextWrap.CharWrap },
+                        Children = { data.Unicode.Normalize(NormalizationForm.FormC) }
+                    },
+                    new List(data.Items.Select(d => new Div(d.Name))),
+                    new Div(data.Items.Select(d => d.Name + " ")),
+                    new Grid {
+                        Columns = { -1, -1, -1 },
+                        Children = {
+                            new Cell("Id") { Stroke = cellHeaderThickness },
+                            new Cell("Name") { Stroke = cellHeaderThickness },
+                            new Cell("Value") { Stroke = cellHeaderThickness },
+                            data.Items.Select(d => new[] {
+                                new Cell(d.Id) { Values = { Yellow, Align.Right } },
+                                new Cell(d.Name) { Values = { Gray } },
+                                new Cell(d.Value) { Values = { Gray } },
+                            }),
+                        },
+                    },
+                    new Grid {
+                        Stroke = LineThickness.None,
+                        Columns = { -1, -1, -1 },
+                        Children = {
+                            new Div("Id"), new Div("Name"), new Div("Value"),
+                            data.Items.Select(d => new[] {
+                                new Div(d.Id), new Div(d.Name), new Div(d.Value),
+                            }),
+                        },
+                    },
+                    new Dock {
+                        Width = 80, Values = { Align.Left, Gray.On(Blue) },
+                        Children = {
+                            new Div {
+                                Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1,
+                                Values = { DockTo.Left, Gray.On(DarkBlue), TextWrap.CharWrap },
+                                Children = { LoremIpsumCharWrap(data) },
+                            },
+                            new Div {
+                                Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1,
+                                Values = { DockTo.Top, Gray.On(DarkBlue) },
+                                Children = { LoremIpsumWordWrapWithSpaces(data) },
+                            },
+                            new Div {
+                                Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1,
+                                Values = { DockTo.Right, Gray.On(DarkBlue) },
+                                Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
+                            },
+                            new Div {
+                                Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1,
+                                Values = { DockTo.Bottom, Gray.On(DarkBlue) },
+                                Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
+                            },
+                            new Border {
+                                Margin = 1, Padding = 1,
+                                Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
+                                Values = { Gray.On(DarkCyan) },
+                                Children = { LoremIpsumWordWrapWithSoftHyphens(data) },
+                            }
+                        },
+                    },
+                    "",
+                    new Absolute {
+                        Width = 80, Height = 43, Values = { Align.Left, Gray.On(Blue) },
+                        Children = {
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1,
+                                Values = { Gray.On(DarkBlue), TextWrap.CharWrap, Absolute.LeftProperty == 1, Absolute.TopProperty == 1 },
+                                Children = { LoremIpsumCharWrap(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1,
+                                Values = { Gray.On(DarkBlue), TextWrap.CharWrap, Absolute.LeftProperty == 1, Absolute.BottomProperty == 1 },
+                                Children = { LoremIpsumWordWrapWithSpaces(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1,
+                                Values = { Gray.On(DarkBlue), TextWrap.CharWrap, Absolute.RightProperty == 1, Absolute.TopProperty == 1 },
+                                Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
+                            },
+                            new Div {
+                                Width = 38, Height = 20, Padding = 1,
+                                Values = { Gray.On(DarkBlue), TextWrap.CharWrap, Absolute.RightProperty == 1, Absolute.BottomProperty == 1 },
+                                Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
+                            },
+                            new Border {
+                                Width = 38, Height = 20, Padding = 1,
+                                Shadow = new Thickness(-1, -1, 1, 1), Stroke = LineThickness.Single,
+                                Values = { Gray.On(DarkCyan), Absolute.LeftProperty == 21, Absolute.TopProperty == 11 },
+                                Children = { LoremIpsumWordWrapWithSoftHyphens(data) },
+                            },
+                        },
+                    },
                 }
             };
         }

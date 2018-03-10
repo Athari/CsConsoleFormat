@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -197,24 +196,6 @@ namespace Alba.CsConsoleFormat
                 EnsureAttachedPropertiesCreated(); // ReSharper disable once PossibleNullReferenceException
                 _attachedProperties[property.Identifier] = value;
             }
-        }
-
-        public class ValuesInitializer : IEnumerable
-        {
-            private readonly BindableObject _object;
-
-            public ValuesInitializer(BindableObject o)
-            {
-                _object = o;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                yield break;
-            }
-
-            public void Add<T>(AttachedProperty<T> property, T value) => _object[property] = value;
-            public void Add<T>(AttachedValue<T> value) => _object[value.Property] = value.Value;
         }
     }
 }
