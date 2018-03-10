@@ -45,13 +45,17 @@ CsConsoleFormat is a library for formatting text in console based on documents r
 or like this:
 
 ```c#
-new Document {
-    Children = {
-        new Span("Hello") { Color = ConsoleColor.Red },
-        "\n",
-        new Span("world!") { Color = ConsoleColor.Yellow }
-    }
-};
+new Document(
+    new Span("Hello") { Color = ConsoleColor.Red },
+    "\n",
+    new Span("world!") { Color = ConsoleColor.Yellow }
+);
+```
+
+or even like this:
+
+```c#
+Colors.WriteLine("Hello".Red(), "\n", "world!".Yellow());
 ```
 
 Why?
@@ -63,7 +67,7 @@ The code quickly becomes an unreadable mess. It's just not fun! In GUI, we have 
 
 *CsConsoleFormat to the rescue!*
 
-Imagine you have usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're two syntaxes, you can use either.
+Imagine you have the usual Order, OrderItem and Customer classes. Let's create a document which prints the order. There're two major syntaxes, you can use either.
 
 **XAML** (like WPF):
 
@@ -111,38 +115,40 @@ ConsoleRenderer.RenderDocument(doc);
 ```c#
 using static System.ConsoleColor;
 
-var headerThickness = new LineThickness(LineWidth.Single, LineWidth.Double);
+var headerThickness = new LineThickness(LineWidth.Double, LineWidth.Single);
 
-var doc = new Document {
-    Children = {
-        new Span("Order #") { Color = Yellow },
-        Order.Id,
-        "\n",
-        new Span("Customer: ") { Color = Yellow },
-        Order.Customer.Name,
-
-        new Grid {
-            Color = Gray,
-            Columns = {
-                new Column { Width = GridLength.Auto },
-                new Column { Width = GridLength.Star(1) },
-                new Column { Width = GridLength.Auto }
-            },
-            Children = {
-                new Cell("Id") { Stroke = headerThickness },
-                new Cell("Name") { Stroke = headerThickness },
-                new Cell("Count") { Stroke = headerThickness },
-                Order.OrderItems.Select(item => new[] {
-                    new Cell { Children = { item.Id } },
-                    new Cell { Children = { item.Name } },
-                    new Cell { Align = Align.Right, Children = { item.Count } },
-                })
-            }
+var doc = new Document(
+    new Span("Order #") { Color = Yellow }, Order.Id, "\n",
+    new Span("Customer: ") { Color = Yellow }, Order.Customer.Name,
+    new Grid {
+        Color = Gray,
+        Columns = { GridLength.Auto, GridLength.Star(1), GridLength.Auto },
+        Children = {
+            new Cell("Id") { Stroke = headerThickness },
+            new Cell("Name") { Stroke = headerThickness },
+            new Cell("Count") { Stroke = headerThickness },
+            Order.OrderItems.Select(item => new[] {
+                new Cell(item.Id),
+                new Cell(item.Name),
+                new Cell(item.Count) { Align = Align.Right },
+            })
         }
     }
-};
+);
 
 ConsoleRenderer.RenderDocument(doc);
+```
+
+**C#** (like npm/colors):
+
+```c#
+using Alba.CsConsoleFormat.Fluent;
+
+Colors.WriteLine(
+    "Order #".Yellow(), Order.Id, "\n",
+    "Customer: ".Yellow(), Order.Customer.Name,
+    // the rest is the same
+);
 ```
 
 Features
@@ -155,6 +161,7 @@ Features
 * **Multiple syntaxes** (see examples above):
     * **Like WPF**: XAML with one-time bindings, resources, converters, attached properties, loading documents from assembly resources.
     * **Like LINQ to XML**: C# with object initializers, setting attached properties via extension methods or indexers, adding children elements by collapsing enumerables and converting objects and strings to elements.
+    * **Like npm/colors**: Limited to writing colored strings, but very concise. Can be combined with the general syntax above.
 * **Drawing**: geometric primitives (lines, rectangles) using box-drawing characters, color transformations (dark, light), text, images.
 * **Internationalization**: cultures are respected on every level and can be customized per-element.
 * **Export** to many formats: ANSI text, unformatted text, HTML; RTF, XPF, WPF FixedDocument, WPF FlowDocument.
@@ -196,7 +203,7 @@ XAML library in Mono is currently very buggy. If you want to build a cross-platf
 
 XAML is only partially supported by Visual Studio + ReSharper: syntax highlighting and code completion work, but library-specific markup extensions are't understood by code completion, so incorrect errors may be displayed.
 
-**C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using collection initializer of `Children` property which accepts any object.
+**C#** (like LINQ to XML) allows performing all sorts of transformations with objects right in the code, thanks to LINQ and collapsing of enumerables when adding children elements. When using C# 6, which supports `using static`, accessing some of enumerations can be shortened. The only place with loose typing is adding of children using collection initializer of `Element.Children` (or constructor of `Element`).
 
 Building documents in code is fully supported by IDE, but code completion may cause lags if documents are built with huge single statements.
 

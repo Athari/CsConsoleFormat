@@ -214,6 +214,7 @@ namespace Alba.CsConsoleFormat
             }
 
             public void Add<T>(AttachedProperty<T> property, T value) => _object[property] = value;
+            public void Add<T>(AttachedValue<T> value) => _object[value.Property] = value.Value;
         }
     }
 }

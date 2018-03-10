@@ -287,22 +287,22 @@ namespace Alba.CsConsoleFormat.ConsoleTest
                             new Div {
                                 Width = 20, Margin = new Thickness(1, 1, 0, 1), Padding = 1,
                                 Background = DarkBlue, TextWrap = TextWrap.CharWrap,
-                                [Dock.ToProperty] = DockTo.Left,
+                                Values = { Dock.ToProperty == DockTo.Left },
                                 Children = { LoremIpsumCharWrap(data) },
                             },
                             new Div {
                                 Height = 10, Margin = new Thickness(1, 1, 1, 0), Padding = 1, Background = DarkBlue,
-                                [Dock.ToProperty] = DockTo.Top,
+                                Values = { Dock.ToProperty == DockTo.Top },
                                 Children = { LoremIpsumWordWrapWithSpaces(data) },
                             },
                             new Div {
                                 Width = 20, Margin = new Thickness(0, 1, 1, 1), Padding = 1, Background = DarkBlue,
-                                [Dock.ToProperty] = DockTo.Right,
+                                Values = { Dock.ToProperty == DockTo.Right },
                                 Children = { LoremIpsumWordWrapWithZeroWidthSpaces(data) },
                             },
                             new Div {
                                 Height = 10, Margin = new Thickness(1, 0, 1, 1), Padding = 1, Background = DarkBlue,
-                                [Dock.ToProperty] = DockTo.Bottom,
+                                Values = { Dock.ToProperty == DockTo.Bottom },
                                 Children = { LoremIpsumWordWrapWithNoBreakSpaces(data) },
                             },
                             new Border {

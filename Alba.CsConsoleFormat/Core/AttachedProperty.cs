@@ -61,6 +61,10 @@ namespace Alba.CsConsoleFormat
                 name = name.Substring(0, name.Length - PropertySuffix.Length);
             return Register<TOwner, T>(name, defaultValue);
         }
+
+        public bool Equals(AttachedProperty other) => Identifier == other?.Identifier;
+        public override bool Equals(object obj) => Equals(obj as AttachedProperty);
+        public override int GetHashCode() => Identifier.GetHashCode();
     }
 
     public sealed class AttachedProperty<T> : AttachedProperty
@@ -70,5 +74,15 @@ namespace Alba.CsConsoleFormat
 
         internal AttachedProperty([NotNull] AttachableMemberIdentifier identifier, T defaultValue) : base(identifier, defaultValue)
         { }
+
+        public static AttachedValue<T> operator ==(AttachedProperty<T> property, T value) => new AttachedValue<T>(property, value);
+        public static AttachedValue<T> operator !=(AttachedProperty<T> property, T value) => throw new NotSupportedException();
+
+        // ReSharper disable RedundantOverriddenMember - Either redundant overrides or compiler warnings, I choose redundant overrides.
+
+        public override bool Equals(object obj) => base.Equals(obj);
+        public override int GetHashCode() => base.GetHashCode();
+
+        // ReSharper restore RedundantOverriddenMember
     }
 }
