@@ -152,27 +152,23 @@ namespace Alba.CsConsoleFormat
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
             document.Arrange(new Rect(renderRect.Position, document.DesiredSize));
-            RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip, renderRect);
+            RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip);
         }
 
-        private static void RenderElement([NotNull] BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect parentRect, Rect renderRect)
+        private static void RenderElement([NotNull] BlockElement element, ConsoleBuffer buffer, Vector parentOffset, Rect renderRect)
         {
             if (element.Visibility != Visibility.Visible || element.RenderSize.IsEmpty)
                 return;
 
             Vector offset = parentOffset + element.ActualOffset;
-            Rect clip = new Rect(element.RenderSize)
-                .Intersect(element.LayoutClip)
-                .Offset(offset)
-                .Intersect(renderRect)
-                .Intersect(parentRect);
+            Rect clip = new Rect(element.RenderSize).Intersect(element.LayoutClip).Offset(offset).Intersect(renderRect);
 
             buffer.Offset = offset;
             buffer.Clip = clip;
             element.Render(buffer);
 
             foreach (BlockElement childElement in element.VisualChildren.OfType<BlockElement>())
-                RenderElement(childElement, buffer, offset, clip, renderRect);
+                RenderElement(childElement, buffer, offset, renderRect);
         }
     }
 }

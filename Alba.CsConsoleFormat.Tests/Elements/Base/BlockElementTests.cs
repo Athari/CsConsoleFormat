@@ -793,6 +793,46 @@ namespace Alba.CsConsoleFormat.Tests
         }
 
         [Fact]
+        public void AlignHorizontalVerticalSmallBlockCenterMaxLessThanSizeWithNegativeMargin()
+        {
+            var fill = new Fill {
+                Char = '_',
+                Children = {
+                    new Fill {
+                        Char = '+',
+                        Width = 2, Height = 6, Margin = 1,
+                        Align = Align.Center, VerticalAlign = VerticalAlign.Center,
+                        Children = {
+                            new Fill {
+                                Char = '-',
+                                Width = 6, Height = 2, Margin = -2,
+                                Align = Align.Center, VerticalAlign = VerticalAlign.Center,
+                                Children = {
+                                    new FillAlphabet {
+                                        AlphaWidth = 5, AlphaHeight = 5,
+                                        MaxWidth = 4, MaxHeight = 4,
+                                        Margin = new Thickness(1, -1),
+                                        Align = Align.Center, VerticalAlign = VerticalAlign.Center,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "___++____",
+                "__abcd___",
+                "_-fghi-__",
+                "_-klmn-__",
+                "__pqrs___",
+                "___++____",
+                "_________");
+        }
+
+        [Fact]
         public void InfiniteDesiredWidth()
         {
             var el = new InfiniteDesiredSize { RawDesiredSize = new Size(Size.Infinity, 1) };
