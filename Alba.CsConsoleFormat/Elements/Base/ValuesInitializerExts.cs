@@ -1,5 +1,8 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using System.ComponentModel;
+
+namespace Alba.CsConsoleFormat
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ValuesInitializerExts
     {
         public static void Add<T>(this ValuesInitializer @this, AttachedProperty<T> property, T value) =>

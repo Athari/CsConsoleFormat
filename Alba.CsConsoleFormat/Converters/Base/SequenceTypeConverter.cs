@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace Alba.CsConsoleFormat
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class SequenceTypeConverter<T> : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>

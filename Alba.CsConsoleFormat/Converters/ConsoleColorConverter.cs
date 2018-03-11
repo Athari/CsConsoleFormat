@@ -13,6 +13,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"inherit" - <c>null</c></item>
     /// </list> 
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class ConsoleColorConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>

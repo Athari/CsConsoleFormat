@@ -18,6 +18,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"3", 3 - <c>GridLength.Char(3)</c></item>
     /// </list> 
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class GridLengthConverter : TypeConverter
     {
         private static readonly Lazy<ConstructorInfo> GridLengthConstructor = new Lazy<ConstructorInfo>(() =>

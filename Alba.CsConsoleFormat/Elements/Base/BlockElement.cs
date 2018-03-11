@@ -7,8 +7,6 @@ namespace Alba.CsConsoleFormat
 {
     public abstract class BlockElement : Element
     {
-        private LayoutInfo _layoutInfo = new LayoutInfo();
-
         [TypeConverter(typeof(LengthConverter))]
         public int? Width { get; set; }
 
@@ -41,49 +39,25 @@ namespace Alba.CsConsoleFormat
 
         /// <summary>Element position (relative to visual parent).</summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public Vector ActualOffset
-        {
-            get => _layoutInfo.ActualOffset;
-            private set => _layoutInfo.ActualOffset = value;
-        }
+        public Vector ActualOffset { get; private set; }
 
         /// <summary>Element size returned by <see cref="Measure"/>, constrained by max element size and available size with margins.</summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public Size DesiredSize
-        {
-            get => _layoutInfo.DesiredSize;
-            private set => _layoutInfo.DesiredSize = value;
-        }
+        public Size DesiredSize { get; private set; }
 
         /// <summary>Render area constraint (relative to visual parent).</summary>
-        internal Rect LayoutClip
-        {
-            get => _layoutInfo.LayoutClip;
-            private set => _layoutInfo.LayoutClip = value;
-        }
+        internal Rect LayoutClip { get; private set; }
 
         /// <summary>Render area size.</summary><seealso cref="ActualWidth"/><seealso cref="ActualHeight"/>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public Size RenderSize
-        {
-            get => _layoutInfo.RenderSize;
-            private set => _layoutInfo.RenderSize = value;
-        }
+        public Size RenderSize { get; private set; }
 
         /// <summary>Area occupied by element, including margins (relative to visual parent).</summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public Rect RenderSlotRect
-        {
-            get => _layoutInfo.RenderSlotRect;
-            private set => _layoutInfo.RenderSlotRect = value;
-        }
+        public Rect RenderSlotRect { get; private set; }
 
         /// <summary>Element size returned by <see cref="Measure"/>, expanded by min element size.</summary><seealso cref="DesiredSize"/>
-        private Size UnclippedDesiredSize
-        {
-            get => _layoutInfo.UnclippedDesiredSize;
-            set => _layoutInfo.UnclippedDesiredSize = value;
-        }
+        private Size UnclippedDesiredSize { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public void Measure(Size availableSize)
@@ -95,10 +69,10 @@ namespace Alba.CsConsoleFormat
             }
 
             // Apply margin. availableSize is what parent want us to be.
-            Size constrainedAvailableSize = new Size(availableSize.Width - Margin.Width, availableSize.Height - Margin.Height, false);
+            Size constrainedAvailableSize = availableSize - Margin;
 
             // Apply min/max/currentvalue constraints.
-            MinMaxSize mm = new MinMaxSize(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
+            var mm = new MinMaxSize(this);
             constrainedAvailableSize = Size.MinMax(constrainedAvailableSize, mm.MinSize, mm.MaxSize);
 
             Size desiredSize = MeasureOverride(constrainedAvailableSize);
@@ -179,7 +153,7 @@ namespace Alba.CsConsoleFormat
             // For ex, DS<clientSize but DS>MaxWidth - in this case we should initiate clip at MaxWidth and only show Top-Left portion
             // of the element limited by Max properties. It is Top-left because in case when we are clipped by container we also degrade
             // to Top-Left, so we are consistent.
-            MinMaxSize mm = new MinMaxSize(MinHeight, MaxHeight, MinWidth, MaxWidth, Width, Height);
+            var mm = new MinMaxSize(this);
             return CalculateAlignmentOffsetCore(RenderSlotRect.Size - Margin, Size.Min(RenderSize, mm.MaxSize));
         }
 
@@ -223,19 +197,15 @@ namespace Alba.CsConsoleFormat
             buffer.FillForegroundRectangle(new Rect(RenderSize), EffectiveColor);
         }
 
-        protected override void CloneOverride(BindableObject obj)
-        {
-            var source = (BlockElement)obj;
-            base.CloneOverride(source);
-            _layoutInfo = source._layoutInfo.Clone();
-        }
-
         [Pure]
         internal static int MinMax(int value, int min, int max) => Math.Max(Math.Min(value, max), min);
 
         private struct MinMaxSize
         {
-            public MinMaxSize(int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
+            public MinMaxSize(BlockElement el) : this(el.MinHeight, el.MaxHeight, el.MinWidth, el.MaxWidth, el.Width, el.Height)
+            { }
+
+            private MinMaxSize(int minHeight, int maxHeight, int minWidth, int maxWidth, int? width, int? height)
             {
                 MaxHeight = MinMax(height ?? Size.Infinity, minHeight, maxHeight);
                 MinHeight = MinMax(height ?? 0, minHeight, MaxHeight);

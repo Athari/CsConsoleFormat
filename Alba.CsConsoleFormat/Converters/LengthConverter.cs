@@ -13,6 +13,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"auto" - <c>null</c></item>
     /// </list> 
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class LengthConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>

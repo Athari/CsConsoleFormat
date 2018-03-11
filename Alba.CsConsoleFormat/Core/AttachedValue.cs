@@ -1,5 +1,8 @@
-﻿namespace Alba.CsConsoleFormat
+﻿using System.ComponentModel;
+
+namespace Alba.CsConsoleFormat
 {
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public struct AttachedValue<T>
     {
         public AttachedProperty<T> Property { get; }

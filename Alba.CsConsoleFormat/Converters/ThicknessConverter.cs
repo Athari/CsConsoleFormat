@@ -15,6 +15,7 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class ThicknessConverter : SequenceTypeConverter<Thickness>
     {
         private static readonly Lazy<ConstructorInfo> ThicknessConstructor = new Lazy<ConstructorInfo>(() =>

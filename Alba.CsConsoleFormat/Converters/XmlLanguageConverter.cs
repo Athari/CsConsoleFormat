@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Alba.CsConsoleFormat.Markup;
@@ -11,6 +12,7 @@ namespace Alba.CsConsoleFormat
     /// <item>"en-us" - <c>new XmlLanguage("en-us")</c></item>
     /// </list> 
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class XmlLanguageConverter : SequenceTypeConverter<XmlLanguage>
     {
         private static readonly Lazy<ConstructorInfo> XmlLanguageConstructor = new Lazy<ConstructorInfo>(() =>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using static Alba.CsConsoleFormat.TypeConverterUtils;
 
@@ -11,6 +12,7 @@ namespace Alba.CsConsoleFormat
     /// </list> 
     /// Separator can be " " or ",".
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     public sealed class VectorConverter : SequenceTypeConverter<Vector>
     {
         private static readonly Lazy<ConstructorInfo> VectorConstructor = new Lazy<ConstructorInfo>(() =>
