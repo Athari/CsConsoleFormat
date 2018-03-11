@@ -31,9 +31,9 @@ namespace Alba.CsConsoleFormat.ColorfulConsole
             return new Size(_lines.FirstOrDefault()?.Length ?? 0, _lines.Length - 1);
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
-            base.Render(buffer);
+            base.RenderOverride(buffer);
             ConsoleColor color = EffectiveColor, background = EffectiveBackground;
             for (int i = 0; i < _lines.Length - 1; i++) {
                 string line = _lines[i];

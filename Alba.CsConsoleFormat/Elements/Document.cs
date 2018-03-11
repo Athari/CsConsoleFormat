@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Alba.CsConsoleFormat
 {
@@ -8,13 +9,16 @@ namespace Alba.CsConsoleFormat
         public ILineCharRenderer LineCharRenderer { get; set; } = null;
 
         public Document()
-        {
-            VerticalAlign = VerticalAlign.Top;
-        }
+        { }
 
         public Document(params object[] children) : base(children)
+        { }
+
+        protected override Size MeasureOverride(Size availableSize)
         {
-            VerticalAlign = VerticalAlign.Top;
+            // Force document to occupy whole availableSize.Width (usually Console.BufferWidth).
+            Size size = base.MeasureOverride(availableSize);
+            return new Size(Math.Max(size.Width, availableSize.Width), size.Height);
         }
     }
 }

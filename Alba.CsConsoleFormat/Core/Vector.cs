@@ -18,6 +18,9 @@ namespace Alba.CsConsoleFormat
             Y = y;
         }
 
+        public Vector(Point point) : this(point.X, point.Y)
+        { }
+
         public bool Equals(Vector other) => X == other.X && Y == other.Y;
         public override bool Equals(object obj) => obj is Vector && Equals((Vector)obj);
         public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();

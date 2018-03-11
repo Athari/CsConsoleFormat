@@ -69,9 +69,9 @@ namespace Alba.CsConsoleFormat.Tests
             [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Write-only properties are not okay.")]
             public char Char { get; set; }
 
-            public override void Render(ConsoleBuffer buffer)
+            protected override void RenderOverride(ConsoleBuffer buffer)
             {
-                base.Render(buffer);
+                base.RenderOverride(buffer);
                 buffer.FillForegroundRectangle(new Rect(RenderSize), null, Char);
             }
         }
@@ -88,9 +88,9 @@ namespace Alba.CsConsoleFormat.Tests
 
             protected override Size MeasureOverride(Size availableSize) => new Size(AlphaWidth, AlphaHeight);
 
-            public override void Render(ConsoleBuffer buffer)
+            protected override void RenderOverride(ConsoleBuffer buffer)
             {
-                base.Render(buffer);
+                base.RenderOverride(buffer);
                 char nextChar = 'a';
                 for (int y = 0; y < AlphaHeight; y++)
                     for (int x = 0; x < AlphaWidth; x++)

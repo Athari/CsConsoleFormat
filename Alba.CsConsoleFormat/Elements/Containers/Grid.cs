@@ -324,9 +324,9 @@ namespace Alba.CsConsoleFormat
             cell.Arrange(cellRect);
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
-            base.Render(buffer);
+            base.RenderOverride(buffer);
             // Draw borders.
             ConsoleColor strokeColor = StrokeColor ?? EffectiveColor;
             var borderRect = new Rect();

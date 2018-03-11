@@ -45,9 +45,9 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
-            base.Render(buffer);
+            base.RenderOverride(buffer);
             ConsoleColor color = EffectiveColor, background = EffectiveBackground;
             for (int y = 0; y < _lines.Count; y++) {
                 List<InlineSegment> line = _lines[y];

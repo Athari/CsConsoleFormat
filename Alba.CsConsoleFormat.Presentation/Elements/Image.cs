@@ -33,7 +33,7 @@ namespace Alba.CsConsoleFormat.Presentation
             return new Size(Round(imageSize.Width * scaleFactor.Width), Round(imageSize.Height * scaleFactor.Height));
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

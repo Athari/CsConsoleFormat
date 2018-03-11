@@ -181,7 +181,7 @@ namespace Alba.CsConsoleFormat.Tests
                     new FillAlphabet {
                         AlphaWidth = 3,
                         AlphaHeight = 2,
-                        MaxWidth = 4,
+                        MaxWidth = 2,
                         Margin = 1,
                         Align = Align.Left,
                     }
@@ -192,6 +192,29 @@ namespace Alba.CsConsoleFormat.Tests
                 "_________",
                 "_ab______",
                 "_de______",
+                "_________");
+        }
+
+        [Fact]
+        public void AlignHorizontalSmallBlockRightMaxLessThanSizeWithMargin()
+        {
+            var fill = new Fill {
+                Char = '_',
+                Children = {
+                    new FillAlphabet {
+                        AlphaWidth = 3,
+                        AlphaHeight = 2,
+                        MaxWidth = 2,
+                        Margin = 1,
+                        Align = Align.Right,
+                    }
+                }
+            };
+
+            GetRenderedText(fill, 9).Should().BeLines(
+                "_________",
+                "______ab_",
+                "______de_",
                 "_________");
         }
 

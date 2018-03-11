@@ -14,9 +14,9 @@
             return Orientation == Orientation.Vertical ? new Size(width, 0) : new Size(0, width);
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
-            base.Render(buffer);
+            base.RenderOverride(buffer);
             if (Orientation == Orientation.Vertical)
                 buffer.DrawVerticalLine(0, 0, RenderSize.Height, EffectiveColor, Stroke);
             else

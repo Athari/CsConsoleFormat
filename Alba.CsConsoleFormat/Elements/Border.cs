@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat
             return finalSize;
         }
 
-        public override void Render(ConsoleBuffer buffer)
+        protected override void RenderOverride(ConsoleBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));

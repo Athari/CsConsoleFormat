@@ -151,7 +151,7 @@ namespace Alba.CsConsoleFormat
                 buffer.LineCharRenderer = document.LineCharRenderer;
             document.GenerateVisualTree();
             document.Measure(renderRect.Size);
-            document.Arrange(renderRect);
+            document.Arrange(new Rect(renderRect.Position, document.DesiredSize));
             RenderElement(document, buffer, new Vector(0, 0), document.LayoutClip, renderRect);
         }
 
@@ -161,9 +161,7 @@ namespace Alba.CsConsoleFormat
                 return;
 
             Vector offset = parentOffset + element.ActualOffset;
-            //Rect clip = new Rect( /*Size.Min(element.RenderSize, element.DesiredSize)*/element.RenderSize)
             Rect clip = new Rect(element.RenderSize)
-                //.Intersect(new Rect(element.DesiredSize))
                 .Intersect(element.LayoutClip)
                 .Offset(offset)
                 .Intersect(renderRect)
