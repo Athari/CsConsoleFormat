@@ -4,6 +4,7 @@
 
   <!-- Common properties -->
   <PropertyGroup>
+    <LangVersion>latest</LangVersion>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);TRACE</DefineConstants>
     <EnableDefaultItems>false</EnableDefaultItems>
@@ -28,20 +29,20 @@
     <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('netcoreapp', 'NET_COREAPP_').Replace('.', ''))</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);NET_FULL</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET_FULL;HAS_INSTANCE_DESCRIPTOR</DefineConstants>
     <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('net', 'NET_').Substring(0, 5))X</DefineConstants>
     <DefineConstants>$(DefineConstants);$(TargetFramework.Replace('net', 'NET_'))</DefineConstants>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
-  <!-- WPF-specific properties -->
-  <PropertyGroup Condition="$(ProjectGuid.ToLower().Contains('83367422-0496-4917-93f7-c8133df13435'))">
-    <CustomProjectExtensionsPath>$(SolutionDir)Build\WpfProjectSystem\</CustomProjectExtensionsPath>
-  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
 
   <!-- NuGet package properties -->
   <PropertyGroup>
-    <VersionPrefix>0.11.0</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
     <VersionSuffixBase>alpha</VersionSuffixBase>
     <Authors>Athari</Authors>
     <Copyright>Copyright © 2014–$([System.DateTime]::Now.ToString(yyyy)) Alexander "Athari" Prokhorov</Copyright>
@@ -68,6 +69,109 @@
         Link="Content/Docs/%(RecursiveDir)%(Filename)%(Extension)"
         PackagePath="files/Docs/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
+
+  <!-- Common references depending on declared requirements -->
+  <PropertyGroup>
+    <RequiresPresentation Condition="'$(RequiresPresentation)' == ''">none</RequiresPresentation>
+    <RequiresTesting Condition="'$(RequiresTesting)' == ''">none</RequiresTesting>
+    <RequiresXamlSyntax Condition="'$(RequiresXamlSyntax)' == ''">none</RequiresXamlSyntax>
+    <RequiresReflection Condition="'$(RequiresReflection)' == ''">none</RequiresReflection>
+    <RequiresTextTransformation Condition="'$(RequiresTextTransformation)' == ''">none</RequiresTextTransformation>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(RequiresPresentation)' == 'true'">
+
+      <PropertyGroup>
+        <CustomProjectExtensionsPath>$(SolutionDir)Build\WpfProjectSystem\</CustomProjectExtensionsPath>
+        <PackageTags>$(PackageTags);wpf</PackageTags>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="ReachFramework" />
+      </ItemGroup>
+
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(RequiresTesting)' == 'true'">
+
+      <ItemGroup>
+        <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+        <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj" />
+        <PackageReference Include="FluentAssertions" Version="5.1.2" />
+        <!-- HACK Avoid random stupid conflict between dependencies of FluentAssertions and some other shit that causes build warning -->
+        <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+        <PackageReference Include="Xunit" Version="2.3.1" />
+        <PackageReference Include="Xunit.Runner.VisualStudio" Version="2.3.1" />
+      </ItemGroup>
+
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(RequiresXamlSyntax)' == 'true'">
+
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);XAML</DefineConstants>
+        <DefineConstants Condition="'$(TargetFrameworkId)' == 'net'">$(DefineConstants);SYSTEM_XAML</DefineConstants>
+        <DefineConstants Condition="'$(TargetFrameworkId)' != 'net'">$(DefineConstants);PORTABLE_XAML</DefineConstants>
+        <PackageTags>$(PackageTags);xml;xaml</PackageTags>
+      </PropertyGroup>
+
+      <ItemGroup Condition="'$(MSBuildProjectName)' != 'Alba.CsConsoleFormat'">
+        <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Xml" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFrameworkId)' != 'net'">
+        <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
+        <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
+      </ItemGroup>
+
+    </When>
+    <When Condition="'$(RequiresXamlSyntax)' == 'false'">
+
+      <ItemGroup Condition="'$(MSBuildProjectName)' != 'Alba.CsConsoleFormat-NoXaml'">
+        <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj" />
+      </ItemGroup>
+
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(RequiresReflection)' == 'true'">
+
+      <PropertyGroup>
+        <MinimumNetCoreVersionRange>[4.1.0,)</MinimumNetCoreVersionRange>
+        <MinimumNetCoreVersionRange Condition="'$(RequiresXamlSyntax)' == 'true'">[4.3.0,)</MinimumNetCoreVersionRange>
+      </PropertyGroup>
+
+      <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+        <PackageReference Include="System.Reflection.TypeExtensions" Version="$(MinimumNetCoreVersionRange)" />
+        <PackageReference Include="System.ComponentModel.TypeConverter" Version="$(MinimumNetCoreVersionRange)" />
+      </ItemGroup>
+
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(RequiresTextTransformation)' == 'true'">
+
+      <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+      </ItemGroup>
+
+    </When>
+  </Choose>
 
   <!-- HACK Workaround for MSBuild.Core .NET 3.5 bug -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
@@ -96,5 +200,9 @@
   <Import Project="Settings.AppVeyor.Emulate.props" />-->
 
   <Import Project="Settings.AppVeyor.props" Condition="'$(APPVEYOR)' != ''" />
+
+  <Import Project="$(SolutionDir)Build\WpfProjectSystem\WpfProject.props" Condition="'$(RequiresPresentation)' == 'true'"/>
+  
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
 </Project>

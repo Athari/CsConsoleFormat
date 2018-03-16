@@ -2,29 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.Sample.ProcessManager</RootNamespace>
     <OutputType>Exe</OutputType>
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
+    <RequiresXamlSyntax>false</RequiresXamlSyntax>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat-NoXaml.csproj" />
     <PackageReference Include="CommandLineParser" Version="1.9.71" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
     <Compile Include="**/*.cs" />
-    <Compile Include="$(SolutionDir)\Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat/Framework/JetBrains/JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
     <None Include="**/*.cmd" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

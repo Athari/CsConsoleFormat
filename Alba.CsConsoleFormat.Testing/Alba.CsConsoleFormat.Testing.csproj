@@ -3,13 +3,11 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.4</TargetFrameworks>
     <!--<TargetFramework>netstandard1.3</TargetFramework>-->
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.Testing</RootNamespace>
     <CodeAnalysisLevel>Tests</CodeAnalysisLevel>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.1.2" />
@@ -18,12 +16,6 @@
     <Compile Include="$(SolutionDir)Alba.CsConsoleFormat/Framework/JetBrains/JetBrainsAnnotations.cs" Link="Properties/%(Filename)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

@@ -2,61 +2,20 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp1.1;netcoreapp2.0</TargetFrameworks>
-    <!--<TargetFrameworks>netcoreapp2.0</TargetFrameworks>-->
-
-    <LangVersion>latest</LangVersion>
-    <AssemblyName>Alba.CsConsoleFormat.Tests</AssemblyName>
+    <!--<TargetFrameworks>net461</TargetFrameworks>-->
     <RootNamespace>Alba.CsConsoleFormat.Tests</RootNamespace>
     <CodeAnalysisLevel>Tests</CodeAnalysisLevel>
-    <DefineConstants>XAML</DefineConstants>
+    <RequiresTesting>true</RequiresTesting>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <ItemGroup>
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
-
-    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
-    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.Testing\Alba.CsConsoleFormat.Testing.csproj" />
-
-    <PackageReference Include="FluentAssertions" Version="5.1.2" />
-    <!-- HACK Avoid random stupid conflict between dependencies of FluentAssertions and some other shit that causes build warning -->
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="Xunit" Version="2.3.1" />
-    <PackageReference Include="Xunit.Runner.VisualStudio" Version="2.3.1" />
-
     <Compile Include="**/*.cs" />
     <EmbeddedResource Include="**/*.xaml" Generator="MSBuild:Compile" SubType="Designer" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netcoreapp'">
-    <DefineConstants>$(DefineConstants);PORTABLE_XAML</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'netcoreapp'">
-    <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
-    <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);SYSTEM_XAML;HAS_INSTANCE_DESCRIPTOR</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

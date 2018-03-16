@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFrameworks>net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>netstandard1.3</TargetFramework>-->
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
-    <DefineConstants>XAML</DefineConstants>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
+    <RequiresReflection>true</RequiresReflection>
+    <RequiresTextTransformation>true</RequiresTextTransformation>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <PropertyGroup>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
@@ -19,53 +19,19 @@
       Format output like HTML using either .NET DSL (like LINQ to XML), or XAML with bindings (like WPF).
       Supports paragraphs, lists, grids, Unicode formatting, drawing, export to various formats and much more.
     </Description>
-    <PackageTags>$(PackageTags);xml;xaml</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*; **/*.g.cs" />
     <Compile Include="Framework/Compatibility/*.all.*" />
+    <Compile Condition="'$(TargetFramework)' == 'netstandard1.3'" Include="Framework/Compatibility/*.netstandard13.*" />
+    <Compile Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Framework/Compatibility/*.netstandard20.*" />
+    <Compile Condition="'$(TargetFramework)' == 'net40'" Include="Framework/Compatibility/*.net40.*" />
     <None Include="**/*.ttinclude" />
     <None Include="Generation/Fluent/Colors.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="Colors.g.cs" />
     <Compile Include="Generation/Fluent/Colors.g.cs" DesignTime="True" AutoGen="True" DependentUpon="Colors.tt" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <DefineConstants>$(DefineConstants);PORTABLE_XAML</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="Microsoft.CSharp" Version="[4.3.0,)" />
-    <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
-    <Compile Include="Framework/Compatibility/*.netstandard13.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Include="Framework/Compatibility/*.netstandard20.*" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);SYSTEM_XAML</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Compile Include="Framework/Compatibility/*.net40.*" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

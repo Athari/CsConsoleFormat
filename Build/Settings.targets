@@ -20,4 +20,8 @@
     <WriteLinesToFile Lines="$(ReadMeNuGetText)" File="$(SolutionDir)Docs/ReadMe.NuGet.md" Overwrite="True" />
   </Target>
 
+  <Import Project="$(SolutionDir)Build\WpfProjectSystem\WpfProject.targets" Condition="'$(RequiresPresentation)' == 'true'"/>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
 </Project>

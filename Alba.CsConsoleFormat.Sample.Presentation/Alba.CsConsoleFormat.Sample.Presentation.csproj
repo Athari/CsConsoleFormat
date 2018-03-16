@@ -96,7 +96,7 @@
     <Resource Include="Images\defrag_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="..\Analysis\CustomDictionary.xml">
+    <CodeAnalysisDictionary Include="..\Build\Analysis\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>

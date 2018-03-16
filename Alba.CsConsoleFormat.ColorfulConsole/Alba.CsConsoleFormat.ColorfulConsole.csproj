@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFrameworks>net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>netstandard1.3</TargetFramework>-->
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.ColorfulConsole</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
-    <DefineConstants>XAML</DefineConstants>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
+    <RequiresReflection>true</RequiresReflection>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <PropertyGroup>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
@@ -18,44 +17,16 @@
       Colorful.Console adapter of Alba.CsConsoleFormat.
       Supports rendering FIGlet fonts.
     </Description>
-    <PackageTags>$(PackageTags);xml;xaml;colorful;figlet</PackageTags>
+    <PackageTags>$(PackageTags);colorful;figlet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.3'" Include="Colorful.Console" Version="[1.1.0,1.2.0)" />
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Colorful.Console" Version="[1.2.1,)" />
+    <PackageReference Condition="'$(TargetFrameworkId)' == 'net'" Include="Colorful.Console" Version="[1.1.0,)" />
     <Compile Include="**/*.cs" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <DefineConstants>$(DefineConstants);PORTABLE_XAML</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="Portable.Xaml" Version="[0.18.0,)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.3.0,)" />
-    <PackageReference Include="Colorful.Console" Version="[1.1.0,1.2.0)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Colorful.Console" Version="[1.2.1,)" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <DefineConstants>$(DefineConstants);SYSTEM_XAML</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <PackageReference Include="Colorful.Console" Version="[1.1.0,)" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

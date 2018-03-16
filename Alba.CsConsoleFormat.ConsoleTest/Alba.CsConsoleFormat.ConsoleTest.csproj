@@ -2,29 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net40</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.ConsoleTest</RootNamespace>
     <OutputType>Exe</OutputType>
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
-    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.ColorfulConsole\Alba.CsConsoleFormat.ColorfulConsole.csproj" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.ColorfulConsole/Alba.CsConsoleFormat.ColorfulConsole.csproj" />
     <Compile Include="**/*.cs" />
-    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat\Framework\JetBrains\JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat/Framework/JetBrains/JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
     <EmbeddedResource Include="**/*.xaml; **/*.flf" />
   </ItemGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

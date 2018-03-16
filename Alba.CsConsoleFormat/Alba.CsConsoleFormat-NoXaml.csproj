@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <!--<TargetFramework>net35</TargetFramework>-->
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
+    <RequiresXamlSyntax>false</RequiresXamlSyntax>
+    <RequiresReflection>true</RequiresReflection>
+    <RequiresTextTransformation>true</RequiresTextTransformation>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <PropertyGroup>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
@@ -18,43 +19,19 @@
       Format output like HTML using .NET DSL (like LINQ to XML).
       Supports paragraphs, lists, grids, Unicode formatting, drawing, export to various formats and much more.
     </Description>
-    <PackageTags>$(PackageTags)</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="**/*.cs" Exclude="Framework/Compatibility/*; Elements/Repeater.cs; Formatting/XamlElementReaderSettings.cs; Framework/Reflection/*; Markup/*" />
     <Compile Include="Markup/XmlLanguage.cs" />
     <Compile Include="Framework/Compatibility/*.all.*; Framework/Compatibility/*.noxaml.*" />
+    <Compile Condition="'$(TargetFramework)' == 'netstandard1.3'" Include="Framework/Compatibility/*.netstandard13.*" />
+    <Compile Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Framework/Compatibility/*.netstandard20.*" />
+    <Compile Condition="'$(TargetFramework)' == 'net40'" Include="Framework/Compatibility/*.net40.*" />
+    <Compile Condition="'$(TargetFramework)' == 'net35'" Include="Framework/Compatibility/*.net35.*" />
+    <Compile Condition="'$(TargetFramework)' == 'net35'" Remove="Formatting/RenderTargets/HtmlRenderTarget.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'netstandard'">
-    <PackageReference Include="System.ComponentModel.TypeConverter" Version="[4.1.0,)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="[4.1.0,)" />
-    <Compile Include="Framework/Compatibility/*.netstandard13.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Include="Framework/Compatibility/*.netstandard20.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
-    <Compile Remove="Formatting/RenderTargets/HtmlRenderTarget.cs" />
-    <Compile Include="Framework/Compatibility/*.net35.*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Compile Include="Framework/Compatibility/*.net40.*" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>

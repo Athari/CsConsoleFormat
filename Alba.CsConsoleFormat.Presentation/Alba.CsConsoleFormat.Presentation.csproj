@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <ProjectGuid>83367422-0496-4917-93f7-c8133df13435</ProjectGuid>
-    <!--<TargetFrameworks>net40</TargetFrameworks>-->
+    <TargetFrameworks>net40</TargetFrameworks>
     <TargetFramework>net40</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Alba.CsConsoleFormat.Presentation</RootNamespace>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
+    <RequiresPresentation>true</RequiresPresentation>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
   </PropertyGroup>
 
-  <Import Project="$(ProjectDir)..\Build\Settings.props" />
-  <Import Project="$(CustomProjectExtensionsPath)WpfProject.props" />
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <PropertyGroup>
     <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
@@ -18,29 +18,14 @@
       WPF module of Alba.CsConsoleFormat.
       WPF control for rendering console documents. Output images to console. Export to FixedDocument, FlowDocument, RTF and XPS.
     </Description>
-    <PackageTags>$(PackageTags);xml;xaml;wpf;image;bitmap;rtf;xps</PackageTags>
+    <PackageTags>$(PackageTags);image;bitmap;rtf;xps</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="**/*.cs" />
-    <Page Include="**\*.xaml" Generator="MSBuild:Compile" SubType="Designer" />
+    <Page Include="**/*.xaml" Generator="MSBuild:Compile" SubType="Designer" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFrameworkId)' == 'net'">
-    <ProjectReference Include="$(SolutionDir)\Alba.CsConsoleFormat\Alba.CsConsoleFormat.csproj" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Printing" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="ReachFramework" />
-  </ItemGroup>
-
-  <Import Project="$(ProjectDir)..\Build\Settings.targets" />
-  <Import Project="$(CustomProjectExtensionsPath)WpfProject.targets" />
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
 
 </Project>
