@@ -15,5 +15,14 @@ namespace System
             return @this.GetTypeInfo().Assembly;
           #endif
         }
+
+        public static Type GetBaseType([NotNull] this Type @this)
+        {
+          #if NET_FULL
+            return @this.BaseType;
+          #else
+            return @this.GetTypeInfo().BaseType;
+          #endif
+        }
     }
 }

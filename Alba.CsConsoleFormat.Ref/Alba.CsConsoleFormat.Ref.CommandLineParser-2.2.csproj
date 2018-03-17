@@ -1,0 +1,10 @@
+﻿<Project>
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+  </PropertyGroup>
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.2.0" />
+  </ItemGroup>
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
+</Project>

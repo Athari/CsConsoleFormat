@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using CommandLine;
+using Alba.CsConsoleFormat.CommandLineParser;
 using static System.ConsoleColor;
 
 // ReSharper disable AnnotateCanBeNullParameter
@@ -69,7 +69,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 }
             };
 
-        public static Document HelpOptionsList(IEnumerable<BaseOptionAttribute> options, string instruction) =>
+        public static Document HelpOptionsList(IEnumerable<OptionInfo> options, string instruction) =>
             new Document {
                 Background = Black, Color = Gray,
                 Children = {
@@ -83,7 +83,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 }
             };
 
-        public static Document HelpAllOptionsList(ILookup<BaseOptionAttribute, BaseOptionAttribute> verbsWithOptions, string instruction) =>
+        public static Document HelpAllOptionsList(IEnumerable<OptionInfo> verbsWithOptions, string instruction) =>
             new Document {
                 Background = Black, Color = Gray,
                 Children = {
@@ -93,12 +93,12 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                         Columns = { GridLength.Auto, GridLength.Star(1) },
                         Children = {
                             verbsWithOptions.Select(verbWithOptions => new object[] {
-                                OptionNameAndHelp(verbWithOptions.Key),
+                                OptionNameAndHelp(verbWithOptions),
                                 new Grid {
                                     Stroke = LineThickness.None, Margin = new Thickness(4, 0, 0, 0),
                                     [Grid.ColumnSpanProperty] = 2,
                                     Columns = { GridLength.Auto, GridLength.Star(1) },
-                                    Children = { verbWithOptions.Select(OptionNameAndHelp) }
+                                    Children = { verbWithOptions.SubOptions.Select(OptionNameAndHelp) }
                                 }
                             })
                         }
@@ -106,20 +106,20 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 }
             };
 
-        private static object[] OptionNameAndHelp(BaseOptionAttribute option) => new object[] {
+        private static object[] OptionNameAndHelp(OptionInfo option) => new object[] {
             new Div(GetOptionSyntax(option)) { Margin = new Thickness(1, 0, 1, 1), Color = Yellow, MinWidth = 14 },
             new Div(option.HelpText) { Margin = new Thickness(1, 0, 1, 1) },
         };
 
-        private static object GetOptionSyntax(BaseOptionAttribute option)
+        private static object GetOptionSyntax(OptionInfo option)
         {
-            if (option is VerbOptionAttribute)
-                return option.LongName;
+            if (option.ValueKind == ValueKind.Verb)
+                return option.Name;
             return option.ShortName == null
-                ? $"--{option.LongName}"
-                : option.LongName == null
+                ? $"--{option.Name}"
+                : option.Name == null
                     ? $"-{option.ShortName}"
-                    : $"--{option.LongName}, -{option.ShortName}";
+                    : $"--{option.Name}, -{option.ShortName}";
         }
     }
 }

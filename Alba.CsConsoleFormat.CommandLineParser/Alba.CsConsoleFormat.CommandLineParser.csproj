@@ -1,0 +1,51 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;net40;netstandard2.0;netstandard1.5</TargetFrameworks>
+    <!--<TargetFrameworks>net45</TargetFrameworks>-->
+    <RootNamespace>Alba.CsConsoleFormat.CommandLineParser</RootNamespace>
+    <CodeAnalysisLevel>Library</CodeAnalysisLevel>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
+    <RequiresReflection>true</RequiresReflection>
+  </PropertyGroup>
+
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
+
+  <ItemGroup>
+    <Compile Include="**/*.cs" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DefineConstants Condition="'$(TargetFramework)' != 'netstandard1.5'">$(DefineConstants);CLP_19;CLP_22</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'netstandard1.5'">$(DefineConstants);CLP_22</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-1.9.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-2.2.csproj" ReferenceOutputAssembly="false" />
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net45\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\net45\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net40\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\net40\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\netstandard1.5\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+    <Compile Remove="Models/OptionInfo19.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net45\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\netstandard1.5\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Framework\Compatibility\" />
+  </ItemGroup>
+
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
+
+</Project>

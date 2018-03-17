@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security;
+using Alba.CsConsoleFormat.CommandLineParser;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
 
@@ -68,25 +69,22 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp(HelpOptions help)
         {
+            var options = OptionListInfo.From(typeof(RootOptions)).Options;
             string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {
-                var allOptions = CommandLineOptions.GetAllOptions(typeof(RootOptions));
-                ConsoleRenderer.RenderDocument(View.HelpAllOptionsList(allOptions, instruction));
+                ConsoleRenderer.RenderDocument(View.HelpAllOptionsList(options, instruction));
                 return;
             }
 
-            Type optionsType = typeof(RootOptions);
             if (help.Verb != null) {
                 instruction = $"Syntax: ProcessManager.exe {help.Verb} [options]\n\nAvailable {help.Verb} options:";
-                optionsType = CommandLineOptions.GetVerbTypeByName(optionsType, help.Verb);
+                options = options.FirstOrDefault(o => o.Name == help.Verb)?.SubOptions;
+                if (options == null) {
+                    ConsoleRenderer.RenderDocument(View.Error($"Verb {help.Verb} not supported."));
+                    return;
+                }
             }
 
-            if (optionsType == null) {
-                ConsoleRenderer.RenderDocument(View.Error($"Verb {help.Verb} not supported."));
-                return;
-            }
-
-            var options = CommandLineOptions.GetOptions(optionsType);
             ConsoleRenderer.RenderDocument(View.HelpOptionsList(options, instruction));
         }
     }

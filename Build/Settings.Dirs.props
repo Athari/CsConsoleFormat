@@ -13,6 +13,7 @@
     <!-- HACK ReShaper's test discovery fails if package root is changed -->
     <!--<NuGetPackageRoot>$(BaseArtifactsPath)Packages\</NuGetPackageRoot>-->
 
+    <LibraryRefPathPrefix>$(SolutionDir)Alba.CsConsoleFormat.Ref/Alba.CsConsoleFormat.Ref.</LibraryRefPathPrefix>
     <!--<UseCommonOutputDirectory>true</UseCommonOutputDirectory>-->
   </PropertyGroup>
 

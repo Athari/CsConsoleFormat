@@ -5,16 +5,18 @@
     <RootNamespace>Alba.CsConsoleFormat.Sample.ProcessManager</RootNamespace>
     <OutputType>Exe</OutputType>
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
-    <RequiresXamlSyntax>false</RequiresXamlSyntax>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
   </PropertyGroup>
 
   <Import Project="$(ProjectDir)../Build/Settings.props" />
 
   <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.CommandLineParser\Alba.CsConsoleFormat.CommandLineParser.csproj" />
     <PackageReference Include="CommandLineParser" Version="1.9.71" />
     <Compile Include="**/*.cs" />
     <Compile Include="$(SolutionDir)Alba.CsConsoleFormat/Framework/JetBrains/JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
     <None Include="**/*.cmd" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="**/*.json" />
   </ItemGroup>
 
   <Import Project="$(ProjectDir)../Build/Settings.targets" />

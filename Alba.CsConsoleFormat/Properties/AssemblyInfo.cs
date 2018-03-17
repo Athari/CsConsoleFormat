@@ -22,6 +22,8 @@ using Portable.Xaml.Markup;
 
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.ColorfulConsole")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.ColorfulConsole-NoXaml")]
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.CommandLineParser")]
+[assembly: InternalsVisibleTo("Alba.CsConsoleFormat.CommandLineParser-NoXaml")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Presentation")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests")]
 [assembly: InternalsVisibleTo("Alba.CsConsoleFormat.Tests-NoXaml")]
