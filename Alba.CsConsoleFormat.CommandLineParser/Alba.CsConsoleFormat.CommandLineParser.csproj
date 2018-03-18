@@ -34,13 +34,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' != 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp19)" ExcludeAssets="compile" />
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp22)" ExcludeAssets="compile" />
+    <PackageReference Condition="'$(TargetFramework)' != 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp19)" ReferenceOutputAssembly="false" ExcludeAssets="compile" />
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp22)" ReferenceOutputAssembly="false" ExcludeAssets="compile" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-1.9.csproj" ExcludeAssets="all" />
-    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-2.2.csproj" ExcludeAssets="all" />
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-1.9.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-2.2.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
     <Reference Include="$(NuGetClp19Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_1_9" />
     <Reference Include="$(NuGetClp22Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_2_2" />
   </ItemGroup>

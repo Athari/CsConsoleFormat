@@ -21,7 +21,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             DefaultValue = option?.DefaultValue;
             HelpText = Nullable(option?.HelpText);
             MetaValue = null;
-            Name = Nullable(option?.LongName ?? defaultName?.ToLower());
+            Name = Nullable(option?.LongName) ?? defaultName?.ToLower();
             ShortName = Nullable(option?.ShortName?.ToString());
             SetName = Nullable(option?.MutuallyExclusiveSet);
             ValueKind = isVerb ? ValueKind.Verb : GetValueKind(option, value);
