@@ -21,9 +21,9 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             IsVisible = !(verb?.Hidden == true || basic?.Hidden == true);
             Index = value?.Index ?? -1;
             DefaultValue = basic?.Default;
-            HelpText = Nullable(verb?.HelpText ?? basic?.HelpText);
+            HelpText = Nullable(verb?.HelpText) ?? Nullable(basic?.HelpText);
             MetaValue = Nullable(basic?.MetaValue);
-            Name = Nullable(verb?.Name ?? value?.MetaName ?? option?.LongName ?? defaultName?.ToLower());
+            Name = Nullable(verb?.Name) ?? Nullable(value?.MetaName) ?? Nullable(option?.LongName) ?? defaultName?.ToLower();
             ShortName = Nullable(option?.ShortName);
             SetName = Nullable(option?.SetName);
             ValueKind = isVerb ? ValueKind.Verb : GetValueKind(option, value, verb);

@@ -11,39 +11,53 @@
 
   <Import Project="$(ProjectDir)../Build/Settings.props" />
 
+  <PropertyGroup>
+    <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
+    <Description>
+      CommandLineParser adapter of Alba.CsConsoleFormat.
+      Supports coloring help output.
+    </Description>
+    <PackageTags>$(PackageTags);commandlineparser</PackageTags>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="**/*.cs" />
   </ItemGroup>
 
   <PropertyGroup>
+    <VersionClp19>1.9.71</VersionClp19>
+    <VersionClp22>2.2.0</VersionClp22>
     <DefineConstants Condition="'$(TargetFramework)' != 'netstandard1.5'">$(DefineConstants);CLP_19;CLP_22</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)' == 'netstandard1.5'">$(DefineConstants);CLP_22</DefineConstants>
+    <NuGetClp19Dir>$(NuGetPackageRoot)commandlineparser\$(VersionClp19)\lib\</NuGetClp19Dir>
+    <NuGetClp22Dir>$(NuGetPackageRoot)commandlineparser\$(VersionClp22)\lib\</NuGetClp22Dir>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Condition="'$(TargetFramework)' != 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp19)" ExcludeAssets="compile" />
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.5'" Include="CommandLineParser" Version="$(VersionClp22)" ExcludeAssets="compile" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-1.9.csproj" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-2.2.csproj" ReferenceOutputAssembly="false" />
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net45\CommandLine.dll" Aliases="CommandLineParser_1_9" />
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\net45\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-1.9.csproj" ExcludeAssets="all" />
+    <ProjectReference Include="$(LibraryRefPathPrefix)CommandLineParser-2.2.csproj" ExcludeAssets="all" />
+    <Reference Include="$(NuGetClp19Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetClp22Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_2_2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net40\CommandLine.dll" Aliases="CommandLineParser_1_9" />
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\net40\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+    <Reference Include="$(NuGetClp19Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetClp22Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_2_2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.5'">
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\netstandard1.5\CommandLine.dll" Aliases="CommandLineParser_2_2" />
+    <Reference Include="$(NuGetClp22Dir)$(TargetFramework)\CommandLine.dll" Aliases="CommandLineParser_2_2" />
     <Compile Remove="Models/OptionInfo19.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\1.9.71\lib\net45\CommandLine.dll" Aliases="CommandLineParser_1_9" />
-    <Reference Include="$(NuGetPackageRoot)commandlineparser\2.2.0\lib\netstandard1.5\CommandLine.dll" Aliases="CommandLineParser_2_2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Framework\Compatibility\" />
+    <Reference Include="$(NuGetClp19Dir)net45\CommandLine.dll" Aliases="CommandLineParser_1_9" />
+    <Reference Include="$(NuGetClp22Dir)netstandard1.5\CommandLine.dll" Aliases="CommandLineParser_2_2" />
   </ItemGroup>
 
   <Import Project="$(ProjectDir)../Build/Settings.targets" />
