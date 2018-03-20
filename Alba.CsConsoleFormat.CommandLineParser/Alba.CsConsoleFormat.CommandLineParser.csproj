@@ -4,6 +4,9 @@
     <TargetFrameworks>net45;net40;netstandard2.0;netstandard1.5</TargetFrameworks>
     <!--<TargetFrameworks>net45</TargetFrameworks>-->
     <RootNamespace>Alba.CsConsoleFormat.CommandLineParser</RootNamespace>
+    <NoWarn>$(NoWarn);NU1605;NU1701;MSB3243</NoWarn>
+    <WarningsAsErrors></WarningsAsErrors>
+    <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
     <CodeAnalysisLevel>Library</CodeAnalysisLevel>
     <RequiresXamlSyntax>true</RequiresXamlSyntax>
     <RequiresReflection>true</RequiresReflection>
@@ -43,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="$(VersionClpMin)" ReferenceOutputAssembly="false" ExcludeAssets="compile" />
+    <PackageReference Include="CommandLineParser" Version="$(VersionClpMin)" ReferenceOutputAssembly="false" ExcludeAssets="compile" IsImplicitlyDefined="true" />
     <Reference Condition="'$(SupportClp19)' == 'true'" Include="$(NuGetPackageRoot)commandlineparser\$(VersionClp19)\lib\$(TargetFrameworkClp19)\CommandLine.dll" Aliases="CommandLineParser_1_9" />
     <Reference Condition="'$(SupportClp22)' == 'true'" Include="$(NuGetPackageRoot)commandlineparser\$(VersionClp22)\lib\$(TargetFrameworkClp22)\CommandLine.dll" Aliases="CommandLineParser_2_2" />
     <Compile Include="**/*.cs" Exclude="**/*.clp*.cs" />
