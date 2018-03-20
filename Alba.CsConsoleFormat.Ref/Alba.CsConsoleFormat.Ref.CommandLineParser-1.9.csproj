@@ -5,7 +5,7 @@
   </PropertyGroup>
   <Import Project="$(ProjectDir)../Build/Settings.props" />
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="1.9.71" ReferenceOutputAssembly="false" ExcludeAssets="all" />
+    <PackageReference Include="CommandLineParser" Version="1.9.71" ReferenceOutputAssembly="false" ExcludeAssets="all" PrivateAssets="all" />
   </ItemGroup>
   <Import Project="$(ProjectDir)../Build/Settings.targets" />
 </Project>
