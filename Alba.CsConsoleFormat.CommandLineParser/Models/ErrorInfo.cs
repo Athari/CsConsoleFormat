@@ -18,14 +18,17 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             _data = data;
         }
 
-        public ErrorInfo(string message, string details = null)
+        public ErrorInfo(string message, ErrorKind kind = ErrorKind.Error, string details = null)
         {
             Message = message;
             Details = details;
+            Kind = kind;
         }
 
-        public ErrorInfo(Exception ex) : this(ex.Message, ex.ToString())
-        { }
+        public static ErrorInfo Exception(Exception ex) => new ErrorInfo(ex.Message, ErrorKind.Error, ex.ToString());
+        public static ErrorInfo Error(string message, string details = null) => new ErrorInfo(message, ErrorKind.Error, details);
+        public static ErrorInfo Warning(string message, string details = null) => new ErrorInfo(message, ErrorKind.Warning, details);
+        public static ErrorInfo Info(string message, string details = null) => new ErrorInfo(message, ErrorKind.Info, details);
 
         internal static ErrorInfo FromError(object data)
         {

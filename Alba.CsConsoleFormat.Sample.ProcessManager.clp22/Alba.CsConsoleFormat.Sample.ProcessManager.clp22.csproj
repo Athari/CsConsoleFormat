@@ -1,11 +1,12 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <RootNamespace>Alba.CsConsoleFormat.Sample.ProcessManager</RootNamespace>
     <OutputType>Exe</OutputType>
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
     <RequiresXamlSyntax>true</RequiresXamlSyntax>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <Import Project="$(ProjectDir)../Build/Settings.props" />

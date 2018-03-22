@@ -8,10 +8,10 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    [Verb("start", HelpText = "Start a new process.")]
+    [Verb("start", HelpText = "Start a new process.\nSYNTAX: ProcessManager start filename [options]")]
     internal sealed class StartOptions
     {
-        [Value(0, MetaName = "filename")]
+        [Value(0, MetaName = "filename", Required = true, HelpText = "Executable file name.")]
         public string FileName { get; set; }
 
         [Option('a', "args", HelpText = "Command-line arguments to pass when starting the process.")]
@@ -26,6 +26,9 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
         [Option('p', "password", HelpText = "The password to use when starting the process.")]
         public string Password { get; set; }
 
+        [Option("operation", HelpText = "Operation to perform after starting the process.", Default = StartOperation.Nothing)]
+        public StartOperation Operation { get; set; }
+
         [Usage(ApplicationAlias = "ProcessManager")]
         public static IEnumerable<Example> Examples => new[] {
             new Example(
@@ -38,7 +41,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
                     new UnParserSettings { UseEqualToken = true },
                     new UnParserSettings { PreferShortName = true },
                 },
-                new StartOptions { FileName = "notepad", Arguments = "C:\\config.sys", Domain = "localhost", UserName = "somebody" }),
+                new StartOptions { FileName = "notepad", Arguments = "C:\\config.sys", Domain = "remotecomp", UserName = "somebody" }),
         };
     }
 }

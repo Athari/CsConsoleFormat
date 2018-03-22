@@ -13,14 +13,20 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         AssemblyUsage = 1 << 4,
         Errors = 1 << 5,
         Options = 1 << 6,
-        SubOptions = 1 << 7,
-        Examples = 1 << 8,
+        OptionsValues = 1 << 7,
+        OptionsDefaultValue = 1 << 8,
+        SubOptions = 1 << 9,
+        BuiltInOptions = 1 << 10,
+        HiddenOptions = 1 << 11,
+        Examples = 1 << 12,
 
-        AssemblyMeta = AssemblyTitle | AssemblyVersion | AssemblyCopyright | AssemblyLicense | AssemblyUsage,
-        DefaultVersion = AssemblyMeta & ~AssemblyUsage,
-        DefaultErrors = AssemblyMeta | Errors,
-        DefaultOptions = AssemblyMeta | Errors | Examples | Options,
-        All = AssemblyMeta | Errors | Examples | Options | SubOptions,
+        AssemblyAllMeta = AssemblyTitle | AssemblyVersion | AssemblyCopyright | AssemblyLicense,
+
+        DefaultVersion = AssemblyAllMeta,
+        DefaultErrors = AssemblyAllMeta | AssemblyUsage | Errors | Options | BuiltInOptions,
+        DefaultOptions = AssemblyAllMeta | AssemblyUsage | Errors | Examples | Options | OptionsValues | OptionsDefaultValue | BuiltInOptions,
+
+        All = AssemblyAllMeta | AssemblyUsage | DefaultOptions | SubOptions,
     }
 
     internal static class HelpPartsExts

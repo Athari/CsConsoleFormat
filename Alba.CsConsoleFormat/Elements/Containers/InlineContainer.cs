@@ -134,7 +134,9 @@ namespace Alba.CsConsoleFormat
                         else if (textWrap == TextWrap.CharWrap)
                             AppendTextSegmentCharWrap(sourceSeg);
                         else if (textWrap == TextWrap.WordWrap)
-                            AppendTextSegmentWordWrap(sourceSeg);
+                            AppendTextSegmentWordWrap(sourceSeg, isSpaceOnly: false);
+                        else if (textWrap == TextWrap.WordWrapSpace)
+                            AppendTextSegmentWordWrap(sourceSeg, isSpaceOnly: true);
                     }
                 }
 
@@ -181,7 +183,7 @@ namespace Alba.CsConsoleFormat
                 AppendCurrentSegment();
             }
 
-            private void AppendTextSegmentWordWrap([NotNull] InlineSegment sourceSeg)
+            private void AppendTextSegmentWordWrap([NotNull] InlineSegment sourceSeg, bool isSpaceOnly)
             {
                 _curSeg = InlineSegment.CreateWithBuilder(AvailableWidth);
                 _segPos = 0;
@@ -205,7 +207,10 @@ namespace Alba.CsConsoleFormat
                             WrapLine();
                         }
                     }
-                    if (c.IsWrappable && (canAddChar || c.IsZeroWidth && !c.IsSoftHyphen)) {
+                    bool canWrap = isSpaceOnly
+                        ? c.IsWrappableSpace && (canAddChar || c.IsZeroWidth)
+                        : c.IsWrappable && (canAddChar || c.IsZeroWidth && !c.IsSoftHyphen);
+                    if (canWrap) {
                         _wrapPos = _segPos;
                         _wrapChar = c;
                         _wrapSegmentIndex = _curLine.Count;
@@ -418,6 +423,7 @@ namespace Alba.CsConsoleFormat
             public bool IsSpace => _c == ' ';
             public bool IsConsumedOnWrap => _c == ' ' || _c == '\n' || _c == Chars.ZeroWidthSpace;
             public bool IsWrappable => _c == ' ' || _c == '-' || _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace;
+            public bool IsWrappableSpace => _c == ' ' || _c == Chars.ZeroWidthSpace;
             public bool IsZeroWidth => _c == Chars.SoftHyphen || _c == Chars.ZeroWidthSpace;
             public bool IsZeroWidthSpace => _c == Chars.ZeroWidthSpace;
 

@@ -28,23 +28,24 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             DefaultValue = basic?.Default;
             HelpText = Nullable(verb?.HelpText) ?? Nullable(basic?.HelpText);
             MetaValue = Nullable(basic?.MetaValue);
-            Name = Nullable(verb?.Name) ?? Nullable(value?.MetaName) ?? Nullable(option?.LongName) ?? member?.Name.ToLower();
             ShortName = Nullable(option?.ShortName);
+            Name = Nullable(verb?.Name) ?? Nullable(value?.MetaName) ?? Nullable(option?.LongName)
+             ?? (ShortName != null ? null : member?.Name.ToLower());
             SetName = Nullable(option?.SetName);
-            ValueKind = isVerb ? ValueKind.Verb : GetValueKind22(option, value, verb);
+            OptionKind = isVerb ? OptionKind.Verb : GetValueKind22(option, value, verb);
 
             return this;
         }
 
-        private static ValueKind GetValueKind22(OptionAttribute option, ValueAttribute value, VerbAttribute verb)
+        private static OptionKind GetValueKind22(OptionAttribute option, ValueAttribute value, VerbAttribute verb)
         {
             if (verb != null)
-                return ValueKind.Verb;
+                return OptionKind.Verb;
             if (option != null)
-                return option.Separator == '\0' ? ValueKind.Single : ValueKind.List;
+                return option.Separator == '\0' ? OptionKind.Single : OptionKind.List;
             if (value != null)
-                return ValueKind.Single;
-            return ValueKind.Unknown;
+                return OptionKind.Single;
+            return OptionKind.Unknown;
         }
     }
 }

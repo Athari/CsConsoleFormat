@@ -26,7 +26,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                         Version version = parserType.GetAssembly().GetName().Version;
                         // HACK This stupid library has random version attributes, no idea WTF is going on.
                         if (version >= new Version(2, 0, 0))
-                            _features = ClpFeatures.Version22 | ClpFeatures.Examples;
+                            _features = ClpFeatures.Version22 | ClpFeatures.Examples | ClpFeatures.BuiltInHelpVersion;
                         else if (version >= new Version(1, 9, 0))
                             _features = ClpFeatures.Version19;
                         else
@@ -121,7 +121,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                             GetExamplesFromOptions22(root.GetProperties(BindingFlags.Public | BindingFlags.Static)).ToList());
                     }
                 }
-                if (roots.Count == 1)
+                else if (roots.Count == 1)
                     lookup.Add(null, GetExamplesFromOptions22(roots.Single().GetProperties(BindingFlags.Public | BindingFlags.Static)).ToList());
                 return lookup;
             }
@@ -154,9 +154,11 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         private static IEnumerable<Attribute> GetAttributes(MemberInfo member) => member.GetCustomAttributes<Attribute>();
         private static IEnumerable<Attribute> GetAttributes(Type type) => type.GetCustomAttributes<Attribute>();
       #if NET_STANDARD_15
-        private static List<TypeInfo> GetTypeInfos(IEnumerable<Type> types) => types.Select(t => t.GetTypeInfo()).ToList();
+        internal static List<TypeInfo> GetTypeInfos(IEnumerable<Type> types) => types.Select(t => t.GetTypeInfo()).ToList();
+        internal static TypeInfo GetTypeInfo(Type type) => type?.GetTypeInfo();
       #else
-        private static List<Type> GetTypeInfos(IEnumerable<Type> types) => types.ToList();
+        internal static List<Type> GetTypeInfos(IEnumerable<Type> types) => types.ToList();
+        internal static Type GetTypeInfo(Type type) => type;
       #endif
 
         // Closest we can get to ordered ReadOnlyDictionary<T> (which requires .NET 4.5+)

@@ -5,5 +5,6 @@
         NoWrap,
         CharWrap,
         WordWrap,
+        WordWrapSpace,
     }
 }

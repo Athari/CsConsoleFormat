@@ -8,13 +8,13 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 {
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    [Verb("list", HelpText = "List running processes.")]
+    [Verb("list", HelpText = "List running processes.\nSYNTAX: ProcessManager list [options]")]
     internal sealed class ListOptions
     {
         [Option('n', "name", HelpText = "If specified, filter by the specified process name.")]
         public string ProcessName { get; set; }
 
-        [Option('m', "machine", Default = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes (Default: .).")]
+        [Option('m', "machine", Default = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes.")]
         public string MachineName { get; set; }
 
         [Option("withtitle", HelpText = "If specified, display only processes with non-empty main window title.")]

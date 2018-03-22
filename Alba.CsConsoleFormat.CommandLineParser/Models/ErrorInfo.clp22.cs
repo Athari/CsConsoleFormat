@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             Key = GetKey22(error);
             TypeKey = GetTypeKey22(error);
             try {
-                Message = error.Tag != ErrorType.MutuallyExclusiveSetError && Kind == ErrorKind.Normal
+                Message = error.Tag != ErrorType.MutuallyExclusiveSetError && Kind == ErrorKind.Error
                     ? ClpUtils.SentenceBuilder22.FormatError(error) : null;
             }
             catch (InvalidOperationException) {
@@ -31,11 +31,11 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             switch (tag) {
                 case ErrorType.HelpRequestedError:
                 case ErrorType.HelpVerbRequestedError:
-                    return ErrorKind.Help;
+                    return ErrorKind.HelpVerb;
                 case ErrorType.VersionRequestedError:
-                    return ErrorKind.Version;
+                    return ErrorKind.VersionVerb;
                 default:
-                    return ErrorKind.Normal;
+                    return ErrorKind.ParseError;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
 
         private static void FormatSetErrorsAndRemoveEmpty22(List<ErrorInfo> errorInfos)
         {
-            List<ErrorInfo> normalErrorInfos = errorInfos.Where(e => e.Kind != ErrorKind.Normal || e.Message != null).ToList();
+            List<ErrorInfo> normalErrorInfos = errorInfos.Where(e => !e.Kind.IsNormal() || e.Message != null).ToList();
 
             List<Error> errors = errorInfos.Select(e => (Error)e._data).ToList();
             List<MutuallyExclusiveSetError> setErrors = errors.OfType<MutuallyExclusiveSetError>().ToList();

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using Alba.CsConsoleFormat.CommandLineParser;
+using Alba.CsConsoleFormat.Fluent;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
 
@@ -17,6 +18,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal sealed class Program
     {
+        private static readonly HelpView HelpView = new HelpView { Info = { OptionsSource = { typeof(RootOptions) } } };
+
         private static void Main(string[] args) => new Program().Run(args);
 
         private void Run(string[] args)
@@ -40,15 +43,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     InvokeHelp(options.Help);
             }
             catch (Exception ex) {
-                ConsoleRenderer.RenderDocument(View.Error(ex.Message, ex.ToString()));
+                HelpView.Message(ErrorInfo.Exception(ex)).Render();
             }
             finally {
                 if (Debugger.IsAttached) {
-                    ConsoleRenderer.RenderDocument(new HelpView {
-                        Header = "Header",
-                        Footer = "Footer",
-                    }.Help(HelpParts.AssemblyMeta));
-                    ConsoleRenderer.RenderDocument(View.Info("Press any key..."));
+                    View.PressEnter().Render();
                     Console.ReadLine();
                 }
             }
@@ -62,7 +61,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             if (list.WithTitle)
                 processes = processes.Where(p => !string.IsNullOrWhiteSpace(p.MainWindowTitle));
             processes = processes.OrderByDescending(p => p.StartTime);
-            ConsoleRenderer.RenderDocument(View.ProcessList(processes));
+            View.ProcessList(processes).Render();
         }
 
         private void InvokeStart(StartOptions start)
@@ -72,8 +71,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 foreach (char c in start.Password)
                     password.AppendChar(c);
             }
-            ConsoleRenderer.RenderDocument(View.Info($"Starting {start.FileName}..."));
             Process.Start(start.FileName, start.Arguments, start.UserName, password, start.Domain);
+            HelpView.Message(ErrorInfo.Info($"Started {start.FileName}.")).Render();
         }
 
         private void InvokeHelp(HelpOptions help)
@@ -81,7 +80,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             var options = new HelpInfo{ OptionsSource = {typeof(RootOptions)} }.Options;
             string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {
-                ConsoleRenderer.RenderDocument(View.HelpAllOptionsList(options, instruction));
+                View.HelpAllOptionsList(options, instruction).Render();
                 return;
             }
 
@@ -89,12 +88,12 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 instruction = $"Syntax: ProcessManager.exe {help.Verb} [options]\n\nAvailable {help.Verb} options:";
                 options = options.FirstOrDefault(o => o.Name == help.Verb)?.SubOptions;
                 if (options == null) {
-                    ConsoleRenderer.RenderDocument(View.Error($"Verb {help.Verb} not supported."));
+                    HelpView.Message(ErrorInfo.Error($"Verb {help.Verb} not supported."), HelpParts.DefaultErrors);
                     return;
                 }
             }
 
-            ConsoleRenderer.RenderDocument(View.HelpOptionsList(options, instruction));
+            View.HelpOptionsList(options, instruction).Render();
         }
     }
 }

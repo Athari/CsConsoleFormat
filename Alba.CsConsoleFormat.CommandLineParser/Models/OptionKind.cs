@@ -1,6 +1,6 @@
 ﻿namespace Alba.CsConsoleFormat.CommandLineParser
 {
-    public enum ValueKind
+    public enum OptionKind
     {
         Unknown,
         Single,

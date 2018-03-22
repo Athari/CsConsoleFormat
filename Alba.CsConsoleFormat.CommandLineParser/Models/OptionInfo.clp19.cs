@@ -29,26 +29,26 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             Name = Nullable(option?.LongName) ?? member?.Name.ToLower();
             ShortName = Nullable(option?.ShortName?.ToString());
             SetName = Nullable(option?.MutuallyExclusiveSet);
-            ValueKind = isVerb ? ValueKind.Verb : GetValueKind19(option, value);
+            OptionKind = isVerb ? OptionKind.Verb : GetValueKind19(option, value);
 
             return this;
         }
 
-        private static ValueKind GetValueKind19(BaseOptionAttribute option, ValueOptionAttribute value)
+        private static OptionKind GetValueKind19(BaseOptionAttribute option, ValueOptionAttribute value)
         {
             switch (option) {
                 case OptionAttribute _:
                 case HelpOptionAttribute _:
-                    return ValueKind.Single;
+                    return OptionKind.Single;
                 case OptionArrayAttribute _:
-                    return ValueKind.Array;
+                    return OptionKind.Array;
                 case OptionListAttribute _:
-                    return ValueKind.List;
+                    return OptionKind.List;
                 case VerbOptionAttribute _:
                 case HelpVerbOptionAttribute _:
-                    return ValueKind.Verb;
+                    return OptionKind.Verb;
                 default:
-                    return value != null ? ValueKind.Single : ValueKind.Unknown;
+                    return value != null ? OptionKind.Single : OptionKind.Unknown;
             }
         }
     }

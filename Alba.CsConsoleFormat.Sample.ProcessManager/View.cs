@@ -13,20 +13,14 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
         private static readonly LineThickness StrokeHeader = new LineThickness(LineWidth.None, LineWidth.Double);
         private static readonly LineThickness StrokeRight = new LineThickness(LineWidth.None, LineWidth.None, LineWidth.Single, LineWidth.None);
 
-        public static Document Error(string message, string extra = null) =>
+        public static Document PressEnter() =>
             new Document {
                 Background = Black, Color = Gray,
                 Children = {
-                    new Span("Error\n") { Color = Red },
-                    new Span(message) { Color = White },
-                    extra != null ? $"\n\n{extra}" : null
+                    "\nPress ",
+                    new Span("ENTER") { Color = Black, Background = Gray },
+                    " to continue..."
                 }
-            };
-
-        public static Document Info(string message) =>
-            new Document {
-                Background = Black, Color = Gray,
-                Children = { message }
             };
 
         public static Document ProcessList(IEnumerable<Process> processes) =>
@@ -113,7 +107,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private static object GetOptionSyntax(OptionInfo option)
         {
-            if (option.ValueKind == ValueKind.Verb)
+            if (option.OptionKind == OptionKind.Verb)
                 return option.Name;
             return option.ShortName == null
                 ? $"--{option.Name}"

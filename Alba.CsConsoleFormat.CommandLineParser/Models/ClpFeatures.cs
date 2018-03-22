@@ -10,6 +10,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         Version19 = 1 << 1,
         Version22 = 1 << 2,
         Examples = 1 << 3,
+        BuiltInHelpVersion = 1 << 4,
     }
 
     internal static class ClpFeaturesExts
