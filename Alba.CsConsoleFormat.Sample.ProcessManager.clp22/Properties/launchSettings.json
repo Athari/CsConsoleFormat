@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "Default": {
+      "commandName": "Project"
+    },
+    "HelpAll": {
+      "commandName": "Project",
+      "commandLineArgs": "help --all"
+    },
+    "HelpStart": {
+      "commandName": "Project",
+      "commandLineArgs": "help start"
+    },
+    "List": {
+      "commandName": "Project",
+      "commandLineArgs": "list --withtitle"
+    },
+    "Oops": {
+      "commandName": "Project",
+      "commandLineArgs": "oops"
+    }
+  }
+}

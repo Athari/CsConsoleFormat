@@ -40,7 +40,7 @@ namespace Alba.CsConsoleFormat
                     AddItem(el);
                     break;
                 default:
-                    if (typeof(T).IsAssignableFrom(typeof(Span)))
+                    if (typeof(T).Is<Span>())
                         throw new ArgumentException($"Only {typeof(T).Name} and string can be added.", nameof(value));
                     else
                         throw new ArgumentException($"Only {typeof(T).Name} can be added.", nameof(value));

@@ -7,9 +7,10 @@ using System.Text;
 using Alba.CsConsoleFormat.CommandLineParser;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
+using CommandLine.Text;
 
-[assembly: AssemblyLicense("My license is cool.", "It's called WTFPL*.")]
-[assembly: AssemblyUsage("My usage is cool.", "Type whatever you want.")]
+[assembly: AssemblyLicense("Sample project is released under Apache 2.0 license.")]
+[assembly: AssemblyUsage("Simple utility for listing and starting processes.", "Demonstrates usage of CsConsoleFormat.")]
 
 // ReSharper disable AnnotateNotNullParameter
 // ReSharper disable MemberCanBeMadeStatic.Local
@@ -17,41 +18,37 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal sealed class Program
     {
+        private static readonly Type[] OptionsTypes = { typeof(ListOptions), typeof(StartOptions), typeof(HelpOptions) };
+
         private static void Main(string[] args) => new Program().Run(args);
+
+        private HelpView HelpView = new HelpView { Info = { OptionsSource = OptionsTypes } };
 
         private void Run(string[] args)
         {
             try {
                 Console.OutputEncoding = Encoding.UTF8;
-                if (args.Length == 0) {
-                    InvokeHelp(new HelpOptions());
-                    return;
-                }
-
-                var options = new RootOptions();
-                if (!Parser.Default.ParseArguments(args, options, (s, o) => { }))
-                    Environment.Exit(Parser.DefaultExitCodeFail);
-
-                if (options.List != null)
-                    InvokeList(options.List);
-                else if (options.Start != null)
-                    InvokeStart(options.Start);
-                else
-                    InvokeHelp(options.Help);
+                var result = new Parser(s => s.HelpWriter = null).ParseArguments(args, OptionsTypes);
+                result
+                    .WithNotParsed(InvokeError)
+                    .WithParsed<ListOptions>(InvokeList)
+                    .WithParsed<StartOptions>(InvokeStart)
+                    .WithParsed<HelpOptions>(InvokeHelp);
             }
             catch (Exception ex) {
-                ConsoleRenderer.RenderDocument(View.Error(ex.Message, ex.ToString()));
+                ConsoleRenderer.RenderDocument(HelpView.HelpError(ex));
             }
             finally {
                 if (Debugger.IsAttached) {
-                    ConsoleRenderer.RenderDocument(new HelpView {
-                        Header = "Header",
-                        Footer = "Footer",
-                    }.Help(HelpParts.AssemblyMeta));
                     ConsoleRenderer.RenderDocument(View.Info("Press any key..."));
                     Console.ReadLine();
                 }
             }
+        }
+
+        private void InvokeError(IEnumerable<Error> errors)
+        {
+            ConsoleRenderer.RenderDocument(HelpView.HelpError(errors));
         }
 
         private void InvokeList(ListOptions list)
@@ -61,7 +58,18 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 : Process.GetProcesses(list.MachineName);
             if (list.WithTitle)
                 processes = processes.Where(p => !string.IsNullOrWhiteSpace(p.MainWindowTitle));
-            processes = processes.OrderByDescending(p => p.StartTime);
+            processes = processes
+                .Select(process => {
+                    try {
+                        return new { process, time = process.StartTime };
+                    }
+                    catch {
+                        return new { process = (Process)null, time = DateTime.MinValue };
+                    }
+                })
+                .Where(p => p.time != DateTime.MinValue)
+                .Select(p => p.process)
+                .OrderByDescending(p => p.StartTime);
             ConsoleRenderer.RenderDocument(View.ProcessList(processes));
         }
 
@@ -78,7 +86,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp(HelpOptions help)
         {
-            var options = new HelpInfo{ OptionsSource = {typeof(RootOptions)} }.Options;
+            var options = new HelpInfo { OptionsSource = OptionsTypes }.Options;
             string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {
                 ConsoleRenderer.RenderDocument(View.HelpAllOptionsList(options, instruction));

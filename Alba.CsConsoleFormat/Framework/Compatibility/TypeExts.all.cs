@@ -24,5 +24,9 @@ namespace System
             return @this.GetTypeInfo().BaseType;
           #endif
         }
+
+        public static bool Is([NotNull] this Type @this, Type type) => type.IsAssignableFrom(@this);
+
+        public static bool Is<T>([NotNull] this Type @this) => @this.Is(typeof(T));
     }
 }

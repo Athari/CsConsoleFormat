@@ -1,0 +1,25 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <RootNamespace>Alba.CsConsoleFormat.Sample.ProcessManager</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
+    <RequiresXamlSyntax>true</RequiresXamlSyntax>
+  </PropertyGroup>
+
+  <Import Project="$(ProjectDir)../Build/Settings.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)Alba.CsConsoleFormat.CommandLineParser\Alba.CsConsoleFormat.CommandLineParser.csproj" />
+    <PackageReference Include="CommandLineParser" Version="2.2.1" />
+    <Compile Include="**/*.cs" />
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat/Framework/JetBrains/JetBrainsAnnotations.cs" Link="Properties/JetBrainsAnnotations.cs" />
+    <Compile Include="$(SolutionDir)Alba.CsConsoleFormat.Sample.ProcessManager/View.cs" Link="View.cs" />
+    <None Include="**/*.cmd" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="**/*.json" />
+  </ItemGroup>
+
+  <Import Project="$(ProjectDir)../Build/Settings.targets" />
+
+</Project>

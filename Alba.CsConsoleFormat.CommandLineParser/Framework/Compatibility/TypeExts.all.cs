@@ -27,6 +27,12 @@ namespace Alba.CsConsoleFormat.CommandLineParser.Framework
         {
             return (T[])Attribute.GetCustomAttributes(@this, inherit);
         }
+
+        public static IEnumerable<T> GetCustomAttributes<T>([NotNull] this Assembly @this, bool inherit = true)
+            where T : Attribute
+        {
+            return (T[])Attribute.GetCustomAttributes(@this, inherit);
+        }
       #endif
     }
 }

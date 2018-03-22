@@ -1,16 +1,21 @@
 ﻿extern alias CommandLineParser_2_2;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using CommandLineParser_2_2::CommandLine;
 
 namespace Alba.CsConsoleFormat.CommandLineParser
 {
-    internal sealed class OptionInfo22 : OptionInfo
+    public partial class OptionInfo
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public OptionInfo22(IEnumerable<Attribute> attributes, string defaultName, bool isVerb = false) : base(attributes)
+        private OptionInfo FromMember22(MemberInfo member, IEnumerable<Attribute> attributes, bool isVerb = false)
         {
+            _attributes = attributes.Where(a => a is BaseAttribute || a is VerbAttribute).ToList();
+            SourceMember = member;
+
             var basic = Get<BaseAttribute>();
             var option = Get<OptionAttribute>();
             var value = Get<ValueAttribute>();
@@ -23,13 +28,15 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             DefaultValue = basic?.Default;
             HelpText = Nullable(verb?.HelpText) ?? Nullable(basic?.HelpText);
             MetaValue = Nullable(basic?.MetaValue);
-            Name = Nullable(verb?.Name) ?? Nullable(value?.MetaName) ?? Nullable(option?.LongName) ?? defaultName?.ToLower();
+            Name = Nullable(verb?.Name) ?? Nullable(value?.MetaName) ?? Nullable(option?.LongName) ?? member?.Name.ToLower();
             ShortName = Nullable(option?.ShortName);
             SetName = Nullable(option?.SetName);
-            ValueKind = isVerb ? ValueKind.Verb : GetValueKind(option, value, verb);
+            ValueKind = isVerb ? ValueKind.Verb : GetValueKind22(option, value, verb);
+
+            return this;
         }
 
-        private static ValueKind GetValueKind(OptionAttribute option, ValueAttribute value, VerbAttribute verb)
+        private static ValueKind GetValueKind22(OptionAttribute option, ValueAttribute value, VerbAttribute verb)
         {
             if (verb != null)
                 return ValueKind.Verb;
@@ -39,8 +46,5 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                 return ValueKind.Single;
             return ValueKind.Unknown;
         }
-
-        protected override bool IsAttributeSupported(Attribute attr) =>
-            attr is BaseAttribute || attr is VerbAttribute;
     }
 }

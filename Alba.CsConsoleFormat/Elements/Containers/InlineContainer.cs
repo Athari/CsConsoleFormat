@@ -37,7 +37,7 @@ namespace Alba.CsConsoleFormat
                 _inlineSequence.ValidateStackSize();
             }
             _lines = new LineWrapper(this, availableSize).WrapSegments();
-            return new Size(_lines.Select(GetLineLength).Max(), _lines.Count);
+            return new Size(_lines.Select(GetLineLength).Max(), _inlineSequence.IsEmpty ? 0 : _lines.Count);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -48,6 +48,9 @@ namespace Alba.CsConsoleFormat
         protected override void RenderOverride(ConsoleBuffer buffer)
         {
             base.RenderOverride(buffer);
+            if (_inlineSequence.IsEmpty)
+                return;
+
             ConsoleColor color = EffectiveColor, background = EffectiveBackground;
             for (int y = 0; y < _lines.Count; y++) {
                 List<InlineSegment> line = _lines[y];
@@ -134,6 +137,7 @@ namespace Alba.CsConsoleFormat
                             AppendTextSegmentWordWrap(sourceSeg);
                     }
                 }
+
                 return _lines;
             }
 
@@ -314,6 +318,8 @@ namespace Alba.CsConsoleFormat
                 Segments = new List<InlineSegment>();
                 AddFormattingSegment();
             }
+
+            public bool IsEmpty => Segments.All(s => s.TextLength == 0);
 
             public void AppendText(string text)
             {
