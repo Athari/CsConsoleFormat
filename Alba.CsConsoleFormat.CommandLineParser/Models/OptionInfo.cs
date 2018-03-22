@@ -113,7 +113,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                             OptionKind = OptionKind.Single,
                             IsPositional = true,
                             Index = 1,
-                            HelpText = "Verb to display help for."
+                            HelpText = "Command to display help for."
                         }
                     }
                     : null

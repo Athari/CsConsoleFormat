@@ -11,7 +11,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
         [Option('n', "name", HelpText = "If specified, filter by the specified process name.")]
         public string ProcessName { get; set; }
 
-        [Option('m', "machine", DefaultValue = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes (Default: .).")]
+        [Option('m', "machine", DefaultValue = ".", HelpText = "If specified, get processes of the specified machine, otherwise local processes.")]
         public string MachineName { get; set; }
 
         [Option("withtitle", HelpText = "If specified, display only processes with non-empty main window title.")]

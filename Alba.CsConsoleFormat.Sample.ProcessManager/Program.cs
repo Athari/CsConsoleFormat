@@ -9,8 +9,11 @@ using Alba.CsConsoleFormat.Fluent;
 using Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions;
 using CommandLine;
 
-[assembly: AssemblyLicense("My license is cool.", "It's called WTFPL*.")]
-[assembly: AssemblyUsage("My usage is cool.", "Type whatever you want.")]
+[assembly: AssemblyLicense(
+    "Sample project is released under Apache 2.0 license.")]
+[assembly: AssemblyUsage(
+    "Simple utility for listing and starting processes. Demonstrates usage of CsConsoleFormat.",
+    "SYNTAX: ProcessManager command [options]")]
 
 // ReSharper disable AnnotateNotNullParameter
 // ReSharper disable MemberCanBeMadeStatic.Local
@@ -24,6 +27,12 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void Run(string[] args)
         {
+            if (Debugger.IsAttached) {
+                try {
+                    Console.BufferWidth = Console.WindowWidth = 80;
+                }
+                catch { }
+            }
             try {
                 Console.OutputEncoding = Encoding.UTF8;
                 if (args.Length == 0) {
@@ -77,23 +86,15 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp(HelpOptions help)
         {
-            var options = new HelpInfo{ OptionsSource = {typeof(RootOptions)} }.Options;
-            string instruction = "Syntax: ProcessManager.exe verb [options]\n\nAvailable verbs:";
             if (help.All) {
-                View.HelpAllOptionsList(options, instruction).Render();
+                HelpView.Help(HelpParts.All).Render();
                 return;
             }
-
-            if (help.Verb != null) {
-                instruction = $"Syntax: ProcessManager.exe {help.Verb} [options]\n\nAvailable {help.Verb} options:";
-                options = options.FirstOrDefault(o => o.Name == help.Verb)?.SubOptions;
-                if (options == null) {
-                    HelpView.Message(ErrorInfo.Error($"Verb {help.Verb} not supported."), HelpParts.DefaultErrors);
-                    return;
-                }
+            else if (help.Verb != null && !HelpView.Info.ChooseVerb(help.Verb)) {
+                HelpView.Message(ErrorInfo.Error($"Verb {help.Verb} not supported."), HelpParts.DefaultErrors).Render();
+                return;
             }
-
-            View.HelpOptionsList(options, instruction).Render();
+            HelpView.Help(HelpParts.DefaultOptions | (help.Verb != null ? HelpParts.SubOptions : 0)).Render();
         }
     }
 }

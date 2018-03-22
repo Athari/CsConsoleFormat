@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <CodeAnalysisLevel>Sample</CodeAnalysisLevel>
     <RequiresXamlSyntax>true</RequiresXamlSyntax>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <Import Project="$(ProjectDir)../Build/Settings.props" />

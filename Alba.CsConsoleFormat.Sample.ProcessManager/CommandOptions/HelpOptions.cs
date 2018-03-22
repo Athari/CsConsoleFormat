@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Alba.CsConsoleFormat.CommandLineParser;
 using CommandLine;
 using JetBrains.Annotations;
 
@@ -8,10 +9,10 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     internal sealed class HelpOptions
     {
-        [ValueOption(0)]
+        [ValueOption(1), OptionMeta(HelpText = "Command to display help for.")]
         public string Verb { get; set; }
 
-        [Option("all", HelpText = "Display help for all verbs.")]
+        [Option("all", HelpText = "Display information on all commands.")]
         public bool All { get; set; }
     }
 }

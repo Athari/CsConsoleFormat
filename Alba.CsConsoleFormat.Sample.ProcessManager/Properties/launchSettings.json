@@ -3,13 +3,33 @@
     "Default": {
       "commandName": "Project"
     },
-    "Help All": {
+    "Help": {
+      "commandName": "Project",
+      "commandLineArgs": "help"
+    },
+    "HelpAll": {
       "commandName": "Project",
       "commandLineArgs": "help --all"
     },
+    "HelpStart": {
+      "commandName": "Project",
+      "commandLineArgs": "help start"
+    },
+    "HelpOops": {
+      "commandName": "Project",
+      "commandLineArgs": "help oops"
+    },
     "List": {
       "commandName": "Project",
-      "commandLineArgs": "list"
+      "commandLineArgs": "list --withtitle"
+    },
+    "Oops": {
+      "commandName": "Project",
+      "commandLineArgs": "oops"
+    },
+    "StartOops": {
+      "commandName": "Project",
+      "commandLineArgs": "start oops"
     }
   }
 }

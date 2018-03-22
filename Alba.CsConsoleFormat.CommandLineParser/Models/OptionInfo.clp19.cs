@@ -13,21 +13,22 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         [MethodImpl(MethodImplOptions.NoInlining)]
         private OptionInfo FromMember19(MemberInfo member, IEnumerable<Attribute> attributes, bool isVerb = false)
         {
-            _attributes = attributes.Where(a => a is BaseOptionAttribute || a is ValueOptionAttribute).ToList();
+            _attributes = attributes.Where(a => a is BaseOptionAttribute || a is ValueOptionAttribute || a is OptionMetaAttribute).ToList();
             SourceMember = member;
 
             var option = Get<BaseOptionAttribute>();
             var value = Get<ValueOptionAttribute>();
+            var meta = Get<OptionMetaAttribute>();
 
             IsPositional = value != null;
-            IsRequired = !isVerb && (IsPositional || option?.Required == true);
-            IsVisible = true;
+            IsRequired = !isVerb && (option?.Required == true || meta?.Required == true);
+            IsVisible = meta?.Hidden != true;
             Index = value?.Index ?? -1;
             DefaultValue = option?.DefaultValue;
-            HelpText = Nullable(option?.HelpText);
-            MetaValue = null;
-            Name = Nullable(option?.LongName) ?? member?.Name.ToLower();
+            HelpText = Nullable(option?.HelpText) ?? Nullable(meta?.HelpText);
+            MetaValue = Nullable(meta?.MetaValue);
             ShortName = Nullable(option?.ShortName?.ToString());
+            Name = Nullable(option?.LongName) ?? Nullable(meta?.MetaName) ?? (ShortName != null ? null : member?.Name.ToLower());
             SetName = Nullable(option?.MutuallyExclusiveSet);
             OptionKind = isVerb ? OptionKind.Verb : GetValueKind19(option, value);
 

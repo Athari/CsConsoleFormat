@@ -41,6 +41,7 @@ namespace Alba.CsConsoleFormat
 
         #if XAML
 
+        [MustUseReturnValue]
         public static TElement ReadElementFromStream<TElement>([NotNull] Stream stream,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
@@ -68,6 +69,7 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        [MustUseReturnValue]
         public static TElement ReadElementFromResource<TElement>([NotNull] Type type, [NotNull] string resourceName,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
@@ -79,6 +81,7 @@ namespace Alba.CsConsoleFormat
             return ReadElementFromResource<TElement>(type.GetAssembly(), $"{type.Namespace}.{resourceName}", dataContext, settings);
         }
 
+        [MustUseReturnValue]
         public static TElement ReadElementFromResource<TElement>([NotNull] Assembly assembly, [NotNull] string resourceName,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
             where TElement : Element, new()
@@ -94,18 +97,21 @@ namespace Alba.CsConsoleFormat
             }
         }
 
+        [MustUseReturnValue]
         public static Document ReadDocumentFromStream([NotNull] Stream stream,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {
             return ReadElementFromStream<Document>(stream, dataContext, settings);
         }
 
+        [MustUseReturnValue]
         public static Document ReadDocumentFromResource([NotNull] Type type, [NotNull] string resourceName,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {
             return ReadElementFromResource<Document>(type, resourceName, dataContext, settings);
         }
 
+        [MustUseReturnValue]
         public static Document ReadDocumentFromResource([NotNull] Assembly assembly, [NotNull] string resourceName,
             [CanBeNull] object dataContext, [CanBeNull] XamlElementReaderSettings settings = null)
         {

@@ -131,6 +131,15 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             }
         }
 
+        public bool ChooseVerb(string verbName)
+        {
+            var verb = Options.FirstOrDefault(o => string.Equals(o.Name, verbName, StringComparison.OrdinalIgnoreCase));
+            if (verb == null)
+                return false;
+            _options = new List<OptionInfo>(1) { verb };
+            return true;
+        }
+
         internal HelpInfo With(ICollection<Type> optionsSource = null, object errorsSource = null)
         {
             var copy = (HelpInfo)MemberwiseClone();

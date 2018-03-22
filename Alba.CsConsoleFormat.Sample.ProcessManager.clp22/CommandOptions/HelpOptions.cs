@@ -12,7 +12,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
         [Value(0, MetaName = "verb", HelpText = "Command to display help for.", Hidden = true)]
         public string Verb { get; set; }
 
-        [Option("all", HelpText = "Display help for all commands.", Hidden = true)]
+        [Option("all", HelpText = "Display information on all commands.", Hidden = true)]
         public bool All { get; set; }
     }
 }

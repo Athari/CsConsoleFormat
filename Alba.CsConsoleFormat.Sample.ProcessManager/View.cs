@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Alba.CsConsoleFormat.CommandLineParser;
 using static System.ConsoleColor;
 
 // ReSharper disable AnnotateCanBeNullParameter
@@ -62,58 +61,5 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                     }
                 }
             };
-
-        public static Document HelpOptionsList(IEnumerable<OptionInfo> options, string instruction) =>
-            new Document {
-                Background = Black, Color = Gray,
-                Children = {
-                    new Div(instruction) { Color = White },
-                    "",
-                    new Grid {
-                        Stroke = LineThickness.None,
-                        Columns = { GridLength.Auto, GridLength.Star(1) },
-                        Children = { options.Select(OptionNameAndHelp) }
-                    }
-                }
-            };
-
-        public static Document HelpAllOptionsList(IEnumerable<OptionInfo> verbsWithOptions, string instruction) =>
-            new Document {
-                Background = Black, Color = Gray,
-                Children = {
-                    new Span($"{instruction}\n") { Color = White },
-                    new Grid {
-                        Stroke = LineThickness.None,
-                        Columns = { GridLength.Auto, GridLength.Star(1) },
-                        Children = {
-                            verbsWithOptions.Select(verbWithOptions => new object[] {
-                                OptionNameAndHelp(verbWithOptions),
-                                new Grid {
-                                    Stroke = LineThickness.None, Margin = new Thickness(4, 0, 0, 0),
-                                    [Grid.ColumnSpanProperty] = 2,
-                                    Columns = { GridLength.Auto, GridLength.Star(1) },
-                                    Children = { verbWithOptions.SubOptions.Select(OptionNameAndHelp) }
-                                }
-                            })
-                        }
-                    }
-                }
-            };
-
-        private static object[] OptionNameAndHelp(OptionInfo option) => new object[] {
-            new Div(GetOptionSyntax(option)) { Margin = new Thickness(1, 0, 1, 1), Color = Yellow, MinWidth = 14 },
-            new Div(option.HelpText) { Margin = new Thickness(1, 0, 1, 1) },
-        };
-
-        private static object GetOptionSyntax(OptionInfo option)
-        {
-            if (option.OptionKind == OptionKind.Verb)
-                return option.Name;
-            return option.ShortName == null
-                ? $"--{option.Name}"
-                : option.Name == null
-                    ? $"-{option.ShortName}"
-                    : $"--{option.Name}, -{option.ShortName}";
-        }
     }
 }

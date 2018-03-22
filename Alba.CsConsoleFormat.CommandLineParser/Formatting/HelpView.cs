@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -63,6 +64,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
 
         internal CultureInfo EffectiveCulture => Culture ?? CultureInfo.CurrentCulture;
 
+        [Pure]
         public virtual Document Help(HelpParts parts)
         {
             return new Document {
@@ -81,6 +83,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         public virtual Document HelpNotParsed(
             object errorsSource = null,
             HelpParts partsErrors = HelpParts.DefaultErrors,
@@ -103,10 +106,16 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return Help(partsErrors);
         }
 
+        [Pure]
         private Document Message(object errorsSource, HelpParts parts = HelpParts.Errors) => With(errorsSource: errorsSource).Help(parts);
+
+        [Pure]
         public Document Message(ErrorInfo error, HelpParts parts = HelpParts.Errors) => Message((object)error, parts);
+        
+        [Pure]
         public Document Message(IEnumerable<ErrorInfo> errors, HelpParts parts = HelpParts.Errors) => Message((object)errors, parts);
 
+        [Pure]
         protected virtual object GetHeader(HelpParts parts)
         {
             return new Div {
@@ -120,6 +129,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         protected virtual object GetFooter(HelpParts parts)
         {
             return new Div(Footer);
@@ -127,6 +137,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
 
         protected virtual Assembly EffectiveAssembly => AssemblySource ?? Assembly.GetEntryAssembly();
 
+        [Pure]
         private object GetAssemblyTitleCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.AssemblyTitle | HelpParts.AssemblyVersion))
@@ -134,6 +145,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetAssemblyTitle(parts);
         }
 
+        [Pure]
         protected virtual object GetAssemblyTitle(HelpParts parts)
         {
             string title = EffectiveAssembly?.GetCustomAttributes<AssemblyTitleAttribute>().FirstOrDefault()?.Title
@@ -146,6 +158,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return new Div(line);
         }
 
+        [Pure]
         private object GetAssemblyCopyrightCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.AssemblyCopyright))
@@ -153,6 +166,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetAssemblyCopyright(parts);
         }
 
+        [Pure]
         protected virtual object GetAssemblyCopyright(HelpParts parts)
         {
             string copyright = EffectiveAssembly?.GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault()?.Copyright;
@@ -167,6 +181,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return new Div(copyright);
         }
 
+        [Pure]
         private object GetAssemblyLicenseCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.AssemblyLicense))
@@ -174,11 +189,13 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetAssemblyLicense(parts);
         }
 
+        [Pure]
         protected virtual object GetAssemblyLicense(HelpParts parts)
         {
             return new Div(ClpUtils.GetAssemblyLicenseText(EffectiveAssembly));
         }
 
+        [Pure]
         private object GetUsageCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.AssemblyUsage))
@@ -186,6 +203,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetUsage(parts);
         }
 
+        [Pure]
         protected virtual object GetUsage(HelpParts parts)
         {
             string usage = ClpUtils.GetAssemblyUsageText(EffectiveAssembly);
@@ -200,6 +218,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         private object GetExamplesCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.Examples) || !Info.Parts.Has(HelpParts.Examples) || !Info.Examples.SelectMany(e => e).Any())
@@ -207,6 +226,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetExamples(parts);
         }
 
+        [Pure]
         protected virtual object GetExamples(HelpParts parts)
         {
             return new Div {
@@ -223,6 +243,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         protected virtual Div GetExample(ExampleInfo example)
         {
             string appName = EffectiveAssembly?.GetName().Name;
@@ -243,6 +264,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         private object GetErrorsCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.Errors) || !Info.Parts.Has(HelpParts.Errors) || Info.Errors.All(e => e.Message == null))
@@ -250,11 +272,13 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetErrors(parts);
         }
 
+        [Pure]
         protected virtual object GetErrors(HelpParts parts)
         {
             return Info.Errors.Where(e => e.Message != null).Select(GetError);
         }
 
+        [Pure]
         private object GetOptionsCore(HelpParts parts)
         {
             if (!parts.Has(HelpParts.Options) || !Info.Parts.Has(HelpParts.Options) || !Info.Options.Any(IsOptionVisible(parts)))
@@ -262,6 +286,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return GetOptions(parts);
         }
 
+        [Pure]
         protected virtual object GetOptions(HelpParts parts)
         {
             return new Grid {
@@ -280,6 +305,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         protected virtual object GetOption(OptionInfo option, HelpParts parts, bool isSubOption)
         {
             var m = isSubOption ? SubOptionMargin : OptionMargin;

@@ -4,37 +4,37 @@ copy Alba.CsConsoleFormat.Sample.ProcessManager.exe.config ProcessManager.exe.co
 cls
 
 echo.
-echo ~ ProcessManager help
+echo [30;102m~ ProcessManager help[0m
 ProcessManager help
 echo.
-echo ~ ProcessManager help list
+echo [30;102m~ ProcessManager help list[0m
 ProcessManager help list
 echo.
-echo ~ ProcessManager help start
+echo [30;102m~ ProcessManager help start[0m
 ProcessManager help start
 echo.
-echo ~ ProcessManager help --all
+echo [30;102m~ ProcessManager help --all[0m
 ProcessManager help --all
 echo.
-echo ~ ProcessManager help oops
+echo [30;102m~ ProcessManager help oops[0m
 ProcessManager help oops
 
 echo.
-echo ~ ProcessManager list --withtitle
+echo [30;102m~ ProcessManager list --withtitle[0m
 ProcessManager list --withtitle
 echo.
-echo ~ ProcessManager list -n devenv -m .
+echo [30;102m~ ProcessManager list -n devenv -m .[0m
 ProcessManager list -n devenv -m .
 
 echo.
-echo ~ ProcessManager start notepad -a %USERPROFILE%/.gitconfig
+echo [30;102m~ ProcessManager start notepad -a %USERPROFILE%/.gitconfig
 ProcessManager start notepad -a %USERPROFILE%/.gitconfig
 echo.
-echo ~ ProcessManager start oops
+echo [30;102m~ ProcessManager start oops[0m
 ProcessManager start oops
 
 del ProcessManager.exe
-del ProcessManager.exe.config
+del ProcessManager.exe.config 2> nul
 @echo on
 
 pause
