@@ -23,7 +23,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
     internal sealed class Program
     {
         private static readonly Type[] OptionsTypes = { typeof(ListOptions), typeof(StartOptions), typeof(HelpOptions) };
-        private static readonly HelpView HelpView = new HelpView { Info = { OptionsSource = OptionsTypes } };
+
+        private readonly HelpView HelpView = new HelpView { Info = { OptionsSource = OptionsTypes } };
 
         private static void Main(string[] args) => new Program().Run(args);
 
@@ -67,7 +68,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 : Process.GetProcesses(list.MachineName);
             if (list.WithTitle)
                 processes = processes.Where(p => !string.IsNullOrWhiteSpace(p.MainWindowTitle));
-            processes = processes.OrderByDescending(p => p.StartTime);
+            processes = processes.OrderByDescending(p => p.StartTime).Take(list.Limit);
             View.ProcessList(processes).Render();
         }
 

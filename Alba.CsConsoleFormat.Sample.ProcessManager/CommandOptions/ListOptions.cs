@@ -16,5 +16,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 
         [Option("withtitle", HelpText = "If specified, display only processes with non-empty main window title.")]
         public bool WithTitle { get; set; }
+
+        [Option('l', "limit", DefaultValue = 30, MetaValue = "INT", HelpText = "If specified, limit the number of listed processes with the specified number.")]
+        public int Limit { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
     }
 }

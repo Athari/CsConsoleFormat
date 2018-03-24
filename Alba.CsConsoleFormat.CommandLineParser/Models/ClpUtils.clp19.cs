@@ -24,16 +24,26 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static IEnumerable<ErrorInfo> GetErrorsFromParserStateOrErrorList19(object source)
         {
-            if (source is IEnumerable<ParsingError> errorList)
-                return errorList.Select(ErrorInfo.FromError);
-            else if (source is ParsingError error)
-                return Enumerable.Repeat(ErrorInfo.FromError(error), 1);
-            else {
-                var stateProp = source?.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes<ParserStateAttribute>().FirstOrDefault() != null);
-                if (stateProp == null || !stateProp.PropertyType.Is<IParserState>())
-                    throw new ArgumentException("source must be options class with ParserStateAttribute on IParserState property.");
-                var state = (IParserState)stateProp.GetValue(source, null);
-                return state?.Errors.Select(ErrorInfo.FromError) ?? Enumerable.Empty<ErrorInfo>();
+            switch (source) {
+                case null:
+                    return Enumerable.Empty<ErrorInfo>();
+                case IEnumerable<ParsingError> errorList:
+                    return errorList.Select(ErrorInfo.FromError);
+                case ParsingError error:
+                    return Enumerable.Repeat(ErrorInfo.FromError(error), 1);
+                default:
+                    var props = source.GetType().GetProperties();
+                    var errors = props
+                        .Where(p => p.GetCustomAttributes<VerbOptionAttribute>().FirstOrDefault() != null)
+                        .Select(p => p.GetValue(source, null))
+                        .SelectMany(GetErrorsFromParserStateOrErrorList19);
+                    var stateProp = props.FirstOrDefault(p => p.GetCustomAttributes<ParserStateAttribute>().FirstOrDefault() != null);
+                    if (stateProp?.PropertyType.Is<IParserState>() == true) {
+                        var state = (IParserState)stateProp.GetValue(source, null);
+                        if (state != null)
+                            errors = errors.Concat(state.Errors.Select(ErrorInfo.FromError));
+                    }
+                    return errors;
             }
         }
 

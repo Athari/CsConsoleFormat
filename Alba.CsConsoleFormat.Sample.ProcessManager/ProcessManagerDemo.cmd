@@ -23,6 +23,9 @@ echo.
 echo ~ ProcessManager list --withtitle
 ProcessManager list --withtitle
 echo.
+echo ~ ProcessManager list --limit=oops
+ProcessManager list --limit=oops
+echo.
 echo ~ ProcessManager list -n devenv -m .
 ProcessManager list -n devenv -m .
 

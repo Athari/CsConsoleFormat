@@ -23,6 +23,9 @@ echo.
 echo ~ ProcessManager list --withtitle
 ProcessManager.clp22 list --withtitle
 echo.
+echo ~ ProcessManager list --limit=oops
+ProcessManager.clp22 list --limit=oops
+echo.
 echo ~ ProcessManager list -n devenv -m .
 ProcessManager.clp22 list -n devenv -m .
 

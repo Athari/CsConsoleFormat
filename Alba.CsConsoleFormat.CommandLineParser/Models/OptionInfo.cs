@@ -57,7 +57,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             {
                 if (OptionKind == OptionKind.Verb)
                     return Name;
-                if (IsPositional)
+                else if (IsPositional)
                     return Name;
                 else if (Name != null && ShortName != null)
                     return $"--{Name}, -{ShortName}";
@@ -65,6 +65,22 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                     return $"--{Name}";
                 else if (ShortName != null)
                     return $"-{ShortName}";
+                return "";
+            }
+        }
+
+        public string HelpNameWithValue
+        {
+            get
+            {
+                if (MetaValue == null || OptionKind == OptionKind.Verb || IsPositional)
+                    return HelpName;
+                else if (Name != null && ShortName != null)
+                    return $"--{Name}={MetaValue}, -{ShortName} {MetaValue}";
+                else if (Name != null)
+                    return $"--{Name}={MetaValue}";
+                else if (ShortName != null)
+                    return $"-{ShortName} {MetaValue}";
                 return "";
             }
         }

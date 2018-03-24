@@ -21,7 +21,10 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 {
     internal sealed class Program
     {
-        private static readonly HelpView HelpView = new HelpView { Info = { OptionsSource = { typeof(RootOptions) } } };
+        private readonly HelpView HelpView = new HelpView {
+            Info = { OptionsSource = { typeof(RootOptions) } },
+            OptionNameMaxLength = 16,
+        };
 
         private static void Main(string[] args) => new Program().Run(args);
 
@@ -35,16 +38,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             }
             try {
                 Console.OutputEncoding = Encoding.UTF8;
-                if (args.Length == 0) {
-                    InvokeHelp(new HelpOptions());
-                    return;
-                }
-
                 var options = new RootOptions();
-                if (!Parser.Default.ParseArguments(args, options, (s, o) => { }))
-                    Environment.Exit(Parser.DefaultExitCodeFail);
-
-                if (options.List != null)
+                var parser = new Parser(s => s.HelpWriter = null);
+                if (!parser.ParseArguments(args, options, (s, v) => { }))
+                    InvokeError(options);
+                else if (options.List != null)
                     InvokeList(options.List);
                 else if (options.Start != null)
                     InvokeStart(options.Start);
@@ -62,6 +60,11 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
             }
         }
 
+        private void InvokeError(RootOptions error)
+        {
+            HelpView.HelpNotParsed(error).Render();
+        }
+
         private void InvokeList(ListOptions list)
         {
             IEnumerable<Process> processes = list.ProcessName != null
@@ -69,7 +72,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
                 : Process.GetProcesses(list.MachineName);
             if (list.WithTitle)
                 processes = processes.Where(p => !string.IsNullOrWhiteSpace(p.MainWindowTitle));
-            processes = processes.OrderByDescending(p => p.StartTime);
+            processes = processes.OrderByDescending(p => p.StartTime).Take(list.Limit);
             View.ProcessList(processes).Render();
         }
 
@@ -86,15 +89,7 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager
 
         private void InvokeHelp(HelpOptions help)
         {
-            if (help.All) {
-                HelpView.Help(HelpParts.All).Render();
-                return;
-            }
-            else if (help.Verb != null && !HelpView.Info.ChooseVerb(help.Verb)) {
-                HelpView.Message(ErrorInfo.Error($"Verb {help.Verb} not supported."), HelpParts.DefaultErrors).Render();
-                return;
-            }
-            HelpView.Help(HelpParts.DefaultOptions | (help.Verb != null ? HelpParts.SubOptions : 0)).Render();
+            HelpView.HelpVerb(help.Verb, help.All).Render();
         }
     }
 }

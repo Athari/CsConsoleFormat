@@ -19,10 +19,10 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         public object Header { get; set; }
         public object Footer { get; set; }
 
-        public Thickness Margin { get; set; } = new Thickness(0);
+        public Thickness Margin { get; set; }
         public Thickness SectionMargin { get; set; } = new Thickness(0, 1, 0, 0);
         public Thickness ErrorMargin { get; set; } = new Thickness(0, 1, 0, 0);
-        public Thickness ExampleGroupMargin { get; set; } = new Thickness(0, 0, 0, 0);
+        public Thickness ExampleGroupMargin { get; set; } = new Thickness(0, 1, 0, 0);
         public Thickness ExampleMargin { get; set; } = new Thickness(2, 0, 0, 0);
         public Thickness OptionMargin { get; set; } = new Thickness(2, 1, 0, 0);
         public Thickness SubOptionMargin { get; set; } = new Thickness(6, 1, 0, 0);
@@ -39,6 +39,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         public ConsoleColor? WarningTitleColor { get; set; }
         public ConsoleColor? InfoTitleColor { get; set; }
         public ConsoleColor? OptionNameColor { get; set; }
+        public ConsoleColor? SubOptionNameColor { get; set; }
         public ConsoleColor? OptionTextColor { get; set; }
         public ConsoleColor Background { get; set; } = ConsoleColor.Black;
         public CultureInfo Culture { get; set; }
@@ -58,7 +59,8 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                 ErrorDetailColor = ConsoleColor.DarkGray;
                 WarningTitleColor = ConsoleColor.Yellow;
                 InfoTitleColor = ConsoleColor.Cyan;
-                OptionNameColor = ConsoleColor.Yellow;
+                OptionNameColor = ConsoleColor.Green;
+                SubOptionNameColor = ConsoleColor.Yellow;
             }
         }
 
@@ -84,8 +86,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
         }
 
         [Pure]
-        public virtual Document HelpNotParsed(
-            object errorsSource = null,
+        public virtual Document HelpNotParsed(object errorsSource = null,
             HelpParts partsErrors = HelpParts.DefaultErrors,
             HelpParts partsOptions = HelpParts.DefaultOptions,
             HelpParts partsVersion = HelpParts.DefaultVersion)
@@ -104,6 +105,18 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                     return With(optionsSource: new[] { helpError.TypeKey }).Help((partsOptions | HelpParts.SubOptions) & ~HelpParts.BuiltInOptions);
             }
             return Help(partsErrors);
+        }
+
+        [Pure]
+        public virtual Document HelpVerb(string verb, bool all = false,
+            HelpParts partsAll = HelpParts.All,
+            HelpParts partsVerb = HelpParts.DefaultOptions)
+        {
+            if (all)
+                return Help(partsAll);
+            else if (verb != null && !Info.ChooseVerb(verb))
+                return Message(ErrorInfo.Error($"Verb {verb} not supported."), HelpParts.DefaultErrors);
+            return Help(HelpParts.DefaultOptions | (verb != null ? HelpParts.SubOptions : 0));
         }
 
         [Pure]
@@ -322,8 +335,9 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return new[] {
                 new Div {
                     Margin = marginName,
-                    Color = OptionNameColor,
-                    Children = { option.HelpName }
+                    Color = isSubOption ? SubOptionNameColor : OptionNameColor,
+                    TextWrap = TextWrap.WordWrapSpace,
+                    Children = { option.HelpNameWithValue }
                 },
                 new Div {
                     Margin = marginText,
@@ -344,6 +358,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         protected virtual object GetSubOptions(OptionInfo option, HelpParts parts)
         {
             return new Grid {
@@ -362,6 +377,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             };
         }
 
+        [Pure]
         protected virtual string GetOptionDefault(OptionInfo option)
         {
             switch (option.DefaultValue) {
@@ -380,13 +396,14 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             string ToString(object value) => Convert.ToString(value, EffectiveCulture);
         }
 
+        [Pure]
         protected virtual object GetError(ErrorInfo error)
         {
             bool displayInfoTitle = false;
             return new Div {
                 Margin = ErrorMargin,
                 Children = {
-                    error.Kind == ErrorKind.Error
+                    error.Kind == ErrorKind.Error || error.Kind == ErrorKind.ParseError
                         ? new Div(TitleTransform("Error")) { Color = ErrorTitleColor }
                         : null,
                     error.Kind == ErrorKind.Warning
@@ -409,7 +426,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             return copy;
         }
 
-        private static Func<OptionInfo, bool> IsOptionVisible(HelpParts parts) =>
+        protected static Func<OptionInfo, bool> IsOptionVisible(HelpParts parts) =>
             option => (option.IsVisible || parts.Has(HelpParts.HiddenOptions)) && (!option.IsBuiltIn || parts.Has(HelpParts.BuiltInOptions));
     }
 }

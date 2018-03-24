@@ -9,10 +9,13 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     internal sealed class HelpOptions
     {
-        [ValueOption(1), OptionMeta(HelpText = "Command to display help for.")]
+        [ValueOption(1), OptionMeta(MetaName = "command", HelpText = "Command to display help for.")]
         public string Verb { get; set; }
 
         [Option("all", HelpText = "Display information on all commands.")]
         public bool All { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
     }
 }

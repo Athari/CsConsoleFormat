@@ -23,6 +23,10 @@
       "commandName": "Project",
       "commandLineArgs": "list --withtitle"
     },
+    "ListOops": {
+      "commandName": "Project",
+      "commandLineArgs": "list --limit=oops"
+    },
     "Oops": {
       "commandName": "Project",
       "commandLineArgs": "oops"

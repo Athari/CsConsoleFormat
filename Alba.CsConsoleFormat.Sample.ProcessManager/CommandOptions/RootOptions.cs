@@ -12,7 +12,10 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
         [VerbOption("start", HelpText = "Start a new process.\nSYNTAX: ProcessManager start filename [options]")]
         public StartOptions Start { get; set; }
 
-        [VerbOption("help", HelpText = "Display information on a specific command.")]
+        [VerbOption("help", HelpText = "Display information on a specific command.\nSYNTAX: ProcessManager help [command] [options]")]
         public HelpOptions Help { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
     }
 }

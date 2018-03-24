@@ -23,5 +23,8 @@ namespace Alba.CsConsoleFormat.Sample.ProcessManager.CommandOptions
 
         [Option('p', "password", HelpText = "The password to use when starting the process.")]
         public string Password { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
     }
 }

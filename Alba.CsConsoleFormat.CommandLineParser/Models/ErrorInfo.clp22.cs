@@ -17,7 +17,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             Key = GetKey22(error);
             TypeKey = GetTypeKey22(error);
             try {
-                Message = error.Tag != ErrorType.MutuallyExclusiveSetError && Kind == ErrorKind.Error
+                Message = error.Tag != ErrorType.MutuallyExclusiveSetError && Kind == ErrorKind.ParseError
                     ? ClpUtils.SentenceBuilder22.FormatError(error) : null;
             }
             catch (InvalidOperationException) {

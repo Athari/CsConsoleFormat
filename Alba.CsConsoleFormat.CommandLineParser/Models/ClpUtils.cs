@@ -74,7 +74,7 @@ namespace Alba.CsConsoleFormat.CommandLineParser
             var roots = GetTypeInfos(optionsRoots);
           #if CLP_22
             if (roots.Count > 1 || roots.SelectMany(GetAttributes).Any(a => a.GetType().FullName == VerbAttributeTypeName22))
-                return roots.Select(CreateOptionVerb);
+                return roots.Select(CreateOptionVerb).Where(o => o != null);
           #endif
             if (roots.Count == 1) {
                 var props = roots.Single().GetProperties();
@@ -82,16 +82,16 @@ namespace Alba.CsConsoleFormat.CommandLineParser
                 if (props.SelectMany(GetAttributes).Any(a => a.GetType().FullName == VerbOptionAttributeTypeName19))
                     return props
                         .Where(p => p.GetCustomAttributes<Attribute>().Any(a => a.GetType().FullName == VerbOptionAttributeTypeName19))
-                        .Select(CreateOptionVerb);
+                        .Select(CreateOptionVerb).Where(o => o != null);
           #endif
           #if CLP_19 || CLP_22
-                return props.Select(CreateOption);
+                return props.Select(CreateOption).Where(o => o != null);
           #endif
             }
             throw UnsupportedVersion();
 
             OptionInfo CreateOptionVerb(MemberInfo root) => OptionInfo.FromMember(root, GetAttributes(root), isVerb: true)
-                .WithSubOptions(GetVerbOptions(root).Select(CreateOption));
+                .WithSubOptions(GetVerbOptions(root).Select(CreateOption).Where(o => o != null));
 
             OptionInfo CreateOption(PropertyInfo prop) => OptionInfo.FromMember(prop, GetAttributes(prop));
 
