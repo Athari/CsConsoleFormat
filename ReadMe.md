@@ -31,6 +31,7 @@
 [![FOSSA license scan](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAthari%2FCsConsoleFormat.svg?type=shield&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOBAMAAADpk%2BDfAAAALVBMVEUAAADm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5uaIA73MAAAADnRSTlMAtluj7Np/bTaRJEgSyDlZ5%2BgAAABnSURBVAjXY2A7wMDQqsDAVpbU47eBgSvO7pkdAwPTwxBLIwYG7mc8nhMYGBYKi4iKMzCoTxR8cnUBQ9HEWPF3Ygxt0iZP7IQZOBboPbSLYWBg6IuVUwBS%2B%2BTEGYBAT2QBiFJsYGAAAPgsF6HL6FZzAAAAAElFTkSuQmCC)](https://app.fossa.io/projects/git%2Bgithub.com%2FAthari%2FCsConsoleFormat)
 [![CII best practices](https://bestpractices.coreinfrastructure.org/projects/1679/badge)](https://bestpractices.coreinfrastructure.org/projects/1679)
 [![Libraries.io Dependencies](https://img.shields.io/librariesio/github/Athari/CsConsoleFormat.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOBAMAAADtZjDiAAAAHlBMVEUAAADm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5uZenlmZAAAACXRSTlMAVTjixqocjXFWMi4dAAAAUUlEQVQI12NwNjI2KglgYJg5ceb0mRNANBBOAtOTLKdD6MrJEFpyZgKY5pwpAKZZZgaAaY6ZBmCaaeY0MM0wcwaEjpwKoTtnMjibOZsxJAcCAI4KK2mmVnlHAAAAAElFTkSuQmCC)](https://libraries.io/nuget/Alba.CsConsoleFormat)
+[![kandi X-Ray](https://kandi.openweaver.com/badges/xray.svg)](https://kandi.openweaver.com/csharp/Athari/CsConsoleFormat)
 
 CsConsoleFormat is a library for formatting text in console based on documents resembling a mix of WPF and HTML: tables, lists, paragraphs, colors, word wrapping, lines etc. Like this:
 
